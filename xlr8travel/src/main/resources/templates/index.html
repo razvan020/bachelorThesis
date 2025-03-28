@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Front Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.js"
+            integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+            crossorigin="anonymous"></script>
+    <script
+        src="/css/script.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css"/>
+
+    <script>
+        $(document).ready(function(){
+            $("#origin").autocomplete({
+                source: "/autocomplete",
+            });
+        });
+
+        $(document).ready(function(){
+            $("#destination").autocomplete({
+                source: "/autocomplete",
+            });
+        });
+    </script>
+
+</head>
+
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary sticky-top text-center bg-body-tertiary"
+         style="background-color: #33a1bc;">
+        <a class="navbar-brand fs-2" href="#" style="margin-left:10%">
+            xlr8 Travel
+            <img src="/image-removebg-preview.png" width="50" height="50" class="align-top" alt="" />
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse text-uppercase " id="navbarNav">
+            <ul class="navbar-nav ms-auto" style="margin-right:10%">
+                <li class="nav-item me-4 ">
+                    <a class="nav-link active " href="#">Home</a>
+                </li>
+                <li class="nav-item me-4">
+                    <a class="nav-link active" href="#">Plan</a>
+                </li>
+                <li class="nav-item  me-4">
+                    <a class="nav-link active" href="checkin/1">Check-in & Booking</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a class="nav-link active" th:href="@{/cart}">View Cart</a>
+                </li>
+                <li class="nav-item  me-4" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link active" href="signup">Sign Up</a>
+                </li>
+
+                <li class="nav-item  me-4" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="nav-link active" href="/users">Manage Users</a>
+                </li>
+                <li class="nav-item me-4" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="nav-link active" href="/flights/add">Add Flight</a>
+                </li>
+                <li class="nav-item me-4" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="nav-link active" href="/flights/manage">Manage Flights</a>
+                </li>
+                <li class="nav-item  me-4" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" id="my_form">
+                        <a class="nav-link active" type="submit" href="javascript:{}" onclick="document.getElementById('my_form').submit(); return false;">Log Out</a>
+                    </form>
+                </li>
+
+
+
+
+                <!-- Other nav items -->
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div sec:authentication="name">
+    The value of the "name" property of the authentication object should appear here.
+</div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 px-0">
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active c-item">
+                            <img src="/background.jpg" class="d-block w-100 c-img" alt="..." />
+                        </div>
+                        <div class="carousel-item c-item ">
+                            <img src="/bg2.jpg" class="d-block w-100 c-img" alt="..." />
+                        </div>
+                        <div class="carousel-item c-item">
+                            <img src="/bg3.jpg" class="d-block w-100 c-img" alt="..." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row z-1 position-relative" style="margin-top:-5%;">
+            <div class="col-10 col-md-9 col-sm-9 bg-light py-2 px-5 shadow col-lg-10 custom-margin">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <!-- <li class="list-inline-item p-0 m-0 py-2 px-5 border">Origin</li>
+                            <li class="list-inline-item p-0 py-2 px-5 border" style="margin-left: -1%;">Destination</li> -->
+                        <div class="d-flex flex-row align-items-center mt-3 flex-wrap gap-3">
+
+                            <form id="flightSearchForm" th:action="@{/getAvailableFlights}" method="get" class="d-flex flex-row align-items-center flex-wrap gap-3">
+
+                                <!-- Origin and Destination -->
+                                <div class="d-flex flex-row gap-2">
+                                    <input id="origin" name="origin" placeholder="Origin" class="form-control bg-light px-3 rounded-0 text-center" required>
+                                    <input id="destination" name="destination" placeholder="Destination" class="form-control bg-light px-3 rounded-0 text-center" required>
+                                </div>
+
+                                <!-- Departure and Arrival Dates -->
+                                <div class="d-flex flex-row gap-2">
+                                    <input type="date" id="departureDate" name="departureDate" class="form-control bg-light px-3 rounded-0 text-center" placeholder="Departure" required>
+                                    <input type="date" id="arrivalDate" name="arrivalDate" class="form-control bg-light px-3 rounded-0 text-center" placeholder="Return" required>
+                                </div>
+
+                                <!-- Passengers Dropdown -->
+                                <div class="dropdown">
+                                    <button class="dropdown-btn" id="dropdownBtn" type="button">
+                                        Passengers: <span id="totalPassengers">1 adult</span>
+                                    </button>
+                                    <div class="dropdown-content" id="dropdownContent">
+                                        <div class="passenger-type">
+                                            <label>Adults (14+)</label>
+                                            <button type="button" class="minus-btn" onclick="decrement('adults')">-</button>
+                                            <input type="number" id="adults" value="1" min="1" readonly>
+                                            <button type="button" class="plus-btn" onclick="increment('adults')">+</button>
+                                        </div>
+                                        <div class="passenger-type">
+                                            <label>Children (2-14)</label>
+                                            <button type="button" class="minus-btn" onclick="decrement('children')">-</button>
+                                            <input type="number" id="children" value="0" min="0" readonly>
+                                            <button type="button" class="plus-btn" onclick="increment('children')">+</button>
+                                        </div>
+                                        <div class="passenger-type">
+                                            <label>Infants (0-2)</label>
+                                            <button type="button" class="minus-btn" onclick="decrement('infants')">-</button>
+                                            <input type="number" id="infants" value="0" min="0" readonly>
+                                            <button type="button" class="plus-btn" onclick="increment('infants')">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Search Button -->
+                                <button type="button" class="btn search-btn" onclick="submitForm()">
+                                    Search
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function increment(id) {
+                const input = document.getElementById(id);
+                input.value = parseInt(input.value) + 1;
+                updateTotal();
+            }
+
+            function decrement(id) {
+                const input = document.getElementById(id);
+                if (parseInt(input.value) > 0) {
+                    input.value = parseInt(input.value) - 1;
+                }
+                updateTotal();
+            }
+
+            function updateTotal() {
+                const adults = parseInt(document.getElementById("adults").value);
+                const children = parseInt(document.getElementById("children").value);
+                const infants = parseInt(document.getElementById("infants").value);
+                const total = `${adults} adult${adults > 1 ? 's' : ''}`;
+                document.getElementById("totalPassengers").textContent = total +
+                    (children > 0 ? `, ${children} child${children > 1 ? 'ren' : ''}` : '') +
+                    (infants > 0 ? `, ${infants} infant${infants > 1 ? 's' : ''}` : '');
+            }
+
+            document.getElementById("dropdownBtn").addEventListener("click", () => {
+                const content = document.getElementById("dropdownContent");
+                content.style.display = content.style.display === "block" ? "none" : "block";
+            });
+
+            function submitForm() {
+                const origin = document.getElementById("origin").value;
+                const destination = document.getElementById("destination").value;
+                const departureDate = document.getElementById("departureDate").value;
+                const arrivalDate = document.getElementById("arrivalDate").value;
+
+                // Construct URL parameters
+                const urlParams = new URLSearchParams({
+                    origin: origin,
+                    destination: destination,
+                    departureDate: departureDate,
+                    arrivalDate: arrivalDate
+                });
+
+                // Set the form action with the constructed URL parameters
+                const form = document.getElementById("flightSearchForm");
+                form.action = `/getAvailableFlights?${urlParams.toString()}`;
+                form.method = "get";
+
+                // Submit the form
+                form.submit();
+            }
+        </script>
+
+
+        <div class="row mt-3 mb-2">
+            <div class="col-12 text-center fs-3 fw-semibold">
+                Very Cool Packages
+            </div>
+        </div>
+
+        <div class="row gy-3 gy-sm-4 gy-md-4 ms-0 me-0">
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto w-85 border-0 shadow">
+                    <img
+                            src="https://images.unsplash.com/photo-1574080344876-1f4089ba07fe?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            class="card-img-top h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Bali</h5>
+                        <p class="card-text">
+                            Some quick example text to build on the card title and make up
+                            the bulk of the card's content.
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto w-85 border-0 shadow">
+                    <img th:src="@{/delta.jpg}" class="card-img-top h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Delta Dunarii</h5>
+                        <p class="card-text">
+                            Some quick example text to build on the card title and make up
+                            the bulk of the card's content.
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto w-85 border-0 shadow">
+                    <img
+                            src="https://images.unsplash.com/photo-1602427384420-71c70e2b2a2f?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            class="card-img-top h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Malaysia</h5>
+                        <p class="card-text">
+                            Some quick example text to build on the card title and make up
+                            the bulk of the card's content.
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto w-85 border-0 shadow">
+                    <img src="https://images.unsplash.com/photo-1575527048208-6475b441e0a0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            class="card-img-top h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Grand Canyon</h5>
+                        <p class="card-text">
+                            Some quick example text to build on the card title and make up
+                            the bulk of the card's content.
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-5 mb-5">
+            <div class="col-12 text-center">
+                <div type="button" class="btn rounded-5 px-3 " style="background-color: #5DB4D0; color:white">
+                    View all packages
+                </div>
+            </div>
+        </div>
+
+        <div class="row gy-3 gy-sm-4 gy-md-4 justify-content-evenly">
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto rounded-4 border-0 shadow w-100 text-center">
+                    <img
+                            src="https://images.unsplash.com/photo-1577042939454-8b29d442b402?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fGdpZnR8ZW58MHx8MHx8fDA%3D"
+                            class="card-img-top rounded-4 rounded-bottom-0 h-50" alt="..." />
+                    <div class="card-body ">
+                        <h5 class="card-title">Gift Voucher</h5>
+                        <p class="card-text mt-5">
+                            Surprise your loved ones with the gift of travel
+                        </p>
+
+                        <a href="#" class="btn btn-primary mt-4">Read More</a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto rounded-4 border-0 shadow w-100 text-center">
+                    <img src="https://images.unsplash.com/photo-1542353436-312f0e1f67ff?q=80&w=2142&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top rounded-4 rounded-bottom-0 h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Cancel for any reason</h5>
+                        <p class="card-text mt-5">
+                            Our services allow you to cancel your booking for a credit voucher
+                        </p>
+                        <a href="#" class="btn btn-primary mt-4">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto rounded-4 border-0 shadow w-100 text-center">
+                    <img
+                            src="https://images.unsplash.com/photo-1601972602237-8c79241e468b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjJ8fGFwcHxlbnwwfHwwfHx8MA%3D%3D"
+                            class="card-img-top rounded-4 rounded-bottom-0 h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Get ready for takeoff</h5>
+                        <p class="card-text mt-5">
+                            Make sure to download our mobile app to make booking easier!
+                        </p>
+                        <a href="#" class="btn btn-primary mt-4">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row gy-3 gy-sm-4 gy-md-4 justify-content-evenly mt-3">
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto rounded-4 border-0 shadow w-100 text-center">
+                    <img
+                            src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJhdmVsfGVufDB8MHwwfHx8MA%3D%3D"
+                            class="card-img-top rounded-4 rounded-bottom-0 h-50" alt="..." />
+                    <div class="card-body ">
+                        <h5 class="card-title">Looking for travel inspiration?</h5>
+                        <p class="card-text mt-5">
+                            Check out our traveling recommendations here!
+                        </p>
+                        <a href="#" class="btn btn-primary mt-5">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto rounded-4 border-0 shadow w-100 text-center">
+                    <img src="https://images.unsplash.com/photo-1560439450-08c2a7979b15?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzJ8fHNpZ24lMjBpbnxlbnwwfHwwfHx8MA%3D%3D" class="card-img-top rounded-4 rounded-bottom-0 h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Sign up for xlr8</h5>
+                        <p class="card-text mt-5">
+                            Be holiday-ready! Sign-up to get the latest xlr8 sales, deals and news to your inbox
+                        </p>
+                        <a href="#" class="btn btn-primary mt-5">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card h-100 mx-auto rounded-4 border-0 shadow w-100 text-center">
+                    <img
+                            src="https://t4.ftcdn.net/jpg/02/79/95/37/360_F_279953745_VjCCUq3EZDlNc4shp30ZrWbaHmcbDp9Y.jpg"
+                            class="card-img-top rounded-4 rounded-bottom-0 h-50" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">Best Prices</h5>
+                        <p class="card-text mt-5">
+                            We always make sure you get the best deals and prices on the market. If you find a better fare online, we'll beat it by 10%
+                        </p>
+                        <a href="#" class="btn btn-primary mt-5">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="py-2 mt-5" style="background-color: #0C5F84;">
+        <div class="container-fluid text-light">
+            <div class="row my-0">
+                <div class="col-8 mb-0">
+                <p class="mb-0 ms-lg-5 ms-md-5 mt-0 fs-1">xlr8 Travel<img src="/image-removebg-preview.png" width="50" height="50" class="align-top" alt="" />
+                </p>
+                </div>
+                <div class="col-4 text-end mb-0">
+                    <p class="mb-0 ms-auto mt-0 fs-2 my-0">Follow us on social media!</p>
+                </div>
+            </div>
+            <div class="row me-3 mt-0">
+                <div class="col-7 col-sm-7">
+                </div>
+                <div class="col-5 col-sm-5 mx-0 px-0 text-end">
+                    <img src="/icons8-facebook-50.png" alt="">
+                    <img src="/icons8-instagram-50.png" alt="">
+                    <img src="/icons8-twitter-50.png" alt="">
+                    <img src="/icons8-youtube-50.png" alt="">
+                </div>
+
+            </div>
+            <div class="row mt-4 text-end">
+                <div class="col-12 mt-0 text-end">
+                <p class="mb-0 ms-auto mt-0 fs-2">Download the app on</p>
+                <img src="/icons8-play-store-50.png" alt="">
+                <img src="/icons8-app-store-50.png"  alt="">
+
+                </div>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+
+        <script src="/https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"></script>
+        <script src="/https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+                integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+                crossorigin="anonymous"></script>
+
+
+</html>

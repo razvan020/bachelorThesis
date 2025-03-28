@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title>Manage Flights</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #5DB4D0, #48A5C4);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .table-container {
+            background-color: #ffffff;
+            color: #333;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar {
+            background-color: #5DB4D0;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        footer {
+            background-color: #0C5F84;
+            color: #fff;
+            padding: 1rem 0;
+            margin-top: auto;
+        }
+        .footer-links img {
+            margin: 0 0.5rem;
+            width: 30px;
+            height: 30px;
+        }
+        .btn-primary {
+            background-color: #5DB4D0;
+            border-color: #5DB4D0;
+        }
+        .btn-primary:hover {
+            background-color: #48A5C4;
+            border-color: #48A5C4;
+        }
+        .btn-danger:hover {
+            background-color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary sticky-top text-center bg-body-tertiary" style="background-color: #5DB4D0;">
+    <div class="container-fluid">
+        <a class="navbar-brand fs-2" href="#" style="margin-left:10%">
+            xlr8 Travel
+            <img src="/image-removebg-preview.png" width="50" height="50" class="align-top" alt="" />
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse text-uppercase" id="navbarNav">
+            <ul class="navbar-nav ms-auto" style="margin-right:10%">
+                <li class="nav-item me-4">
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+                <li class="nav-item me-4">
+                    <a class="nav-link active" href="#">Plan</a>
+                </li>
+                <li class="nav-item me-4">
+                    <a class="nav-link active" href="checkin/1">Check-in & Booking</a>
+                </li>
+                <li class="nav-item me-4">
+                    <form th:action="@{/logout}" method="post" id="my_form">
+                        <a class="nav-link active" type="submit" href="javascript:{}" onclick="document.getElementById('my_form').submit(); return false;">Log Out</a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="text-center py-5">
+    <h1 class="display-4 text-uppercase">Manage Flights</h1>
+</header>
+
+<div class="table-container container">
+    <!-- Success message -->
+    <div class="alert alert-success mt-3" th:if="${successMessage != null}" th:text="${successMessage}">
+        <!-- "Flight updated successfully!" -->
+    </div>
+
+    <!-- Flights Table -->
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Flight Name</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Loop through all flights -->
+            <tr th:each="flight : ${flights}">
+                <td th:text="${flight.id}"></td>
+                <td th:text="${flight.name}"></td>
+                <td th:text="${flight.origin}"></td>
+                <td th:text="${flight.destination}"></td>
+                <td>
+                    <span th:text="${flight.departureDate}"></span>
+                    <span th:text="${flight.departureTime}"></span>
+                </td>
+                <td>
+                    <span th:text="${flight.arrivalDate}"></span>
+                    <span th:text="${flight.arrivalTime}"></span>
+                </td>
+                <td th:text="'$' + ${flight.price}"></td>
+                <td>
+                    <!-- Edit button -->
+                    <a th:href="@{/flights/edit/{id}(id=${flight.id})}" class="btn btn-primary btn-sm me-2">Edit</a>
+                    <!-- Delete button -->
+                    <form th:action="@{/flights/delete/{id}(id=${flight.id})}" method="post" style="display:inline;">
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to delete this flight?');">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <a th:href="@{/}" class="btn btn-secondary">Back to Home</a>
+        <a th:href="@{/flights/add}" class="btn btn-success">Add New Flight</a>
+    </div>
+</div>
+
+<footer class="mt-5">
+    <div class="container-fluid text-light">
+        <div class="row my-0">
+            <div class="col-8 mb-0">
+                <p class="mb-0 ms-lg-5 ms-md-5 mt-0 fs-1">xlr8 Travel<img src="/image-removebg-preview.png" width="50" height="50" class="align-top" alt="" /></p>
+            </div>
+            <div class="col-4 text-end mb-0">
+                <p class="mb-0 ms-auto mt-0 fs-2 my-0">Follow us on social media!</p>
+            </div>
+        </div>
+        <div class="row me-3 mt-0">
+            <div class="col-7 col-sm-7"></div>
+            <div class="col-5 col-sm-5 mx-0 px-0 text-end">
+                <img src="/icons8-facebook-50.png" alt="">
+                <img src="/icons8-instagram-50.png" alt="">
+                <img src="/icons8-twitter-50.png" alt="">
+                <img src="/icons8-youtube-50.png" alt="">
+            </div>
+        </div>
+        <div class="row mt-4 text-end">
+            <div class="col-12 mt-0 text-end">
+                <p class="mb-0 ms-auto mt-0 fs-2">Download the app on</p>
+                <img src="/icons8-play-store-50.png" alt="">
+                <img src="/icons8-app-store-50.png" alt="">
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-amr0boOjaZn8PybTugI74DPgoPYhBLab64Lrt0JSkCWjLU7lBNK0IzhbStYXMSaD" crossorigin="anonymous"></script>
+</body>
+</html>
