@@ -1,4 +1,5 @@
 /* =============== YOUR ORIGINAL CSS =============== */
+/* stylelint-disable at-rule-no-unknown */
 
 @font-face {
   font-family: Lexend;
@@ -9,6 +10,23 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
 }
 
 .dropdown {
@@ -61,10 +79,46 @@ input[type="number"] {
 }
 
 .navbar {
-  background-image: linear-gradient(to right, #5db5d0, #5db5d0);
+  background-image: linear-gradient(to right, #000000, #000000);
   font-family: Lexend;
   font-weight: 350;
   letter-spacing: 2px;
+}
+
+.nav-link {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-brand img {
+  width: 50px;       /* small width that won't enlarge the navbar */
+  height: 50px;
+  transform: scale(6.0); /* make it look 1.5× bigger */
+  transform-origin: center;
+  /* Ensure it can overflow outside its box if needed: */
+  display: inline-block;
+  overflow: visible;
 }
 
 /* Container for the form */
@@ -167,4 +221,6 @@ input[type="number"] {
   height: 10vw;
   object-fit: cover;
 }
+
 /* =============== END OF YOUR ORIGINAL CSS =============== */
+

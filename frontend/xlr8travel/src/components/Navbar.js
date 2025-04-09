@@ -1,22 +1,29 @@
-import React from 'react'
+"use client";
+import React from "react";
 
-export default function Navbar() {
+export default function NavBar() {
   return (
     <nav
-        className="navbar navbar-expand-lg navbar-dark sticky-top text-center"
-        style={{ backgroundColor: "#33a1bc" }}
-      >
-        <a className="navbar-brand fs-2" href="#" style={{ marginLeft: "10%" }}>
-          xlr8 Travel
+      className="navbar navbar-expand-lg navbar-dark sticky-top"
+      style={{ backgroundColor: "#5DB4D0" }}
+    >
+      <div className="container">
+        {/* Brand / Logo */}
+        <a
+          className="navbar-brand fs-2"
+          href="/"
+          style={{ marginLeft: "5%" }}
+        >
           <img
-            src="/image-removebg-preview.png"
-            width="50"
-            height="50"
+            src="/removedbg.png"
+            width="100"
+            height="100"
             className="align-top"
-            alt=""
+            alt="xlr8Travel logo"
           />
         </a>
 
+        {/* Hamburger toggle (mobile) */}
         <button
           className="navbar-toggler"
           type="button"
@@ -27,31 +34,45 @@ export default function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
+        {/* Navbar content */}
         <div
-          className="collapse navbar-collapse text-uppercase"
+          className="collapse navbar-collapse justify-content-between"
           id="navbarNav"
-          style={{ marginRight: "10%" }}
         >
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item me-4">
-              <a className="nav-link active" href="#">
+          {/* Main Navigation Links – centered */}
+          <ul className="navbar-nav mx-auto text-uppercase align-items-center gap-3">
+            <li className="nav-item">
+              <a className="nav-link active" href="/">
                 Home
               </a>
             </li>
-            <li className="nav-item me-4">
+            <li className="nav-item">
               <a className="nav-link active" href="#">
                 Plan
               </a>
             </li>
-            <li className="nav-item me-4">
-              <a className="nav-link active" href="#">
-                Check-in & Booking
+            <li className="nav-item">
+              <a className="nav-link active" href="/checkin/1">
+                Check-in &amp; Booking
+              </a>
+            </li>
+          </ul>
+
+          {/* Auth Buttons – aligned to the end */}
+          <ul className="navbar-nav ms-75 text-uppercase align-items-center gap-3">
+            <li className="nav-item">
+              <a className="nav-link active" href="/login">
+                Login
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link active" href="/signup">
+                Sign Up
               </a>
             </li>
           </ul>
         </div>
-</nav>
-  )
+      </div>
+    </nav>
+  );
 }
-
-

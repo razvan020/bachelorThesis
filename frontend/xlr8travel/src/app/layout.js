@@ -1,10 +1,18 @@
 import './globals.css';
+import NavBar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Inter } from 'next/font/google';
+import Script from "next/script";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import BootstrapClient from '@/components/BoostrapClient';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+})
 
 export const metadata = {
-  title: 'Front Page',
+  title: 'Xlr8Travel',
   description: 'Adapted Next.js version of your original HTML',
 };
 
@@ -17,22 +25,16 @@ export default function RootLayout({ children }) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
-        <title>Front Page</title>
+        <title>Xlr8Travel</title>
 
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossOrigin="anonymous"
-        />
 
-        <script
+        <Script
           src="https://code.jquery.com/jquery-1.12.4.js"
           integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
           crossOrigin="anonymous"
         />
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" />
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" />
 
         <link
           rel="stylesheet"
@@ -42,13 +44,18 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={inter.className}>
-        {children}
-
-        <script
+      <div className="pageWrapper">
+        <BootstrapClient/>
+        <NavBar />
+        <main className="flex-grow-1">
+          {children}
+        </main>
+        <Footer />
+        </div>
+        <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
           crossOrigin="anonymous"
-          defer
+          strategy="afterInteractive"
         />
       </body>
     </html>

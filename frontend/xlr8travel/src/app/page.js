@@ -63,133 +63,22 @@ export default function HomePage() {
   // EVERYTHING BELOW is your original HTML structure, minus thymeleaf & security attributes
   return (
     <>
-      {/* NAVBAR */}
-      <nav
-        className="navbar navbar-expand-lg navbar-dark bg-gradient-primary sticky-top text-center bg-body-tertiary"
-        style={{ backgroundColor: "#33a1bc" }}
-      >
-        <a className="navbar-brand fs-2" href="#" style={{ marginLeft: "10%" }}>
-          xlr8 Travel
-          <img
-            src="/image-removebg-preview.png"
-            width="50"
-            height="50"
-            className="align-top"
-            alt=""
-          />
-        </a>
-
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div
-          className="collapse navbar-collapse text-uppercase"
-          id="navbarNav"
-          style={{ marginRight: "10%" }}
-        >
-          <ul className="navbar-nav ms-auto" style={{ marginRight: "10%" }}>
-            <li className="nav-item me-4 ">
-              <a className="nav-link active " href="#">
-                Home
-              </a>
-            </li>
-            <li className="nav-item me-4">
-              <a className="nav-link active" href="#">
-                Plan
-              </a>
-            </li>
-            <li className="nav-item  me-4">
-              <a className="nav-link active" href="checkin/1">
-                Check-in &amp; Booking
-              </a>
-            </li>
-            <li>
-              <a className="nav-link active" href="#">
-                View Cart
-              </a>
-            </li>
-            <li className="nav-item  me-4">
-              <a className="nav-link active" href="signup">
-                Sign Up
-              </a>
-            </li>
-
-            <li className="nav-item  me-4">
-              <a className="nav-link active" href="/users">
-                Manage Users
-              </a>
-            </li>
-            <li className="nav-item me-4">
-              <a className="nav-link active" href="/flights/add">
-                Add Flight
-              </a>
-            </li>
-            <li className="nav-item me-4">
-              <a className="nav-link active" href="/flights/manage">
-                Manage Flights
-              </a>
-            </li>
-            <li className="nav-item  me-4">
-              <form action="/logout" method="post" id="my_form">
-                <a
-                  className="nav-link active"
-                  type="submit"
-                  href="javascript:{}"
-                  onClick={() => {
-                    document.getElementById("my_form").submit();
-                  }}
-                >
-                  Log Out
-                </a>
-              </form>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      {/* Just reproducing original "sec:authentication" block as a harmless div */}
-      <div>The value of the &quot;name&quot; property of the authentication object should appear here.</div>
-
-      {/* CAROUSEL */}
+      {/* Replace the carousel with a video */}
       <div className="container-fluid">
         <div className="row">
           <div className="col-12 px-0">
-            <div
-              id="carouselExampleSlidesOnly"
-              className="carousel slide"
-              data-bs-ride="carousel"
+            <video
+              className="d-block w-100 absolute"
+              autoPlay
+              loop
+              muted
+              playsInline
+              // Optional: add a poster image for when the video is not ready
+              poster="/background.jpg"
             >
-              <div className="carousel-inner">
-                <div className="carousel-item active c-item">
-                  <img
-                    src="/background.jpg"
-                    className="d-block w-100 c-img"
-                    alt="..."
-                  />
-                </div>
-                <div className="carousel-item c-item">
-                  <img
-                    src="/bg2.jpg"
-                    className="d-block w-100 c-img"
-                    alt="..."
-                  />
-                </div>
-                <div className="carousel-item c-item">
-                  <img
-                    src="/bg3.jpg"
-                    className="d-block w-100 c-img"
-                    alt="..."
-                  />
-                </div>
-              </div>
-            </div>
+              <source src="/video2.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
 
@@ -356,7 +245,7 @@ export default function HomePage() {
         </div>
 
         {/* Very Cool Packages Section */}
-        <div className="row mt-3 mb-2">
+        <div className="row mt-5 mb-2">
           <div className="col-12 text-center fs-3 fw-semibold">
             Very Cool Packages
           </div>
@@ -582,48 +471,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* FOOTER */}
-      <footer className="py-2 mt-5" style={{ backgroundColor: "#0C5F84" }}>
-        <div className="container-fluid text-light">
-          <div className="row my-0">
-            <div className="col-8 mb-0">
-              <p className="mb-0 ms-lg-5 ms-md-5 mt-0 fs-1">
-                xlr8 Travel
-                <img
-                  src="/image-removebg-preview.png"
-                  width="50"
-                  height="50"
-                  className="align-top"
-                  alt=""
-                />
-              </p>
-            </div>
-            <div className="col-4 text-end mb-0">
-              <p className="mb-0 ms-auto mt-0 fs-2 my-0">
-                Follow us on social media!
-              </p>
-            </div>
-          </div>
-          <div className="row me-3 mt-0">
-            <div className="col-7 col-sm-7"></div>
-            <div className="col-5 col-sm-5 mx-0 px-0 text-end">
-              <img src="/icons8-facebook-50.png" alt="" />
-              <img src="/icons8-instagram-50.png" alt="" />
-              <img src="/icons8-twitter-50.png" alt="" />
-              <img src="/icons8-youtube-50.png" alt="" />
-            </div>
-          </div>
-          <div className="row mt-4 text-end">
-            <div className="col-12 mt-0 text-end">
-              <p className="mb-0 ms-auto mt-0 fs-2">
-                Download the app on
-              </p>
-              <img src="/icons8-play-store-50.png" alt="" />
-              <img src="/icons8-app-store-50.png" alt="" />
-            </div>
-          </div>
-        </div>
-      </footer>
     </>
   );
 }
