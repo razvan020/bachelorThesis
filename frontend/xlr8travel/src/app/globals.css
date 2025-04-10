@@ -95,6 +95,156 @@ input[type="number"] {
   transition: width 0.3s ease;
 }
 
+/* Add to your styles/globals.css or a relevant CSS module */
+
+.modern-form-container {
+  background-color: white; /* Ensure background is white */
+  padding: 1rem 1.5rem; /* Adjust padding */
+  border-radius: 0.5rem; /* Slightly rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Refined shadow */
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 0; /* Remove gap handled by dividers */
+  align-items: center;
+}
+
+.modern-input-group {
+  display: flex;
+  flex-direction: column; /* Stack label and input vertically */
+  flex: 1 1 auto; /* Allow shrinking/growing */
+  padding: 0.5rem 1rem; /* Padding within the group */
+  min-width: 150px; /* Minimum width for inputs */
+  position: relative; /* For potential absolute elements like icons */
+}
+
+/* Add vertical dividers between groups */
+.modern-input-group:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 15%;
+  bottom: 15%;
+  width: 1px;
+  background-color: #e0e0e0; /* Light divider color */
+}
+
+/* Style for small labels above inputs */
+.modern-input-label {
+  font-size: 0.75rem;
+  color: #6c757d; /* Bootstrap secondary color */
+  margin-bottom: 0.25rem;
+  text-align: left;
+}
+
+/* Base styling for the custom inputs */
+.modern-input {
+  border: none; /* Remove default border */
+  border-bottom: 1px solid transparent; /* Transparent bottom border for spacing */
+  padding: 0.375rem 0.1rem; /* Adjust padding */
+  font-size: 1rem;
+  background-color: transparent; /* Inherit background */
+  width: 100%;
+  outline: none; /* Remove focus outline */
+  transition: border-color 0.15s ease-in-out;
+}
+
+/* Style for focus state */
+.modern-input:focus {
+  border-bottom-color: #FF6F00; /* Highlight color on focus */
+  box-shadow: none; /* Remove Bootstrap focus shadow */
+}
+
+/* Specific styling for date input to show placeholder */
+.modern-input[type="date"] {
+ color: #6c757d; /* Default color */
+}
+.modern-input[type="date"]:focus,
+.modern-input[type="date"]:valid {
+  color: #212529; /* Color when focused or has value */
+}
+
+
+/* Passenger Dropdown Button */
+.modern-passenger-btn {
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  padding: 0.375rem 0.1rem;
+  width: 100%;
+  font-size: 1rem;
+  color: #212529;
+  border-bottom: 1px solid transparent;
+}
+.modern-passenger-btn:hover,
+.modern-passenger-btn:focus {
+   background-color: transparent;
+   border-bottom-color: #FF6F00;
+   box-shadow: none;
+}
+.modern-passenger-btn::after {
+  /* Remove default Bootstrap dropdown arrow if ::after is used */
+  display: none;
+}
+
+
+/* Dropdown Content Styling */
+.modern-dropdown-content {
+  border-radius: 0.5rem !important; /* Override potential inline style */
+  min-width: 280px !important; /* Wider dropdown */
+  /* Use Bootstrap classes like 'shadow', 'border', 'bg-white', 'p-3', 'mt-2' */
+}
+
+.modern-dropdown-content .passenger-type {
+  padding: 0.5rem 0;
+}
+.modern-dropdown-content .passenger-type:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+.modern-dropdown-content label {
+  font-weight: 500;
+}
+
+/* Search Button */
+.modern-search-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 50rem; /* Pill shape */
+  font-weight: 600;
+  background-color: #FF6F00 !important;
+  color: white !important;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+.modern-search-btn:hover {
+  background-color: #e66400 !important; /* Darker orange on hover */
+   color: white !important;
+}
+
+/* Adjust flex behavior and dividers for smaller screens if needed */
+@media (max-width: 991.98px) {
+  .modern-form-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem; /* Add gap when stacking */
+  }
+  .modern-input-group {
+     padding: 0.5rem; /* Adjust padding */
+     border-bottom: 1px solid #eee; /* Add bottom border when stacked */
+  }
+  .modern-input-group:not(:last-child)::after {
+     display: none; /* Hide vertical dividers when stacked */
+  }
+  .modern-input-group:last-child {
+     border-bottom: none;
+  }
+  .modern-search-btn-wrapper {
+    margin-top: 1rem;
+    width: 100%;
+  }
+   .modern-search-btn {
+     width: 100%;
+   }
+}
+
 .custom-margin {
   margin-right: 0; /* default margin for mobile devices */
 }
