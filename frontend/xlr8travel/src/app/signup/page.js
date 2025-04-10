@@ -147,7 +147,7 @@ export default function SignupPage() {
 
               <p className="text-center mb-0">
                 Already have an account?{" "}
-                <a href="/login" style={{ color: darkMode ? "#ffffff" : "#000000" }}>
+                <a href="/login" style={{ color: darkMode ? "#ffffff" : "#FF6F00" }}>
                   Log In
                 </a>
               </p>

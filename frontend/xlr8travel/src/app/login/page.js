@@ -91,7 +91,7 @@ export default function LoginPage() {
                   <div className="text-end mb-3">
                     <a
                       href="#"
-                      style={{ color: darkMode ? "#ffffff" : "#000000" }}
+                      style={{ color: darkMode ? "#ffffff" : "#FF6F00" }}
                     >
                       Forgot password?
                     </a>
@@ -121,7 +121,7 @@ export default function LoginPage() {
                   Don’t have an account?{" "}
                   <a
                     href="/signup"
-                    style={{ color: darkMode ? "#ffffff" : "#000000" }}
+                    style={{ color: darkMode ? "#ffffff" : "#FF6F00" }}
                   >
                     Sign Up
                   </a>

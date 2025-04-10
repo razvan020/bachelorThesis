@@ -1,4 +1,5 @@
 "use client"; // Allows client-side JS in Next.js 13
+import Link from "next/link";
 import React from "react";
 
 export default function AddFlightPage() {
@@ -111,9 +112,9 @@ export default function AddFlightPage() {
             <button type="submit" className="btn btn-primary">
               Save Flight
             </button>
-            <a /* th:href="@{/}" */ href="/" className="btn btn-secondary">
+            <Link /* th:href="@{/}" */ href="/" className="btn btn-secondary">
               Back to Home
-            </a>
+            </Link>
           </div>
         </form>
       </div>

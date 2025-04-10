@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -7,7 +8,7 @@ export default function Footer() {
       <div className="container-fluid text-light">
         <div className="row my-0">
           <div className="col-8 mb-0">
-          <a className="navbar-brand fs-2" href="/" style={{ marginLeft: "10%" }}>
+          <Link className="navbar-brand fs-2" href="/" style={{ marginLeft: "10%" }}>
           {/* If the image is in /public/, use a root-relative path like /image-removebg-preview.png */}
           <img
             src="/removedbg.png"
@@ -16,7 +17,7 @@ export default function Footer() {
             className="align-top"
             alt=""
           />
-        </a>
+        </Link>
           </div>
           <div className="col-4 text-end mb-0">
             <p className="mb-0 ms-auto mt-0 fs-2 my-0">

@@ -1,4 +1,5 @@
 "use client"; 
+import Link from "next/link";
 import React from "react";
 
 export default function ManageFlightsPage() {
@@ -162,12 +163,12 @@ export default function ManageFlightsPage() {
         </div>
 
         <div className="d-flex justify-content-between align-items-center mt-4">
-          <a /* th:href="@{/}" */ href="/" className="btn btn-secondary">
+          <Link /* th:href="@{/}" */ href="/" className="btn btn-secondary">
             Back to Home
-          </a>
-          <a /* th:href="@{/flights/add}" */ href="#" className="btn btn-success">
+          </Link>
+          <Link /* th:href="@{/flights/add}" */ href="#" className="btn btn-success">
             Add New Flight
-          </a>
+          </Link>
         </div>
       </div>
 

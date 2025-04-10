@@ -2,6 +2,7 @@ import './globals.css';
 import NavBar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import Script from "next/script";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BootstrapClient from '@/components/BoostrapClient';
@@ -9,6 +10,11 @@ import BootstrapClient from '@/components/BoostrapClient';
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '600'],
+})
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'], 
 })
 
 export const metadata = {
@@ -43,7 +49,7 @@ export default function RootLayout({ children }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css"
         />
       </head>
-      <body className={inter.className}>
+      <body className={poppins.className}>
       <div className="pageWrapper">
         <BootstrapClient/>
         <NavBar />

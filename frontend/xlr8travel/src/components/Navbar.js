@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 
 export default function NavBar() {
@@ -9,7 +10,7 @@ export default function NavBar() {
     >
       <div className="container">
         {/* Brand / Logo */}
-        <a
+        <Link
           className="navbar-brand fs-2"
           href="/"
           style={{ marginLeft: "5%" }}
@@ -21,7 +22,7 @@ export default function NavBar() {
             className="align-top"
             alt="xlr8Travel logo"
           />
-        </a>
+        </Link>
 
         {/* Hamburger toggle (mobile) */}
         <button
@@ -42,33 +43,33 @@ export default function NavBar() {
           {/* Main Navigation Links – centered */}
           <ul className="navbar-nav mx-auto text-uppercase align-items-center gap-3">
             <li className="nav-item">
-              <a className="nav-link active" href="/">
+              <Link className="nav-link active" href="/">
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="#">
+              <Link className="nav-link active" href="#">
                 Plan
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="/checkin/1">
+              <Link className="nav-link active" href="/checkin/1">
                 Check-in &amp; Booking
-              </a>
+              </Link>
             </li>
           </ul>
 
           {/* Auth Buttons – aligned to the end */}
           <ul className="navbar-nav ms-75 text-uppercase align-items-center gap-3">
             <li className="nav-item">
-              <a className="nav-link active" href="/login">
-                Login
-              </a>
+              <Link className="nav-link active" href="/login">
+                Log in
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="/signup">
+              <Link className="nav-link active" href="/signup">
                 Sign Up
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
