@@ -7,6 +7,56 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+/* --- Mobile Centering --- */
+@media (max-width: 991.98px) { /* Targets screens smaller than the 'lg' breakpoint */
+  #basic-navbar-nav .navbar-nav {
+    /* Centers the nav items (like Home, Plan, etc.) within the collapsed menu */
+    align-items: center;
+  }
+  /* Reset auto margins used for desktop centering/alignment if they cause issues */
+  #basic-navbar-nav .navbar-nav.mx-auto {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* --- Text-Width Orange Underline Hover Effect --- */
+
+/* Base Nav Link adjustments (ensure no default underlines) */
+.navbar-nav .nav-link {
+  text-decoration: none !important; /* Force no default underline */
+  padding-top: 0.5rem; /* Ensure consistent padding */
+  padding-bottom: 0.5rem; /* Ensure consistent padding */
+  /* Keep position relative if you want effects relative to the whole link area */
+  /* position: relative; */
+}
+
+/* Wrapper Span for the text content inside the Nav.Link */
+.nav-link-text-underline {
+  position: relative; /* Context for the ::after pseudo-element */
+  display: inline-block; /* Crucial: Makes the span width fit its content */
+  padding-bottom: 2px; /* Add a little space below text for the line */
+}
+
+/* The orange line pseudo-element attached to the wrapper span */
+.nav-link-text-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px; /* Position below the span (adjust as needed) */
+  height: 2px; /* Line thickness */
+  background-color: #FF6F00; /* Your orange color */
+
+  /* Animation */
+  width: 0; /* Start with zero width */
+  transition: width 0.3s ease-in-out;
+}
+
+/* When the parent Nav.Link is hovered, animate the ::after of the inner span */
+.navbar-nav .nav-link:hover .nav-link-text-underline::after {
+  width: 100%; /* Animate width to 100% of the span */
+}
+
 html,
 body {
   margin: 0;
@@ -84,107 +134,316 @@ input[type="number"] {
   position: relative;
 }
 
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 0;
-  height: 2px;
-  background-color: #FF6F00;
-  transition: width 0.3s ease;
-}
 
-/* Add to your styles/globals.css or a relevant CSS module */
 
+/* --- Existing CSS for reference --- */
 .modern-form-container {
-  background-color: white; /* Ensure background is white */
-  padding: 1rem 1.5rem; /* Adjust padding */
-  border-radius: 0.5rem; /* Slightly rounded corners */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Refined shadow */
+  background-color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  gap: 0; /* Remove gap handled by dividers */
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: flex-end; /* Align items to bottom for consistent underline */
 }
 
 .modern-input-group {
   display: flex;
-  flex-direction: column; /* Stack label and input vertically */
-  flex: 1 1 auto; /* Allow shrinking/growing */
-  padding: 0.5rem 1rem; /* Padding within the group */
-  min-width: 150px; /* Minimum width for inputs */
-  position: relative; /* For potential absolute elements like icons */
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 0.5rem 1rem;
+  min-width: 150px;
+  position: relative;
 }
 
-/* Add vertical dividers between groups */
 .modern-input-group:not(:last-child)::after {
   content: "";
   position: absolute;
   right: 0;
-  top: 15%;
+  top: 25%; /* Adjust vertical position of divider */
   bottom: 15%;
   width: 1px;
-  background-color: #e0e0e0; /* Light divider color */
+  background-color: #e0e0e0;
 }
 
-/* Style for small labels above inputs */
 .modern-input-label {
-  font-size: 0.75rem;
-  color: #6c757d; /* Bootstrap secondary color */
-  margin-bottom: 0.25rem;
+  font-size: 0.75rem; /* Small label */
+  color: #6c757d;
+  margin-bottom: 0.25rem; /* Space between label and input */
   text-align: left;
 }
 
-/* Base styling for the custom inputs */
+/* === UPDATED/NEW CSS RULES === */
+
+/* Base styling for ALL inputs (including Typeahead's inner input) */
 .modern-input {
-  border: none; /* Remove default border */
-  border-bottom: 1px solid transparent; /* Transparent bottom border for spacing */
-  padding: 0.375rem 0.1rem; /* Adjust padding */
+  border: none !important; /* Remove all borders */
+  border-bottom: 1px solid #ced4da !important; /* Default subtle gray underline */
+  padding: 0.375rem 0.1rem !important; /* Adjust padding as needed */
   font-size: 1rem;
-  background-color: transparent; /* Inherit background */
+  background-color: transparent !important; /* Ensure transparent background */
   width: 100%;
-  outline: none; /* Remove focus outline */
+  outline: none !important; /* Remove default browser outline */
+  box-shadow: none !important; /* Remove bootstrap shadows */
+  border-radius: 0 !important; /* Ensure no rounded corners interfere */
   transition: border-color 0.15s ease-in-out;
 }
 
-/* Style for focus state */
+/* Style for focus state on ALL inputs */
 .modern-input:focus {
-  border-bottom-color: #FF6F00; /* Highlight color on focus */
-  box-shadow: none; /* Remove Bootstrap focus shadow */
+  border-bottom: 2px solid #FF6F00 !important; /* Thicker orange underline on focus */
+  box-shadow: none !important; /* Ensure no focus shadow */
 }
 
-/* Specific styling for date input to show placeholder */
-.modern-input[type="date"] {
- color: #6c757d; /* Default color */
-}
-.modern-input[type="date"]:focus,
-.modern-input[type="date"]:valid {
-  color: #212529; /* Color when focused or has value */
+/* Specific overrides for React Bootstrap Typeahead elements */
+/* Remove border/padding from Typeahead wrapper divs */
+.modern-input-group .rbt,
+.modern-input-group .rbt .rbt-input-wrapper {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    /* Ensure the wrapper aligns with the label */
+    display: block !important;
 }
 
+/* Target the actual input generated *inside* Typeahead */
+.modern-input-group .rbt .rbt-input-main {
+  /* Inherit from .modern-input */
+  /* Already handled by inputProps={{ className: 'modern-input' }} */
+  /* Add specific overrides if needed, e.g., for height/line-height */
+  height: auto; /* Adjust if needed */
+}
 
-/* Passenger Dropdown Button */
+/* Ensure focus style applies correctly to Typeahead's input */
+.modern-input-group .rbt .rbt-input-main:focus {
+   /* Inherits from .modern-input:focus */
+   box-shadow: none !important; /* Re-ensure no shadow */
+}
+
+/* Style for the dropdown menu if needed */
+.modern-input-group .rbt .dropdown-menu {
+  margin-top: 2px; /* Optional: Add space below underline */
+  border-radius: 0.25rem;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Styling for the Passenger Button to match */
 .modern-passenger-btn {
   border: none;
+  border-bottom: 1px solid #ced4da; /* Match default underline */
   background-color: transparent;
   text-align: left;
-  padding: 0.375rem 0.1rem;
+  padding: 0.375rem 0.1rem; /* Match input padding */
   width: 100%;
   font-size: 1rem;
-  color: #212529;
-  border-bottom: 1px solid transparent;
+  color: #212529; /* Or match input text color */
+  border-radius: 0;
+  transition: border-color 0.15s ease-in-out;
+  outline: none;
 }
-.modern-passenger-btn:hover,
 .modern-passenger-btn:focus {
-   background-color: transparent;
-   border-bottom-color: #FF6F00;
+   border-bottom: 2px solid #FF6F00; /* Match focus underline */
    box-shadow: none;
+   outline: none;
 }
-.modern-passenger-btn::after {
-  /* Remove default Bootstrap dropdown arrow if ::after is used */
-  display: none;
+/* Remove Bootstrap's default button focus outline if it appears */
+.modern-passenger-btn:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
 }
+
+/* Add this to your CSS file if needed */
+
+/* Target the input wrapper generated by react-datepicker */
+.modern-input-group .react-datepicker-wrapper {
+  width: 100%; /* Ensure it takes full width */
+  display: block; /* Override potential inline display */
+}
+
+/* Target the actual input inside react-datepicker */
+.modern-input-group .react-datepicker-wrapper input.modern-input {
+  /* It should inherit most styles from .modern-input */
+  /* Add specific overrides if necessary */
+  background-color: transparent !important; /* Re-ensure background */
+}
+
+/* Ensure focus style is applied correctly */
+.modern-input-group .react-datepicker-wrapper input.modern-input:focus {
+  border-bottom: 2px solid #FF6F00 !important;
+  box-shadow: none !important;
+}
+
+/* --- Custom React Datepicker Styles --- */
+/* Apply these styles in a global CSS file or a dedicated CSS file imported into your component/app */
+
+/* Main popup container */
+.react-datepicker-wrapper { /* Ensure wrapper takes full width for alignment */
+  display: block;
+  width: 100%;
+}
+
+.react-datepicker-popper {
+  z-index: 1050 !important; /* Ensure it appears above other elements if needed */
+}
+
+.react-datepicker {
+font-family: inherit; /* Use website font */
+border: 1px solid #495057; /* Darker border */
+border-radius: 0.5rem; /* Rounded corners */
+background-color: #212529; /* Dark background */
+color: #dee2e6; /* Light default text */
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+padding: 0.5rem; /* Add some internal padding */
+}
+
+/* Remove the default small triangle pointer if desired */
+.react-datepicker__triangle {
+display: none;
+}
+
+/* Header section (Month/Year, Navigation) */
+.react-datepicker__header {
+background-color: #343a40; /* Slightly lighter dark background */
+border-bottom: 1px solid #495057;
+/* Adjust radius to match main container if padding is added */
+border-top-left-radius: calc(0.5rem - 1px);
+border-top-right-radius: calc(0.5rem - 1px);
+padding: 0.8em 0; /* Vertical padding */
+}
+
+/* Month/Year text */
+.react-datepicker__current-month {
+color: #fff;
+font-weight: 600;
+font-size: 1rem;
+padding-bottom: 0; /* Remove default bottom padding */
+margin-bottom: 0.8rem; /* Add margin instead */
+}
+
+/* Navigation Arrows Styling */
+.react-datepicker__navigation {
+top: 1rem; /* Adjust vertical position */
+outline: none; /* Remove focus outline */
+}
+.react-datepicker__navigation--previous {
+ border-right-color: #adb5bd; /* Gray arrow color */
+}
+.react-datepicker__navigation--previous:hover {
+ border-right-color: #fff;
+}
+.react-datepicker__navigation--next {
+ border-left-color: #adb5bd;
+}
+.react-datepicker__navigation--next:hover {
+ border-left-color: #fff;
+}
+/* Make arrows slightly bigger/easier to click */
+.react-datepicker__navigation-icon::before {
+  border-width: 2px 2px 0 0;
+  height: 8px;
+  width: 8px;
+}
+
+
+/* Day Names (Su, Mo, Tu...) */
+.react-datepicker__day-names {
+margin-bottom: 0.2rem; /* Space above days */
+}
+.react-datepicker__day-name {
+color: #adb5bd; /* Lighter gray for day names */
+font-weight: 600;
+font-size: 0.8rem;
+margin: 0.25rem; /* Adjust spacing between names */
+width: 2rem; /* Ensure consistent width */
+line-height: 1.5rem;
+}
+
+/* Individual Day Cells */
+.react-datepicker__day {
+color: #dee2e6; /* Default day text color */
+border-radius: 50%; /* Circular shape */
+margin: 0.25rem; /* Spacing around day */
+width: 2rem;
+height: 2rem;
+line-height: 2rem; /* Center text vertically */
+font-weight: 400;
+outline: none;
+transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect for days */
+.react-datepicker__day:hover {
+background-color: #495057; /* Darker gray hover */
+color: #FF6F00;
+border-radius: 50%;
+}
+
+/* Selected day */
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range, /* Style for range selection if used */
+.react-datepicker__day--in-range { /* Style for range selection if used */
+background-color: #FF6F00 !important; /* Orange background */
+color: #ffffff !important; /* White text */
+border-radius: 50% ;
+font-weight: bold;
+}
+/* Ensure hover on selected/range day doesn't change background */
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--in-selecting-range:hover,
+.react-datepicker__day--in-range:hover {
+ background-color: #FF6F00;
+}
+
+
+/* Today's date */
+.react-datepicker__day--today {
+font-weight: bold;
+/* Optional: Add a subtle ring/border instead of background */
+ /* background-color: transparent; */
+ /* border: 1px solid #FF6F00; */
+ /* Or just use a different text color */
+ color: #FFc107; /* Example: Yellowish color for today */
+}
+.react-datepicker__day--today:hover {
+ background-color: #495057; /* Keep hover consistent */
+ color: #fff; /* Ensure text is readable on hover */
+}
+/* Reset selected style if today is selected */
+.react-datepicker__day--selected.react-datepicker__day--today {
+  color: #fff !important;
+  background-color: #FF6F00 !important; /* Ensure selected style overrides today style */
+  border: none; /* Remove border if selected */
+}
+
+
+/* Dates outside the current month */
+.react-datepicker__day--outside-month {
+color: #495057; /* Dimmer text */
+background-color: transparent;
+pointer-events: none; /* Make them unclickable */
+}
+
+
+/* Ensure disabled days look distinct */
+.react-datepicker__day--disabled {
+  color: #b6b8ba !important; /* Very dim text */
+  background-color: transparent !important;
+  pointer-events: none;
+}
+
+/* --- End Custom Styles --- */
+
+/* ... more custom styles for the calendar popup if desired ... */
+
+/* === END OF UPDATED/NEW CSS RULES === */
+
+
+/* --- Rest of your existing CSS --- */
+/* ... modern-dropdown-content, search-btn, etc. ... */
 
 
 /* Dropdown Content Styling */
@@ -269,7 +528,7 @@ input[type="number"] {
 .navbar-brand img {
   width: 50px;       /* small width that won't enlarge the navbar */
   height: 50px;
-  transform: scale(6.0); /* make it look 1.5× bigger */
+  transform: scale(5.0); /* make it look 1.5× bigger */
   transform-origin: center;
   /* Ensure it can overflow outside its box if needed: */
   display: inline-block;
