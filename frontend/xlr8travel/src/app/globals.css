@@ -377,8 +377,8 @@ transition: background-color 0.2s ease, color 0.2s ease;
 
 /* Hover effect for days */
 .react-datepicker__day:hover {
-background-color: #495057; /* Darker gray hover */
-color: #FF6F00;
+background-color: #FF6F00 !important; /* Darker gray hover */
+color: #FFF;
 border-radius: 50%;
 }
 

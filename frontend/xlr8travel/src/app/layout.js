@@ -6,6 +6,7 @@ import { Poppins } from 'next/font/google';
 import Script from "next/script";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BootstrapClient from '@/components/BoostrapClient';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -50,6 +51,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={poppins.className}>
+        <AuthProvider>
       <div className="pageWrapper">
         <BootstrapClient/>
         <NavBar />
@@ -63,6 +65,7 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        </AuthProvider>
       </body>
     </html>
   );
