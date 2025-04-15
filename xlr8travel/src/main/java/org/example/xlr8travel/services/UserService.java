@@ -5,7 +5,7 @@ import org.example.xlr8travel.models.User;
 import java.util.List;
 
 public interface UserService {
-    void save(User user);
+    User save(User user);
     User findById(Long id);
 
     User findByUsername(String username);

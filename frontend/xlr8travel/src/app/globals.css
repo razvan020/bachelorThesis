@@ -427,6 +427,246 @@ background-color: transparent;
 pointer-events: none; /* Make them unclickable */
 }
 
+/* --- Custom Orange Radio Button Styling --- */
+/* Add this to your global CSS (e.g., globals.css) or an imported CSS file */
+
+/* Target radio buttons specifically when checked */
+.form-check-input[type="radio"]:checked {
+  background-color: #FF6F00; /* Your desired orange */
+  border-color: #e66400;     /* Slightly darker orange for border (optional) */
+  box-shadow: 0 0 0 0.25rem rgba(255, 111, 0, 0.25); /* Optional: Orange focus glow */
+
+  /* Replace Bootstrap's default checkmark SVG with one visible on orange.
+     This example uses an encoded SVG for a simple white dot/circle.
+     Adjust viewBox/radius (r='...') if needed. */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+/* --- Custom Navbar Toggle Button (Burger/X Animation) --- */
+
+/* Style the button itself */
+.custom-navbar-toggle {
+  border: none !important; /* Remove default bootstrap border */
+  padding: 0 !important; /* Remove default padding */
+  background-color: transparent !important; /* Ensure no background */
+  width: 30px; /* Adjust size as needed */
+  height: 24px; /* Adjust size as needed */
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  /* Remove default focus outline */
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Hide the default Bootstrap lines/icon */
+.custom-navbar-toggle .navbar-toggler-icon {
+  display: none;
+}
+
+/* Create the lines using ::before and ::after pseudo-elements */
+.custom-navbar-toggle::before,
+.custom-navbar-toggle::after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 3px; /* Line thickness */
+  width: 100%;
+  background: white; /* Line color (for dark navbar) */
+  border-radius: 9px;
+  left: 0;
+  transform: rotate(0deg);
+  transition: all .25s ease-in-out;
+}
+
+/* Top line positioning */
+.custom-navbar-toggle::before {
+  top: 0px;
+  transform-origin: left center;
+}
+
+/* Bottom line positioning */
+.custom-navbar-toggle::after {
+  /* Position bottom line relative to button height and line thickness */
+  top: calc(100% - 3px);
+  transform-origin: left center;
+}
+
+/* We need a middle line. Let's add an inner span for it if needed,
+   or try animating top/bottom only. Let's add a span for better control */
+
+/* Add this empty span INSIDE the <Navbar.Toggle> in your JSX if you need the middle line */
+/* <Navbar.Toggle ... className="custom-navbar-toggle"> <span className="middle-line"></span> </Navbar.Toggle> */
+
+.custom-navbar-toggle span.middle-line { /* If you add the span */
+    display: block;
+    position: absolute;
+    height: 3px; /* Line thickness */
+    width: 100%;
+    background: white; /* Line color */
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+    transition: all .25s ease-in-out;
+}
+
+/* --- Navbar Customizations --- */
+
+/* Ensure underline effect applies to dropdown toggle */
+/* (Make sure the base .nav-link-text-underline styles exist) */
+.navbar-nav .nav-link:hover .nav-link-text-underline::after,
+.navbar-nav .dropdown-toggle:hover .nav-link-text-underline::after { /* Target dropdown too */
+  width: 100%;
+}
+
+/* Hide default caret on the Manage dropdown toggle */
+/* Targeting the specific ID is safest */
+#manage-admin-dropdown.dropdown-toggle::after {
+    display: none !important;
+}
+
+/* Style the grid wrapper inside the dropdown menu (no change here) */
+.manage-dropdown-grid-wrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.25rem 1rem;
+  padding: 0.5rem;
+  justify-content: start;
+}
+
+/* Style the dropdown menu container itself */
+#manage-admin-dropdown + .dropdown-menu {
+  /* Keep existing styles */
+  background-color: #000000 !important;
+  border-color: #495057 !important;
+  min-width: auto;
+  width: max-content;
+  padding: 0;
+
+  /* --- POSITIONING ADJUSTMENT --- */
+  position: absolute; /* Ensure positioning context allows 'left' */
+  /* Adjust this negative value to shift the menu left */
+  /* Try values like -30px, -40px, -50px, etc. */
+  left: -175%;
+  /* --- End POSITIONING ADJUSTMENT --- */
+
+  /* Optional: You might need right: auto if default alignment conflicts */
+  /* right: auto; */
+}
+
+/* Style the items within the grid (no change needed) */
+#manage-admin-dropdown + .dropdown-menu .dropdown-item {
+   /* ... existing styles ... */
+   white-space: nowrap;
+   padding: 0.4rem 0.8rem;
+   color: #dee2e6;
+   text-align: left;
+   border-radius: 0.25rem;
+   transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+/* Hover/Focus styles (no change needed) */
+#manage-admin-dropdown + .dropdown-menu .dropdown-item:hover,
+#manage-admin-dropdown + .dropdown-menu .dropdown-item:focus {
+ /* ... */
+ background-color: #1c2126;
+ color: #fff;
+}
+
+/* Active state (no change needed) */
+#manage-admin-dropdown + .dropdown-menu .dropdown-item.active {
+  /* ... */
+  background-color: #FF6F00;
+  color: #fff;
+}
+
+/* --- Custom Typeahead Grouped Menu Styles --- */
+
+/* Style for the country header */
+.airport-group-header {
+  font-weight: bold;
+  padding: 0.5rem 1rem; /* Adjust padding as needed */
+  font-size: 0.9em;
+  color: #6c757d; /* Bootstrap secondary text color */
+  background-color: #f8f9fa; /* Example light grey background */
+  border-bottom: 1px solid #dee2e6; /* Keep separator line */
+}
+
+/* ... Keep other Typeahead styles (.airport-menu-item, .rbt-menu, etc.) ... */
+
+/* Style for each airport item row */
+.airport-menu-item {
+  width: 100%; /* Ensure it takes full width */
+  padding: 0.4rem 1rem; /* Adjust padding */
+}
+
+/* Style for the bolded airport/city name */
+.airport-menu-item .airport-name {
+  /* Already using fw-bold */
+  text-overflow: ellipsis; /* Add ellipsis if name is too long */
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 0.5rem; /* Space before code */
+}
+
+/* Style for the airport code on the right */
+.airport-menu-item .airport-code {
+  /* Already using text-muted */
+  font-size: 0.9em;
+  white-space: nowrap; /* Prevent code wrapping */
+}
+
+/* Optional: Ensure the dropdown menu can scroll */
+.rbt-menu .dropdown-header.airport-group-header {
+  /* Keep your desired visual styles */
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  font-size: 0.9em;
+  color: #6c757d;
+  background-color: #f8f9fa; /* Light grey background */
+  border-bottom: 1px solid #dee2e6;
+
+  /* --- Ensure non-sticky positioning --- */
+  position: static !important; /* Override sticky with static */
+  top: auto !important;        /* Reset any 'top' value */
+  z-index: auto !important;   /* Reset any z-index */
+}
+
+/* --- End Navbar Customizations --- */
+
+
+/* --- Animation when Navbar is OPEN --- */
+/* Bootstrap adds .collapsed when the menu is closed. */
+/* So, :not(.collapsed) means the menu is open (button was clicked) */
+
+/* Rotate top bar */
+.custom-navbar-toggle:not(.collapsed)::before {
+  transform: rotate(45deg);
+  top: -2px; /* Adjust positioning for 'X' */
+  left: 4px; /* Adjust positioning for 'X' */
+}
+
+/* Fade out middle bar */
+.custom-navbar-toggle:not(.collapsed) span.middle-line { /* Only if using middle span */
+  width: 0%;
+  opacity: 0;
+}
+
+/* Rotate bottom bar */
+.custom-navbar-toggle:not(.collapsed)::after {
+  transform: rotate(-45deg);
+  top: calc(100% - 5px); /* Adjust positioning for 'X' */
+  left: 4px; /* Adjust positioning for 'X' */
+}
+
+/* Optional: Customize focus style when *not* checked if desired */
+/* .form-check-input[type="radio"]:focus { */
+   /* Default Bootstrap focus is usually okay */
+   /* border-color: #ffad7a; */
+   /* box-shadow: 0 0 0 0.25rem rgba(255, 111, 0, 0.25); */
+/* } */
 
 /* Ensure disabled days look distinct */
 .react-datepicker__day--disabled {

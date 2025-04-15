@@ -10,7 +10,7 @@ import org.example.xlr8travel.models.Flight; // Import your entity
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItemDTO {
+public class CartItem {
     private Flight flight; // Store the actual flight entity or a FlightDTO
     private int quantity;
 

@@ -1,5 +1,6 @@
 package org.example.xlr8travel.controllers;
 
+import org.example.xlr8travel.dto.FlightDTO;
 import org.example.xlr8travel.models.Flight;
 import org.example.xlr8travel.services.FlightService;
 import org.slf4j.Logger; // Import Logger
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException; // For cleaner error handling
 
 import jakarta.validation.Valid; // For input validation (add dependency if needed)
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController // Changed from @Controller
 @RequestMapping("/api/flights") // Changed base path for API clarity
@@ -151,6 +155,70 @@ public class FlightController {
             log.error("Error deleting flight ID {}", id, e);
             // Depending on exception, could be notFound or internalServerError
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Or ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/search")
+    // This endpoint is likely public, so no @Secured needed usually
+    public ResponseEntity<List<FlightDTO>> searchFlights(
+            // Match parameters sent from React FlightSearchComponent
+            @RequestParam String origin,
+            @RequestParam String destination,
+            // Spring can usually parse yyyy-MM-dd into LocalDate without explicit format
+            @RequestParam LocalDate departureDate,
+            // arrivalDate is optional for one-way searches
+            @RequestParam(required = false) LocalDate arrivalDate,
+            // Get tripType if you need different logic for one-way vs round-trip
+            @RequestParam(defaultValue = "roundTrip") String tripType,
+            // Include passenger counts if needed for availability/pricing logic
+            @RequestParam(defaultValue = "1") int adults,
+            @RequestParam(defaultValue = "0") int children,
+            @RequestParam(defaultValue = "0") int infants
+    ) {
+        log.info("Searching flights: Type={}, Origin={}, Dest={}, Depart={}, Return={}, Pax={}/{}/{}",
+                tripType, origin, destination, departureDate, arrivalDate, adults, children, infants);
+
+        try {
+            List<Flight> foundFlights;
+
+            // --- TODO: Adapt Service/Repository Layer ---
+            // You need a service/repository method that can find flights based
+            // on the required parameters, handling the optional arrivalDate.
+            if ("oneWay".equalsIgnoreCase(tripType)) {
+                // Example: Call a method designed for one-way searches
+                // foundFlights = flightService.findAvailableOneWayFlights(origin, destination, departureDate, adults + children + infants);
+                // For now, using the existing method - THIS NEEDS ADJUSTMENT IN SERVICE/REPO
+                log.warn("Using round-trip search logic for one-way request - Implement specific one-way search in service/repo!");
+                // Find flights departing on the given date, ignoring arrival date from repo method perspective
+                foundFlights = flightService.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate); // You need to add this method
+            } else {
+                // For round trip, arrival date is required
+                if (arrivalDate == null) {
+                    log.warn("Round trip search requested but no arrivalDate provided.");
+                    // Return 400 Bad Request with an informative body
+                    return ResponseEntity.badRequest().body(List.of()); // Empty list for simplicity here
+                }
+                // Example: Call a method designed for round-trip searches
+                // foundFlights = flightService.findAvailableRoundTripFlights(origin, destination, departureDate, arrivalDate, adults + children + infants);
+                // For now, using the existing method - THIS NEEDS ADJUSTMENT IN SERVICE/REPO
+                log.warn("Using simple date match for round-trip - Implement specific round-trip search in service/repo!");
+                foundFlights = flightService.findByOriginAndDestinationAndArrivalDateAndDepartureDate(origin, destination, arrivalDate, departureDate);
+            }
+            // --- End TODO ---
+
+
+            // Convert found Flight entities to FlightDTOs before returning
+            List<FlightDTO> flightDTOs = foundFlights.stream()
+                    .map(FlightDTO::fromFlight) // Create this static method in FlightDTO
+                    .collect(Collectors.toList());
+
+            log.info("Found {} available flights for search criteria.", flightDTOs.size());
+            return ResponseEntity.ok(flightDTOs);
+
+        } catch (Exception e) {
+            log.error("Error during flight search: {}", e.getMessage(), e);
+            // Return 500 Internal Server Error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

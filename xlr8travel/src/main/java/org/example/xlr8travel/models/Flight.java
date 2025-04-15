@@ -56,6 +56,19 @@ public class Flight {
         this.price = price;
     }
 
+    public <E> Flight(Object o, String s, LocalTime of, LocalTime of1, String romania, String italy, LocalDate date, String a, String number, LocalDateTime now, Object o1, HashSet<E> es, Double price) {
+        this.name = s;
+        this.departureTime = of;
+        this.arrivalTime = of1;
+        this.origin = romania;
+        this.destination = italy;
+        this.departureDate = date;
+        this.terminal = a;
+        this.gate = number;
+        this.lastUpdated = now;
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

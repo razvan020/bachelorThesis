@@ -4,7 +4,6 @@ import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -12,21 +11,19 @@ import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
 
-// Helper function (ensure this handles potential null/undefined date strings)
-const formatDateTime = (isoString) => {
-  if (!isoString) return "N/A";
+// Helper function (keep as is)
+const formatDateOnly = (isoStringOrDate) => {
+  if (!isoStringOrDate) return "N/A";
   try {
-    const date = new Date(isoString);
-    if (isNaN(date.getTime())) return "Invalid Date"; // Check parsing
-    return date.toLocaleString("en-GB", {
+    const date = new Date(isoStringOrDate);
+    if (isNaN(date.getTime())) return "Invalid Date";
+    return date.toLocaleDateString("en-GB", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
     });
   } catch (e) {
+    console.error("Error formatting date:", e);
     return "Format Error";
   }
 };
@@ -43,6 +40,7 @@ export default function ManageFlightsPage() {
 
   // useEffect for fetching (keep as is)
   useEffect(() => {
+    // ... fetch logic ...
     const fetchFlights = async () => {
       setLoading(true);
       setError(null);
@@ -50,7 +48,6 @@ export default function ManageFlightsPage() {
       try {
         const backendUrl =
           process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-        console.log(`Workspaceing flights from ${backendUrl}/api/flights`);
         const response = await fetch(`${backendUrl}/api/flights`);
         if (!response.ok) {
           let errorMsg = `HTTP error! status: ${response.status}`;
@@ -63,10 +60,8 @@ export default function ManageFlightsPage() {
           throw new Error(errorMsg);
         }
         const data = await response.json();
-        console.log("Fetched flights data:", data);
         setFlights(data || []);
       } catch (err) {
-        console.error("Failed to fetch flights:", err);
         setError(`Failed to load flight data: ${err.message}`);
       } finally {
         setLoading(false);
@@ -87,13 +82,13 @@ export default function ManageFlightsPage() {
     setFlightToDelete(null);
   };
   const handleConfirmDelete = async () => {
+    /* ... (delete logic) ... */
     if (!flightToDelete) return;
     setDeleteLoading(true);
     setError(null);
     try {
       const backendUrl =
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      console.log(`Deleting flight ID: ${flightToDelete.id}`);
       const response = await fetch(
         `${backendUrl}/api/flights/${flightToDelete.id}`,
         { method: "DELETE" }
@@ -125,24 +120,24 @@ export default function ManageFlightsPage() {
       handleCloseDeleteModal();
     } catch (err) {
       console.error("Failed to delete flight:", err);
-      setError(err.message || "Failed to delete flight. Please try again.");
+      setError(`Failed to delete: ${err.message}`);
     } finally {
       setDeleteLoading(false);
     }
   };
 
-  // --- Return JSX ---
   return (
     <>
-      <Container fluid className="py-4">
+      <Container className="py-4 py-md-5">
         {/* Header Row */}
-        <Row className="mb-4 align-items-center">
-          <Col>
-            <h1 className="h3 text-uppercase">Manage Flights</h1>
+        <Row className="mb-4 align-items-center justify-content-between mt-5">
+          {/* ... Title and Add Button ... */}
+          <Col xs="auto">
+            <h1 className="h2 text-uppercase mb-0 fw-bold">Manage Flights</h1>
           </Col>
           <Col xs="auto">
-            <Button as={Link} href="/flights/add" variant="success" size="sm">
-              <FaPlus className="me-1" /> Add New Flight
+            <Button as={Link} href="/flights/add" variant="success">
+              <FaPlus className="me-1" /> Add Flight
             </Button>
           </Col>
         </Row>
@@ -150,13 +145,11 @@ export default function ManageFlightsPage() {
         {/* Loading, Error, Success States */}
         {loading && (
           <div className="text-center my-5">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
+            <Spinner animation="border" />
             <p className="mt-2">Loading...</p>
           </div>
         )}
-        {error && !loading && (
+        {error && !loading && !showDeleteModal && (
           <Alert variant="danger" dismissible onClose={() => setError(null)}>
             <strong>Error:</strong> {error}
           </Alert>
@@ -171,98 +164,92 @@ export default function ManageFlightsPage() {
           </Alert>
         )}
 
-        {/* Content Card */}
+        {/* Table Area */}
         {!loading && !error && (
-          <Card className="shadow-sm">
-            <Card.Body>
-              {flights.length > 0 ? (
-                <Table
-                  responsive
-                  striped
-                  bordered
-                  hover
-                  className="align-middle mb-0"
-                >
-                  <thead className="table-dark">
-                    {/* --- Strict formatting for thead row --- */}
-                    <tr>
-                      <th>ID</th>
-                      <th>Flight Name</th>
-                      <th>Origin</th>
-                      <th>Destination</th>
-                      <th>Departure</th>
-                      <th>Arrival</th>
-                      <th>Price</th>
-                      <th>Actions</th>
+          <div className="mt-4">
+            {flights.length > 0 ? (
+              // --- FIXED: Ensure no whitespace between Table and thead/tbody ---
+              <Table responsive hover className="align-middle">
+                <thead>
+                  {/* No space/newline after <Table> */}
+                  <tr className="border-bottom border-2">
+                    <th className="py-3">ID</th>
+                    <th className="py-3">Flight Name</th>
+                    <th className="py-3">Origin</th>
+                    <th className="py-3">Destination</th>
+                    <th className="py-3">Departure</th>
+                    <th className="py-3">Arrival</th>
+                    <th className="py-3">Price</th>
+                    <th className="py-3 text-end">Actions</th>
+                  </tr>
+                </thead>
+                {/* No space/newline after </thead> */}
+                <tbody>
+                  {/* No space/newline after <tbody> */}
+                  {flights.map((flight) => (
+                    <tr key={flight.id} className="border-bottom">
+                      <td>{flight.id}</td>
+                      <td>{flight.name}</td>
+                      <td>{flight.origin}</td>
+                      <td>{flight.destination}</td>
+                      <td>{formatDateOnly(flight.departureDate)}</td>
+                      <td>{formatDateOnly(flight.arrivalDate)}</td>
+                      <td>${flight.price?.toFixed(2) ?? "N/A"}</td>
+                      <td className="text-end">
+                        <Button
+                          as={Link}
+                          href={`/flights/edit/${flight.id}`}
+                          variant="link"
+                          size="lg"
+                          className="p-1 text-decoration-none text-secondary me-2"
+                          title="Edit"
+                        >
+                          <FaEdit size="1.2em" />
+                        </Button>
+                        <Button
+                          variant="link"
+                          size="sm"
+                          className="p-1 text-decoration-none text-danger"
+                          onClick={() => handleDeleteClick(flight)}
+                          disabled={
+                            deleteLoading && flightToDelete?.id === flight.id
+                          }
+                          title="Delete"
+                        >
+                          {deleteLoading && flightToDelete?.id === flight.id ? (
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <FaTrashAlt size="1.1em" />
+                          )}
+                        </Button>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {/* --- Strict formatting for tbody rows --- */}
-                    {flights.map((flight) => (
-                      // Place each TD immediately after the previous one or the opening TR
-                      <tr key={flight.id}>
-                        <td>{flight.id}</td>
-                        <td>{flight.name}</td>
-                        <td>{flight.origin}</td>
-                        <td>{flight.destination}</td>
-                        <td>{formatDateTime(flight.departureDate)}</td>
-                        <td>{formatDateTime(flight.arrivalDate)}</td>
-                        <td>${flight.price?.toFixed(2) ?? "N/A"}</td>
-                        <td>
-                          <Button
-                            as={Link}
-                            href={`/flights/edit/${flight.id}`}
-                            variant="primary"
-                            size="sm"
-                            className="me-2"
-                            title="Edit"
-                          >
-                            <FaEdit />
-                          </Button>
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            onClick={() => handleDeleteClick(flight)}
-                            disabled={
-                              deleteLoading && flightToDelete?.id === flight.id
-                            }
-                            title="Delete"
-                          >
-                            {deleteLoading &&
-                            flightToDelete?.id === flight.id ? (
-                              <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <FaTrashAlt />
-                            )}
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              ) : (
-                <div className="text-center text-muted p-4">
-                  No flights found. Add one using the button above!
-                </div>
-              )}
-            </Card.Body>
-          </Card>
+                  ))}
+                </tbody>
+                {/* No space/newline after </tbody> */}
+              </Table> // No space/newline before </Table>
+            ) : (
+              <div className="text-center text-muted p-5 border rounded">
+                No flights found. Add one using the button above!
+              </div>
+            )}
+          </div>
         )}
 
         {/* Delete Confirmation Modal */}
         <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
-          {/* ... Modal Content ... */}
+          {/* ... Modal content ... */}
           <Modal.Header closeButton>
             <Modal.Title>Confirm Deletion</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {error && (
+            {error && showDeleteModal && (
               <Alert variant="danger" className="mb-3">
                 Error: {error}
               </Alert>

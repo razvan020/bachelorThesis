@@ -14,7 +14,6 @@ import java.util.*;
 @ToString(exclude = {})
 @Getter
 @Setter
-
 public class User implements UserDetails {
 
     @Id

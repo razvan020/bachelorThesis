@@ -1,33 +1,30 @@
 package org.example.xlr8travel.services;
 
-import jakarta.persistence.EntityNotFoundException; // More specific exception
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.xlr8travel.models.Flight;
 import org.example.xlr8travel.repositories.FlightRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; // For transactional updates
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-// import java.util.Date; // Removed unused import
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor // Generates constructor for final fields
+@RequiredArgsConstructor
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
 
     @Override
-    @Transactional // Good practice for save/update/delete operations
+    @Transactional
     public Flight save(Flight flight) {
-        // The save method from CrudRepository handles both create and update,
-        // and returns the saved entity.
         return flightRepository.save(flight);
     }
 
     @Override
-    @Transactional(readOnly = true) // Use readOnly for find operations
+    @Transactional(readOnly = true)
     public List<Flight> findAll() {
         return flightRepository.findAll();
     }
@@ -35,23 +32,19 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     public Flight findById(Long id) {
-        // Use Optional properly
         Optional<Flight> flightOptional = flightRepository.findById(id);
-        return flightOptional.orElse(null); // Return null if not found (as controller expects)
-        // Or throw an exception:
-        // return flightOptional.orElseThrow(() -> new EntityNotFoundException("Flight not found with ID: " + id));
+        // Return null if not found, matching controller expectation (though Optional return is better)
+        return flightOptional.orElse(null);
     }
 
     @Override
-    @Transactional // Ensure update happens within a transaction
+    @Transactional
     public Flight updateFlightById(Long id, Flight flightDetails) {
-        // 1. Find the existing flight
         Flight existingFlight = flightRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Flight not found with ID: " + id + " - cannot update"));
 
-        // 2. Update the fields of the existing flight with details from the request
-        // Be specific about which fields are allowed to be updated
-        existingFlight.setName(flightDetails.getName()); // Assuming getName() was a typo in controller
+        // Update fields (ensure these match your Flight entity setters)
+        existingFlight.setName(flightDetails.getName());
         existingFlight.setOrigin(flightDetails.getOrigin());
         existingFlight.setDestination(flightDetails.getDestination());
         existingFlight.setDepartureDate(flightDetails.getDepartureDate());
@@ -61,9 +54,8 @@ public class FlightServiceImpl implements FlightService {
         existingFlight.setTerminal(flightDetails.getTerminal());
         existingFlight.setGate(flightDetails.getGate());
         existingFlight.setPrice(flightDetails.getPrice());
-        // NOTE: Be careful about updating relationships or generated values like lastUpdated here
+        // Don't usually update lastUpdated manually here if it's handled by JPA/DB
 
-        // 3. Save the updated entity - CrudRepository's save performs an update if ID exists
         return flightRepository.save(existingFlight);
     }
 
@@ -71,16 +63,30 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional
     public void deleteFlightById(Long flightId) {
-        // Optional: Check if exists before deleting to handle potential errors more gracefully
-        if (!flightRepository.existsById(flightId)) {
+        if (!flightRepository.existsById(flightId)) { // Use existsById check
             throw new EntityNotFoundException("Flight not found with ID: " + flightId + " - cannot delete");
         }
         flightRepository.deleteById(flightId);
     }
 
+    // Implementation for existing round-trip search
     @Override
     @Transactional(readOnly = true)
     public List<Flight> findByOriginAndDestinationAndArrivalDateAndDepartureDate(String origin, String destination, LocalDate arrivalDate, LocalDate departureDate) {
+        // Optional: Add checks for null parameters if needed
         return flightRepository.findByOriginAndDestinationAndArrivalDateAndDepartureDate(origin, destination, arrivalDate, departureDate);
     }
+
+    // --- NEW: Implementation for one-way/departure-date search ---
+    @Override
+    @Transactional(readOnly = true)
+    public List<Flight> findByOriginAndDestinationAndDepartureDate(String origin, String destination, LocalDate departureDate) {
+        // Optional: Add checks for null parameters if needed
+        return flightRepository.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
+    }
+
+    // Optional: existsById implementation if needed by controller/other services
+    // public boolean existsById(Long id) {
+    //    return flightRepository.existsById(id);
+    // }
 }
