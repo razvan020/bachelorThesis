@@ -1,20 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
-// No need for Link here unless adding Edit links
-// import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card"; // Keep Card for the Add form
+import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
-import { FaTrashAlt, FaUserPlus, FaEdit } from "react-icons/fa"; // Added FaEdit
+import { FaTrashAlt, FaUserPlus } from "react-icons/fa";
 
-// --- Add User Form Sub-Component (Keep as previously defined) ---
 const AddUserForm = ({ onUserAdded }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -28,7 +25,6 @@ const AddUserForm = ({ onUserAdded }) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    // Basic validation (e.g., password length) can be added here
     const userData = { username, email, password, firstname, lastname };
     try {
       const backendUrl =
@@ -36,17 +32,19 @@ const AddUserForm = ({ onUserAdded }) => {
       const response = await fetch(`${backendUrl}/api/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(userData),
       });
       const data = await response.json();
       if (!response.ok)
         throw new Error(data.error || `Error: ${response.status}`);
+      // reset form
       setUsername("");
       setEmail("");
       setPassword("");
       setFirstname("");
       setLastname("");
-      onUserAdded(data); // Notify parent
+      onUserAdded(data);
     } catch (err) {
       setError(err.message || "Failed to add user.");
     } finally {
@@ -54,7 +52,6 @@ const AddUserForm = ({ onUserAdded }) => {
     }
   };
 
-  // Keep the AddUserForm JSX structure as before
   return (
     <Card className="mt-4 shadow-sm">
       <Card.Header as="h5">Add New User</Card.Header>
@@ -67,7 +64,7 @@ const AddUserForm = ({ onUserAdded }) => {
         <Form onSubmit={handleAddUserSubmit}>
           <Row>
             <Col md={6}>
-              <Form.Group className="mb-3" controlId="addFirstName">
+              <Form.Group controlId="addFirstName" className="mb-3">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -79,7 +76,7 @@ const AddUserForm = ({ onUserAdded }) => {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group className="mb-3" controlId="addLastName">
+              <Form.Group controlId="addLastName" className="mb-3">
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control
                   type="text"
@@ -91,9 +88,10 @@ const AddUserForm = ({ onUserAdded }) => {
               </Form.Group>
             </Col>
           </Row>
+
           <Row>
             <Col md={6}>
-              <Form.Group className="mb-3" controlId="addUsername">
+              <Form.Group controlId="addUsername" className="mb-3">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                   type="text"
@@ -105,7 +103,7 @@ const AddUserForm = ({ onUserAdded }) => {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group className="mb-3" controlId="addEmail">
+              <Form.Group controlId="addEmail" className="mb-3">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
@@ -117,20 +115,23 @@ const AddUserForm = ({ onUserAdded }) => {
               </Form.Group>
             </Col>
           </Row>
-          <Form.Group className="mb-3" controlId="addPassword">
+
+          <Form.Group controlId="addPassword" className="mb-3">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={6}
               disabled={isLoading}
             />
           </Form.Group>
+
           <Button variant="success" type="submit" disabled={isLoading}>
             {isLoading ? (
               <>
-                <Spinner size="sm" /> Adding...
+                <Spinner size="sm" /> Adding…
               </>
             ) : (
               <>
@@ -144,35 +145,31 @@ const AddUserForm = ({ onUserAdded }) => {
   );
 };
 
-// --- Main Page Component ---
 export default function UsersPage() {
-  // State hooks (keep as is)
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // For fetch/delete errors shown at top
+  const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [deleteError, setDeleteError] = useState(null); // Separate error for modal
+  const [deleteError, setDeleteError] = useState(null);
 
-  // Fetch users function (keep as is)
   const fetchUsers = async () => {
     setLoading(true);
     setError(null);
-    // setSuccessMessage(''); // Clear success on refetch
     try {
       const backendUrl =
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/users`);
+      const response = await fetch(`${backendUrl}/api/users`, {
+        credentials: "include", // ← include session cookie
+      });
       if (!response.ok) {
         let errorMsg = `HTTP error! status: ${response.status}`;
         try {
           const errData = await response.json();
           errorMsg = errData.message || errData.error || errorMsg;
-        } catch (parseError) {
-          /* Ignore */
-        }
+        } catch {}
         throw new Error(errorMsg);
       }
       const data = await response.json();
@@ -185,22 +182,20 @@ export default function UsersPage() {
     }
   };
 
-  // useEffect for fetching (keep as is)
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // --- Delete Logic ---
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
     setShowDeleteModal(true);
-    setDeleteError(null); // Clear modal-specific error when opening
+    setDeleteError(null);
     setSuccessMessage("");
   };
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
     setUserToDelete(null);
-    setDeleteError(null); // Clear modal error on close
+    setDeleteError(null);
   };
   const handleConfirmDelete = async () => {
     if (!userToDelete) return;
@@ -211,7 +206,10 @@ export default function UsersPage() {
         process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
       const response = await fetch(
         `${backendUrl}/api/users/${userToDelete.id}`,
-        { method: "DELETE" }
+        {
+          method: "DELETE",
+          credentials: "include", // ← include session cookie
+        }
       );
       if (!response.ok) {
         let errorMsg = `HTTP error! status: ${response.status}`;
@@ -226,45 +224,34 @@ export default function UsersPage() {
               response.statusText || response.status
             }`;
           }
-        } catch (parseError) {
-          errorMsg = `Delete failed: ${response.statusText || response.status}`;
-        }
+        } catch {}
         throw new Error(errorMsg);
       }
-      setUsers((currentUsers) =>
-        currentUsers.filter((u) => u.id !== userToDelete.id)
-      );
+      setUsers((cur) => cur.filter((u) => u.id !== userToDelete.id));
       setSuccessMessage(
-        `User "${userToDelete.username}" (ID: ${userToDelete.id}) deleted successfully!`
+        `User "${userToDelete.username}" deleted successfully!`
       );
       handleCloseDeleteModal();
     } catch (err) {
-      console.error("Failed to delete user:", err);
-      setDeleteError(err.message || "Failed to delete user. Please try again."); // Set modal-specific error
+      setDeleteError(err.message || "Failed to delete user.");
     } finally {
       setDeleteLoading(false);
     }
   };
-  // --- End Delete Logic ---
 
-  // --- Add User Logic ---
-  const handleUserAdded = (newUserDTO) => {
-    setSuccessMessage(`User "${newUserDTO.username}" added successfully!`);
-    fetchUsers(); // Refetch the list to include the new user
-    // Or optimistically add: setUsers(currentUsers => [...currentUsers, newUserDTO]);
+  const handleUserAdded = (newUser) => {
+    setSuccessMessage(`User "${newUser.username}" added successfully!`);
+    fetchUsers();
   };
 
   return (
     <Container className="py-4 py-md-5">
-      {/* Header Row */}
       <Row className="mb-4 align-items-center justify-content-between">
         <Col xs="auto">
           <h1 className="h2 text-uppercase mb-0 fw-bold">Manage Users</h1>
         </Col>
-        {/* Add User Button could go here, or keep form below */}
       </Row>
 
-      {/* Loading State */}
       {loading && (
         <div className="text-center my-5">
           <Spinner animation="border" />
@@ -272,14 +259,12 @@ export default function UsersPage() {
         </div>
       )}
 
-      {/* General Error Alert (for fetch errors) */}
       {!loading && error && (
         <Alert variant="danger" dismissible onClose={() => setError(null)}>
           <strong>Error:</strong> {error}
         </Alert>
       )}
 
-      {/* Success Alert (for add/delete) */}
       {successMessage && (
         <Alert
           variant="success"
@@ -290,24 +275,19 @@ export default function UsersPage() {
         </Alert>
       )}
 
-      {/* User List Table - No Card Wrapper */}
       {!loading && !error && (
         <div className="mt-4">
-          {" "}
-          {/* Wrapper for margin */}
           {users.length > 0 ? (
-            // Apply styling similar to Manage Flights table
             <Table responsive hover className="align-middle">
-              {/* Simple header without dark background */}
               <thead>
                 <tr className="border-bottom border-2">
-                  <th className="py-3">ID</th>
-                  <th className="py-3">Username</th>
-                  <th className="py-3">Email</th>
-                  <th className="py-3">First Name</th>
-                  <th className="py-3">Last Name</th>
-                  <th className="py-3">Roles</th>
-                  <th className="py-3 text-end">Actions</th>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Roles</th>
+                  <th className="text-end">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -318,35 +298,24 @@ export default function UsersPage() {
                     <td>{user.email}</td>
                     <td>{user.firstname || "-"}</td>
                     <td>{user.lastname || "-"}</td>
-                    {/* Display roles nicely */}
                     <td>
                       {user.roles?.join(", ").replace("ROLE_", "") || "N/A"}
                     </td>
                     <td className="text-end">
-                      {/* Placeholder Edit Button */}
-                      {/* <Button variant="link" size="sm" className="p-1 text-decoration-none text-secondary me-2" title="Edit">
-                                                <FaEdit size="1.2em"/>
-                                            </Button> */}
-                      {/* Delete Button */}
-                      {/* Optional: Prevent deleting the current admin user or specific users */}
-                      {user.username !== "user2" && (
-                        <Button
-                          variant="link"
-                          size="sm"
-                          className="p-1 text-decoration-none text-danger"
-                          onClick={() => handleDeleteClick(user)}
-                          disabled={
-                            deleteLoading && userToDelete?.id === user.id
-                          }
-                          title="Delete User"
-                        >
-                          {deleteLoading && userToDelete?.id === user.id ? (
-                            <Spinner as="span" animation="border" size="sm" />
-                          ) : (
-                            <FaTrashAlt size="1.1em" />
-                          )}
-                        </Button>
-                      )}
+                      <Button
+                        variant="link"
+                        size="sm"
+                        className="p-1 text-decoration-none text-danger"
+                        onClick={() => handleDeleteClick(user)}
+                        disabled={deleteLoading && userToDelete?.id === user.id}
+                        title="Delete User"
+                      >
+                        {deleteLoading && userToDelete?.id === user.id ? (
+                          <Spinner as="span" animation="border" size="sm" />
+                        ) : (
+                          <FaTrashAlt size="1.1em" />
+                        )}
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -360,16 +329,13 @@ export default function UsersPage() {
         </div>
       )}
 
-      {/* Add User Form */}
       {!loading && <AddUserForm onUserAdded={handleUserAdded} />}
 
-      {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Show delete-specific error inside modal */}
           {deleteError && <Alert variant="danger">Error: {deleteError}</Alert>}
           Are you sure you want to delete user{" "}
           <strong>
@@ -392,7 +358,7 @@ export default function UsersPage() {
           >
             {deleteLoading ? (
               <>
-                <Spinner size="sm" /> Deleting...
+                <Spinner size="sm" /> Deleting…
               </>
             ) : (
               "Delete User"

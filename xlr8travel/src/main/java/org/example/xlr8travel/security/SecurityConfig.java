@@ -54,7 +54,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/checkout/**").authenticated() // Requires login
                         .requestMatchers("/api/orders/**").authenticated() // Requires login
                         .requestMatchers("/api/user/me").authenticated() // Requires login (for session check)
-                        .requestMatchers(HttpMethod.POST, "/api/admin/**").hasRole("ADMIN") // Example admin restriction
+                        .requestMatchers(HttpMethod.POST, "/api/users","/api/admin/**").hasRole("ADMIN")// Example admin restriction
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")// Example admin restriction
 
                         // Web Page Security (adjust if mixing web pages and API)
                         .requestMatchers("/", "/index", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll() // Public web resources
