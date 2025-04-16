@@ -89,4 +89,12 @@ public class Ticket {
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private FlightClass flightClass;
 
+    @Override
+    public String toString() {
+        // only id + name, never print cities
+        return "Country{" +
+                "id=" + id +
+                ", name='" + ticketStatus + '\'' +
+                '}';
+    }
 }

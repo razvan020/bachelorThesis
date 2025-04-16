@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,7 +33,7 @@ public class Flight {
     private String terminal;
     private String gate;
     private LocalDateTime lastUpdated; // last updated time
-    private Double price;
+    private BigDecimal price;
 
     @ManyToOne
     @JsonIgnore
@@ -42,7 +43,7 @@ public class Flight {
     @JsonIgnore
     private Set<Ticket> tickets = new HashSet<>();
 
-    public <E> Flight(Object o, String s, LocalTime of, LocalTime of1, String romania, String italy, LocalDate date, LocalDate date1, String a, String number, LocalDateTime now, Object o1, HashSet<E> es, Double price) {
+    public <E> Flight(Object o, String s, LocalTime of, LocalTime of1, String romania, String italy, LocalDate date, LocalDate date1, String a, String number, LocalDateTime now, Object o1, HashSet<E> es, BigDecimal price) {
         this.name = s;
         this.departureTime = of;
         this.arrivalTime = of1;
@@ -56,7 +57,7 @@ public class Flight {
         this.price = price;
     }
 
-    public <E> Flight(Object o, String s, LocalTime of, LocalTime of1, String romania, String italy, LocalDate date, String a, String number, LocalDateTime now, Object o1, HashSet<E> es, Double price) {
+    public <E> Flight(Object o, String s, LocalTime of, LocalTime of1, String romania, String italy, LocalDate date, String a, String number, LocalDateTime now, Object o1, HashSet<E> es, BigDecimal price) {
         this.name = s;
         this.departureTime = of;
         this.arrivalTime = of1;
@@ -67,6 +68,9 @@ public class Flight {
         this.gate = number;
         this.lastUpdated = now;
         this.price = price;
+    }
+
+    public <E> Flight(Long o, String s, LocalTime of, LocalTime of1, String romania, String italy, LocalDate date, LocalDate date1, String a, String number, LocalDateTime now, BigDecimal o1, HashSet<E> es, double v) {
     }
 
     @Override

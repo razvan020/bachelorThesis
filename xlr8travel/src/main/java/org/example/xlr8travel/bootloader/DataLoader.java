@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -116,11 +117,35 @@ public class DataLoader implements CommandLineRunner {
 
        // Flight flight1 = new Flight("xlr8Travel", LocalTime.of(3,30), LocalTime.of(6,30), "A", "1", LocalDateTime.now());
         LocalDate date = LocalDate.of(2025, 4, 17);
-        Flight flight1 = new Flight(null, "Flight 101", LocalTime.of(3, 30), LocalTime.of(6, 30), "LAX", "LHR",date, date, "A", "1", LocalDateTime.now(), null, new HashSet<>(),150.0);
-        Flight flight2 = new Flight(null, "Flight 101", LocalTime.of(3, 30), LocalTime.of(6, 30), "Romania", "Italy",date, date, "A", "1", LocalDateTime.now(), null, new HashSet<>(), 200.0);
-        Flight flightdep = new Flight(null, "Flight blabla", LocalTime.of(3, 30), LocalTime.of(6, 30), "LAX", "LHR", date, "A", "1", LocalDateTime.now(), null, new HashSet<>(), 200.0);
-        Flight flight3 = new Flight(null, "Flight 300", LocalTime.of(3, 30), LocalTime.of(6, 30), "Germany", "Italy",date, date, "R", "10", LocalDateTime.now(), null, new HashSet<>(), 200.0);
-        Flight flight4 = new Flight(null, "Flight 301", LocalTime.of(3, 30), LocalTime.of(6, 30), "Germany", "Italy",date, date, "D", "10", LocalDateTime.now(), null, new HashSet<>(), 250.0);
+        Flight flight1 = new Flight(null, "Flight 101", LocalTime.of(3, 30), LocalTime.of(6, 30),
+                "LAX", "LHR", date, date, "A", "1", LocalDateTime.now(),
+                airline, // Pass the airline object if constructor requires non-null
+                new HashSet<Ticket>(), // Specify Ticket type
+                BigDecimal.valueOf(150.0)); // Convert double to BigDecimal
+        Flight flight2 = new Flight(null, "Flight 202", LocalTime.of(3, 30), LocalTime.of(6, 30), // Changed flight number for uniqueness example
+                "Romania", "Italy", date, date, "A", "1", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(200.0)); // Convert double to BigDecimal
+
+        Flight flightdep = new Flight(null, "Flight blabla", LocalTime.of(3, 30), LocalTime.of(6, 30),
+                "LAX", "LHR", date, date, // Added missing 'date' for arrivalDate
+                "A", "1", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(200.0)); // Convert double to BigDecimal
+
+        Flight flight3 = new Flight(null, "Flight 300", LocalTime.of(3, 30), LocalTime.of(6, 30),
+                "Germany", "Italy", date, date, "R", "10", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(200.0)); // Convert double to BigDecimal
+
+        Flight flight4 = new Flight(null, "Flight 301", LocalTime.of(3, 30), LocalTime.of(6, 30),
+                "Germany", "Italy", date, date, "D", "10", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(250.0)); // Convert double to BigDecimal
         airline.addFlight(flight1);
         airline.addFlight(flight2);
         airline.addFlight(flight3);

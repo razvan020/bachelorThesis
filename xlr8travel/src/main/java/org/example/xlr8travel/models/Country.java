@@ -43,5 +43,14 @@ public class Country {
         city.setCountry(this);
     }
 
+    @Override
+    public String toString() {
+        // only id + name, never print cities
+        return "Country{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 
 }

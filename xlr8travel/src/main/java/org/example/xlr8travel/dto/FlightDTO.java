@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.xlr8travel.models.Flight; // Import your Flight entity
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -19,7 +20,7 @@ public class FlightDTO {
     private LocalTime departureTime;
     private LocalDate arrivalDate;
     private LocalTime arrivalTime;
-    private Double price;
+    private BigDecimal price;
     private String terminal;
     private String gate;
     private LocalDateTime lastUpdated;

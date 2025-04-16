@@ -42,4 +42,13 @@ public class Address {
     @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private User user;
 
+    @Override
+    public String toString() {
+        // only id + name, never print cities
+        return "Address{" +
+                "id=" + id +
+                ", name='" + street + '\'' +
+                '}';
+    }
+
 }

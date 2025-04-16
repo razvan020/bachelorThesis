@@ -1,24 +1,24 @@
 package org.example.xlr8travel.controllers;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.example.xlr8travel.dto.AddToCartRequestDTO;
 import org.example.xlr8travel.dto.CartDTO;
-import org.example.xlr8travel.dto.CartItem; // Import CartItem
-import org.example.xlr8travel.dto.FlightCartItemDTO;
 import org.example.xlr8travel.models.Flight;
+import org.example.xlr8travel.models.User;
+import org.example.xlr8travel.services.CartService; // Use persistent CartService
 import org.example.xlr8travel.services.FlightService;
+import org.example.xlr8travel.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import jakarta.persistence.EntityNotFoundException; // Import exception
+import java.util.Map; // For error response
 
 @RestController
 @RequestMapping("/api/cart")
@@ -26,108 +26,126 @@ public class CartController {
 
     private static final Logger log = LoggerFactory.getLogger(CartController.class);
     private final FlightService flightService;
-    private static final String CART_SESSION_KEY = "userCartItems";
+    private final CartService cartService; // Inject PERSISTENT CartService
+    private final UserService userService;
 
-    public CartController(FlightService flightService) {
+    public CartController(FlightService flightService, CartService cartService, UserService userService) {
         this.flightService = flightService;
+        this.cartService = cartService;
+        this.userService = userService;
     }
 
-    // Helper method to get cart from session
-    private List<CartItem> getCartFromSession(HttpSession session) {
-        List<CartItem> cart = (List<CartItem>) session.getAttribute(CART_SESSION_KEY);
-        if (cart == null) {
-            cart = new ArrayList<>();
-            session.setAttribute(CART_SESSION_KEY, cart);
+    // Helper to get User (reuse or centralize)
+    private User getCurrentUser(UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
         }
-        return cart;
+        String username = userDetails.getUsername();
+        return userService.findByUsername(username);
     }
 
-    // Helper method to build CartDTO response
-    private CartDTO buildCartDTO(List<CartItem> cart) {
-        // ... (keep implementation from previous step - calculates total price/quantity) ...
-        List<FlightCartItemDTO> itemDTOs = cart.stream()
-                .map(FlightCartItemDTO::fromCartItem)
-                .collect(Collectors.toList());
-        double totalPrice = cart.stream()
-                .filter(item -> item.getFlight() != null && item.getFlight().getPrice() != null)
-                .mapToDouble(item -> item.getFlight().getPrice() * item.getQuantity())
-                .sum();
-        int totalQuantity = cart.stream().mapToInt(CartItem::getQuantity).sum();
-        CartDTO cartDTO = new CartDTO();
-        cartDTO.setItems(itemDTOs);
-        cartDTO.setTotalPrice(totalPrice);
-        cartDTO.setTotalQuantity(totalQuantity);
-        return cartDTO;
-    }
-
-    // GET CART CONTENT (no changes needed)
+    // --- GET CART CONTENT ---
     @GetMapping
-    public ResponseEntity<CartDTO> showCart(HttpSession session) {
-        log.info("Request received to view cart");
-        List<CartItem> cart = getCartFromSession(session);
-        CartDTO cartDTO = buildCartDTO(cart);
-        log.info("Returning cart with {} unique items, {} total quantity.", cart.size(), cartDTO.getTotalQuantity());
-        return ResponseEntity.ok(cartDTO);
+    public ResponseEntity<CartDTO> showCart(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("Request received to view persistent cart");
+        try {
+            User user = getCurrentUser(userDetails);
+            CartDTO cartDTO = cartService.getCartForUser(user); // Use service
+            log.info("Returning persistent cart for user {} with {} items, {} total quantity.", user.getUsername(), cartDTO.getItems().size(), cartDTO.getTotalQuantity());
+            return ResponseEntity.ok(cartDTO);
+        } catch (ResponseStatusException rse) {
+            return ResponseEntity.status(rse.getStatusCode()).body(null);
+        } catch (Exception e) {
+            log.error("Error retrieving persistent cart", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    // ADD ITEM TO CART (no changes needed, handles increment internally)
+    // --- ADD ITEM TO CART ---
     @PostMapping("/add")
-    public ResponseEntity<CartDTO> addFlightToCart(@Valid @RequestBody AddToCartRequestDTO request, HttpSession session) {
-        // ... (keep implementation from previous step - finds item, increments or adds new) ...
-        Long flightId = request.getFlightId();
-        log.info("Request received to add flight ID {} to cart", flightId);
-        Flight flight = flightService.findById(flightId);
-        if (flight == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Flight not found");
-        List<CartItem> cart = getCartFromSession(session);
-        Optional<CartItem> existingItem = cart.stream().filter(item -> item.getFlight().getId().equals(flightId)).findFirst();
-        if (existingItem.isPresent()) {
-            existingItem.get().incrementQuantity(); log.info("Incremented quantity for flight ID {} in cart.", flightId);
-        } else {
-            cart.add(new CartItem(flight, 1)); log.info("Added new flight ID {} to cart.", flightId);
-        }
-        session.setAttribute(CART_SESSION_KEY, cart);
-        return ResponseEntity.ok(buildCartDTO(cart));
-    }
+    public ResponseEntity<?> addFlightToCart(
+            @Valid @RequestBody AddToCartRequestDTO request,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User user = getCurrentUser(userDetails); // Get authenticated user
+            Long flightId = request.getFlightId();
+            log.info("User {} request to add flight ID {} to persistent cart", user.getUsername(), flightId);
 
-    // --- NEW: DECREASE ITEM QUANTITY ---
-    @PostMapping("/decrease/{flightId}") // Could also be PUT
-    public ResponseEntity<CartDTO> decreaseQuantity(@PathVariable Long flightId, HttpSession session) {
-        log.info("Request received to decrease quantity for flight ID {}", flightId);
-        List<CartItem> cart = getCartFromSession(session);
-
-        Optional<CartItem> existingItem = cart.stream()
-                .filter(item -> item.getFlight().getId().equals(flightId))
-                .findFirst();
-
-        if (existingItem.isPresent()) {
-            CartItem item = existingItem.get();
-            item.setQuantity(item.getQuantity() - 1); // Decrease quantity
-            log.info("Decreased quantity for flight ID {}. New quantity: {}", flightId, item.getQuantity());
-            // If quantity reaches zero, remove the item
-            if (item.getQuantity() <= 0) {
-                cart.remove(item);
-                log.info("Quantity reached zero. Removed flight ID {} from cart.", flightId);
+            Flight flight = flightService.findById(flightId);
+            if (flight == null) {
+                log.warn("Attempted to add non-existent flight ID {} by user {}", flightId, user.getUsername());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Flight not found"));
             }
-            session.setAttribute(CART_SESSION_KEY, cart); // Update session
-        } else {
-            log.warn("Attempted to decrease quantity for flight ID {} not found in cart.", flightId);
-            // Optionally throw NotFound or just return current cart state
+
+            CartDTO updatedCart = cartService.addItemToCart(user, flight); // Use service
+            log.info("Flight ID {} added/incremented in persistent cart for user {}.", flight.getId(), user.getUsername());
+            return ResponseEntity.ok(updatedCart);
+
+        } catch (ResponseStatusException rse) {
+            return ResponseEntity.status(rse.getStatusCode()).body(Map.of("error", rse.getReason()));
+        } catch (Exception e) {
+            log.error("Error adding item to persistent cart for user {}", (userDetails != null ? userDetails.getUsername() : "UNKNOWN"), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to add item to cart."));
         }
-        return ResponseEntity.ok(buildCartDTO(cart)); // Return updated cart
     }
 
-    // --- REMOVE ITEM FROM CART (no changes needed) ---
-    @DeleteMapping("/remove/{flightId}")
-    public ResponseEntity<CartDTO> removeFlightFromCart(@PathVariable Long flightId, HttpSession session) {
-        // ... (keep implementation from previous step - removes the whole line item) ...
-        log.info("Request received to remove flight ID {} from cart", flightId);
-        List<CartItem> cart = getCartFromSession(session);
-        boolean removed = cart.removeIf(item -> item.getFlight().getId().equals(flightId));
-        if (removed) {
-            session.setAttribute(CART_SESSION_KEY, cart); log.info("Flight ID {} removed from cart.", flightId);
-        } else {
-            log.warn("Attempted to remove flight ID {} not found in cart.", flightId);
+    // --- DECREASE ITEM QUANTITY ---
+    @PostMapping("/decrease/{flightId}")
+    public ResponseEntity<?> decreaseQuantity(
+            @PathVariable Long flightId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User user = getCurrentUser(userDetails);
+            log.info("User {} request to decrease quantity for flight ID {}", user.getUsername(), flightId);
+
+            Flight flight = flightService.findById(flightId);
+            if (flight == null) {
+                log.warn("Attempted to decrease quantity for non-existent flight ID {}", flightId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Flight not found in catalog"));
+            }
+
+            CartDTO updatedCart = cartService.decreaseItemQuantity(user, flight); // Use service
+            log.info("Quantity decreased/item potentially removed for flight ID {} in persistent cart for user {}.", flight.getId(), user.getUsername());
+            return ResponseEntity.ok(updatedCart);
+
+        } catch (ResponseStatusException rse) {
+            return ResponseEntity.status(rse.getStatusCode()).body(Map.of("error", rse.getReason()));
+        } catch (EntityNotFoundException enfe) { // Catch service exception
+            log.warn("Attempted to decrease quantity for flight ID {} not found in persistent cart for user {}", flightId, (userDetails != null ? userDetails.getUsername() : "UNKNOWN"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Item not found in cart"));
+        } catch (Exception e) {
+            log.error("Error decreasing item quantity for user {}", (userDetails != null ? userDetails.getUsername() : "UNKNOWN"), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to decrease item quantity."));
         }
-        return ResponseEntity.ok(buildCartDTO(cart));
+    }
+
+    // --- REMOVE ITEM FROM CART ---
+    @DeleteMapping("/remove/{flightId}")
+    public ResponseEntity<?> removeFlightFromCart(
+            @PathVariable Long flightId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User user = getCurrentUser(userDetails);
+            log.info("User {} request to remove flight ID {} from persistent cart", user.getUsername(), flightId);
+
+            Flight flight = flightService.findById(flightId);
+            if (flight == null) {
+                log.warn("Attempted to remove non-existent flight ID {}", flightId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Flight not found in catalog"));
+            }
+
+            CartDTO updatedCart = cartService.removeItemFromCart(user, flight); // Use service
+            log.info("Item removed for flight ID {} in persistent cart for user {}.", flight.getId(), user.getUsername());
+            return ResponseEntity.ok(updatedCart);
+
+        } catch (ResponseStatusException rse) {
+            return ResponseEntity.status(rse.getStatusCode()).body(Map.of("error", rse.getReason()));
+        } catch (EntityNotFoundException enfe) { // Catch service exception
+            log.warn("Attempted to remove flight ID {} not found in persistent cart for user {}", flightId, (userDetails != null ? userDetails.getUsername() : "UNKNOWN"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Item not found in cart"));
+        } catch (Exception e) {
+            log.error("Error removing item from persistent cart for user {}", (userDetails != null ? userDetails.getUsername() : "UNKNOWN"), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to remove item from cart."));
+        }
     }
 }

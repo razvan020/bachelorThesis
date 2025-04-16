@@ -2,8 +2,6 @@ package org.example.xlr8travel.controllers;
 
 import org.example.xlr8travel.dto.LoginRequest;
 import org.example.xlr8travel.dto.LoginResponse;
-// It's better practice to use constructor injection instead of @Autowired on fields
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,8 +10,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger; // Import Logger
-import org.slf4j.LoggerFactory; // Import LoggerFactory
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+// *** Add Imports ***
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+// *** End Imports ***
 
 import java.util.Map;
 
@@ -21,46 +25,43 @@ import java.util.Map;
 @RequestMapping("/api")
 public class LoginController {
 
-    // Logger for better debugging
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-
     private final AuthenticationManager authenticationManager;
 
-    // Constructor Injection (Recommended over @Autowired field injection)
     public LoginController(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login")
+    // *** Remove HttpServletRequest parameter ***
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        log.info("Attempting authentication for user: {}", loginRequest.getUsername()); // Log attempt
+        log.info("Attempting authentication for user: {}", loginRequest.getUsername());
         try {
-            // 1. Authenticate using the credentials from the request
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),
                             loginRequest.getPassword()
                     )
             );
-            log.info("Authentication successful for user: {}", authentication.getName()); // Log success
+            log.info("Authentication successful for user: {}", authentication.getName());
 
-            // 2. Set the successful authentication in the security context for the current request/session
+            // Set authentication in the current context.
+            // Relying SOLELY on Spring Security filters to persist this.
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // 3. Get the username DIRECTLY from the successful authentication object
-            String username = authentication.getName(); // Use the principal's name from the *first* auth object
+            // *** Explicit session save REMOVED ***
 
-            log.info("Returning successful response for user: {}", username); // Log response data
-
-            // 4. Return the success response with the CORRECT username
+            String username = authentication.getName();
+            log.info("Returning successful response for user: {}", username);
             return ResponseEntity.ok(new LoginResponse("Login successful", null, username));
 
         } catch (BadCredentialsException e) {
-            log.warn("Authentication failed for user {}: Invalid credentials", loginRequest.getUsername()); // Log failure
+            // ... keep catch blocks ...
+            log.warn("Authentication failed for user {}: Invalid credentials", loginRequest.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid username or password."));
         } catch (Exception e) {
-            log.error("An unexpected error occurred during authentication for user {}", loginRequest.getUsername(), e); // Log unexpected errors with stack trace
+            log.error("An unexpected error occurred during authentication for user {}", loginRequest.getUsername(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Login failed due to an internal error."));
         }
