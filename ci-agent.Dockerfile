@@ -1,5 +1,2 @@
-# ci-agent.Dockerfile
-FROM docker:24-dind
-
-# alpine-based, so use apk
+FROM docker:24    
 RUN apk add --no-cache git

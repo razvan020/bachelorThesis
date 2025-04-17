@@ -15,19 +15,19 @@ pipeline {
     }
 
     stage('Build & Deploy') {
-      // run this stage inside your dind‑git agent
-      agent {
-        docker {
-          image 'ci-agent:dind-git'
-          args  '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-      }
-      steps {
-        // now the code is present, just invoke compose
-        sh 'docker compose pull || true'
-        sh 'docker compose up --build -d'
-      }
+  agent {
+    docker {
+      image 'ci-agent:cli-git'
+      args  '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+      reuseNode true
     }
+  }
+  steps {
+    sh 'docker compose pull || true'
+    sh 'docker compose up --build -d'
+  }
+}
+
   }
 
   post {
