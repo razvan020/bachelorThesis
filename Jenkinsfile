@@ -3,6 +3,7 @@ pipeline {
     docker {
       image 'ci-agent:dind-git'
       args  '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+      reuseNode true        // <— add this
     }
   }
   stages {
