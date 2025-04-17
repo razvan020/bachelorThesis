@@ -46,9 +46,7 @@ export default function ManageFlightsPage() {
       setError(null);
       setSuccessMessage("");
       try {
-        const backendUrl =
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-        const response = await fetch(`${backendUrl}/api/flights`);
+        const response = await fetch("/api/flights");
         if (!response.ok) {
           let errorMsg = `HTTP error! status: ${response.status}`;
           try {
@@ -87,12 +85,9 @@ export default function ManageFlightsPage() {
     setDeleteLoading(true);
     setError(null);
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(
-        `${backendUrl}/api/flights/${flightToDelete.id}`,
-        { method: "DELETE" }
-      );
+      const response = await fetch(`/api/flights/${flightToDelete.id}`, {
+        method: "DELETE",
+      });
       if (!response.ok) {
         let errorMsg = `HTTP error! status: ${response.status}`;
         try {

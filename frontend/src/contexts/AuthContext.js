@@ -29,30 +29,29 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [cartItemCount, setCartItemCount] = useState(0);
 
-  // In dev we hit Next.js; in prod we hit the real backend
-  const BASE =
-    process.env.NODE_ENV === "development"
-      ? ""
-      : process.env.NEXT_PUBLIC_BACKEND_URL;
-  const api = (path) => `${BASE}${path}`;
+  // Always fetch relative to the Next.js server on :3000
+  const api = (path) => path;
 
   // ——— LOGIN ———
   const login = useCallback(
     async (username, password) => {
       const res = await fetch(api("/api/login"), {
         method: "POST",
-        credentials: "include", // ← must for cookies
+        credentials: "include", // cookies
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+
       if (!res.ok) {
         const err = await res.text();
         throw new Error("Login failed: " + err);
       }
+
       const userData = await res.json();
       setUser(userData);
       setIsAuthenticated(true);
       localStorage.setItem("username", userData.username);
+
       // fetch cart now that we’re authenticated
       await fetchCartCount();
       router.push("/");
@@ -66,6 +65,7 @@ export const AuthProvider = ({ children }) => {
       method: "POST",
       credentials: "include",
     });
+
     // clear client state
     setUser(null);
     setIsAuthenticated(false);
@@ -80,11 +80,13 @@ export const AuthProvider = ({ children }) => {
       setCartItemCount(0);
       return;
     }
+
     const res = await fetch(api("/api/cart"), {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
+
     if (!res.ok) {
       if (res.status === 401 || res.status === 403) {
         await logout();
@@ -92,6 +94,7 @@ export const AuthProvider = ({ children }) => {
       setCartItemCount(0);
       return;
     }
+
     const data = await res.json();
     setCartItemCount(data.totalQuantity || 0);
   }, [isAuthenticated, logout]);
@@ -116,7 +119,7 @@ export const AuthProvider = ({ children }) => {
           setCartItemCount(0);
           localStorage.removeItem("username");
         }
-      } catch (e) {
+      } catch {
         setUser(null);
         setIsAuthenticated(false);
         setCartItemCount(0);
