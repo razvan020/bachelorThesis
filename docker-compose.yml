@@ -51,7 +51,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring:/etc/prometheus:ro
     command:
       - '--storage.tsdb.path=/prometheus'
     ports:
