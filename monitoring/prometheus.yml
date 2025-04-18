@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  # 1) Prometheus self‑monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  # 2) cAdvisor for container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  # 3) Your apps (if they expose a /metrics endpoint)
+  - job_name: 'backend'
+    metrics_path: /actuator/prometheus
+    basic_auth:
+      username: monitor
+      password: monpass
+    static_configs:
+      - targets: ['backend:8080']
+
+  - job_name: 'frontend'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['frontend:3000']

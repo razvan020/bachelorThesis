@@ -38,5 +38,37 @@ services:
     ports:
       - "3000:3000"
 
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - '8082:8080'
+
+  prometheus:
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile
+    image: prometheus-custom:latest
+    ports:
+      - '9090:9090'
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=root   # change me
+    ports:
+      - '3001:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+
 volumes:
   db-data:
+  grafana-data:

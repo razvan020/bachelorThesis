@@ -1,11 +1,13 @@
 package org.example.xlr8travel.security;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,6 +46,11 @@ public class SecurityConfig {
                 .securityContext((context) -> context
                         .requireExplicitSave(false) // Ensure context is saved automatically after login sets it
                 )
+
+                .httpBasic(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(EndpointRequest.to("prometheus"))
+                        .hasRole("ACTUATOR"))
                 // *** End Security Context config ***
 
                 .authorizeHttpRequests(auth -> auth
