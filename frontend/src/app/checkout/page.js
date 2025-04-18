@@ -75,9 +75,7 @@ function CheckoutPageContent() {
     setError(null);
     setPaymentSuccess(false); // Reset success on load
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/cart`, {
+      const response = await fetch(`/api/cart`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -127,9 +125,7 @@ function CheckoutPageContent() {
     // --- End Warning ---
 
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/checkout/confirm`, {
+      const response = await fetch(`/api/checkout/confirm`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // Important for session cart clearing

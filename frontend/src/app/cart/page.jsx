@@ -52,8 +52,7 @@ function CartPageContent() {
         setError(null);
         console.log("CartPageContent: Fetching cart data...");
         try {
-            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
-            const response = await fetch(`${backendUrl}/api/cart`, {
+            const response = await fetch("/api/cart", {
                 method: 'GET',
                 credentials: 'include' // <-- *** ENSURE THIS IS PRESENT ***
             });
@@ -99,17 +98,17 @@ function CartPageContent() {
 
         switch(action) {
             case 'increase':
-                apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'}/api/cart/add`;
+                apiUrl = `/api/cart/add`;
                 method = 'POST';
                 body = JSON.stringify({ flightId }); // Add requires body
                 break;
             case 'decrease':
-                apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'}/api/cart/decrease/${flightId}`;
+                apiUrl = `/api/cart/decrease/${flightId}`;
                 method = 'POST'; // Or PUT
                 // No body needed for decrease in current backend example
                 break;
             case 'remove':
-                apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080'}/api/cart/remove/${flightId}`;
+                apiUrl = `/api/cart/remove/${flightId}`
                 method = 'DELETE';
                 // No body needed for delete
                 break;

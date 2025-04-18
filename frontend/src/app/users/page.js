@@ -27,9 +27,7 @@ const AddUserForm = ({ onUserAdded }) => {
     setError(null);
     const userData = { username, email, password, firstname, lastname };
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/users`, {
+      const response = await fetch("/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -159,9 +157,11 @@ export default function UsersPage() {
     setLoading(true);
     setError(null);
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/users`, {
+      const response = await fetch("/api/users", {
+        //comment
+        //comments 2
+        //comments3
+        //comment4
         credentials: "include", // ← include session cookie
       });
       if (!response.ok) {
@@ -202,15 +202,10 @@ export default function UsersPage() {
     setDeleteLoading(true);
     setDeleteError(null);
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(
-        `${backendUrl}/api/users/${userToDelete.id}`,
-        {
-          method: "DELETE",
-          credentials: "include", // ← include session cookie
-        }
-      );
+      const response = await fetch(`/api/users/${userToDelete.id}`, {
+        method: "DELETE",
+        credentials: "include", // ← include session cookie
+      });
       if (!response.ok) {
         let errorMsg = `HTTP error! status: ${response.status}`;
         try {

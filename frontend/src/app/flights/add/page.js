@@ -65,9 +65,7 @@ export default function AddFlightPage() {
     console.log("Submitting Flight Data:", flightData);
 
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/flights`, {
+      const response = await fetch("/api/flights", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(flightData),

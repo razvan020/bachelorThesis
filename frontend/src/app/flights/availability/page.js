@@ -82,9 +82,7 @@ function FlightAvailabilityContent() {
       }
 
       try {
-        const backendUrl =
-          process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-        const apiUrl = `${backendUrl}/api/flights/search?${query.toString()}`;
+        const apiUrl = `/api/flights/search?${query.toString()}`;
         console.log("Fetching available flights from:", apiUrl); // Debug log
 
         const response = await fetch(apiUrl);
@@ -124,9 +122,7 @@ function FlightAvailabilityContent() {
     setError(null); // Clear general page errors
 
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/cart/add`, {
+      const response = await fetch("/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ flightId }),

@@ -54,9 +54,7 @@ export default function SignupPage() {
     };
 
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
-      const response = await fetch(`${backendUrl}/api/signup`, {
+      const response = await fetch("/api/signup", {
         // Call the API endpoint
         method: "POST",
         headers: { "Content-Type": "application/json" },
