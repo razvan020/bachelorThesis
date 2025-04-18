@@ -53,7 +53,8 @@ services:
     volumes:
       - ./monitoring:/etc/prometheus:ro
     command:
-      - '--storage.tsdb.path=/prometheus'
+      - "--storage.tsdb.path=/prometheus"
+      - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
       - '9090:9090'
     
