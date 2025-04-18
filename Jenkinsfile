@@ -1,27 +1,31 @@
 pipeline {
-  agent any
-  options { skipDefaultCheckout() }
+  agent {
+    docker {
+      image 'ci-agent:cli-git'
+      args  '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+      reuseNode true
+    }
+  }
 
   stages {
-    stage('Clone') {
+    stage('Checkout & Inspect') {
       steps {
-        deleteDir()
-        git url: 'https://github.com/razvan020/bachelorThesis.git', branch: 'testBranch'
+        // Pull down the branch you configured in Multibranch or Pipeline Git SCM
+        checkout scm
+
+        // OPTIONAL: verify that your monitoring folder and prometheus.yml are present
+        sh 'pwd; ls -R .'
       }
     }
 
     stage('Build & Deploy') {
-      agent {
-        docker {
-          image 'ci-agent:cli-git'
-          args  '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-          reuseNode true
-        }
-      }
       steps {
-    sh 'docker compose down --remove-orphans --volumes || true'
-    sh 'docker compose pull || true'
-    sh 'docker compose up --build --remove-orphans -d'
+        // Tear down any old containers/volumes
+        sh 'docker compose down --remove-orphans --volumes || true'
+
+        // Bring everything up
+        sh 'docker compose pull || true'
+        sh 'docker compose up --build --remove-orphans -d'
       }
     }
   }
