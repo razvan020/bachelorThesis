@@ -15,6 +15,9 @@ scrape_configs:
   # 3) Your apps (if they expose a /metrics endpoint)
   - job_name: 'backend'
     metrics_path: /actuator/prometheus
+    basic_auth:
+      username: monitor
+      password: monpass
     static_configs:
       - targets: ['backend:8080']
 
