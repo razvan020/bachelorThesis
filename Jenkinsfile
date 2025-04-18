@@ -21,7 +21,7 @@ pipeline {
     stage('Build & Deploy') {
       steps {
         // Tear down any old containers/volumes
-        sh 'docker compose down --remove-orphans --volumes || true'
+        sh 'docker compose down --remove-orphans || true'
 
         // Bring everything up
         sh 'docker compose pull || true'
