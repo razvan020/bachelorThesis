@@ -179,8 +179,12 @@ public class DataLoader implements CommandLineRunner {
         User user2=new User("user2",bcrypt.encode("user2"),"a@y.com");
         user2.getRoles().add(Role.ROLE_ADMIN);
 
+        User monitor=new User("monitor",bcrypt.encode("monpass"),"monitor");
+        monitor.getRoles().add(Role.ROLE_ACTUATOR);
+
         userService.save(user1);
         userService.save(user2);
+        userService.save(monitor);
 
         //----------------------------------------------------------------------
 
