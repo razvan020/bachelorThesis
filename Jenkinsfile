@@ -19,8 +19,9 @@ pipeline {
         }
       }
       steps {
-        sh 'docker compose pull || true'
-        sh 'docker compose up --build -d'
+    sh 'docker compose down --remove-orphans --volumes || true'
+    sh 'docker compose pull || true'
+    sh 'docker compose up --build --remove-orphans -d'
       }
     }
   }
