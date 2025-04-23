@@ -131,7 +131,7 @@ export default function ManageFlightsPage() {
             <h1 className="h2 text-uppercase mb-0 fw-bold">Manage Flights</h1>
           </Col>
           <Col xs="auto">
-            <Button as={Link} href="/flights/add" variant="success">
+            <Button as={Link} href="/dashboard/flights/add" variant="success">
               <FaPlus className="me-1" /> Add Flight
             </Button>
           </Col>

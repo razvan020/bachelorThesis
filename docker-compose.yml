@@ -22,6 +22,7 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/xlr8travel?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
 
   frontend:
     build:
@@ -33,6 +34,7 @@ services:
       # run‑time variables for both client and middleware.ts
       NEXT_PUBLIC_BACKEND_URL: http://backend:8080
       BACKEND_URL: http://backend:8080
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
     depends_on:
       - backend
     ports:

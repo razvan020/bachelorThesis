@@ -301,7 +301,11 @@ export default function AddFlightPage() {
                       "Save Flight"
                     )}
                   </Button>
-                  <Button variant="secondary" as={Link} href="/flights/manage">
+                  <Button
+                    variant="secondary"
+                    as={Link}
+                    href="/dashboard/flights/manage"
+                  >
                     Cancel / Back to List
                   </Button>
                 </div>

@@ -39,63 +39,61 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS config from bean
-                .csrf(csrf -> csrf.disable()) // Disable CSRF (common for APIs using cookies/sessions with careful CORS)
-
-                // *** Configure Security Context to auto-save if changed ***
-                .securityContext((context) -> context
-                        .requireExplicitSave(false) // Ensure context is saved automatically after login sets it
-                )
-
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .securityContext(context -> context.requireExplicitSave(false))
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
+
+                        // Actuator
                         .requestMatchers(EndpointRequest.to("prometheus"))
-                        .hasRole("ACTUATOR"))
-                // *** End Security Context config ***
+                        .hasRole("ACTUATOR")
 
-                .authorizeHttpRequests(auth -> auth
-                        // API Endpoints Security
-                        .requestMatchers("/api/login","/api/signup", "/api/register").permitAll() // Public API endpoints
-                        .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll() // Flight search is public
-                        .requestMatchers("/api/cart/**").authenticated() // Requires login
-                        .requestMatchers("/api/checkout/**").authenticated() // Requires login
-                        .requestMatchers("/api/orders/**").authenticated() // Requires login
-                        .requestMatchers("/api/user/me").authenticated() // Requires login (for session check)
-                        .requestMatchers(HttpMethod.POST, "/api/users","/api/admin/**").hasRole("ADMIN")// Example admin restriction
-                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")// Example admin restriction
+                        // Public API endpoints
+                        .requestMatchers("/api/login", "/api/signup", "/api/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll()
 
-                        // Web Page Security (adjust if mixing web pages and API)
-                        .requestMatchers("/", "/index", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll() // Public web resources
+                        // STRIPE: allow unauthenticated access to payment‐intent + webhook
+                        .requestMatchers(HttpMethod.POST, "/api/checkout/create-payment-intent").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/checkout/webhook").permitAll()
 
-                        // Secure any other request
+                        // Everything else under /api/checkout requires auth (if you have more)
+                        .requestMatchers("/api/checkout/**").authenticated()
+
+                        // Cart, orders, user‐info remain protected
+                        .requestMatchers("/api/cart/**").authenticated()
+                        .requestMatchers("/api/orders/**").authenticated()
+                        .requestMatchers("/api/user/me").authenticated()
+
+                        // Admin
+                        .requestMatchers(HttpMethod.POST, "/api/users", "/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+
+                        // Static & public pages
+                        .requestMatchers("/", "/index", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
+
+                        // Fallback
                         .anyRequest().authenticated()
                 )
-                // Configure how authentication failures are handled for API requests
-                .exceptionHandling(exceptions -> exceptions
-                                .defaultAuthenticationEntryPointFor(
-                                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), // Return 401 for /api/**
-                                        new AntPathRequestMatcher("/api/**")
-                                )
-                        // You could configure different entry points for non-API paths if needed
+                .exceptionHandling(ex -> ex
+                        .defaultAuthenticationEntryPointFor(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                                new AntPathRequestMatcher("/api/**")
+                        )
                 )
-                // Configure Form Login (if used for web pages)
                 .formLogin(form -> form
-                        .loginPage("/login") // Your web login page path
-                        .loginProcessingUrl("/perform_login") // Spring handles POST to this URL
-                        .defaultSuccessUrl("/?loginsuccess=true", true) // Redirect on web login success
-                        .failureUrl("/login?error=true") // Redirect on web login failure
-                        .permitAll() // Allow access to login page and processing URL
+                        .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
+                        .defaultSuccessUrl("/?loginsuccess=true", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll()
                 )
-                // Configure Logout
                 .logout(logout -> logout
-                        .logoutUrl("/api/logout") // API endpoint for logout
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            // Send simple OK status for API logout
-                            response.setStatus(HttpServletResponse.SC_OK);
-                        })
-                        .invalidateHttpSession(true) // Invalidate the backend session
-                        .deleteCookies("JSESSIONID") // Tell browser to delete the cookie
-                        .permitAll() // Allow access to logout URL
+                        .logoutUrl("/api/logout")
+                        .logoutSuccessHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_OK))
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
                 );
 
         return http.build();
