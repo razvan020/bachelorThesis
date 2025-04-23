@@ -1,16 +1,131 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Spinner from "react-bootstrap/Spinner";
-import Alert from "react-bootstrap/Alert";
-import Form from "react-bootstrap/Form";
-import { FaTrashAlt, FaUserPlus } from "react-icons/fa";
+import {
+  Container,
+  Box,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  CircularProgress,
+  Alert,
+  TextField,
+  Grid,
+  IconButton,
+  Chip,
+  Divider,
+  Tooltip,
+  Avatar,
+  useTheme,
+  alpha,
+  Zoom,
+  Fade,
+} from "@mui/material";
+import {
+  Delete,
+  PersonAdd,
+  People,
+  PersonAddAlt1,
+  AdminPanelSettings,
+  Security,
+  Badge,
+  Email as EmailIcon,
+} from "@mui/icons-material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+// Custom theme
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#000000",
+      light: "#000000",
+      dark: "#000000",
+    },
+    secondary: {
+      main: "#000000",
+      light: "#000000",
+      dark: "#000000",
+    },
+    background: {
+      default: "#f5f7fa",
+    },
+    error: {
+      main: "#f44336",
+    },
+    success: {
+      main: "#4caf50",
+    },
+  },
+  typography: {
+    fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontWeight: 700,
+    },
+    h4: {
+      fontWeight: 600,
+      letterSpacing: "0.02em",
+    },
+    h5: {
+      fontWeight: 600,
+    },
+    button: {
+      fontWeight: 600,
+      textTransform: "none",
+    },
+  },
+  shape: {
+    borderRadius: 12,
+  },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
+        },
+        elevation1: {
+          boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.08)",
+        },
+        elevation2: {
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+        },
+        elevation3: {
+          boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.08)",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          padding: "8px 16px",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: "0 4px 8px rgb(255, 255, 255)",
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          fontWeight: 600,
+          color: "#000000",
+        },
+      },
+    },
+  },
+});
 
 const AddUserForm = ({ onUserAdded }) => {
   const [username, setUsername] = useState("");
@@ -51,95 +166,170 @@ const AddUserForm = ({ onUserAdded }) => {
   };
 
   return (
-    <Card className="mt-4 shadow-sm">
-      <Card.Header as="h5">Add New User</Card.Header>
-      <Card.Body>
+    <Paper
+      elevation={3}
+      sx={{
+        mt: 4,
+        p: 0,
+        borderRadius: 2,
+        overflow: "hidden",
+        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          p: 3,
+          background: "black",
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <Avatar sx={{ bgcolor: "white" }}>
+          <PersonAddAlt1 sx={{ color: "black" }} />
+        </Avatar>
+        <Typography variant="h5" component="h2" sx={{ fontWeight: "bold" }}>
+          Add New User
+        </Typography>
+      </Box>
+
+      <Box sx={{ p: 3 }}>
         {error && (
-          <Alert variant="danger" onClose={() => setError(null)} dismissible>
-            {error}
-          </Alert>
+          <Fade in={!!error}>
+            <Alert
+              severity="error"
+              onClose={() => setError(null)}
+              sx={{ mb: 2 }}
+              variant="filled"
+            >
+              {error}
+            </Alert>
+          </Fade>
         )}
-        <Form onSubmit={handleAddUserSubmit}>
-          <Row>
-            <Col md={6}>
-              <Form.Group controlId="addFirstName" className="mb-3">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group controlId="addLastName" className="mb-3">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group controlId="addUsername" className="mb-3">
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group controlId="addEmail" className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+        <Box component="form" onSubmit={handleAddUserSubmit} noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                id="addFirstName"
+                label="First Name"
+                variant="outlined"
+                fullWidth
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
+                required
+                disabled={isLoading}
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <Badge sx={{ mr: 1, color: "text.secondary" }} />
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                id="addLastName"
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
+                required
+                disabled={isLoading}
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <Badge sx={{ mr: 1, color: "text.secondary" }} />
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                id="addUsername"
+                label="Username"
+                variant="outlined"
+                fullWidth
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                disabled={isLoading}
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <People sx={{ mr: 1, color: "text.secondary" }} />
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                id="addEmail"
+                label="Email"
+                type="email"
+                variant="outlined"
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={isLoading}
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <EmailIcon sx={{ mr: 1, color: "text.secondary" }} />
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="addPassword"
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                inputProps={{ minLength: 6 }}
+                disabled={isLoading}
+                margin="normal"
+                InputProps={{
+                  startAdornment: (
+                    <Security sx={{ mr: 1, color: "text.secondary" }} />
+                  ),
+                }}
+                helperText="Password must be at least 6 characters long"
+              />
+            </Grid>
+          </Grid>
 
-          <Form.Group controlId="addPassword" className="mb-3">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
+          <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              type="submit"
               disabled={isLoading}
-            />
-          </Form.Group>
-
-          <Button variant="success" type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Spinner size="sm" /> Adding…
-              </>
-            ) : (
-              <>
-                <FaUserPlus className="me-1" /> Add User
-              </>
-            )}
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
+              startIcon={
+                isLoading ? <CircularProgress size={20} /> : <PersonAddAlt1 />
+              }
+              size="large"
+              sx={{
+                px: 4,
+                py: 1.5,
+                borderRadius: 2,
+                boxShadow: "0 4px 14px 0 rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              {isLoading ? "Adding..." : "Add User"}
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Paper>
   );
 };
 
@@ -153,15 +343,45 @@ export default function UsersPage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState(null);
 
+  // Function to get a random pastel color based on string
+  const getAvatarColor = (str) => {
+    const colors = [
+      "#3f51b5",
+      "#f50057",
+      "#00bcd4",
+      "#4caf50",
+      "#ff9800",
+      "#9c27b0",
+      "#673ab7",
+      "#2196f3",
+      "#009688",
+      "#ff5722",
+    ];
+    // Check if str is null or undefined
+    if (!str) {
+      return colors[0]; // Return default color
+    }
+    const hash = str
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return colors[hash % colors.length];
+  };
+
+  // Function to get initials from name
+  const getInitials = (firstname, lastname, username) => {
+    if (firstname && lastname) {
+      return `${firstname[0]}${lastname[0]}`.toUpperCase();
+    } else if (username) {
+      return username.substring(0, 2).toUpperCase();
+    }
+    return "U";
+  };
+
   const fetchUsers = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await fetch("/api/users", {
-        //comment
-        //comments 2
-        //comments3
-        //comment4
         credentials: "include", // ← include session cookie
       });
       if (!response.ok) {
@@ -192,11 +412,13 @@ export default function UsersPage() {
     setDeleteError(null);
     setSuccessMessage("");
   };
+
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
     setUserToDelete(null);
     setDeleteError(null);
   };
+
   const handleConfirmDelete = async () => {
     if (!userToDelete) return;
     setDeleteLoading(true);
@@ -240,127 +462,431 @@ export default function UsersPage() {
   };
 
   return (
-    <Container className="py-4 py-md-5">
-      <Row className="mb-4 align-items-center justify-content-between">
-        <Col xs="auto">
-          <h1 className="h2 text-uppercase mb-0 fw-bold">Manage Users</h1>
-        </Col>
-      </Row>
-
-      {loading && (
-        <div className="text-center my-5">
-          <Spinner animation="border" />
-          <p className="mt-2">Loading Users...</p>
-        </div>
-      )}
-
-      {!loading && error && (
-        <Alert variant="danger" dismissible onClose={() => setError(null)}>
-          <strong>Error:</strong> {error}
-        </Alert>
-      )}
-
-      {successMessage && (
-        <Alert
-          variant="success"
-          dismissible
-          onClose={() => setSuccessMessage("")}
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Paper
+          elevation={0}
+          sx={{
+            mb: 4,
+            p: 3,
+            borderRadius: 3,
+            background: "black",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          }}
         >
-          {successMessage}
-        </Alert>
-      )}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Avatar
+              sx={{
+                bgcolor: "white",
+                color: "black",
+                width: 48,
+                height: 48,
+                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <AdminPanelSettings fontSize="large" />
+            </Avatar>
+            <Typography variant="h4" component="h1" sx={{ fontWeight: "bold" }}>
+              Manage Users
+            </Typography>
+          </Box>
+          <Chip
+            label={`${users.length} Users`}
+            color="secondary"
+            sx={{
+              fontWeight: "bold",
+              fontSize: "0.9rem",
+              bgcolor: "rgb(255, 255, 255)",
+              color: "black",
+              "& .MuiChip-label": { px: 2 },
+            }}
+          />
+        </Paper>
 
-      {!loading && !error && (
-        <div className="mt-4">
-          {users.length > 0 ? (
-            <Table responsive hover className="align-middle">
-              <thead>
-                <tr className="border-bottom border-2">
-                  <th>ID</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Roles</th>
-                  <th className="text-end">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id} className="border-bottom">
-                    <td>{user.id}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.firstname || "-"}</td>
-                    <td>{user.lastname || "-"}</td>
-                    <td>
-                      {user.roles?.join(", ").replace("ROLE_", "") || "N/A"}
-                    </td>
-                    <td className="text-end">
-                      <Button
-                        variant="link"
-                        size="sm"
-                        className="p-1 text-decoration-none text-danger"
-                        onClick={() => handleDeleteClick(user)}
-                        disabled={deleteLoading && userToDelete?.id === user.id}
-                        title="Delete User"
-                      >
-                        {deleteLoading && userToDelete?.id === user.id ? (
-                          <Spinner as="span" animation="border" size="sm" />
-                        ) : (
-                          <FaTrashAlt size="1.1em" />
-                        )}
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) : (
-            <div className="text-center text-muted p-5 border rounded">
-              No users found in the database. Use the form below to add one.
-            </div>
-          )}
-        </div>
-      )}
+        {loading && (
+          <Fade in={loading}>
+            <Box
+              sx={{
+                textAlign: "center",
+                my: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <CircularProgress size={60} thickness={4} />
+              <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
+                Loading Users...
+              </Typography>
+            </Box>
+          </Fade>
+        )}
 
-      {!loading && <AddUserForm onUserAdded={handleUserAdded} />}
+        {!loading && error && (
+          <Fade in={!!error}>
+            <Alert
+              severity="error"
+              onClose={() => setError(null)}
+              sx={{ mb: 3 }}
+              variant="filled"
+              icon={<span>⚠️</span>}
+            >
+              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                Error
+              </Typography>
+              <Typography variant="body2">{error}</Typography>
+            </Alert>
+          </Fade>
+        )}
 
-      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {deleteError && <Alert variant="danger">Error: {deleteError}</Alert>}
-          Are you sure you want to delete user{" "}
-          <strong>
-            {userToDelete?.username} (ID: {userToDelete?.id})
-          </strong>
-          ? This action cannot be undone.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={handleCloseDeleteModal}
-            disabled={deleteLoading}
+        {successMessage && (
+          <Fade in={!!successMessage}>
+            <Alert
+              severity="success"
+              onClose={() => setSuccessMessage("")}
+              sx={{ mb: 3 }}
+              variant="filled"
+              icon={<span>✅</span>}
+            >
+              <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                Success
+              </Typography>
+              <Typography variant="body2">{successMessage}</Typography>
+            </Alert>
+          </Fade>
+        )}
+
+        {!loading && !error && (
+          <Fade in={!loading && !error}>
+            <Box sx={{ mt: 4 }}>
+              {users.length > 0 ? (
+                <Paper
+                  elevation={3}
+                  sx={{ borderRadius: 2, overflow: "hidden" }}
+                >
+                  <TableContainer sx={{ maxHeight: "calc(100vh - 350px)" }}>
+                    <Table stickyHeader sx={{ minWidth: 650 }}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell
+                            sx={{
+                              fontWeight: "bold",
+                              bgcolor: alpha(theme.palette.primary.main, 0.08),
+                            }}
+                          >
+                            User
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: "bold",
+                              bgcolor: alpha(theme.palette.primary.main, 0.08),
+                            }}
+                          >
+                            Email
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: "bold",
+                              bgcolor: alpha(theme.palette.primary.main, 0.08),
+                            }}
+                          >
+                            Name
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: "bold",
+                              bgcolor: alpha(theme.palette.primary.main, 0.08),
+                            }}
+                          >
+                            Roles
+                          </TableCell>
+                          <TableCell
+                            align="right"
+                            sx={{
+                              fontWeight: "bold",
+                              bgcolor: alpha(theme.palette.primary.main, 0.08),
+                            }}
+                          >
+                            Actions
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {users.map((user) => (
+                          <TableRow
+                            key={user.id}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                              "&:hover": {
+                                backgroundColor: alpha(
+                                  theme.palette.primary.main,
+                                  0.04
+                                ),
+                                transition: "background-color 0.2s ease",
+                              },
+                              transition: "background-color 0.2s ease",
+                            }}
+                          >
+                            <TableCell>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 2,
+                                }}
+                              >
+                                <Avatar
+                                  sx={{
+                                    bgcolor: getAvatarColor(user.username),
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  {getInitials(
+                                    user.firstname,
+                                    user.lastname,
+                                    user.username
+                                  )}
+                                </Avatar>
+                                <Box>
+                                  <Typography
+                                    variant="subtitle2"
+                                    sx={{ fontWeight: "bold" }}
+                                  >
+                                    {user.username}
+                                  </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                  >
+                                    ID: {user.id}
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">
+                                {user.email}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">
+                                {user.firstname && user.lastname
+                                  ? `${user.firstname} ${user.lastname}`
+                                  : "-"}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              {user.roles?.length > 0 ? (
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    gap: 0.5,
+                                    flexWrap: "wrap",
+                                  }}
+                                >
+                                  {user.roles.map((role) => (
+                                    <Chip
+                                      key={role}
+                                      label={role.replace("ROLE_", "")}
+                                      size="small"
+                                      color={
+                                        role.includes("ADMIN")
+                                          ? "secondary"
+                                          : "primary"
+                                      }
+                                      variant={
+                                        role.includes("ADMIN")
+                                          ? "filled"
+                                          : "outlined"
+                                      }
+                                      sx={{
+                                        fontWeight: role.includes("ADMIN")
+                                          ? "bold"
+                                          : "normal",
+                                        fontSize: "0.7rem",
+                                      }}
+                                    />
+                                  ))}
+                                </Box>
+                              ) : (
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
+                                  N/A
+                                </Typography>
+                              )}
+                            </TableCell>
+                            <TableCell align="right">
+                              <Tooltip title="Delete User" arrow>
+                                <span>
+                                  <IconButton
+                                    color="error"
+                                    onClick={() => handleDeleteClick(user)}
+                                    disabled={
+                                      deleteLoading &&
+                                      userToDelete?.id === user.id
+                                    }
+                                    aria-label="Delete User"
+                                    size="small"
+                                    sx={{
+                                      bgcolor: alpha(
+                                        theme.palette.error.main,
+                                        0.1
+                                      ),
+                                      "&:hover": {
+                                        bgcolor: alpha(
+                                          theme.palette.error.main,
+                                          0.2
+                                        ),
+                                      },
+                                    }}
+                                  >
+                                    {deleteLoading &&
+                                    userToDelete?.id === user.id ? (
+                                      <CircularProgress
+                                        size={20}
+                                        color="error"
+                                      />
+                                    ) : (
+                                      <Delete fontSize="small" />
+                                    )}
+                                  </IconButton>
+                                </span>
+                              </Tooltip>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Paper>
+              ) : (
+                <Paper
+                  elevation={2}
+                  sx={{
+                    textAlign: "center",
+                    color: "text.secondary",
+                    p: 5,
+                    borderRadius: 2,
+                    border: "1px dashed rgba(0, 0, 0, 0.12)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 2,
+                  }}
+                >
+                  <Avatar
+                    sx={{
+                      width: 60,
+                      height: 60,
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      color: theme.palette.primary.main,
+                    }}
+                  >
+                    <People fontSize="large" />
+                  </Avatar>
+                  <Typography variant="h6" color="text.primary">
+                    No Users Found
+                  </Typography>
+                  <Typography variant="body2">
+                    No users found in the database. Use the form below to add
+                    one.
+                  </Typography>
+                </Paper>
+              )}
+            </Box>
+          </Fade>
+        )}
+
+        {!loading && <AddUserForm onUserAdded={handleUserAdded} />}
+
+        <Dialog
+          open={showDeleteModal}
+          onClose={handleCloseDeleteModal}
+          aria-labelledby="delete-dialog-title"
+          aria-describedby="delete-dialog-description"
+          PaperProps={{
+            sx: {
+              borderRadius: 2,
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+            },
+          }}
+        >
+          <DialogTitle
+            id="delete-dialog-title"
+            sx={{
+              bgcolor: alpha(theme.palette.error.main, 0.05),
+              pb: 1,
+            }}
           >
-            Cancel
-          </Button>
-          <Button
-            variant="danger"
-            onClick={handleConfirmDelete}
-            disabled={deleteLoading}
-          >
-            {deleteLoading ? (
-              <>
-                <Spinner size="sm" /> Deleting…
-              </>
-            ) : (
-              "Delete User"
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Delete color="error" />
+              <Typography
+                variant="h6"
+                component="span"
+                sx={{ fontWeight: "bold" }}
+              >
+                Confirm Deletion
+              </Typography>
+            </Box>
+          </DialogTitle>
+          <DialogContent sx={{ pt: 2 }}>
+            {deleteError && (
+              <Fade in={!!deleteError}>
+                <Alert severity="error" sx={{ mb: 2 }} variant="filled">
+                  Error: {deleteError}
+                </Alert>
+              </Fade>
             )}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Container>
+            <DialogContentText id="delete-dialog-description">
+              Are you sure you want to delete user{" "}
+              <Box
+                component="span"
+                sx={{
+                  fontWeight: "bold",
+                  color: "error.main",
+                  display: "inline-block",
+                }}
+              >
+                {userToDelete?.username} (ID: {userToDelete?.id})
+              </Box>
+              ? This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ px: 3, pb: 3 }}>
+            <Button
+              onClick={handleCloseDeleteModal}
+              disabled={deleteLoading}
+              color="inherit"
+              variant="outlined"
+              sx={{ borderRadius: 2 }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirmDelete}
+              disabled={deleteLoading}
+              color="error"
+              variant="contained"
+              startIcon={
+                deleteLoading ? <CircularProgress size={20} /> : <Delete />
+              }
+              sx={{
+                borderRadius: 2,
+                boxShadow: "0 4px 14px 0 rgba(244, 67, 54, 0.4)",
+              }}
+            >
+              {deleteLoading ? "Deleting..." : "Delete User"}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Container>
+    </ThemeProvider>
   );
 }

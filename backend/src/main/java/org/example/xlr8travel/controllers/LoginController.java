@@ -2,6 +2,7 @@ package org.example.xlr8travel.controllers;
 
 import org.example.xlr8travel.dto.LoginRequest;
 import org.example.xlr8travel.dto.LoginResponse;
+import org.example.xlr8travel.services.MetricsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,9 +28,11 @@ public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final AuthenticationManager authenticationManager;
+    private final MetricsService metricsService;
 
-    public LoginController(AuthenticationManager authenticationManager) {
+    public LoginController(AuthenticationManager authenticationManager, MetricsService metricsService) {
         this.authenticationManager = authenticationManager;
+        this.metricsService = metricsService;
     }
 
     @PostMapping("/login")
@@ -52,6 +55,11 @@ public class LoginController {
             // *** Explicit session save REMOVED ***
 
             String username = authentication.getName();
+
+            // Update last login time
+            metricsService.updateLastLogin(username);
+            log.info("Updated last login time for user: {}", username);
+
             log.info("Returning successful response for user: {}", username);
             return ResponseEntity.ok(new LoginResponse("Login successful", null, username));
 

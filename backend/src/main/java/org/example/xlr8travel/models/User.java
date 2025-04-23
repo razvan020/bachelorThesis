@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 @Data
 @NoArgsConstructor
@@ -45,6 +46,12 @@ public class User implements UserDetails {
     @Column(name = "profile_picture_content_type", length = 50)
     private String profilePictureContentType;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -52,7 +59,6 @@ public class User implements UserDetails {
             authorities.add(new SimpleGrantedAuthority(role.toString()));
         return authorities;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

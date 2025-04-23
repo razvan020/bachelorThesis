@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        // Set createdAt field if it's a new user (no ID)
+        if (user.getId() == null && user.getCreatedAt() == null) {
+            user.setCreatedAt(LocalDateTime.now());
+        }
         userRepository.save(user);
         return user;
     }
@@ -34,7 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        List<User> users = userRepository.findByUsername(username);
+        return users.isEmpty() ? null : users.get(0);
     }
 
     @Override
@@ -72,6 +78,9 @@ public class UserServiceImpl implements UserService {
 
         // Perform any additional validation if needed
 
+        // Set createdAt field to current time
+        user.setCreatedAt(LocalDateTime.now());
+
         // Save the user to the database
         userRepository.save(user);
     }
@@ -90,9 +99,10 @@ public class UserServiceImpl implements UserService {
                     HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Only image files allowed"
             );
 
-        User u = userRepository.findByUsername(username);
-        if (u == null)
+        List<User> users = userRepository.findByUsername(username);
+        if (users.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        User u = users.get(0);
 
         try {
             u.setProfilePicture(file.getBytes());
@@ -107,17 +117,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserAvatar getProfilePicture(String username) {
-        User u = userRepository.findByUsername(username);
-        if (u == null || u.getProfilePicture() == null)
+        List<User> users = userRepository.findByUsername(username);
+        if (users.isEmpty() || users.get(0).getProfilePicture() == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No avatar");
+        User u = users.get(0);
         return new UserAvatar(u.getProfilePicture(), u.getProfilePictureContentType());
     }
 
     @Override
     public void changePassword(String username, String oldPwd, String newPwd) {
-        User u = userRepository.findByUsername(username);
-        if (u == null)
+        List<User> users = userRepository.findByUsername(username);
+        if (users.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        User u = users.get(0);
         if (!passwordEncoder.matches(oldPwd, u.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong current password");
         u.setPassword(passwordEncoder.encode(newPwd));
