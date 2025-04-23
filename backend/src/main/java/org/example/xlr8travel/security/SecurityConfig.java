@@ -71,7 +71,7 @@ public class SecurityConfig {
 
                         // Static & public pages
                         .requestMatchers("/", "/index", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
-
+                        .requestMatchers("/api/user/**").authenticated()
                         // Fallback
                         .anyRequest().authenticated()
                 )

@@ -26,8 +26,8 @@ export default function NavBarComponent() {
     baseLinks.push({ href: "/dashboard", label: "Dashboard" });
   }
 
-  // pick avatar URL or fallback
-  const avatarSrc = user?.profileImage || "/avatarSrc.png";
+  // If authenticated, avatar comes from the blob endpoint; otherwise fallback
+  const avatarSrc = isAuthenticated ? "/api/user/me/avatar" : "/avatarSrc.png";
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
@@ -38,7 +38,7 @@ export default function NavBarComponent() {
 
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-between">
-          {/* Left/Center Links */}
+          {/* Left / Center Links */}
           <Nav className="mx-auto">
             {baseLinks.map((link) => (
               <Nav.Link
@@ -57,7 +57,7 @@ export default function NavBarComponent() {
           <Nav className="align-items-center">
             {isAuthenticated ? (
               <>
-                {/* cart for non-admins */}
+                {/* Shopping cart for non-admins */}
                 {!isAdmin && (
                   <Nav.Link
                     as={Link}
@@ -84,6 +84,9 @@ export default function NavBarComponent() {
                 >
                   <Image
                     src={avatarSrc}
+                    onError={(e) => {
+                      e.currentTarget.src = "/avatarSrc.png";
+                    }}
                     roundedCircle
                     width={30}
                     height={30}
@@ -91,7 +94,7 @@ export default function NavBarComponent() {
                   />
                 </Nav.Link>
 
-                {/* Logout */}
+                {/* Logout button */}
                 <Button variant="outline-light" size="sm" onClick={logout}>
                   Log Out
                 </Button>

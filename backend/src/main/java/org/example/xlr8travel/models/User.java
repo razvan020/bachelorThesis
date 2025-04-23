@@ -25,7 +25,10 @@ public class User implements UserDetails {
     private int age;
     private String gender; // enum?
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
     private LocalDate dob; // date of birth
     //  @Enumerated(EnumType.ORDINAL) // ?
     private Account_Status accountStatus; //
@@ -34,6 +37,13 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     //private Set<String> roles = new HashSet<>();
     private List<Role> roles = new ArrayList<>(); // cand un user are mai multe roluri
+
+    @Lob
+    @Column(name = "profile_picture", columnDefinition = "BLOB")
+    private byte[] profilePicture;
+
+    @Column(name = "profile_picture_content_type", length = 50)
+    private String profilePictureContentType;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

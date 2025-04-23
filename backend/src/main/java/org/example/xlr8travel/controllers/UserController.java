@@ -1,17 +1,18 @@
 package org.example.xlr8travel.controllers;
 
 import org.example.xlr8travel.dto.UserDTO;
+import org.example.xlr8travel.dto.PasswordChangeDTO;
 import org.example.xlr8travel.models.User;
+import org.example.xlr8travel.services.UserAvatar;
 import org.example.xlr8travel.services.UserService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -58,6 +59,37 @@ public class UserController {
             log.error("Error fetching details for user {}: {}", username, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PostMapping(path = "/me/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> uploadAvatar(
+            @AuthenticationPrincipal UserDetails ud,
+            @RequestPart("file") MultipartFile file
+    ) {
+        if (ud == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        userService.updateProfilePicture(ud.getUsername(), file);
+        return ResponseEntity.ok().build();
+    }
+
+    // 3) download avatar
+    @GetMapping("/me/avatar")
+    public ResponseEntity<byte[]> downloadAvatar(@AuthenticationPrincipal UserDetails ud) {
+        if (ud == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        UserAvatar av = userService.getProfilePicture(ud.getUsername());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(av.contentType()))
+                .body(av.data());
+    }
+
+    // 4) change password
+    @PostMapping("/me/change-password")
+    public ResponseEntity<Void> changePassword(
+            @AuthenticationPrincipal UserDetails ud,
+            @RequestBody PasswordChangeDTO dto
+    ) {
+        if (ud == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        userService.changePassword(ud.getUsername(), dto.oldPassword(), dto.newPassword());
+        return ResponseEntity.ok().build();
     }
 
     // Add other endpoints here specific to the logged-in user modifying THEIR OWN profile, etc.

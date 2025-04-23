@@ -116,7 +116,7 @@ public class DataLoader implements CommandLineRunner {
 // --------------------------------------------------------------
 
        // Flight flight1 = new Flight("xlr8Travel", LocalTime.of(3,30), LocalTime.of(6,30), "A", "1", LocalDateTime.now());
-        LocalDate date = LocalDate.of(2025, 4, 17);
+        LocalDate date = LocalDate.of(2025, 4, 28);
         Flight flight1 = new Flight(null, "Flight 101", LocalTime.of(3, 30), LocalTime.of(6, 30),
                 "LAX", "LHR", date, date, "A", "1", LocalDateTime.now(),
                 airline, // Pass the airline object if constructor requires non-null
