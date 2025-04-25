@@ -442,6 +442,7 @@ export default function UsersPage() {
         method: "DELETE",
         credentials: "include", // ← include session cookie
       });
+
       if (!response.ok) {
         let errorMsg = `HTTP error! status: ${response.status}`;
         try {

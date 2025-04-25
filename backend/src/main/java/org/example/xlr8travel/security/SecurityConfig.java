@@ -2,6 +2,7 @@ package org.example.xlr8travel.security;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +42,9 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
+
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
 
     public SecurityConfig(UserDetailsService userDetailsService, 
                          JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -105,7 +109,7 @@ public class SecurityConfig {
                         .successHandler(oauth2AuthenticationSuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             // Redirect to frontend with error
-                            String redirectUrl = "http://localhost:3000/login?error=true";
+                            String redirectUrl = frontendUrl + "/login?error=true";
                             response.sendRedirect(redirectUrl);
                         })
                 )
@@ -132,7 +136,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Frontend origin
+        configuration.setAllowedOrigins(List.of(frontendUrl)); // Frontend origin
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));

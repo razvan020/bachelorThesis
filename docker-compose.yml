@@ -26,6 +26,8 @@ services:
       JWT_SECRET: "${JWT_SECRET}"
       GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
       GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+      APP_FRONTEND_URL: "http://localhost:3000"
+      APP_OAUTH2_REDIRECT_BASE_URL: "http://localhost:8080"
 
 
   frontend:

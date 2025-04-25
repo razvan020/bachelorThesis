@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private static final Logger logger = LoggerFactory.getLogger(OAuth2AuthenticationSuccessHandler.class);
     private final JwtUtils jwtUtils;
+
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     public OAuth2AuthenticationSuccessHandler(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
@@ -37,7 +41,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // Redirect to the frontend URL
-        String targetUrl = "http://localhost:3000/login";
+        String targetUrl = frontendUrl + "/login";
 
         // Generate JWT token
         String token = jwtUtils.generateJwtToken(authentication);
