@@ -7122,3 +7122,6 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or u
 	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194)
 	... 201 common frames omitted
 
+2025-04-25 12:50:03.603  INFO [NONE] 8520 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-25 12:50:03.607  INFO [NONE] 8520 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-25 12:50:03.610  INFO [NONE] 8520 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

@@ -21,10 +21,10 @@ pipeline {
         // Assume you've stored your keys in Jenkins as "stripe-pk" and "stripe-sk"
         withCredentials([
           string(credentialsId: 'stripe-pk', variable: 'PK'),
-          string(credentialsId: 'stripe-sk', variable: 'SK')
+          string(credentialsId: 'stripe-sk', variable: 'SK'),
           string(credentialsId: 'jwt-sk', variable: 'JWT'),
           string(credentialsId: 'gclientid', variable: 'GCL'),
-          string(credentialsId: 'g-sk', variable: 'GSK'),
+          string(credentialsId: 'g-sk', variable: 'GSK')
 
 
         ]) {
