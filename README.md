@@ -14,7 +14,7 @@ Key features:
 
   Admin functionalities
   
-    • Be able to view and manage user accounts, including creating new ones, changing user information or deleting them as needed.
+    •Be able to view and manage user accounts, including creating new ones, changing user information or deleting them as needed.
     •Can add, update or delete flight information, such as flight schedules, available seats and facilities on each route.
     •Can upload and manage flight-related resources like aircraft photos, in-flight entertainment options and advertising materials.
 
@@ -25,3 +25,19 @@ DEMO Mock-up of our web application
  Trello Board
  
 https://trello.com/invite/b/kQ2tyU5Q/ATTI248fc4c2decb128e91f74c6d2789b0ab8E70F516/xlr8-travel-project
+
+
+
+
+How to run it locally:
+
+    Docker desktop for DB:
+    • docker compose -f docker-compose.db.yml up -d
+
+    Backend:
+    • mvn "-Dspring-boot.run.profiles=dev" spring-boot:run
+
+    Frontend:
+    • npm install
+    • npm run dev
+

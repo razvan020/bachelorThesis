@@ -34,6 +34,9 @@ public class Flight {
     private String gate;
     private LocalDateTime lastUpdated; // last updated time
     private BigDecimal price;
+    private int totalSeats = 180; // default value
+    private int availableSeats = 180; // default value
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JsonIgnore

@@ -122,9 +122,14 @@ function FlightAvailabilityContent() {
     setError(null); // Clear general page errors
 
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch("/api/cart/add", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ flightId }),
         credentials: "include",
       });

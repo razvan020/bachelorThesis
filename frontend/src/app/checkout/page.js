@@ -1,19 +1,21 @@
+// app/checkout/page.js
 "use client";
-import React, { useState, useEffect, Suspense, useCallback } from "react";
-import { useRouter } from "next/navigation"; // For redirecting after success
+
+import React, { useState, useEffect, useCallback, Suspense } from "react";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup"; // For order summary
+import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import { useAuth } from "@/contexts/AuthContext";
 
-// Helper function (same as cart page)
+// Helper for date/time formatting
 const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
   const datePart = isoDateStr
     ? new Date(isoDateStr + "T00:00:00Z").toLocaleDateString("en-GB", {
@@ -25,10 +27,10 @@ const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
     : null;
   const timePart = isoTimeStr || "";
   if (datePart && timePart) return `${datePart} ${timePart}`;
-  if (isoDateStr && isoDateStr.includes("T")) {
+  if (isoDateStr.includes("T")) {
     try {
       const d = new Date(isoDateStr);
-      if (!isNaN(d.getTime()))
+      if (!isNaN(d))
         return d.toLocaleString("en-GB", {
           year: "numeric",
           month: "2-digit",
@@ -37,61 +39,54 @@ const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
           minute: "2-digit",
           hour12: false,
         });
-    } catch (e) {}
+    } catch {}
   }
-  if (datePart) return datePart;
-  return "N/A";
+  return datePart || "N/A";
 };
 
-// --- Main Component Content ---
 function CheckoutPageContent() {
+  const stripe = useStripe();
+  const elements = useElements();
+  const { fetchCartCount } = useAuth();
+
+  // Cart state
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loadingCart, setLoadingCart] = useState(true);
-  const [error, setError] = useState(null); // For fetch/general errors
-  const { fetchCartCount } = useAuth(); // To update navbar count after checkout
+  const [error, setError] = useState(null);
 
-  // Billing Form State
+  // Billing form
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-  // --- WARNING: Storing raw card details in state is NOT secure for production! ---
-  // --- Use a Payment Gateway (Stripe Elements, etc.) instead ---
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState(""); // Example: MM/YY
-  const [cvv, setCvv] = useState("");
-  // --- End Warning ---
 
-  // Submission State
+  // Payment state
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
 
-  const router = useRouter();
-
-  // Fetch cart data on load
+  // Load the cart
   const fetchCart = useCallback(async () => {
     setLoadingCart(true);
     setError(null);
-    setPaymentSuccess(false); // Reset success on load
     try {
-      const response = await fetch(`/api/cart`, {
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/cart", {
         credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
-      const data = await response.json();
-      if (!response.ok)
-        throw new Error(
-          data.error || `Error fetching cart (${response.status})`
-        );
-      setCartItems(data.items || []);
-      setTotalPrice(data.totalPrice || 0);
-      if (!data.items || data.items.length === 0) {
-        setError("Your cart is empty. Please add flights before checking out.");
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || res.statusText);
+      setCartItems(body.items || []);
+      setTotalPrice(body.totalPrice || 0);
+      if (!body.items?.length) {
+        setError("Your cart is empty. Add flights before checking out.");
       }
     } catch (err) {
-      setError(err.message || "Failed to load cart data.");
-      setCartItems([]);
-      setTotalPrice(0);
+      setError(err.message);
     } finally {
       setLoadingCart(false);
     }
@@ -101,59 +96,66 @@ function CheckoutPageContent() {
     fetchCart();
   }, [fetchCart]);
 
-  // Handle Checkout Submission
-  const handleConfirmPurchase = async (event) => {
-    event.preventDefault();
+  // Handle the Stripe payment flow
+  const handleConfirmPurchase = async (e) => {
+    e.preventDefault();
     setIsProcessing(true);
-    setError(null);
     setPaymentError(null);
-    setPaymentSuccess(false);
 
-    // --- WARNING: Replace this with Payment Gateway tokenization ---
-    // In a real app, you would get a paymentMethodId or token from Stripe Elements/etc. here
-    // instead of using the raw card details from state.
-    const checkoutData = {
-      customerName,
-      customerEmail,
-      // DO NOT SEND RAW CARD DETAILS TO YOUR BACKEND
-      // Instead, send a token/ID generated by the payment provider's library
-      paymentMethodToken: `tok_simulated_${Date.now()}`, // Example simulated token
-      // You might also send cart summary/total for server-side validation
-      // expectedTotal: totalPrice,
-      // items: cartItems.map(item => ({ flightId: item.id, quantity: item.quantity }))
-    };
-    // --- End Warning ---
+    if (!stripe || !elements) {
+      setPaymentError("Stripe has not loaded yet.");
+      setIsProcessing(false);
+      return;
+    }
 
     try {
-      const response = await fetch(`/api/checkout/confirm`, {
+      // 1) Create PaymentIntent
+      const token = localStorage.getItem("token");
+      const intentRes = await fetch("/api/checkout/create-payment-intent", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", // Important for session cart clearing
-        body: JSON.stringify(checkoutData),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: Math.round(totalPrice * 100),
+          email: customerEmail,
+        }),
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || `Checkout failed (${response.status})`);
+      const intentBody = await intentRes.json();
+      if (!intentRes.ok) {
+        throw new Error(intentBody.error || "Failed to create payment intent");
+      }
+      const clientSecret = intentBody.clientSecret;
+      if (!clientSecret) {
+        throw new Error("Payment intent did not return a clientSecret");
       }
 
-      // --- Purchase Successful ---
-      setPaymentSuccess(true);
-      setOrderNumber(data.orderNumber || ""); // Get order number from response
-      setSuccessMessage(data.message || "Purchase confirmed!"); // Display success message
-      fetchCartCount(); // Update navbar cart count (should be 0)
-      // Optionally redirect after delay
-      // setTimeout(() => router.push('/order-confirmation?order=' + data.orderNumber), 3000);
+      // 2) Confirm the card payment
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: { name: customerName, email: customerEmail },
+        },
+      });
+
+      if (result.error) throw result.error;
+      if (result.paymentIntent.status === "succeeded") {
+        setPaymentSuccess(true);
+        setOrderNumber(result.paymentIntent.id);
+        fetchCartCount();
+      } else {
+        throw new Error("Payment did not succeed.");
+      }
     } catch (err) {
       console.error("Checkout failed:", err);
-      setPaymentError(err.message || "Checkout failed. Please try again.");
+      setPaymentError(err.message);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // --- Render Logic ---
+  // Render loading, error, or the form
   if (loadingCart) {
     return (
       <Container className="text-center p-5">
@@ -162,17 +164,14 @@ function CheckoutPageContent() {
       </Container>
     );
   }
-
-  // Show generic error or empty cart message before rendering form
-  if (error) {
+  if (error && !paymentSuccess) {
     return (
       <Container className="py-5">
         <Alert variant="danger">{error}</Alert>
       </Container>
     );
   }
-  if (cartItems.length === 0 && !paymentSuccess) {
-    // Don't show empty message if payment just succeeded
+  if (!cartItems.length && !paymentSuccess) {
     return (
       <Container className="py-5 text-center">
         <Alert variant="info">
@@ -188,24 +187,16 @@ function CheckoutPageContent() {
         <h1 className="display-5 text-uppercase fw-bold">Checkout</h1>
       </header>
 
-      {/* Show success message after purchase */}
-      {paymentSuccess && (
+      {paymentSuccess ? (
         <Alert variant="success">
           <h4>Purchase Successful!</h4>
-          <p>{successMessage}</p>
-          {orderNumber && (
-            <p>
-              Your Order Number: <strong>{orderNumber}</strong>
-            </p>
-          )}
+          <p>Your payment (ID: {orderNumber}) succeeded.</p>
           <hr />
           <Link href="/">Return Home</Link>
         </Alert>
-      )}
-
-      {/* Show checkout form only if purchase isn't completed */}
-      {!paymentSuccess && (
+      ) : (
         <Row className="justify-content-center">
+          {/* Order Summary */}
           <Col lg={7} md={8}>
             <Card className="shadow-sm mb-4">
               <Card.Header as="h3" className="h5 text-center py-3">
@@ -222,7 +213,7 @@ function CheckoutPageContent() {
                         {item.flightName} ({item.code || item.id})
                       </div>
                       <small className="text-muted d-block">
-                        {item.origin} &rarr; {item.destination}
+                        {item.origin} → {item.destination}
                       </small>
                       <small className="text-muted d-block">
                         Depart:{" "}
@@ -233,7 +224,7 @@ function CheckoutPageContent() {
                       </small>
                     </div>
                     <span className="text-nowrap fw-bold ms-3">
-                      {item.quantity} x ${item.price?.toFixed(2)}
+                      {item.quantity} x ${item.price.toFixed(2)}
                     </span>
                   </ListGroup.Item>
                 ))}
@@ -244,6 +235,8 @@ function CheckoutPageContent() {
               </ListGroup>
             </Card>
           </Col>
+
+          {/* Billing & Stripe Element */}
           <Col lg={5} md={8}>
             <Card className="shadow-sm">
               <Card.Header as="h3" className="h5 text-center py-3">
@@ -253,8 +246,8 @@ function CheckoutPageContent() {
                 {paymentError && (
                   <Alert
                     variant="danger"
-                    onClose={() => setPaymentError(null)}
                     dismissible
+                    onClose={() => setPaymentError(null)}
                   >
                     {paymentError}
                   </Alert>
@@ -281,62 +274,21 @@ function CheckoutPageContent() {
                     />
                   </Form.Group>
 
-                  {/* --- Payment Section - Replace with Payment Gateway Element --- */}
-                  <h5 className="mt-4 mb-3 fs-6">
-                    Payment Details (Simulation Only)
-                  </h5>
-                  <Alert variant="warning" className="small">
-                    <strong className="d-block mb-1">Security Warning:</strong>
-                    Do not enter real credit card details here. This form is for
-                    demonstration only. Use a secure payment provider like
-                    Stripe Elements in production.
-                  </Alert>
-                  <Form.Group className="mb-3" controlId="cardNumber">
-                    <Form.Label>Card Number</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="xxxx xxxx xxxx xxxx"
-                      value={cardNumber}
-                      onChange={(e) => setCardNumber(e.target.value)}
-                      required
-                      disabled={isProcessing}
-                    />
-                  </Form.Group>
-                  <Row>
-                    <Col>
-                      <Form.Group className="mb-3" controlId="expiryDate">
-                        <Form.Label>Expiry (MM/YY)</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="MM/YY"
-                          value={expiryDate}
-                          onChange={(e) => setExpiryDate(e.target.value)}
-                          required
-                          disabled={isProcessing}
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col>
-                      <Form.Group className="mb-3" controlId="cvv">
-                        <Form.Label>CVV</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="123"
-                          value={cvv}
-                          onChange={(e) => setCvv(e.target.value)}
-                          required
-                          disabled={isProcessing}
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  {/* --- End Payment Section --- */}
+                  <h5 className="mt-4 mb-3 fs-6">Card Details</h5>
+                  <CardElement
+                    options={{
+                      style: {
+                        base: { fontSize: "16px", color: "#424770" },
+                        invalid: { color: "#9e2146" },
+                      },
+                    }}
+                  />
 
                   <div className="d-grid mt-4">
                     <Button
                       variant="primary"
                       type="submit"
-                      disabled={isProcessing || cartItems.length === 0}
+                      disabled={!stripe || isProcessing}
                     >
                       {isProcessing ? (
                         <>
@@ -357,7 +309,6 @@ function CheckoutPageContent() {
   );
 }
 
-// --- Main Page Component Wrapper ---
 export default function CheckoutPage() {
   return (
     <Suspense
@@ -371,10 +322,3 @@ export default function CheckoutPage() {
     </Suspense>
   );
 }
-
-// Add required CSS if needed
-/*
-.cart-background { ... } // Define if needed
-.checkout-container { ... } // Define if needed
-.order-summary-item { ... } // Use ListGroup instead
-*/

@@ -1,9 +1,13 @@
 package org.example.xlr8travel.security;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,11 +16,19 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 // Import CORS classes
 import org.springframework.web.cors.CorsConfiguration;
@@ -31,72 +43,96 @@ import java.util.List;
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService; // Your DB-backed UserDetailsService
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
+
+    public SecurityConfig(@Qualifier("userRepoUserDetailsService") UserDetailsService userDetailsService,
+                         JwtAuthenticationFilter jwtAuthenticationFilter,
+                         OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
+                         @Lazy CustomOAuth2UserService customOAuth2UserService) {
         this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply CORS config from bean
-                .csrf(csrf -> csrf.disable()) // Disable CSRF (common for APIs using cookies/sessions with careful CORS)
-
-                // *** Configure Security Context to auto-save if changed ***
-                .securityContext((context) -> context
-                        .requireExplicitSave(false) // Ensure context is saved automatically after login sets it
-                )
-
                 .httpBasic(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Actuator
                         .requestMatchers(EndpointRequest.to("prometheus"))
-                        .hasRole("ACTUATOR"))
-                // *** End Security Context config ***
+                        .hasRole("ACTUATOR")
 
-                .authorizeHttpRequests(auth -> auth
-                        // API Endpoints Security
-                        .requestMatchers("/api/login","/api/signup", "/api/register").permitAll() // Public API endpoints
-                        .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll() // Flight search is public
-                        .requestMatchers("/api/cart/**").authenticated() // Requires login
-                        .requestMatchers("/api/checkout/**").authenticated() // Requires login
-                        .requestMatchers("/api/orders/**").authenticated() // Requires login
-                        .requestMatchers("/api/user/me").authenticated() // Requires login (for session check)
-                        .requestMatchers(HttpMethod.POST, "/api/users","/api/admin/**").hasRole("ADMIN")// Example admin restriction
-                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")// Example admin restriction
+                        // Public API endpoints
+                        .requestMatchers("/api/login", "/api/signup", "/api/register", "/api/token/refresh").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll()
 
-                        // Web Page Security (adjust if mixing web pages and API)
-                        .requestMatchers("/", "/index", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll() // Public web resources
+                        // OAuth2 endpoints
+                        .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
 
-                        // Secure any other request
+                        // STRIPE: allow unauthenticated access to payment‐intent + webhook
+                        .requestMatchers(HttpMethod.POST, "/api/checkout/create-payment-intent").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/checkout/webhook").permitAll()
+
+                        // Everything else under /api/checkout requires auth (if you have more)
+                        .requestMatchers("/api/checkout/**").authenticated()
+
+                        // Cart, orders, user‐info remain protected
+                        .requestMatchers("/api/cart/**").authenticated()
+                        .requestMatchers("/api/orders/**").authenticated()
+                        .requestMatchers("/api/user/me").authenticated()
+
+                        // Admin
+                        .requestMatchers(HttpMethod.POST, "/api/users", "/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+
+                        // Static & public pages
+                        .requestMatchers("/", "/index", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/api/user/**").authenticated()
+                        // Fallback
                         .anyRequest().authenticated()
                 )
-                // Configure how authentication failures are handled for API requests
-                .exceptionHandling(exceptions -> exceptions
-                                .defaultAuthenticationEntryPointFor(
-                                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), // Return 401 for /api/**
-                                        new AntPathRequestMatcher("/api/**")
-                                )
-                        // You could configure different entry points for non-API paths if needed
+                .exceptionHandling(ex -> ex
+                        .defaultAuthenticationEntryPointFor(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                                new AntPathRequestMatcher("/api/**")
+                        )
                 )
-                // Configure Form Login (if used for web pages)
-                .formLogin(form -> form
-                        .loginPage("/login") // Your web login page path
-                        .loginProcessingUrl("/perform_login") // Spring handles POST to this URL
-                        .defaultSuccessUrl("/?loginsuccess=true", true) // Redirect on web login success
-                        .failureUrl("/login?error=true") // Redirect on web login failure
-                        .permitAll() // Allow access to login page and processing URL
-                )
-                // Configure Logout
-                .logout(logout -> logout
-                        .logoutUrl("/api/logout") // API endpoint for logout
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            // Send simple OK status for API logout
-                            response.setStatus(HttpServletResponse.SC_OK);
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oauth2AuthenticationSuccessHandler)
+                        .failureHandler((request, response, exception) -> {
+                            // Redirect to frontend with error
+                            String redirectUrl = frontendUrl + "/login?error=true";
+                            response.sendRedirect(redirectUrl);
                         })
-                        .invalidateHttpSession(true) // Invalidate the backend session
-                        .deleteCookies("JSESSIONID") // Tell browser to delete the cookie
-                        .permitAll() // Allow access to logout URL
-                );
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
+                        .defaultSuccessUrl("/?loginsuccess=true", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/logout")
+                        .logoutSuccessHandler((req, res, auth) -> res.setStatus(HttpServletResponse.SC_OK))
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -105,12 +141,18 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Frontend origin
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed methods
-        configuration.setAllowedHeaders(List.of("*")); // Allow all headers
-        configuration.setAllowCredentials(true); // Allow cookies
+        configuration.setAllowedOrigins(List.of(frontendUrl)); // Frontend origin
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration); // Apply to API paths
+        source.registerCorsConfiguration("/api/**", configuration);
+        // Add these lines to include OAuth2 endpoints
+        source.registerCorsConfiguration("/oauth2/**", configuration);
+        source.registerCorsConfiguration("/login/oauth2/**", configuration);
+
         return source;
     }
 
@@ -133,5 +175,16 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean("actuatorUserDetailsService")
+    public UserDetailsService userDetailsServiceForActuator() {
+        UserDetails actuatorUser = User.builder()
+                .username("monitor")
+                .password(passwordEncoder().encode("monpass"))
+                .roles("ACTUATOR")
+                .build();
+
+        return new InMemoryUserDetailsManager(actuatorUser);
     }
 }

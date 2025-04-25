@@ -1,0 +1,8 @@
+# Example local configuration file
+# Copy this file to application-local.properties and add your sensitive keys
+# application-local.properties is gitignored and will not be committed
+
+# Stripe API key for local development
+stripe.secret-key=your_stripe_secret_key_here
+
+# You can override any other properties from application.properties or application-dev.properties here

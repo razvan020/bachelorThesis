@@ -22,17 +22,29 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/xlr8travel?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
+      STRIPE_SECRET_KEY: "${STRIPE_SECRET_KEY}"
+      JWT_SECRET: "${JWT_SECRET}"
+      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+      APP_FRONTEND_URL: "http://localhost:3000"
+      APP_OAUTH2_REDIRECT_BASE_URL: "http://localhost:8080"
+
 
   frontend:
     build:
       context: ./frontend
       args:
         # build‑time variable used by next.config.mjs
-        NEXT_PUBLIC_BACKEND_URL: http://backend:8080
+        NEXT_PUBLIC_BACKEND_URL: "http://backend:8080"
+        NEXT_PUBLIC_BACKEND_URL_GOOGLE: "http://localhost:8080"
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}"
     environment:
       # run‑time variables for both client and middleware.ts
-      NEXT_PUBLIC_BACKEND_URL: http://backend:8080
-      BACKEND_URL: http://backend:8080
+      NEXT_PUBLIC_BACKEND_URL: "${NEXT_PUBLIC_BACKEND_URL}"
+      NEXT_PUBLIC_BACKEND_URL_GOOGLE: "http://localhost:8080"
+      BACKEND_URL: "http://backend:8080"
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}"
+      JWT_SECRET: "${JWT_SECRET}"
     depends_on:
       - backend
     ports:

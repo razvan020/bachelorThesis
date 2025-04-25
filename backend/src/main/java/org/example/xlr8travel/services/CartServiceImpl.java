@@ -176,8 +176,8 @@ public class CartServiceImpl implements CartService {
             log.error("findOrCreateCartByUser called with null user or user without ID.");
             throw new IllegalArgumentException("User cannot be null and must have an ID to find or create a cart.");
         }
-        return cartRepository.findByUser(user).orElseGet(() -> {
-            log.info("No existing cart found for user {}, creating a new one.", user.getUsername());
+        return cartRepository.findByUserId(user.getId()).orElseGet(() -> {
+            log.info("No existing cart found for user {} with ID {}, creating a new one.", user.getUsername(), user.getId());
             Cart newCart = new Cart();
             newCart.setUser(user);
             newCart.setCartItems(new HashSet<>()); // Initialize the collection
@@ -191,7 +191,7 @@ public class CartServiceImpl implements CartService {
             log.error("findCartByUserOrThrow called with null user or user without ID.");
             throw new IllegalArgumentException("User cannot be null and must have an ID to find a cart.");
         }
-        return cartRepository.findByUser(user)
+        return cartRepository.findByUserId(user.getId())
                 .orElseThrow(() -> {
                     log.error("Cart not found for user {} (ID: {}) when it was expected.", user.getUsername(), user.getId());
                     // Consider if this should be an Internal Server Error or if an empty cart is plausible here.

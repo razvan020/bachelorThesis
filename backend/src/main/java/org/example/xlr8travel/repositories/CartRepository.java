@@ -18,6 +18,11 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
      */
     Optional<Cart> findByUser(User user);
 
-    // Optional: Find by User ID if needed
-    // Optional<Cart> findByUserId(Long userId);
+    /**
+     * Finds the Cart associated with a specific User ID.
+     *
+     * @param userId The ID of the user whose cart is to be found.
+     * @return An Optional containing the Cart if found, otherwise empty.
+     */
+    Optional<Cart> findByUserId(Long userId);
 }

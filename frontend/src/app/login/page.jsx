@@ -1,11 +1,6 @@
-// src/contexts/AuthContext.js
-// — make sure you’ve already replaced your AuthContext with the version that exposes:
-//    async login(username, password) { …fetch('/api/login', { credentials:'include' })… }
-//    …and that next.config.mjs rewrites '/api/*' to your Spring backend.
-
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaGoogle, FaFacebookF, FaSun, FaMoon } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,7 +11,44 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState(false);
+  const router = useRouter();
   const auth = useAuth();
+
+  // Check for OAuth tokens in URL on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const refreshToken = urlParams.get("refreshToken");
+
+    if (token && refreshToken) {
+      // Store tokens in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // Remove tokens from URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Redirect to home page or fetch user data
+      auth.handleOAuthLogin(token, refreshToken).then(() => router.push("/"));
+    }
+  }, []);
+
+  const handleOAuthSuccess = async (token, refreshToken) => {
+    try {
+      // Store tokens and update auth state
+      await auth.handleOAuthLogin(token, refreshToken);
+
+      // Remove tokens from URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Redirect to home page
+      router.push("/");
+    } catch (err) {
+      console.error("OAuth login error:", err);
+      setError("Failed to complete OAuth login");
+    }
+  };
 
   const handleToggleTheme = () => setDarkMode((m) => !m);
 
@@ -25,8 +57,7 @@ export default function LoginPage() {
     setError("");
     setIsLoading(true);
     try {
-      // auth.login does the POST /api/login with credentials: 'include',
-      // sets up user state and then router.push('/') on success.
+      // Use the existing auth.login function
       await auth.login(email, password);
     } catch (err) {
       console.error("Login error:", err);
@@ -34,6 +65,18 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    setOauthLoading(true);
+    // Redirect to Google OAuth endpoint
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/oauth2/authorization/google`;
+  };
+
+  const handleFacebookLogin = () => {
+    setOauthLoading(true);
+    // Redirect to Facebook OAuth endpoint
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/oauth2/authorization/facebook`;
   };
 
   // theme helpers
@@ -52,7 +95,10 @@ export default function LoginPage() {
     >
       <div className="container">
         <div className="row justify-content-center align-items-center">
-          <div className="mx-auto" style={{ maxWidth: "1000px", width: "100%" }}>
+          <div
+            className="mx-auto"
+            style={{ maxWidth: "1000px", width: "100%" }}
+          >
             <div
               className={`card flex-lg-row shadow-lg border-0 rounded-4 overflow-hidden ${cardBg} ${textColor}`}
             >
@@ -81,10 +127,12 @@ export default function LoginPage() {
                   </div>
                 )}
 
-                {/* Social Buttons (no-op) */}
+                {/* Social Buttons (now functional) */}
                 <div className="d-flex justify-content-between gap-3 mb-4">
                   <button
                     type="button"
+                    onClick={handleGoogleLogin}
+                    disabled={oauthLoading}
                     className={`btn ${
                       darkMode ? "btn-outline-light" : "btn-outline-secondary"
                     } w-100 d-flex align-items-center justify-content-center gap-2`}
@@ -93,6 +141,8 @@ export default function LoginPage() {
                   </button>
                   <button
                     type="button"
+                    onClick={handleFacebookLogin}
+                    disabled={oauthLoading}
                     className={`btn ${
                       darkMode ? "btn-outline-light" : "btn-outline-secondary"
                     } w-100 d-flex align-items-center justify-content-center gap-2`}
@@ -102,10 +152,16 @@ export default function LoginPage() {
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                  <div className={`form-floating mb-3 ${darkMode ? "text-dark" : ""}`}>
+                  <div
+                    className={`form-floating mb-3 ${
+                      darkMode ? "text-dark" : ""
+                    }`}
+                  >
                     <input
                       type="email"
-                      className={`form-control ${darkMode ? "form-control-dark" : ""}`}
+                      className={`form-control ${
+                        darkMode ? "form-control-dark" : ""
+                      }`}
                       id="email"
                       placeholder="Email"
                       value={email}
@@ -117,10 +173,16 @@ export default function LoginPage() {
                     <label htmlFor="email">Email address</label>
                   </div>
 
-                  <div className={`form-floating mb-4 ${darkMode ? "text-dark" : ""}`}>
+                  <div
+                    className={`form-floating mb-4 ${
+                      darkMode ? "text-dark" : ""
+                    }`}
+                  >
                     <input
                       type="password"
-                      className={`form-control ${darkMode ? "form-control-dark" : ""}`}
+                      className={`form-control ${
+                        darkMode ? "form-control-dark" : ""
+                      }`}
                       id="password"
                       placeholder="Password"
                       value={password}
@@ -161,7 +223,7 @@ export default function LoginPage() {
                 </form>
 
                 <p className="text-center mb-0">
-                  Don’t have an account?{" "}
+                  Don't have an account?{" "}
                   <a href="/signup" style={{ color: linkColor }}>
                     Sign Up
                   </a>

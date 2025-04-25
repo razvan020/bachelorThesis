@@ -16,6 +16,7 @@ const AuthContext = createContext({
   loading: true,
   cartItemCount: 0,
   login: async (username, password) => {},
+  handleOAuthLogin: async (token, refreshToken) => {}, // New method
   logout: async () => {},
   fetchCartCount: async () => {},
 });
@@ -48,16 +49,51 @@ export const AuthProvider = ({ children }) => {
       }
 
       const userData = await res.json();
-      setUser(userData);
-      setIsAuthenticated(true);
+
+      // Store tokens in localStorage
+      localStorage.setItem("token", userData.token);
+      localStorage.setItem("refreshToken", userData.refreshToken);
       localStorage.setItem("username", userData.username);
 
-      // fetch cart now that we’re authenticated
+      setUser(userData);
+      setIsAuthenticated(true);
+
+      // fetch cart now that we're authenticated
       await fetchCartCount();
       router.push("/");
     },
     [router]
   );
+
+  // ——— HANDLE OAUTH LOGIN ———
+  const handleOAuthLogin = useCallback(async (token, refreshToken) => {
+    // Store tokens in localStorage
+    localStorage.setItem("token", token);
+    localStorage.setItem("refreshToken", refreshToken);
+
+    // Fetch user data with the token
+    const res = await fetch(api("/api/user/me"), {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to get user data after OAuth login");
+    }
+
+    const userData = await res.json();
+    localStorage.setItem("username", userData.username);
+
+    setUser(userData);
+    setIsAuthenticated(true);
+
+    // fetch cart now that we're authenticated
+    await fetchCartCount();
+    return userData;
+  }, []);
 
   // ——— LOGOUT ———
   const logout = useCallback(async () => {
@@ -70,6 +106,8 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     setCartItemCount(0);
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("username");
     router.push("/login");
   }, [router]);
@@ -81,15 +119,23 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
+    const token = localStorage.getItem("token");
+
     const res = await fetch(api("/api/cart"), {
       method: "GET",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
 
     if (!res.ok) {
       if (res.status === 401 || res.status === 403) {
-        await logout();
+        // Try to refresh the token
+        const refreshed = await refreshToken();
+        if (!refreshed) {
+          await logout();
+        }
       }
       setCartItemCount(0);
       return;
@@ -99,36 +145,88 @@ export const AuthProvider = ({ children }) => {
     setCartItemCount(data.totalQuantity || 0);
   }, [isAuthenticated, logout]);
 
+  // ——— REFRESH TOKEN ———
+  const refreshToken = useCallback(async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) return false;
+
+    try {
+      const res = await fetch(api("/api/token/refresh"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (!res.ok) return false;
+
+      const data = await res.json();
+      localStorage.setItem("token", data.accessToken);
+      return true;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      return false;
+    }
+  }, []);
+
   // ——— VERIFY SESSION ON MOUNT ———
   useEffect(() => {
     (async () => {
       setLoading(true);
       try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setUser(null);
+          setIsAuthenticated(false);
+          setCartItemCount(0);
+          setLoading(false);
+          return;
+        }
+
         const res = await fetch(api("/api/user/me"), {
           method: "GET",
-          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         });
+
         if (res.ok) {
           const userData = await res.json();
           setUser(userData);
           setIsAuthenticated(true);
           localStorage.setItem("username", userData.username);
+        } else if (res.status === 401) {
+          // Try to refresh the token
+          const refreshed = await refreshToken();
+          if (!refreshed) {
+            setUser(null);
+            setIsAuthenticated(false);
+            setCartItemCount(0);
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("username");
+          }
         } else {
           setUser(null);
           setIsAuthenticated(false);
           setCartItemCount(0);
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
           localStorage.removeItem("username");
         }
       } catch {
         setUser(null);
         setIsAuthenticated(false);
         setCartItemCount(0);
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         localStorage.removeItem("username");
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [refreshToken]);
 
   // ——— WHEN AUTH CHANGES, UPDATE CART ———
   useEffect(() => {
@@ -147,6 +245,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         cartItemCount,
         login,
+        handleOAuthLogin, // New method
         logout,
         fetchCartCount,
       }}

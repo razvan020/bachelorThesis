@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 @Data
 @NoArgsConstructor
@@ -25,7 +26,10 @@ public class User implements UserDetails {
     private int age;
     private String gender; // enum?
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
     private LocalDate dob; // date of birth
     //  @Enumerated(EnumType.ORDINAL) // ?
     private Account_Status accountStatus; //
@@ -35,6 +39,19 @@ public class User implements UserDetails {
     //private Set<String> roles = new HashSet<>();
     private List<Role> roles = new ArrayList<>(); // cand un user are mai multe roluri
 
+    @Lob
+    @Column(name = "profile_picture", columnDefinition = "BLOB")
+    private byte[] profilePicture;
+
+    @Column(name = "profile_picture_content_type", length = 50)
+    private String profilePictureContentType;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -42,7 +59,6 @@ public class User implements UserDetails {
             authorities.add(new SimpleGrantedAuthority(role.toString()));
         return authorities;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {
