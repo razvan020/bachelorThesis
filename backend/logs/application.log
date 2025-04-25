@@ -7125,3 +7125,320 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or u
 2025-04-25 12:50:03.603  INFO [NONE] 8520 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-04-25 12:50:03.607  INFO [NONE] 8520 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-04-25 12:50:03.610  INFO [NONE] 8520 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-04-25 17:32:16.606  INFO [NONE] 39048 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Starting Xlr8travelApplication using Java 21.0.5 with PID 39048 (C:\Users\razvi\Desktop\Licenta\backend\target\classes started by razvi in C:\Users\razvi\Desktop\Licenta\backend)
+2025-04-25 17:32:16.614 DEBUG [NONE] 39048 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-04-25 17:32:16.615  INFO [NONE] 39048 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : The following 1 profile is active: "local"
+2025-04-25 17:32:16.654  INFO [NONE] 39048 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-25 17:32:16.655  INFO [NONE] 39048 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-25 17:32:17.691  INFO [NONE] 39048 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-25 17:32:17.778  INFO [NONE] 39048 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 80 ms. Found 9 JPA repository interfaces.
+2025-04-25 17:32:18.687  INFO [NONE] 39048 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-25 17:32:18.701  INFO [NONE] 39048 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-25 17:32:18.701  INFO [NONE] 39048 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-04-25 17:32:18.781  INFO [NONE] 39048 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-25 17:32:18.782  INFO [NONE] 39048 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2126 ms
+2025-04-25 17:32:19.286  INFO [NONE] 39048 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-25 17:32:19.394  INFO [NONE] 39048 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-04-25 17:32:19.460  INFO [NONE] 39048 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-25 17:32:19.725  INFO [NONE] 39048 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-25 17:32:19.753  INFO [NONE] 39048 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-25 17:32:19.967  INFO [NONE] 39048 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4a88a47d
+2025-04-25 17:32:19.969  INFO [NONE] 39048 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-25 17:32:20.023  WARN [NONE] 39048 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-04-25 17:32:21.725  INFO [NONE] 39048 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-25 17:32:29.124  INFO [NONE] 39048 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-25 17:32:29.428  INFO [NONE] 39048 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-04-25 17:32:29.825 DEBUG [NONE] 39048 --- [  restartedMain] o.e.x.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2025-04-25 17:32:29.827 DEBUG [NONE] 39048 --- [  restartedMain] o.e.x.security.RateLimitingFilter        : Filter 'rateLimitingFilter' configured for use
+2025-04-25 17:32:29.915  WARN [NONE] 39048 --- [  restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataLoader' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\bootloader\DataLoader.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userServiceImpl' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\services\UserServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'securityConfig' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\security\SecurityConfig.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'OAuth2AuthenticationSuccessHandler': Injection of autowired dependencies failed
+2025-04-25 17:32:29.917  INFO [NONE] 39048 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-25 17:32:29.919  INFO [NONE] 39048 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-25 17:32:29.923  INFO [NONE] 39048 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-04-25 17:32:29.926  INFO [NONE] 39048 --- [  restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-04-25 17:32:29.945  INFO [NONE] 39048 --- [  restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-04-25 17:32:29.963 ERROR [NONE] 39048 --- [  restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataLoader' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\bootloader\DataLoader.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userServiceImpl' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\services\UserServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'securityConfig' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\security\SecurityConfig.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'OAuth2AuthenticationSuccessHandler': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at org.example.xlr8travel.Xlr8travelApplication.main(Xlr8travelApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userServiceImpl' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\services\UserServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'securityConfig' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\security\SecurityConfig.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'OAuth2AuthenticationSuccessHandler': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 22 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfig' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\security\SecurityConfig.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'OAuth2AuthenticationSuccessHandler': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:409)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 36 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'OAuth2AuthenticationSuccessHandler': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:514)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1419)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 59 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'APP_FRONTEND_URL' in value "${APP_FRONTEND_URL}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:180)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:126)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:239)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:210)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveNestedPlaceholders(AbstractPropertyResolver.java:230)
+	at org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertyResolver.getProperty(ConfigurationPropertySourcesPropertyResolver.java:80)
+	at org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertyResolver.getProperty(ConfigurationPropertySourcesPropertyResolver.java:61)
+	at org.springframework.core.env.AbstractEnvironment.getProperty(AbstractEnvironment.java:552)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer$1.getProperty(PropertySourcesPlaceholderConfigurer.java:153)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer$1.getProperty(PropertySourcesPlaceholderConfigurer.java:149)
+	at org.springframework.core.env.PropertySourcesPropertyResolver.getProperty(PropertySourcesPropertyResolver.java:85)
+	at org.springframework.core.env.PropertySourcesPropertyResolver.getPropertyAsRawString(PropertySourcesPropertyResolver.java:74)
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:153)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:126)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:239)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:210)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:200)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:922)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1374)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:784)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:767)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:508)
+	... 71 common frames omitted
+
+2025-04-25 17:33:15.467  INFO [NONE] 35552 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Starting Xlr8travelApplication using Java 21.0.5 with PID 35552 (C:\Users\razvi\Desktop\Licenta\backend\target\classes started by razvi in C:\Users\razvi\Desktop\Licenta\backend)
+2025-04-25 17:33:15.473 DEBUG [NONE] 35552 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-04-25 17:33:15.473  INFO [NONE] 35552 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : The following 1 profile is active: "local"
+2025-04-25 17:33:15.509  INFO [NONE] 35552 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-25 17:33:15.510  INFO [NONE] 35552 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-25 17:33:16.316  INFO [NONE] 35552 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-25 17:33:16.387  INFO [NONE] 35552 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 65 ms. Found 9 JPA repository interfaces.
+2025-04-25 17:33:16.991  INFO [NONE] 35552 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-25 17:33:17.000  INFO [NONE] 35552 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-25 17:33:17.000  INFO [NONE] 35552 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-04-25 17:33:17.050  INFO [NONE] 35552 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-25 17:33:17.051  INFO [NONE] 35552 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1540 ms
+2025-04-25 17:33:17.276  INFO [NONE] 35552 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-25 17:33:17.320  INFO [NONE] 35552 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-04-25 17:33:17.348  INFO [NONE] 35552 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-25 17:33:17.531  INFO [NONE] 35552 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-25 17:33:17.554  INFO [NONE] 35552 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-25 17:33:17.677  INFO [NONE] 35552 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@67a2d8fa
+2025-04-25 17:33:17.679  INFO [NONE] 35552 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-25 17:33:17.716  WARN [NONE] 35552 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-04-25 17:33:18.699  INFO [NONE] 35552 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-25 17:33:25.163  INFO [NONE] 35552 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-25 17:33:25.415  INFO [NONE] 35552 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-04-25 17:33:25.747 DEBUG [NONE] 35552 --- [  restartedMain] o.e.x.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2025-04-25 17:33:25.748 DEBUG [NONE] 35552 --- [  restartedMain] o.e.x.security.RateLimitingFilter        : Filter 'rateLimitingFilter' configured for use
+2025-04-25 17:33:25.889  INFO [NONE] 35552 --- [  restartedMain] o.e.x.config.LocalPropertiesConfig       : Loaded application-local.properties
+2025-04-25 17:33:26.069  INFO [NONE] 35552 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Validating sensitive data configuration for profile: local
+2025-04-25 17:33:26.070  WARN [NONE] 35552 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_URL is not set
+2025-04-25 17:33:26.071  WARN [NONE] 35552 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_USERNAME is not set
+2025-04-25 17:33:26.071  WARN [NONE] 35552 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_PASSWORD is not set
+2025-04-25 17:33:26.071  WARN [NONE] 35552 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable STRIPE_SECRET_KEY is not set
+2025-04-25 17:33:26.116  WARN [NONE] 35552 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-25 17:33:26.224  INFO [NONE] 35552 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-04-25 17:33:26.450  INFO [NONE] 35552 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoint(s) beneath base path '/actuator'
+2025-04-25 17:33:26.527  INFO [NONE] 35552 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@68946988, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@310f9818, org.springframework.security.web.context.SecurityContextHolderFilter@5427edf8, org.springframework.security.web.header.HeaderWriterFilter@2b10bd4c, org.springframework.web.filter.CorsFilter@28045d0b, org.springframework.security.web.authentication.logout.LogoutFilter@7774cfb2, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@33a74a52, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@4e2c6c6e, org.example.xlr8travel.security.JwtAuthenticationFilter@1bc14964, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@63b74eac, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@65eac160, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@70830e4a, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@d4cd738, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@85e2d62, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1644934b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3b10f1fb, org.springframework.security.web.session.SessionManagementFilter@4879ee3e, org.springframework.security.web.access.ExceptionTranslationFilter@791b8b00, org.springframework.security.web.access.intercept.AuthorizationFilter@640355e]
+2025-04-25 17:33:26.973  INFO [NONE] 35552 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-25 17:33:27.031  INFO [NONE] 35552 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2025-04-25 17:33:27.040  INFO [NONE] 35552 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Started Xlr8travelApplication in 11.971 seconds (process running for 12.387)
+2025-04-25 17:34:35.486  INFO [NONE] 35552 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-25 17:34:35.486  INFO [NONE] 35552 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-25 17:34:35.488  INFO [NONE] 35552 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-04-25 17:34:35.504 DEBUG [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-04-25 17:34:35.531 DEBUG [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-25 17:34:35.532 DEBUG [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 72ACA2A8ABFCA52FE264FDB8333A3C96
+2025-04-25 17:34:35.536  WARN [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/api/login' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2025-04-25 17:34:35.544 DEBUG [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-04-25 17:34:35.615  INFO [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-04-25 17:34:35.755 DEBUG [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-04-25 17:34:35.755  INFO [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Authentication successful for user: user2
+2025-04-25 17:34:35.810  INFO [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Updated last login time for user: user2
+2025-04-25 17:34:35.811  INFO [5d72cecf-8a77-4b12-bccc-439a00aadfea] 35552 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Returning successful response with JWT token for user: user2
+2025-04-25 17:34:35.845 DEBUG [7a55d3b4-ae92-4b34-8b18-fa9b7121b22e] 35552 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-25 17:34:35.845 DEBUG [e133fcd6-781f-4f86-8e61-a4fb1f122973] 35552 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:34:35.996 DEBUG [e133fcd6-781f-4f86-8e61-a4fb1f122973] 35552 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:34:36.000 DEBUG [7a55d3b4-ae92-4b34-8b18-fa9b7121b22e] 35552 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-25 17:34:36.005  INFO [7a55d3b4-ae92-4b34-8b18-fa9b7121b22e] 35552 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-25 17:34:36.030  WARN [e133fcd6-781f-4f86-8e61-a4fb1f122973] 35552 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-25 17:34:36.041  WARN [e133fcd6-781f-4f86-8e61-a4fb1f122973] 35552 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-25 17:34:36.044  INFO [7a55d3b4-ae92-4b34-8b18-fa9b7121b22e] 35552 --- [nio-8080-exec-3] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user user2 with ID 2, creating a new one.
+2025-04-25 17:34:36.091  INFO [7a55d3b4-ae92-4b34-8b18-fa9b7121b22e] 35552 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Returning persistent cart for user user2 with 0 items, 0 total quantity.
+2025-04-25 17:34:37.021 DEBUG [8245a64a-660d-44a2-bba7-a6ccf31aabc6] 35552 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-04-25 17:34:37.024 DEBUG [8245a64a-660d-44a2-bba7-a6ccf31aabc6] 35552 --- [nio-8080-exec-4] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-04-25 17:34:58.488 DEBUG [562d5667-baf6-454b-bdd0-1fdda0de8143] 35552 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /oauth2/authorization/google
+2025-04-25 17:34:58.506 DEBUG [562d5667-baf6-454b-bdd0-1fdda0de8143] 35552 --- [nio-8080-exec-5] o.s.s.web.DefaultRedirectStrategy        : Redirecting to https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=280181287068-i92p696f0ja6qv5lecrhi4dmn2hsrvie.apps.googleusercontent.com&scope=email%20profile&state=BR6LAoCsNn8eDBLnotxA-PYozYna8hjqDdPdYyX69ks%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+2025-04-25 17:35:03.701 DEBUG [a9507394-667c-421f-8404-62ec5fb6e041] 35552 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /login/oauth2/code/google?state=BR6LAoCsNn8eDBLnotxA-PYozYna8hjqDdPdYyX69ks%3D&code=4%2F0Ab_5qlknbi3oza3hRpsPg5sG_Vhcamab-g6xRymQQEYASLe5cSFE_5TufRgRhHretPBu3w&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=1&prompt=none
+2025-04-25 17:35:04.295  INFO [a9507394-667c-421f-8404-62ec5fb6e041] 35552 --- [nio-8080-exec-6] o.e.x.security.CustomOAuth2UserService   : Creating new user from OAuth2 login: ****@****.***
+2025-04-25 17:35:04.375  INFO [a9507394-667c-421f-8404-62ec5fb6e041] 35552 --- [nio-8080-exec-6] o.e.x.security.CustomOAuth2UserService   : Successfully created new user from OAuth2 login: ****@****.***
+2025-04-25 17:35:04.377 DEBUG [a9507394-667c-421f-8404-62ec5fb6e041] 35552 --- [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 089AD631AA1441D1EBC62A5975760F65
+2025-04-25 17:35:04.377 DEBUG [a9507394-667c-421f-8404-62ec5fb6e041] 35552 --- [nio-8080-exec-6] .s.o.c.w.OAuth2LoginAuthenticationFilter : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [104658082982173093135], Granted Authorities: [[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]], User Attributes: [{sub=104658082982173093135, name=Razvan Uleia, given_name=Razvan, family_name=Uleia, picture=https://lh3.googleusercontent.com/a/ACg8ocJi61HPFJ4MxC53TnL4U_AL4Tuu_gASX5yvf0NxGSQWc6-YeA=s96-c, email=****@****.***, email_verified=true}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=089AD631AA1441D1EBC62A5975760F65], Granted Authorities=[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]]
+2025-04-25 17:35:04.380 DEBUG [a9507394-667c-421f-8404-62ec5fb6e041] 35552 --- [nio-8080-exec-6] o.s.s.web.DefaultRedirectStrategy        : Redirecting to http://localhost:3000/login?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYXp2YW4udWxlaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ1NTkxNzA0LCJleHAiOjE3NDU2NzgxMDR9.A0ObC0feJ0TbUFINOpCffKpyNvsOrzyidIewPFrseIsG--X_v1Q8hrWcmO_GwqQt_9BOeraQ9ScNXWBRTSpS4w&refreshToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDQ2NTgwODI5ODIxNzMwOTMxMzUiLCJpYXQiOjE3NDU1OTE3MDQsImV4cCI6MTc0NjE5NjUwNH0.x4FPX3twCVfOTpwcjR1XzwfHvw6IyNhysCb8s6UFY0nOBfr-mHqUtTJ8QFaTKURmMLYteQiN6KjgV5N1JJyn_w
+2025-04-25 17:35:05.080 DEBUG [0129014a-94f8-4d0d-96c3-314686e32566] 35552 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-25 17:35:05.092 DEBUG [0129014a-94f8-4d0d-96c3-314686e32566] 35552 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from DA1E35BCD616DAF927F0B81801A90A64
+2025-04-25 17:35:05.095 DEBUG [0129014a-94f8-4d0d-96c3-314686e32566] 35552 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-25 17:35:05.096  INFO [0129014a-94f8-4d0d-96c3-314686e32566] 35552 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-25 17:35:05.106  INFO [0129014a-94f8-4d0d-96c3-314686e32566] 35552 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-25 17:35:05.258 DEBUG [0eebe1e9-7787-4201-a951-8ed1634e06dd] 35552 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:05.259 DEBUG [4ae1a332-1538-41d0-bda7-916bd9a2d3a7] 35552 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-25 17:35:05.276 DEBUG [0eebe1e9-7787-4201-a951-8ed1634e06dd] 35552 --- [nio-8080-exec-8] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from A419AA422DDF6613DDD679C7ADCF7338
+2025-04-25 17:35:05.281 DEBUG [0eebe1e9-7787-4201-a951-8ed1634e06dd] 35552 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:05.285 DEBUG [4ae1a332-1538-41d0-bda7-916bd9a2d3a7] 35552 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-25 17:35:05.286  INFO [4ae1a332-1538-41d0-bda7-916bd9a2d3a7] 35552 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-25 17:35:05.307  WARN [0eebe1e9-7787-4201-a951-8ed1634e06dd] 35552 --- [nio-8080-exec-8] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-25 17:35:05.310  WARN [0eebe1e9-7787-4201-a951-8ed1634e06dd] 35552 --- [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-25 17:35:05.323  INFO [4ae1a332-1538-41d0-bda7-916bd9a2d3a7] 35552 --- [nio-8080-exec-9] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user ****@****.*** with ID 4, creating a new one.
+2025-04-25 17:35:05.364  INFO [4ae1a332-1538-41d0-bda7-916bd9a2d3a7] 35552 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-25 17:35:13.212 DEBUG [7d1a12a9-611b-4715-9e6e-e9aa9df2f37d] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-25 17:35:13.213 DEBUG [651806e4-9e8a-4aa5-9ef7-28752cceb404] 35552 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-25 17:35:13.235 DEBUG [651806e4-9e8a-4aa5-9ef7-28752cceb404] 35552 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from E225251EBD9457D57CBC9F6EA40D548E
+2025-04-25 17:35:13.235 DEBUG [7d1a12a9-611b-4715-9e6e-e9aa9df2f37d] 35552 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 3B092A6C37A1C819BAD0F6C67E9FE065
+2025-04-25 17:35:13.237 DEBUG [7d1a12a9-611b-4715-9e6e-e9aa9df2f37d] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-25 17:35:13.238 DEBUG [651806e4-9e8a-4aa5-9ef7-28752cceb404] 35552 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-25 17:35:13.238  INFO [7d1a12a9-611b-4715-9e6e-e9aa9df2f37d] 35552 --- [nio-8080-exec-1] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-25 17:35:13.238  INFO [651806e4-9e8a-4aa5-9ef7-28752cceb404] 35552 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-25 17:35:13.246  INFO [651806e4-9e8a-4aa5-9ef7-28752cceb404] 35552 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-25 17:35:13.246  INFO [7d1a12a9-611b-4715-9e6e-e9aa9df2f37d] 35552 --- [nio-8080-exec-1] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-25 17:35:13.285 DEBUG [b649db2e-a7b6-48a2-ab22-4e5c888efd9c] 35552 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:13.303 DEBUG [b649db2e-a7b6-48a2-ab22-4e5c888efd9c] 35552 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:13.311  WARN [b649db2e-a7b6-48a2-ab22-4e5c888efd9c] 35552 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-25 17:35:13.312  WARN [b649db2e-a7b6-48a2-ab22-4e5c888efd9c] 35552 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-25 17:35:13.332 DEBUG [3e659144-99f3-4c61-b196-0f80d388d1f0] 35552 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:13.349 DEBUG [3e659144-99f3-4c61-b196-0f80d388d1f0] 35552 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:13.358  WARN [3e659144-99f3-4c61-b196-0f80d388d1f0] 35552 --- [nio-8080-exec-3] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-25 17:35:13.359  WARN [3e659144-99f3-4c61-b196-0f80d388d1f0] 35552 --- [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-25 17:35:18.483 DEBUG [44bd5dca-f0d7-45ff-8ea8-9f169f9872c8] 35552 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/user/me/avatar
+2025-04-25 17:35:18.498 DEBUG [44bd5dca-f0d7-45ff-8ea8-9f169f9872c8] 35552 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/user/me/avatar
+2025-04-25 17:35:18.567 DEBUG [179f8195-b87a-4903-b067-bc265bd0e011] 35552 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:18.583 DEBUG [179f8195-b87a-4903-b067-bc265bd0e011] 35552 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:22.155 DEBUG [441ad094-0feb-400e-a5af-263100b33b00] 35552 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-25 17:35:22.171 DEBUG [441ad094-0feb-400e-a5af-263100b33b00] 35552 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-25 17:35:22.173  INFO [441ad094-0feb-400e-a5af-263100b33b00] 35552 --- [nio-8080-exec-6] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-25 17:35:22.183  INFO [441ad094-0feb-400e-a5af-263100b33b00] 35552 --- [nio-8080-exec-6] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-25 17:35:22.445 DEBUG [7f4cea7f-7510-472a-b405-c7bbbd3a3fb0] 35552 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-25 17:35:22.445 DEBUG [b4d6697a-5723-4ca1-8588-8c3c60c3f29a] 35552 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:22.448 DEBUG [c343493b-16b2-408a-a270-024270ac2238] 35552 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:22.461 DEBUG [7f4cea7f-7510-472a-b405-c7bbbd3a3fb0] 35552 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-25 17:35:22.461 DEBUG [b4d6697a-5723-4ca1-8588-8c3c60c3f29a] 35552 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:22.461  INFO [7f4cea7f-7510-472a-b405-c7bbbd3a3fb0] 35552 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-25 17:35:22.463 DEBUG [c343493b-16b2-408a-a270-024270ac2238] 35552 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:22.483  INFO [7f4cea7f-7510-472a-b405-c7bbbd3a3fb0] 35552 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-25 17:35:25.633 DEBUG [2b567c98-168c-49cd-851e-3eacd4837e67] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-25 17:35:25.633 DEBUG [4fc56747-4598-4aa3-93dd-9170e7882dbc] 35552 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-25 17:35:25.668 DEBUG [2b567c98-168c-49cd-851e-3eacd4837e67] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-25 17:35:25.669  INFO [2b567c98-168c-49cd-851e-3eacd4837e67] 35552 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-25 17:35:25.672 DEBUG [4fc56747-4598-4aa3-93dd-9170e7882dbc] 35552 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-25 17:35:25.673  INFO [4fc56747-4598-4aa3-93dd-9170e7882dbc] 35552 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-25 17:35:25.691  INFO [4fc56747-4598-4aa3-93dd-9170e7882dbc] 35552 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-25 17:35:25.691  INFO [2b567c98-168c-49cd-851e-3eacd4837e67] 35552 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-25 17:35:26.909 DEBUG [4e8cefb1-f337-4e05-83e6-904eb11eb69f] 35552 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-04-25 17:35:26.910 DEBUG [4e8cefb1-f337-4e05-83e6-904eb11eb69f] 35552 --- [nio-8080-exec-2] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-04-25 17:35:32.121 DEBUG [8d732c6c-0b28-4212-8358-c32a5f055acb] 35552 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /oauth2/authorization/google
+2025-04-25 17:35:32.124 DEBUG [8d732c6c-0b28-4212-8358-c32a5f055acb] 35552 --- [nio-8080-exec-3] o.s.s.web.DefaultRedirectStrategy        : Redirecting to https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=280181287068-i92p696f0ja6qv5lecrhi4dmn2hsrvie.apps.googleusercontent.com&scope=email%20profile&state=1qSbjDu1b6wds11pQXujDe0ddqvcZbz4WJ_nlKLbLGs%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+2025-04-25 17:35:34.133 DEBUG [57de1b4e-965f-4527-9a12-4c9a0389d423] 35552 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /login/oauth2/code/google?state=1qSbjDu1b6wds11pQXujDe0ddqvcZbz4WJ_nlKLbLGs%3D&code=4%2F0Ab_5qllypIYZ9dxy_bYCWhs4p56DWJtNCdh7y1ja4sF4ZvHkO7hBHRJMg1wjzPVcoO5PCw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=1&prompt=none
+2025-04-25 17:35:34.383  INFO [57de1b4e-965f-4527-9a12-4c9a0389d423] 35552 --- [nio-8080-exec-4] o.e.x.security.CustomOAuth2UserService   : User already exists: ****@****.***
+2025-04-25 17:35:34.408 DEBUG [57de1b4e-965f-4527-9a12-4c9a0389d423] 35552 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from D6BFF527A3C10642026CDBF08AF708AC
+2025-04-25 17:35:34.408 DEBUG [57de1b4e-965f-4527-9a12-4c9a0389d423] 35552 --- [nio-8080-exec-4] .s.o.c.w.OAuth2LoginAuthenticationFilter : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [104658082982173093135], Granted Authorities: [[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]], User Attributes: [{sub=104658082982173093135, name=Razvan Uleia, given_name=Razvan, family_name=Uleia, picture=https://lh3.googleusercontent.com/a/ACg8ocJi61HPFJ4MxC53TnL4U_AL4Tuu_gASX5yvf0NxGSQWc6-YeA=s96-c, email=****@****.***, email_verified=true}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=D6BFF527A3C10642026CDBF08AF708AC], Granted Authorities=[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]]
+2025-04-25 17:35:34.411 DEBUG [57de1b4e-965f-4527-9a12-4c9a0389d423] 35552 --- [nio-8080-exec-4] o.s.s.web.DefaultRedirectStrategy        : Redirecting to http://localhost:3000/login?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYXp2YW4udWxlaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ1NTkxNzM0LCJleHAiOjE3NDU2NzgxMzR9.aZupJJ1ANn8Ot1nUKMDzoGSzWwgZd-N3uA148YmP-MrOu5YET4OkgUIfLBdQd4xJy5gCSgcFOUHdZvle17hYlA&refreshToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDQ2NTgwODI5ODIxNzMwOTMxMzUiLCJpYXQiOjE3NDU1OTE3MzQsImV4cCI6MTc0NjE5NjUzNH0.nZMNyINe3wWHjkASt5TWilefEyAPznVIktA4548B0mfZxX6Fy-RbHAfXkwu2kB84y1vEmJ2-IYzobe6iFSsrNw
+2025-04-25 17:35:35.151 DEBUG [99545346-5222-4e16-93d5-621b9f300be3] 35552 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-25 17:35:35.166 DEBUG [99545346-5222-4e16-93d5-621b9f300be3] 35552 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 4D8736C694B94ECE9CC7321D28695EE0
+2025-04-25 17:35:35.169 DEBUG [99545346-5222-4e16-93d5-621b9f300be3] 35552 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-25 17:35:35.169  INFO [99545346-5222-4e16-93d5-621b9f300be3] 35552 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-25 17:35:35.185  INFO [99545346-5222-4e16-93d5-621b9f300be3] 35552 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-25 17:35:35.392 DEBUG [eef9181c-1175-439b-b0ee-0d92e4dc9075] 35552 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:35.395 DEBUG [7bb76dc0-e42d-44f9-9433-f6adef3b30b6] 35552 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-25 17:35:35.432 DEBUG [eef9181c-1175-439b-b0ee-0d92e4dc9075] 35552 --- [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 29FD781CD261975C6CE6860775E98B55
+2025-04-25 17:35:35.434 DEBUG [eef9181c-1175-439b-b0ee-0d92e4dc9075] 35552 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:35.435 DEBUG [7bb76dc0-e42d-44f9-9433-f6adef3b30b6] 35552 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-25 17:35:35.437  INFO [7bb76dc0-e42d-44f9-9433-f6adef3b30b6] 35552 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-25 17:35:35.462  INFO [7bb76dc0-e42d-44f9-9433-f6adef3b30b6] 35552 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-25 17:35:44.882 DEBUG [8f398211-2a6b-4838-85df-79c0d8d145d6] 35552 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-04-25 17:35:44.883 DEBUG [8f398211-2a6b-4838-85df-79c0d8d145d6] 35552 --- [nio-8080-exec-7] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-04-25 17:35:44.883 DEBUG [8f398211-2a6b-4838-85df-79c0d8d145d6] 35552 --- [nio-8080-exec-7] o.s.s.w.a.l.SecurityContextLogoutHandler : Invalidated session E148318A3A7E40CE9EB549F70BB19183
+2025-04-25 17:35:52.951 DEBUG [90c7a55b-dfe7-47e7-8395-76905aeac854] 35552 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /oauth2/authorization/google
+2025-04-25 17:35:52.952 DEBUG [90c7a55b-dfe7-47e7-8395-76905aeac854] 35552 --- [nio-8080-exec-8] o.s.s.web.DefaultRedirectStrategy        : Redirecting to https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=280181287068-i92p696f0ja6qv5lecrhi4dmn2hsrvie.apps.googleusercontent.com&scope=email%20profile&state=mbPEmJRp_afgq1MYPaYmrdSXibrHBozdcx-mKsEcs58%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+2025-04-25 17:35:56.953 DEBUG [ed20da76-f2f9-4ad5-9e97-fff05a94cf9d] 35552 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /login/oauth2/code/google?state=mbPEmJRp_afgq1MYPaYmrdSXibrHBozdcx-mKsEcs58%3D&code=4%2F0Ab_5qlm22zzPsghNpYAfUs5leKUY9Q9h3UY-59obThp9bxsLEUEhbjL4Fht8Fu3Qdyu95A&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=1&prompt=none
+2025-04-25 17:35:57.200  INFO [ed20da76-f2f9-4ad5-9e97-fff05a94cf9d] 35552 --- [io-8080-exec-10] o.e.x.security.CustomOAuth2UserService   : User already exists: ****@****.***
+2025-04-25 17:35:57.218 DEBUG [ed20da76-f2f9-4ad5-9e97-fff05a94cf9d] 35552 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 20EE3C47B9791E62CAF4543EC3EF1946
+2025-04-25 17:35:57.218 DEBUG [ed20da76-f2f9-4ad5-9e97-fff05a94cf9d] 35552 --- [io-8080-exec-10] .s.o.c.w.OAuth2LoginAuthenticationFilter : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [104658082982173093135], Granted Authorities: [[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]], User Attributes: [{sub=104658082982173093135, name=Razvan Uleia, given_name=Razvan, family_name=Uleia, picture=https://lh3.googleusercontent.com/a/ACg8ocJi61HPFJ4MxC53TnL4U_AL4Tuu_gASX5yvf0NxGSQWc6-YeA=s96-c, email=****@****.***, email_verified=true}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=20EE3C47B9791E62CAF4543EC3EF1946], Granted Authorities=[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]]
+2025-04-25 17:35:57.220 DEBUG [ed20da76-f2f9-4ad5-9e97-fff05a94cf9d] 35552 --- [io-8080-exec-10] o.s.s.web.DefaultRedirectStrategy        : Redirecting to http://localhost:3000/login?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYXp2YW4udWxlaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ1NTkxNzU3LCJleHAiOjE3NDU2NzgxNTd9.T4IxMpLdazrwiT5D-GgoVEjnsjoTJXGynjFufm3_E-s45BxKptaAPktqkg6D7heVQYgs0s67YLI9U6H_Ev-AnQ&refreshToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDQ2NTgwODI5ODIxNzMwOTMxMzUiLCJpYXQiOjE3NDU1OTE3NTcsImV4cCI6MTc0NjE5NjU1N30.Nnf0roCqVRQmzsMeslc-XByXyx3GLRfOJKS4vsKgIv27s-uZGR85h7vCI951rM_TlULOwVZzc_pyc9ksu5MLqw
+2025-04-25 17:35:57.721 DEBUG [a4376b47-a475-4a4e-9536-3724643eaac3] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-25 17:35:57.735 DEBUG [a4376b47-a475-4a4e-9536-3724643eaac3] 35552 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 97CA7DF69DA8353F10D10E25BC096F0F
+2025-04-25 17:35:57.736 DEBUG [a4376b47-a475-4a4e-9536-3724643eaac3] 35552 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-25 17:35:57.737  INFO [a4376b47-a475-4a4e-9536-3724643eaac3] 35552 --- [nio-8080-exec-1] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-25 17:35:57.745  INFO [a4376b47-a475-4a4e-9536-3724643eaac3] 35552 --- [nio-8080-exec-1] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-25 17:35:57.796 DEBUG [4064840f-149d-4c26-9560-af77617be009] 35552 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-25 17:35:57.796 DEBUG [2d6d92a2-b732-419d-a275-fcdd2141053b] 35552 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-25 17:35:57.807 DEBUG [4064840f-149d-4c26-9560-af77617be009] 35552 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from FB60DA3F78836CDFA7004857599F449A
+2025-04-25 17:35:57.808 DEBUG [2d6d92a2-b732-419d-a275-fcdd2141053b] 35552 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-25 17:35:57.809 DEBUG [4064840f-149d-4c26-9560-af77617be009] 35552 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-25 17:35:57.809  INFO [2d6d92a2-b732-419d-a275-fcdd2141053b] 35552 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-25 17:35:57.825  INFO [2d6d92a2-b732-419d-a275-fcdd2141053b] 35552 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-25 17:36:02.631  INFO [NONE] 35552 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-25 17:36:02.634  INFO [NONE] 35552 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-25 17:36:02.640  INFO [NONE] 35552 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
