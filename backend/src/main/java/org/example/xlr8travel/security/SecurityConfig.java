@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Actuator
                         .requestMatchers(EndpointRequest.to("prometheus"))
-                        .hasRole("ACTUATOR")
+                        .permitAll()
 
                         // Public API endpoints
                         .requestMatchers("/api/login", "/api/signup", "/api/register", "/api/token/refresh").permitAll()
