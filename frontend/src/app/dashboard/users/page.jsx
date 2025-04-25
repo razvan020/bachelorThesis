@@ -27,9 +27,13 @@ const AddUserForm = ({ onUserAdded }) => {
     setError(null);
     const userData = { username, email, password, firstname, lastname };
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/users", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include",
         body: JSON.stringify(userData),
       });

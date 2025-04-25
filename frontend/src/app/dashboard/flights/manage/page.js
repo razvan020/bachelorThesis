@@ -85,8 +85,13 @@ export default function ManageFlightsPage() {
     setDeleteLoading(true);
     setError(null);
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/flights/${flightToDelete.id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
       if (!response.ok) {
         let errorMsg = `HTTP error! status: ${response.status}`;

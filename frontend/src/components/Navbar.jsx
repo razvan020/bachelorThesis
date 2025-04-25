@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
@@ -15,6 +16,7 @@ export default function NavBarComponent() {
   const pathname = usePathname();
   const { user, isAuthenticated, logout, cartItemCount } = useAuth();
   const isAdmin = isAuthenticated && user?.username === "user2";
+  const [avatarUrl, setAvatarUrl] = useState("/avatarSrc.png");
 
   // Base links
   const baseLinks = [
@@ -26,8 +28,48 @@ export default function NavBarComponent() {
     baseLinks.push({ href: "/dashboard", label: "Dashboard" });
   }
 
-  // If authenticated, avatar comes from the blob endpoint; otherwise fallback
-  const avatarSrc = isAuthenticated ? "/api/user/me/avatar" : "/avatarSrc.png";
+  const getAvatarSrc = async () => {
+    if (!isAuthenticated) {
+      return "/avatarSrc.png";
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("/api/user/me/avatar", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to load avatar");
+      }
+
+      const blob = await response.blob();
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error("Error loading avatar:", error);
+      return "/avatarSrc.png"; // Fallback on error
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getAvatarSrc().then((src) => {
+        setAvatarUrl(src);
+      });
+    } else {
+      setAvatarUrl("/avatarSrc.png");
+    }
+
+    // Cleanup function to revoke object URL when component unmounts
+    return () => {
+      if (avatarUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarUrl);
+      }
+    };
+  }, [isAuthenticated]);
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
@@ -83,14 +125,14 @@ export default function NavBarComponent() {
                   className="d-flex align-items-center me-3"
                 >
                   <Image
-                    src={avatarSrc}
+                    src={avatarUrl}
                     onError={(e) => {
                       e.currentTarget.src = "/avatarSrc.png";
                     }}
                     roundedCircle
                     width={30}
                     height={30}
-                    alt={`${user.username || "Your"} profile`}
+                    alt={`${user?.username || "Your"} profile`}
                   />
                 </Nav.Link>
 

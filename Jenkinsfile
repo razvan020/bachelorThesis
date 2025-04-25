@@ -10,10 +10,8 @@ pipeline {
   stages {
     stage('Checkout & Inspect') {
       steps {
-        // Pull down the branch you configured in Multibranch or Pipeline Git SCM
         checkout scm
 
-        // OPTIONAL: verify that your monitoring folder and prometheus.yml are present
         sh 'pwd; ls -R .'
       }
     }
@@ -24,6 +22,11 @@ pipeline {
         withCredentials([
           string(credentialsId: 'stripe-pk', variable: 'PK'),
           string(credentialsId: 'stripe-sk', variable: 'SK')
+          string(credentialsId: 'jwt-sk', variable: 'JWT'),
+          string(credentialsId: 'gclientid', variable: 'GCL'),
+          string(credentialsId: 'g-sk', variable: 'GSK'),
+
+
         ]) {
           sh """
             cat > .env <<EOF
@@ -31,6 +34,9 @@ pipeline {
             NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\$PK
             STRIPE_SECRET_KEY=\$SK
             STRIPE_WEBHOOK_SECRET=\${WEBHOOK_SECRET:-}
+            JWT_SECRET=\$JWT
+            GOOGLE_CLIENT_ID=\$GCL
+            GOOGLE_CLIENT_SECRET=\$GSK
             EOF
           """
         }
@@ -39,10 +45,8 @@ pipeline {
 
     stage('Build & Deploy') {
       steps {
-        // Tear down any old containers/volumes
         sh 'docker compose down --remove-orphans || true'
 
-        // Bring everything up
         sh 'docker compose pull || true'
         sh 'docker compose up --build --remove-orphans -d'
       }

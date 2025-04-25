@@ -142,9 +142,13 @@ const AddUserForm = ({ onUserAdded }) => {
     setError(null);
     const userData = { username, email, password, firstname, lastname };
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/users", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include",
         body: JSON.stringify(userData),
       });
@@ -381,7 +385,12 @@ export default function UsersPage() {
     setLoading(true);
     setError(null);
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include", // ← include session cookie
       });
       if (!response.ok) {
@@ -424,7 +433,12 @@ export default function UsersPage() {
     setDeleteLoading(true);
     setDeleteError(null);
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/users/${userToDelete.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         method: "DELETE",
         credentials: "include", // ← include session cookie
       });

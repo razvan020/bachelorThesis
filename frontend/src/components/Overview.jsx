@@ -14,8 +14,9 @@ import {
   Container,
   LinearProgress,
   Stack,
-  useTheme,
+  useTheme as useMuiTheme,
   alpha,
+  CssBaseline,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -24,6 +25,8 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import FlightIcon from "@mui/icons-material/Flight";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { ThemeProvider, useAppTheme } from "@/contexts/ThemeContext";
+import ThemeToggle from "./ThemeToggle";
 import {
   ResponsiveContainer,
   BarChart,
@@ -36,8 +39,353 @@ import {
   CartesianGrid,
 } from "recharts";
 
-export default function DashboardPage() {
-  const theme = useTheme();
+// Function to get styles based on theme mode
+const getStyles = (mode, theme) => {
+  const isLight = mode === "light";
+
+  return {
+    centeredContainer: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "80vh",
+      background: isLight
+        ? "linear-gradient(145deg, #f8f9fa, #e9ecef)"
+        : "linear-gradient(145deg, #121212, #1e1e1e)",
+      transition: "background 0.3s ease",
+    },
+    headerContainer: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      mb: 4,
+      p: 2,
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.6), rgba(240,240,240,0.4))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.6), rgba(30,30,30,0.4))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "5px 5px 15px rgba(0,0,0,0.05), -5px -5px 15px rgba(255,255,255,0.6)"
+        : "5px 5px 15px rgba(0,0,0,0.2), -5px -5px 15px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+    },
+    loadingContainer: {
+      position: "relative",
+      width: 80,
+      height: 80,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: "50%",
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "10px 10px 20px rgba(0,0,0,0.1), -10px -10px 20px rgba(255,255,255,0.8)"
+        : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.05)",
+    },
+    loadingSpinner: {
+      color: isLight ? "primary.main" : "primary.light",
+      position: "relative",
+      zIndex: 2,
+    },
+    errorAlert: {
+      borderRadius: 3,
+      backdropFilter: "blur(10px)",
+      background:
+        "linear-gradient(145deg, rgba(244,67,54,0.9), rgba(229,57,53,0.7))",
+      boxShadow:
+        "7px 7px 14px rgba(0,0,0,0.1), -7px -7px 14px rgba(255,255,255,0.1)",
+      border: "1px solid rgba(255,255,255,0.2)",
+    },
+    alertButton: {
+      borderRadius: "50%",
+      background: "rgba(255,255,255,0.2)",
+      backdropFilter: "blur(5px)",
+      boxShadow:
+        "3px 3px 6px rgba(0,0,0,0.1), -3px -3px 6px rgba(255,255,255,0.1)",
+      "&:hover": {
+        background: "rgba(255,255,255,0.3)",
+      },
+    },
+    headerText: {
+      background: isLight
+        ? "linear-gradient(45deg, #3f51b5, #2196f3)"
+        : "linear-gradient(45deg, #90caf9, #42a5f5)",
+      backgroundClip: "text",
+      textFillColor: "transparent",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    },
+    refreshButton: {
+      borderRadius: "50%",
+      p: 1.5,
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      color: isLight ? "primary.main" : "primary.light",
+      transition: "all 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-2px)",
+        boxShadow: isLight
+          ? "7px 7px 15px rgba(0,0,0,0.1), -7px -7px 15px rgba(255,255,255,0.9)"
+          : "7px 7px 15px rgba(0,0,0,0.3), -7px -7px 15px rgba(255,255,255,0.05)",
+      },
+      "&:active": {
+        transform: "translateY(0)",
+        boxShadow: isLight
+          ? "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)"
+          : "inset 5px 5px 10px rgba(0,0,0,0.2), inset -5px -5px 10px rgba(255,255,255,0.05)",
+      },
+    },
+    refreshingButton: {
+      borderRadius: "50%",
+      p: 1.5,
+      background: isLight
+        ? "linear-gradient(145deg, #f0f0f0, #e6e6e6)"
+        : "linear-gradient(145deg, #252525, #1e1e1e)",
+      boxShadow: isLight
+        ? "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)"
+        : "inset 5px 5px 10px rgba(0,0,0,0.2), inset -5px -5px 10px rgba(255,255,255,0.05)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      opacity: 0.8,
+    },
+    sectionContainer: {
+      p: 3,
+      mb: 4,
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.5))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.7), rgba(30,30,30,0.5))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)"
+        : "10px 10px 20px rgba(0,0,0,0.2), -10px -10px 20px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-5px)",
+        boxShadow: isLight
+          ? "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)"
+          : "15px 15px 30px rgba(0,0,0,0.3), -15px -15px 30px rgba(255,255,255,0.03)",
+      },
+    },
+    sectionHeader: {
+      display: "flex",
+      alignItems: "center",
+      mb: 3,
+      pb: 2,
+      borderBottom: isLight
+        ? "1px solid rgba(0,0,0,0.05)"
+        : "1px solid rgba(255,255,255,0.05)",
+    },
+    iconContainer: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 40,
+      height: 40,
+      borderRadius: "50%",
+      mr: 2,
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+    },
+    metricCard: {
+      height: "100%",
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)"
+        : "7px 7px 14px rgba(0,0,0,0.2), -7px -7px 14px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      overflow: "visible",
+      "&:hover": {
+        transform: "translateY(-7px) scale(1.02)",
+        boxShadow: isLight
+          ? "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)"
+          : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.03)",
+      },
+    },
+    metricIconWrapper: (color) => ({
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 48,
+      height: 48,
+      borderRadius: "50%",
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+      color,
+      transition: "transform 0.3s ease",
+      "&:hover": {
+        transform: "scale(1.1)",
+      },
+    }),
+    trendUp: {
+      color: "success.main",
+      display: "flex",
+      alignItems: "center",
+    },
+    trendDown: {
+      color: "error.main",
+      display: "flex",
+      alignItems: "center",
+    },
+    inventoryCard: {
+      height: "100%",
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)"
+        : "7px 7px 14px rgba(0,0,0,0.2), -7px -7px 14px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-7px)",
+        boxShadow: isLight
+          ? "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)"
+          : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.03)",
+      },
+    },
+    revenueCard: {
+      height: "100%",
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)"
+        : "7px 7px 14px rgba(0,0,0,0.2), -7px -7px 14px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-7px)",
+        boxShadow: isLight
+          ? "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)"
+          : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.03)",
+      },
+    },
+    chartContainer: {
+      height: "100%",
+      p: 3,
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)"
+        : "10px 10px 20px rgba(0,0,0,0.2), -10px -10px 20px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-5px)",
+        boxShadow: isLight
+          ? "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)"
+          : "15px 15px 30px rgba(0,0,0,0.3), -15px -15px 30px rgba(255,255,255,0.03)",
+      },
+    },
+    progressContainer: {
+      mt: 1.5,
+      p: 1,
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, #f0f0f0, #ffffff)"
+        : "linear-gradient(145deg, #252525, #2d2d2d)",
+      boxShadow: isLight
+        ? "inset 3px 3px 6px rgba(0,0,0,0.05), inset -3px -3px 6px rgba(255,255,255,0.8)"
+        : "inset 3px 3px 6px rgba(0,0,0,0.2), inset -3px -3px 6px rgba(255,255,255,0.02)",
+    },
+    progress: (color) => ({
+      height: 6,
+      borderRadius: 3,
+      background: isLight ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)",
+      "& .MuiLinearProgress-bar": {
+        background: `linear-gradient(90deg, ${alpha(color, 0.7)}, ${color})`,
+        borderRadius: 3,
+        boxShadow: `0 0 10px ${alpha(color, 0.5)}`,
+      },
+    }),
+    revenueIconWrapper: (color) => ({
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 36,
+      height: 36,
+      borderRadius: "50%",
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+      color,
+      transition: "transform 0.3s ease",
+      "&:hover": {
+        transform: "scale(1.1)",
+      },
+    }),
+    textSecondary: {
+      color: isLight ? "text.secondary" : "rgba(255,255,255,0.7)",
+      fontWeight: 500,
+    },
+    tooltipPaper: {
+      p: 2,
+      borderRadius: 2,
+      backdropFilter: "blur(10px)",
+      background: isLight ? "rgba(255,255,255,0.9)" : "rgba(40,40,40,0.9)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.1), -5px -5px 10px rgba(255,255,255,0.5)"
+        : "5px 5px 10px rgba(0,0,0,0.3), -5px -5px 10px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.5)"
+        : "1px solid rgba(255,255,255,0.05)",
+    },
+  };
+};
+
+// Main dashboard component
+function DashboardContent() {
+  const muiTheme = useMuiTheme();
+  const { mode } = useAppTheme();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
@@ -45,10 +393,21 @@ export default function DashboardPage() {
   const [flightInv, setFlightInv] = useState({});
   const [bookingRev, setBookingRev] = useState({});
 
+  // Get dynamic styles based on current theme mode
+  const styles = getStyles(mode, muiTheme);
+
   const fetchData = async () => {
     try {
+      const token = localStorage.getItem("token");
       setRefreshing(true);
-      const res = await fetch("/api/metrics");
+      const res = await fetch("/api/metrics", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
       if (!res.ok) throw new Error("Failed to load metrics");
       const json = await res.json();
       setUserMetrics(json.userMetrics || {});
@@ -111,6 +470,7 @@ export default function DashboardPage() {
     );
   }
 
+  // Prepare data for charts
   const weeklyData = Object.entries(bookingRev.bookingsCreatedWeekly || {}).map(
     ([week, count]) => ({ week, count })
   );
@@ -119,18 +479,18 @@ export default function DashboardPage() {
     ([date, count]) => ({ date, count })
   );
 
+  // Custom tooltip for charts
   const CustomTooltip = ({ active, payload, label }) =>
     active && payload?.length ? (
       <Paper sx={styles.tooltipPaper} elevation={0}>
-        <Typography variant="subtitle2" sx={styles.textSecondary}>
-          {label}
-        </Typography>
+        <Typography variant="subtitle2">{label}</Typography>
         <Typography variant="body1" fontWeight="bold">
           {payload[0].value} bookings
         </Typography>
       </Paper>
     ) : null;
 
+  // Main dashboard content
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Header + Refresh */}
@@ -138,22 +498,25 @@ export default function DashboardPage() {
         <Typography variant="h4" fontWeight="bold" sx={styles.headerText}>
           Analytics Dashboard
         </Typography>
-        <Tooltip title="Refresh data">
-          <IconButton
-            onClick={handleRefresh}
-            disabled={refreshing}
-            sx={refreshing ? styles.refreshingButton : styles.refreshButton}
-          >
-            {refreshing ? <CircularProgress size={24} /> : <RefreshIcon />}
-          </IconButton>
-        </Tooltip>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <ThemeToggle />
+          <Tooltip title="Refresh data">
+            <IconButton
+              onClick={handleRefresh}
+              disabled={refreshing}
+              sx={refreshing ? styles.refreshingButton : styles.refreshButton}
+            >
+              {refreshing ? <CircularProgress size={24} /> : <RefreshIcon />}
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Box>
 
       {/* User Metrics */}
       <Box sx={styles.sectionContainer}>
         <Box sx={styles.sectionHeader}>
           <Box sx={styles.iconContainer}>
-            <PeopleAltIcon sx={{ color: "theme.palette.primary.main" }} />
+            <PeopleAltIcon sx={{ color: muiTheme.palette.primary.main }} />
           </Box>
           <Typography variant="h6" fontWeight="bold">
             User Metrics
@@ -211,7 +574,7 @@ export default function DashboardPage() {
                       <Typography
                         variant="h4"
                         fontWeight="bold"
-                        sx={{ color: theme.palette[colorKey].main }}
+                        sx={{ color: muiTheme.palette[colorKey].main }}
                       >
                         {val?.toLocaleString() ?? "-"}
                       </Typography>
@@ -221,7 +584,7 @@ export default function DashboardPage() {
                     </Box>
                     <Box
                       sx={styles.metricIconWrapper(
-                        theme.palette[colorKey].main
+                        muiTheme.palette[colorKey].main
                       )}
                     >
                       {icon}
@@ -254,7 +617,7 @@ export default function DashboardPage() {
       <Box sx={styles.sectionContainer}>
         <Box sx={styles.sectionHeader}>
           <Box sx={styles.iconContainer}>
-            <FlightIcon sx={{ color: "black" }} />
+            <FlightIcon sx={{ color: muiTheme.palette.info.main }} />
           </Box>
           <Typography variant="h6" fontWeight="bold">
             Flight Inventory
@@ -314,7 +677,7 @@ export default function DashboardPage() {
                     variant="h5"
                     fontWeight="bold"
                     align="center"
-                    sx={{ color: theme.palette[colorKey].main }}
+                    sx={{ color: muiTheme.palette[colorKey].main }}
                   >
                     {val?.toLocaleString() ?? "-"}
                   </Typography>
@@ -338,7 +701,7 @@ export default function DashboardPage() {
                     <LinearProgress
                       variant="determinate"
                       value={pct || 0}
-                      sx={styles.progress(theme.palette[colorKey].main)}
+                      sx={styles.progress(muiTheme.palette[colorKey].main)}
                     />
                   </Box>
                   <Typography
@@ -361,7 +724,7 @@ export default function DashboardPage() {
       <Box sx={styles.sectionContainer}>
         <Box sx={styles.sectionHeader}>
           <Box sx={styles.iconContainer}>
-            <ShoppingCartIcon sx={{ color: "black" }} />
+            <ShoppingCartIcon sx={{ color: muiTheme.palette.success.main }} />
           </Box>
           <Typography variant="h6" fontWeight="bold">
             Booking & Revenue
@@ -418,7 +781,7 @@ export default function DashboardPage() {
                     </Typography>
                     <Box
                       sx={styles.revenueIconWrapper(
-                        theme.palette[colorKey].main
+                        muiTheme.palette[colorKey].main
                       )}
                     >
                       {React.cloneElement(icon, { fontSize: "small" })}
@@ -427,7 +790,7 @@ export default function DashboardPage() {
                   <Typography
                     variant="h5"
                     fontWeight="bold"
-                    sx={{ color: theme.palette[colorKey].main }}
+                    sx={{ color: muiTheme.palette[colorKey].main }}
                   >
                     {val}
                   </Typography>
@@ -461,7 +824,7 @@ export default function DashboardPage() {
                   <Bar
                     dataKey="count"
                     radius={[4, 4, 0, 0]}
-                    fill={theme.palette.primary.main}
+                    fill={muiTheme.palette.primary.main}
                     fillOpacity={0.8}
                   />
                 </BarChart>
@@ -492,8 +855,8 @@ export default function DashboardPage() {
                     type="monotone"
                     dataKey="count"
                     strokeWidth={2}
-                    stroke={theme.palette.info.main}
-                    fill={theme.palette.info.main}
+                    stroke={muiTheme.palette.info.main}
+                    fill={muiTheme.palette.info.main}
                     fillOpacity={0.2}
                   />
                 </AreaChart>
@@ -506,274 +869,355 @@ export default function DashboardPage() {
   );
 }
 
-// Enhanced styles combining neumorphism & glassmorphism
-const styles = {
-  centeredContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "80vh",
-  },
-  loadingContainer: {
-    position: "relative",
-    width: 80,
-    height: 80,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "50%",
-    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
-    boxShadow:
-      "10px 10px 20px rgba(0,0,0,0.1), -10px -10px 20px rgba(255,255,255,0.8)",
-  },
-  loadingSpinner: {
-    color: "primary.main",
-    position: "relative",
-    zIndex: 2,
-  },
-  headerContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    mb: 4,
-    p: 2,
-    borderRadius: 3,
-    background:
-      "linear-gradient(145deg, rgba(255,255,255,0.6), rgba(240,240,240,0.4))",
-    backdropFilter: "blur(10px)",
-    boxShadow:
-      "5px 5px 15px rgba(0,0,0,0.05), -5px -5px 15px rgba(255,255,255,0.6)",
-    border: "1px solid rgba(255,255,255,0.3)",
-  },
-  headerText: {
-    background: "linear-gradient(45deg,rgb(0, 0, 0),rgb(0, 0, 0))",
-    backgroundClip: "text",
-    textFillColor: "transparent",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  },
-  refreshButton: {
-    borderRadius: "50%",
-    p: 1.5,
-    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
-    boxShadow:
-      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    color: "primary.main",
-    transition: "all 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-2px)",
-      boxShadow:
-        "7px 7px 15px rgba(0,0,0,0.1), -7px -7px 15px rgba(255,255,255,0.9)",
+// Wrap the dashboard content with our theme provider
+export default function DashboardPage() {
+  return (
+    <ThemeProvider>
+      <CssBaseline />
+      <DashboardContent />
+    </ThemeProvider>
+  );
+}
+
+// This is a duplicate function that's not used - the actual getStyles is defined above
+const unusedGetStyles = (mode, theme) => {
+  const isLight = mode === "light";
+
+  return {
+    centeredContainer: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "80vh",
+      background: isLight
+        ? "linear-gradient(145deg, #f8f9fa, #e9ecef)"
+        : "linear-gradient(145deg, #121212, #1e1e1e)",
+      transition: "background 0.3s ease",
     },
-    "&:active": {
-      transform: "translateY(0)",
-      boxShadow:
-        "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)",
-    },
-  },
-  refreshingButton: {
-    borderRadius: "50%",
-    p: 1.5,
-    background: "linear-gradient(145deg, #f0f0f0, #e6e6e6)",
-    boxShadow:
-      "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    opacity: 0.8,
-  },
-  sectionContainer: {
-    p: 3,
-    mb: 4,
-    borderRadius: 3,
-    background:
-      "linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.5))",
-    backdropFilter: "blur(10px)",
-    boxShadow:
-      "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow:
-        "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)",
-    },
-  },
-  sectionHeader: {
-    display: "flex",
-    alignItems: "center",
-    mb: 3,
-    pb: 2,
-    borderBottom: "1px solid rgba(0,0,0,0.05)",
-  },
-  iconContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 40,
-    height: 40,
-    borderRadius: "50%",
-    mr: 2,
-    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
-    boxShadow:
-      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
-  },
-  metricCard: {
-    height: "100%",
-    borderRadius: 3,
-    background:
-      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
-    backdropFilter: "blur(10px)",
-    boxShadow:
-      "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    overflow: "visible",
-    "&:hover": {
-      transform: "translateY(-7px) scale(1.02)",
-      boxShadow:
-        "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)",
-    },
-  },
-  inventoryCard: {
-    height: "100%",
-    borderRadius: 3,
-    background:
-      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
-    backdropFilter: "blur(10px)",
-    boxShadow:
-      "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-7px)",
-      boxShadow:
-        "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)",
-    },
-  },
-  revenueCard: {
-    height: "100%",
-    borderRadius: 3,
-    background:
-      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
-    backdropFilter: "blur(10px)",
-    boxShadow:
-      "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-7px)",
-      boxShadow:
-        "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)",
-    },
-  },
-  chartContainer: {
-    height: "100%",
-    p: 3,
-    borderRadius: 3,
-    background:
-      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
-    backdropFilter: "blur(10px)",
-    boxShadow:
-      "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)",
-    border: "1px solid rgba(255,255,255,0.3)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    "&:hover": {
-      transform: "translateY(-5px)",
-      boxShadow:
-        "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)",
-    },
-  },
-  metricIconWrapper: (color) => ({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 48,
-    height: 48,
-    borderRadius: "50%",
-    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
-    boxShadow:
-      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
-    color,
-    transition: "transform 0.3s ease",
-    "&:hover": {
-      transform: "scale(1.1)",
-    },
-  }),
-  revenueIconWrapper: (color) => ({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 36,
-    height: 36,
-    borderRadius: "50%",
-    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
-    boxShadow:
-      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
-    color,
-    transition: "transform 0.3s ease",
-    "&:hover": {
-      transform: "scale(1.1)",
-    },
-  }),
-  textSecondary: {
-    color: "text.secondary",
-    fontWeight: 500,
-  },
-  trendUp: {
-    color: "success.main",
-    display: "flex",
-    alignItems: "center",
-  },
-  trendDown: {
-    color: "error.main",
-    display: "flex",
-    alignItems: "center",
-  },
-  progressContainer: {
-    mt: 1.5,
-    p: 1,
-    borderRadius: 3,
-    background: "linear-gradient(145deg, #f0f0f0, #ffffff)",
-    boxShadow:
-      "inset 3px 3px 6px rgba(0,0,0,0.05), inset -3px -3px 6px rgba(255,255,255,0.8)",
-  },
-  progress: (color) => ({
-    height: 6,
-    borderRadius: 3,
-    background: "rgba(255,255,255,0.3)",
-    "& .MuiLinearProgress-bar": {
-      background: `linear-gradient(90deg, ${alpha(color, 0.7)}, ${color})`,
+    headerContainer: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      mb: 4,
+      p: 2,
       borderRadius: 3,
-      boxShadow: `0 0 10px ${alpha(color, 0.5)}`,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.6), rgba(240,240,240,0.4))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.6), rgba(30,30,30,0.4))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "5px 5px 15px rgba(0,0,0,0.05), -5px -5px 15px rgba(255,255,255,0.6)"
+        : "5px 5px 15px rgba(0,0,0,0.2), -5px -5px 15px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
     },
-  }),
-  tooltipPaper: {
-    p: 2,
-    borderRadius: 2,
-    backdropFilter: "blur(10px)",
-    background: "rgba(255,255,255,0.9)",
-    boxShadow:
-      "5px 5px 10px rgba(0,0,0,0.1), -5px -5px 10px rgba(255,255,255,0.5)",
-    border: "1px solid rgba(255,255,255,0.5)",
-  },
-  errorAlert: {
-    borderRadius: 3,
-    backdropFilter: "blur(10px)",
-    background:
-      "linear-gradient(145deg, rgba(244,67,54,0.9), rgba(229,57,53,0.7))",
-    boxShadow:
-      "7px 7px 14px rgba(0,0,0,0.1), -7px -7px 14px rgba(255,255,255,0.1)",
-    border: "1px solid rgba(255,255,255,0.2)",
-  },
-  alertButton: {
-    borderRadius: "50%",
-    background: "rgba(255,255,255,0.2)",
-    backdropFilter: "blur(5px)",
-    boxShadow:
-      "3px 3px 6px rgba(0,0,0,0.1), -3px -3px 6px rgba(255,255,255,0.1)",
-    "&:hover": {
-      background: "rgba(255,255,255,0.3)",
+    loadingContainer: {
+      position: "relative",
+      width: 80,
+      height: 80,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: "50%",
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "10px 10px 20px rgba(0,0,0,0.1), -10px -10px 20px rgba(255,255,255,0.8)"
+        : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.05)",
     },
-  },
+    loadingSpinner: {
+      color: isLight ? "primary.main" : "primary.light",
+      position: "relative",
+      zIndex: 2,
+    },
+    errorAlert: {
+      borderRadius: 3,
+      backdropFilter: "blur(10px)",
+      background:
+        "linear-gradient(145deg, rgba(244,67,54,0.9), rgba(229,57,53,0.7))",
+      boxShadow:
+        "7px 7px 14px rgba(0,0,0,0.1), -7px -7px 14px rgba(255,255,255,0.1)",
+      border: "1px solid rgba(255,255,255,0.2)",
+    },
+    alertButton: {
+      borderRadius: "50%",
+      background: "rgba(255,255,255,0.2)",
+      backdropFilter: "blur(5px)",
+      boxShadow:
+        "3px 3px 6px rgba(0,0,0,0.1), -3px -3px 6px rgba(255,255,255,0.1)",
+      "&:hover": {
+        background: "rgba(255,255,255,0.3)",
+      },
+    },
+    headerText: {
+      background: isLight
+        ? "linear-gradient(45deg, #3f51b5, #2196f3)"
+        : "linear-gradient(45deg, #90caf9, #42a5f5)",
+      backgroundClip: "text",
+      textFillColor: "transparent",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    },
+    refreshButton: {
+      borderRadius: "50%",
+      p: 1.5,
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      color: isLight ? "primary.main" : "primary.light",
+      transition: "all 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-2px)",
+        boxShadow: isLight
+          ? "7px 7px 15px rgba(0,0,0,0.1), -7px -7px 15px rgba(255,255,255,0.9)"
+          : "7px 7px 15px rgba(0,0,0,0.3), -7px -7px 15px rgba(255,255,255,0.05)",
+      },
+      "&:active": {
+        transform: "translateY(0)",
+        boxShadow: isLight
+          ? "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)"
+          : "inset 5px 5px 10px rgba(0,0,0,0.2), inset -5px -5px 10px rgba(255,255,255,0.05)",
+      },
+    },
+    refreshingButton: {
+      borderRadius: "50%",
+      p: 1.5,
+      background: isLight
+        ? "linear-gradient(145deg, #f0f0f0, #e6e6e6)"
+        : "linear-gradient(145deg, #252525, #1e1e1e)",
+      boxShadow: isLight
+        ? "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)"
+        : "inset 5px 5px 10px rgba(0,0,0,0.2), inset -5px -5px 10px rgba(255,255,255,0.05)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      opacity: 0.8,
+    },
+    sectionContainer: {
+      p: 3,
+      mb: 4,
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.5))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.7), rgba(30,30,30,0.5))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)"
+        : "10px 10px 20px rgba(0,0,0,0.2), -10px -10px 20px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-5px)",
+        boxShadow: isLight
+          ? "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)"
+          : "15px 15px 30px rgba(0,0,0,0.3), -15px -15px 30px rgba(255,255,255,0.03)",
+      },
+    },
+    sectionHeader: {
+      display: "flex",
+      alignItems: "center",
+      mb: 3,
+      pb: 2,
+      borderBottom: isLight
+        ? "1px solid rgba(0,0,0,0.05)"
+        : "1px solid rgba(255,255,255,0.05)",
+    },
+    iconContainer: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 40,
+      height: 40,
+      borderRadius: "50%",
+      mr: 2,
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+    },
+    metricCard: {
+      height: "100%",
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)"
+        : "7px 7px 14px rgba(0,0,0,0.2), -7px -7px 14px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      overflow: "visible",
+      "&:hover": {
+        transform: "translateY(-7px) scale(1.02)",
+        boxShadow: isLight
+          ? "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)"
+          : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.03)",
+      },
+    },
+    metricIconWrapper: (color) => ({
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 48,
+      height: 48,
+      borderRadius: "50%",
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+      color,
+      transition: "transform 0.3s ease",
+      "&:hover": {
+        transform: "scale(1.1)",
+      },
+    }),
+    trendUp: {
+      color: "success.main",
+      display: "flex",
+      alignItems: "center",
+    },
+    trendDown: {
+      color: "error.main",
+      display: "flex",
+      alignItems: "center",
+    },
+    inventoryCard: {
+      height: "100%",
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)"
+        : "7px 7px 14px rgba(0,0,0,0.2), -7px -7px 14px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-7px)",
+        boxShadow: isLight
+          ? "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)"
+          : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.03)",
+      },
+    },
+    revenueCard: {
+      height: "100%",
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)"
+        : "7px 7px 14px rgba(0,0,0,0.2), -7px -7px 14px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-7px)",
+        boxShadow: isLight
+          ? "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)"
+          : "10px 10px 20px rgba(0,0,0,0.3), -10px -10px 20px rgba(255,255,255,0.03)",
+      },
+    },
+    chartContainer: {
+      height: "100%",
+      p: 3,
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))"
+        : "linear-gradient(145deg, rgba(40,40,40,0.9), rgba(30,30,30,0.7))",
+      backdropFilter: "blur(10px)",
+      boxShadow: isLight
+        ? "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)"
+        : "10px 10px 20px rgba(0,0,0,0.2), -10px -10px 20px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.3)"
+        : "1px solid rgba(255,255,255,0.05)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-5px)",
+        boxShadow: isLight
+          ? "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)"
+          : "15px 15px 30px rgba(0,0,0,0.3), -15px -15px 30px rgba(255,255,255,0.03)",
+      },
+    },
+    progressContainer: {
+      mt: 1.5,
+      p: 1,
+      borderRadius: 3,
+      background: isLight
+        ? "linear-gradient(145deg, #f0f0f0, #ffffff)"
+        : "linear-gradient(145deg, #252525, #2d2d2d)",
+      boxShadow: isLight
+        ? "inset 3px 3px 6px rgba(0,0,0,0.05), inset -3px -3px 6px rgba(255,255,255,0.8)"
+        : "inset 3px 3px 6px rgba(0,0,0,0.2), inset -3px -3px 6px rgba(255,255,255,0.02)",
+    },
+    progress: (color) => ({
+      height: 6,
+      borderRadius: 3,
+      background: isLight ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)",
+      "& .MuiLinearProgress-bar": {
+        background: `linear-gradient(90deg, ${alpha(color, 0.7)}, ${color})`,
+        borderRadius: 3,
+        boxShadow: `0 0 10px ${alpha(color, 0.5)}`,
+      },
+    }),
+    revenueIconWrapper: (color) => ({
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: 36,
+      height: 36,
+      borderRadius: "50%",
+      background: isLight
+        ? "linear-gradient(145deg, #ffffff, #f0f0f0)"
+        : "linear-gradient(145deg, #2d2d2d, #252525)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)"
+        : "5px 5px 10px rgba(0,0,0,0.2), -5px -5px 10px rgba(255,255,255,0.05)",
+      color,
+      transition: "transform 0.3s ease",
+      "&:hover": {
+        transform: "scale(1.1)",
+      },
+    }),
+    textSecondary: {
+      color: isLight ? "text.secondary" : "rgba(255,255,255,0.7)",
+      fontWeight: 500,
+    },
+    tooltipPaper: {
+      p: 2,
+      borderRadius: 2,
+      backdropFilter: "blur(10px)",
+      background: isLight ? "rgba(255,255,255,0.9)" : "rgba(40,40,40,0.9)",
+      boxShadow: isLight
+        ? "5px 5px 10px rgba(0,0,0,0.1), -5px -5px 10px rgba(255,255,255,0.5)"
+        : "5px 5px 10px rgba(0,0,0,0.3), -5px -5px 10px rgba(255,255,255,0.02)",
+      border: isLight
+        ? "1px solid rgba(255,255,255,0.5)"
+        : "1px solid rgba(255,255,255,0.05)",
+    },
+  };
 };

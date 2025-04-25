@@ -12,6 +12,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 // load your public key from env
 const stripePromise = loadStripe(
@@ -54,26 +55,28 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={poppins.className}>
-        <ThemeRegistry>
-          <AuthProvider>
-            {/* Wrap your entire app in Stripe Elements */}
-            <Elements stripe={stripePromise}>
-              <div className="pageWrapper">
-                <BootstrapClient />
-                <NavBar />
-                <main className="flex-grow-1">{children}</main>
-                <Footer />
-              </div>
-            </Elements>
-          </AuthProvider>
+        <ThemeProvider>
+          <ThemeRegistry>
+            <AuthProvider>
+              {/* Wrap your entire app in Stripe Elements */}
+              <Elements stripe={stripePromise}>
+                <div className="pageWrapper">
+                  <BootstrapClient />
+                  <NavBar />
+                  <main className="flex-grow-1">{children}</main>
+                  <Footer />
+                </div>
+              </Elements>
+            </AuthProvider>
 
-          {/* Bootstrap JS */}
-          <Script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        </ThemeRegistry>
+            {/* Bootstrap JS */}
+            <Script
+              src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+              crossOrigin="anonymous"
+              strategy="afterInteractive"
+            />
+          </ThemeRegistry>
+        </ThemeProvider>
       </body>
     </html>
   );

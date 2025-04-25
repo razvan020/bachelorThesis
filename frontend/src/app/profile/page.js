@@ -36,23 +36,43 @@ export default function ProfilePage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/api/user/me");
+        // Get the token from localStorage
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setError("You need to be logged in to view this page");
+          return;
+        }
+
+        const res = await fetch("/api/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
         if (!res.ok) throw new Error("Failed to load profile");
         setProfile(await res.json());
+
+        try {
+          const res2 = await fetch("/api/user/me/avatar", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (res2.ok) {
+            const blob = await res2.blob();
+            if (avatarObjectUrl.current)
+              URL.revokeObjectURL(avatarObjectUrl.current);
+            avatarObjectUrl.current = URL.createObjectURL(blob);
+            setAvatarUrl(avatarObjectUrl.current);
+          }
+        } catch {
+          // no avatar
+        }
       } catch (e) {
         setError(e.message);
-      }
-      try {
-        const res2 = await fetch("/api/user/me/avatar");
-        if (res2.ok) {
-          const blob = await res2.blob();
-          if (avatarObjectUrl.current)
-            URL.revokeObjectURL(avatarObjectUrl.current);
-          avatarObjectUrl.current = URL.createObjectURL(blob);
-          setAvatarUrl(avatarObjectUrl.current);
-        }
-      } catch {
-        // no avatar
       }
     }
     load();
@@ -72,16 +92,29 @@ export default function ProfilePage() {
       setError("Max size 2 MB.");
       return;
     }
+
+    const token = localStorage.getItem("token");
     const form = new FormData();
     form.append("file", newPic);
+
     try {
       const res = await fetch("/api/user/me/avatar", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: form,
       });
+
       if (!res.ok) throw new Error("Upload failed");
+
       // refresh avatar
-      const res2 = await fetch("/api/user/me/avatar");
+      const res2 = await fetch("/api/user/me/avatar", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       if (res2.ok) {
         const blob = await res2.blob();
         if (avatarObjectUrl.current)
@@ -89,6 +122,7 @@ export default function ProfilePage() {
         avatarObjectUrl.current = URL.createObjectURL(blob);
         setAvatarUrl(avatarObjectUrl.current);
       }
+
       setMsg("Avatar updated!");
       setNewPic(null);
     } catch (e) {
@@ -99,12 +133,19 @@ export default function ProfilePage() {
   const changePwd = async () => {
     setMsg("");
     setError("");
+
+    const token = localStorage.getItem("token");
+
     try {
       const res = await fetch("/api/user/me/change-password", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ oldPassword, newPassword }),
       });
+
       if (!res.ok) throw new Error("Password change failed");
       setMsg("Password changed!");
       setOld("");

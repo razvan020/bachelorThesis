@@ -215,9 +215,13 @@ const AddFlightForm = ({ onCancel, onFlightAdded }) => {
     };
 
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch("/api/flights", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
@@ -583,7 +587,16 @@ export default function ManageFlightsPage() {
       setError(null);
       setSuccessMessage("");
       try {
-        const res = await fetch("/api/flights");
+        const token = localStorage.getItem("token");
+        const res = await fetch("/api/flights", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
         if (!res.ok) {
           let msg = `HTTP error! status: ${res.status}`;
           try {
@@ -620,8 +633,14 @@ export default function ManageFlightsPage() {
     setDeleteLoading(true);
     setError(null);
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch(`/api/flights/${flightToDelete.id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
       });
       if (!res.ok) {
         let msg = `HTTP error! status: ${res.status}`;

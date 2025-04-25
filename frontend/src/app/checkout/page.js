@@ -70,7 +70,14 @@ function CheckoutPageContent() {
     setLoadingCart(true);
     setError(null);
     try {
-      const res = await fetch("/api/cart", { credentials: "include" });
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/cart", {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error || res.statusText);
       setCartItems(body.items || []);
@@ -103,9 +110,13 @@ function CheckoutPageContent() {
 
     try {
       // 1) Create PaymentIntent
+      const token = localStorage.getItem("token");
       const intentRes = await fetch("/api/checkout/create-payment-intent", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           amount: Math.round(totalPrice * 100),
           email: customerEmail,
