@@ -30,7 +30,7 @@ pipeline {
         ]) {
           sh """
             cat > .env <<EOF
-            NEXT_PUBLIC_BACKEND_URL=http://localhost:8080
+            NEXT_PUBLIC_BACKEND_URL=http://backend:8080
             NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\$PK
             STRIPE_SECRET_KEY=\$SK
             STRIPE_WEBHOOK_SECRET=\${WEBHOOK_SECRET:-}
