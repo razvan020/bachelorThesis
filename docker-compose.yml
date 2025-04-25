@@ -35,11 +35,13 @@ services:
       context: ./frontend
       args:
         # build‑time variable used by next.config.mjs
-        NEXT_PUBLIC_BACKEND_URL: "http://localhost:8080"
+        NEXT_PUBLIC_BACKEND_URL: "http://backend:8080"
+        NEXT_PUBLIC_BACKEND_URL_GOOGLE: "http://localhost:8080"
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}"
     environment:
       # run‑time variables for both client and middleware.ts
       NEXT_PUBLIC_BACKEND_URL: "${NEXT_PUBLIC_BACKEND_URL}"
+      NEXT_PUBLIC_BACKEND_URL_GOOGLE: "http://localhost:8080"
       BACKEND_URL: "http://backend:8080"
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}"
       JWT_SECRET: "${JWT_SECRET}"

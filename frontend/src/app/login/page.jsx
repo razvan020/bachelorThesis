@@ -70,13 +70,13 @@ export default function LoginPage() {
   const handleGoogleLogin = () => {
     setOauthLoading(true);
     // Redirect to Google OAuth endpoint
-    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/oauth2/authorization/google`;
   };
 
   const handleFacebookLogin = () => {
     setOauthLoading(true);
     // Redirect to Facebook OAuth endpoint
-    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/oauth2/authorization/facebook`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/oauth2/authorization/facebook`;
   };
 
   // theme helpers
