@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react"; // ← ensure React is imported
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -8,14 +8,14 @@ import {
   Typography,
   CircularProgress,
   Alert,
-  useTheme,
-  Paper,
-  Container,
-  alpha,
-  LinearProgress,
   IconButton,
   Tooltip,
+  Paper,
+  Container,
+  LinearProgress,
   Stack,
+  useTheme,
+  alpha,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -72,17 +72,15 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "80vh",
-        }}
-      >
-        <CircularProgress size={60} thickness={4} />
-        <Typography variant="h6" sx={{ mt: 2, color: "text.secondary" }}>
+      <Box sx={styles.centeredContainer}>
+        <Box sx={styles.loadingContainer}>
+          <CircularProgress
+            size={60}
+            thickness={4}
+            sx={styles.loadingSpinner}
+          />
+        </Box>
+        <Typography variant="h6" sx={{ ...styles.textSecondary, mt: 2 }}>
           Loading dashboard data...
         </Typography>
       </Box>
@@ -96,10 +94,16 @@ export default function DashboardPage() {
           severity="error"
           variant="filled"
           action={
-            <IconButton color="inherit" size="small" onClick={handleRefresh}>
+            <IconButton
+              color="inherit"
+              size="small"
+              onClick={handleRefresh}
+              sx={styles.alertButton}
+            >
               <RefreshIcon />
             </IconButton>
           }
+          sx={styles.errorAlert}
         >
           {error}
         </Alert>
@@ -107,7 +111,6 @@ export default function DashboardPage() {
     );
   }
 
-  // prepare chart data
   const weeklyData = Object.entries(bookingRev.bookingsCreatedWeekly || {}).map(
     ([week, count]) => ({ week, count })
   );
@@ -116,18 +119,10 @@ export default function DashboardPage() {
     ([date, count]) => ({ date, count })
   );
 
-  // custom tooltip
   const CustomTooltip = ({ active, payload, label }) =>
     active && payload?.length ? (
-      <Paper
-        elevation={3}
-        sx={{
-          p: 1,
-          backgroundColor: alpha(theme.palette.background.paper, 0.9),
-          border: `1px solid ${theme.palette.divider}`,
-        }}
-      >
-        <Typography variant="subtitle2" color="text.secondary">
+      <Paper sx={styles.tooltipPaper} elevation={0}>
+        <Typography variant="subtitle2" sx={styles.textSecondary}>
           {label}
         </Typography>
         <Typography variant="body1" fontWeight="bold">
@@ -138,51 +133,28 @@ export default function DashboardPage() {
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
-      {/* header + refresh */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 4,
-        }}
-      >
-        <Typography variant="h4" fontWeight="bold">
+      {/* Header + Refresh */}
+      <Box sx={styles.headerContainer}>
+        <Typography variant="h4" fontWeight="bold" sx={styles.headerText}>
           Analytics Dashboard
         </Typography>
         <Tooltip title="Refresh data">
           <IconButton
             onClick={handleRefresh}
-            color="primary"
             disabled={refreshing}
-            sx={{
-              backgroundColor: alpha(theme.palette.primary.main, 0.1),
-              "&:hover": {
-                backgroundColor: alpha(theme.palette.primary.main, 0.2),
-              },
-            }}
+            sx={refreshing ? styles.refreshingButton : styles.refreshButton}
           >
             {refreshing ? <CircularProgress size={24} /> : <RefreshIcon />}
           </IconButton>
         </Tooltip>
       </Box>
 
-      {/* 1) USER METRICS */}
-      <Paper
-        elevation={0}
-        sx={{
-          p: 3,
-          mb: 4,
-          borderRadius: 2,
-          border: `1px solid ${theme.palette.divider}`,
-          background: `linear-gradient(to right, ${alpha(
-            theme.palette.primary.light,
-            0.05
-          )}, ${alpha(theme.palette.background.paper, 0.8)})`,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <PeopleAltIcon color="primary" sx={{ mr: 1 }} />
+      {/* User Metrics */}
+      <Box sx={styles.sectionContainer}>
+        <Box sx={styles.sectionHeader}>
+          <Box sx={styles.iconContainer}>
+            <PeopleAltIcon sx={{ color: "theme.palette.primary.main" }} />
+          </Box>
           <Typography variant="h6" fontWeight="bold">
             User Metrics
           </Typography>
@@ -194,7 +166,7 @@ export default function DashboardPage() {
               sub: "Last 24h",
               val: userMetrics.activeUsers24Hours,
               icon: <PeopleAltIcon />,
-              color: theme.palette.success.main,
+              colorKey: "success",
               trend: userMetrics.activeUsers24HoursGrowthRate || 0,
             },
             {
@@ -202,7 +174,7 @@ export default function DashboardPage() {
               sub: "Last 7d",
               val: userMetrics.newSignups7Days,
               icon: <PeopleAltIcon />,
-              color: theme.palette.info.main,
+              colorKey: "info",
               trend: userMetrics.newSignups7DaysGrowthRate || 0,
             },
             {
@@ -210,7 +182,7 @@ export default function DashboardPage() {
               sub: "Last 30d",
               val: userMetrics.newSignups30Days,
               icon: <PeopleAltIcon />,
-              color: theme.palette.warning.main,
+              colorKey: "warning",
               trend: userMetrics.newSignups30DaysGrowthRate || 0,
             },
             {
@@ -218,30 +190,12 @@ export default function DashboardPage() {
               sub: "All time",
               val: userMetrics.totalUsers,
               icon: <PeopleAltIcon />,
-              color: theme.palette.primary.main,
+              colorKey: "primary",
               trend: userMetrics.totalUsersGrowthRate || 0,
             },
-          ].map(({ label, sub, val, icon, color, trend }) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={3}
-              key={`${label}-${sub}`} // ← unique key now includes `sub`
-            >
-              <Card
-                elevation={0}
-                sx={{
-                  height: "100%",
-                  borderRadius: 2,
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-5px)",
-                    boxShadow: theme.shadows[6],
-                  },
-                  border: `1px solid ${alpha(color, 0.2)}`,
-                }}
-              >
+          ].map(({ label, sub, val, icon, colorKey, trend }) => (
+            <Grid item xs={12} sm={6} md={3} key={`${label}-${sub}`}>
+              <Card sx={styles.metricCard}>
                 <CardContent>
                   <Box
                     sx={{
@@ -251,22 +205,24 @@ export default function DashboardPage() {
                     }}
                   >
                     <Box>
-                      <Typography variant="subtitle2" color="text.secondary">
+                      <Typography variant="subtitle2" sx={styles.textSecondary}>
                         {label}
                       </Typography>
-                      <Typography variant="h4" fontWeight="bold" sx={{ color }}>
+                      <Typography
+                        variant="h4"
+                        fontWeight="bold"
+                        sx={{ color: theme.palette[colorKey].main }}
+                      >
                         {val?.toLocaleString() ?? "-"}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography variant="caption" sx={styles.textSecondary}>
                         {sub}
                       </Typography>
                     </Box>
                     <Box
-                      sx={{
-                        p: 1,
-                        borderRadius: "50%",
-                        backgroundColor: alpha(color, 0.1),
-                      }}
+                      sx={styles.metricIconWrapper(
+                        theme.palette[colorKey].main
+                      )}
                     >
                       {icon}
                     </Box>
@@ -274,25 +230,14 @@ export default function DashboardPage() {
                   {trend !== 0 && (
                     <Stack direction="row" alignItems="center" spacing={0.5}>
                       {trend > 0 ? (
-                        <TrendingUpIcon
-                          fontSize="small"
-                          sx={{ color: theme.palette.success.main }}
-                        />
+                        <TrendingUpIcon sx={styles.trendUp} />
                       ) : (
-                        <TrendingDownIcon
-                          fontSize="small"
-                          sx={{ color: theme.palette.error.main }}
-                        />
+                        <TrendingDownIcon sx={styles.trendDown} />
                       )}
                       <Typography
                         variant="caption"
-                        sx={{
-                          color:
-                            trend > 0
-                              ? theme.palette.success.main
-                              : theme.palette.error.main,
-                          fontWeight: "bold",
-                        }}
+                        sx={trend > 0 ? styles.trendUp : styles.trendDown}
+                        fontWeight="bold"
                       >
                         {Math.abs(trend)}%
                       </Typography>
@@ -303,24 +248,14 @@ export default function DashboardPage() {
             </Grid>
           ))}
         </Grid>
-      </Paper>
+      </Box>
 
-      {/* 2) FLIGHT INVENTORY METRICS */}
-      <Paper
-        elevation={0}
-        sx={{
-          p: 3,
-          mb: 4,
-          borderRadius: 2,
-          border: `1px solid ${theme.palette.divider}`,
-          background: `linear-gradient(to right, ${alpha(
-            theme.palette.info.light,
-            0.05
-          )}, ${alpha(theme.palette.background.paper, 0.8)})`,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <FlightIcon color="info" sx={{ mr: 1 }} />
+      {/* Flight Inventory */}
+      <Box sx={styles.sectionContainer}>
+        <Box sx={styles.sectionHeader}>
+          <Box sx={styles.iconContainer}>
+            <FlightIcon sx={{ color: "black" }} />
+          </Box>
           <Typography variant="h6" fontWeight="bold">
             Flight Inventory
           </Typography>
@@ -330,7 +265,7 @@ export default function DashboardPage() {
             {
               label: "Available Flights",
               val: flightInv.availableFlights,
-              color: theme.palette.success.main,
+              colorKey: "success",
               pct:
                 (flightInv.availableFlights /
                   Math.max(flightInv.totalFlights || 1, 1)) *
@@ -340,7 +275,7 @@ export default function DashboardPage() {
               label: "Upcoming Flights",
               sub: "Next 7d",
               val: flightInv.upcomingFlights7Days,
-              color: theme.palette.info.main,
+              colorKey: "info",
               pct:
                 (flightInv.upcomingFlights7Days /
                   Math.max(flightInv.totalFlights || 1, 1)) *
@@ -350,7 +285,7 @@ export default function DashboardPage() {
               label: "Recently Added",
               sub: "Last 7d",
               val: flightInv.flightsAdded7Days,
-              color: theme.palette.warning.main,
+              colorKey: "warning",
               pct:
                 (flightInv.flightsAdded7Days /
                   Math.max(flightInv.totalFlights || 1, 1)) *
@@ -359,7 +294,7 @@ export default function DashboardPage() {
             {
               label: "Fully Booked",
               val: flightInv.fullyBookedFlights,
-              color: theme.palette.error.main,
+              colorKey: "error",
               pct:
                 (flightInv.fullyBookedFlights /
                   Math.max(flightInv.totalFlights || 1, 1)) *
@@ -368,65 +303,50 @@ export default function DashboardPage() {
             {
               label: "Total Flights",
               val: flightInv.totalFlights,
-              color: theme.palette.primary.main,
+              colorKey: "primary",
               pct: 100,
             },
-          ].map(({ label, sub, val, color, pct }) => (
+          ].map(({ label, sub, val, colorKey, pct }) => (
             <Grid item xs={12} sm={6} md={4} lg={2.4} key={label}>
-              <Card
-                elevation={0}
-                sx={{
-                  height: "100%",
-                  borderRadius: 2,
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-5px)",
-                    boxShadow: theme.shadows[6],
-                  },
-                  border: `1px solid ${alpha(color, 0.2)}`,
-                }}
-              >
+              <Card sx={styles.inventoryCard}>
                 <CardContent>
                   <Typography
                     variant="h5"
                     fontWeight="bold"
                     align="center"
-                    sx={{ color }}
+                    sx={{ color: theme.palette[colorKey].main }}
                   >
                     {val?.toLocaleString() ?? "-"}
                   </Typography>
                   <Typography
                     variant="subtitle2"
-                    color="text.secondary"
+                    sx={styles.textSecondary}
                     align="center"
                   >
                     {label}
                   </Typography>
-                  {sub && (
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      align="center"
-                    >
-                      {sub}
-                    </Typography>
-                  )}
-                  <LinearProgress
-                    variant="determinate"
-                    value={pct || 0}
-                    sx={{
-                      mt: 1.5,
-                      height: 6,
-                      borderRadius: 3,
-                      backgroundColor: alpha(color, 0.1),
-                      "& .MuiLinearProgress-bar": { backgroundColor: color },
-                    }}
-                  />
                   <Typography
                     variant="caption"
-                    color="text.secondary"
+                    sx={styles.textSecondary}
+                    align="center"
+                    display="block"
+                    height="18px"
+                  >
+                    {sub || "\u00A0"}
+                  </Typography>
+                  <Box sx={styles.progressContainer}>
+                    <LinearProgress
+                      variant="determinate"
+                      value={pct || 0}
+                      sx={styles.progress(theme.palette[colorKey].main)}
+                    />
+                  </Box>
+                  <Typography
+                    variant="caption"
+                    sx={styles.textSecondary}
                     align="right"
-                    sx={{ mt: 0.5 }}
+                    display="block"
+                    mt={0.5}
                   >
                     {pct.toFixed(1)}%
                   </Typography>
@@ -435,24 +355,14 @@ export default function DashboardPage() {
             </Grid>
           ))}
         </Grid>
-      </Paper>
+      </Box>
 
-      {/* 3) BOOKING & REVENUE METRICS */}
-      <Paper
-        elevation={0}
-        sx={{
-          p: 3,
-          mb: 4,
-          borderRadius: 2,
-          border: `1px solid ${theme.palette.divider}`,
-          background: `linear-gradient(to right, ${alpha(
-            theme.palette.success.light,
-            0.05
-          )}, ${alpha(theme.palette.background.paper, 0.8)})`,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <ShoppingCartIcon color="success" sx={{ mr: 1 }} />
+      {/* Booking & Revenue */}
+      <Box sx={styles.sectionContainer}>
+        <Box sx={styles.sectionHeader}>
+          <Box sx={styles.iconContainer}>
+            <ShoppingCartIcon sx={{ color: "black" }} />
+          </Box>
           <Typography variant="h6" fontWeight="bold">
             Booking & Revenue
           </Typography>
@@ -463,47 +373,37 @@ export default function DashboardPage() {
               label: "Weekly Bookings",
               val: weeklyData.reduce((sum, d) => sum + d.count, 0),
               icon: <ShoppingCartIcon />,
-              color: theme.palette.primary.main,
+              colorKey: "primary",
             },
             {
               label: "Total Revenue",
-              val: `$${bookingRev.totalRevenue.toLocaleString()}`,
+              val: `$${bookingRev.totalRevenue?.toLocaleString()}`,
               icon: <AttachMoneyIcon />,
-              color: theme.palette.success.main,
+              colorKey: "success",
             },
             {
               label: "Avg Ticket Price",
-              val: `$${bookingRev.averageTicketPrice.toLocaleString()}`,
+              val: `$${bookingRev.averageTicketPrice?.toLocaleString()}`,
               icon: <AttachMoneyIcon />,
-              color: theme.palette.info.main,
+              colorKey: "info",
             },
             {
               label: "Cart Abandonment",
-              val: `${(bookingRev.cartAbandonmentRate * 100).toFixed(1)}%`,
+              val: `${((bookingRev.cartAbandonmentRate || 0) * 100).toFixed(
+                1
+              )}%`,
               icon: <ShoppingCartIcon />,
-              color: theme.palette.warning.main,
+              colorKey: "warning",
             },
             {
               label: "Conversion Rate",
-              val: `${(bookingRev.conversionRate * 100).toFixed(1)}%`,
+              val: `${((bookingRev.conversionRate || 0) * 100).toFixed(1)}%`,
               icon: <TrendingUpIcon />,
-              color: theme.palette.error.main,
+              colorKey: "error",
             },
-          ].map(({ label, val, icon, color }) => (
+          ].map(({ label, val, icon, colorKey }) => (
             <Grid item xs={12} sm={6} md={4} lg={2.4} key={label}>
-              <Card
-                elevation={0}
-                sx={{
-                  height: "100%",
-                  borderRadius: 2,
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-5px)",
-                    boxShadow: theme.shadows[6],
-                  },
-                  border: `1px solid ${alpha(color, 0.2)}`,
-                }}
-              >
+              <Card sx={styles.revenueCard}>
                 <CardContent>
                   <Box
                     sx={{
@@ -513,23 +413,22 @@ export default function DashboardPage() {
                       mb: 1,
                     }}
                   >
-                    <Typography variant="subtitle2" color="text.secondary">
+                    <Typography variant="subtitle2" sx={styles.textSecondary}>
                       {label}
                     </Typography>
                     <Box
-                      sx={{
-                        p: 0.5,
-                        borderRadius: "50%",
-                        backgroundColor: alpha(color, 0.1),
-                      }}
+                      sx={styles.revenueIconWrapper(
+                        theme.palette[colorKey].main
+                      )}
                     >
-                      {React.cloneElement(icon, {
-                        fontSize: "small",
-                        sx: { color },
-                      })}
+                      {React.cloneElement(icon, { fontSize: "small" })}
                     </Box>
                   </Box>
-                  <Typography variant="h5" fontWeight="bold" sx={{ color }}>
+                  <Typography
+                    variant="h5"
+                    fontWeight="bold"
+                    sx={{ color: theme.palette[colorKey].main }}
+                  >
                     {val}
                   </Typography>
                 </CardContent>
@@ -537,25 +436,16 @@ export default function DashboardPage() {
             </Grid>
           ))}
         </Grid>
-      </Paper>
+      </Box>
 
-      {/* 4) CHARTS */}
+      {/* Charts */}
       <Grid container spacing={4}>
-        {/* Weekly Bookings */}
         <Grid item xs={12} lg={7}>
-          <Paper
-            elevation={0}
-            sx={{
-              p: 3,
-              borderRadius: 2,
-              height: "100%",
-              border: `1px solid ${theme.palette.divider}`,
-            }}
-          >
+          <Box sx={styles.chartContainer}>
             <Typography variant="h6" gutterBottom fontWeight="bold">
               Weekly Bookings
             </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
+            <Typography variant="body2" sx={styles.textSecondary} paragraph>
               Number of bookings per week (last 4 weeks)
             </Typography>
             <Box sx={{ height: 400, mt: 2 }}>
@@ -564,56 +454,28 @@ export default function DashboardPage() {
                   data={weeklyData}
                   margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                 >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke={alpha(theme.palette.divider, 0.5)}
-                  />
-                  <XAxis
-                    dataKey="week"
-                    tickLine={{ stroke: theme.palette.divider }}
-                    axisLine={{ stroke: theme.palette.divider }}
-                    tick={{
-                      fill: theme.palette.text.secondary,
-                      fontSize: 12,
-                    }}
-                  />
-                  <YAxis
-                    allowDecimals={false}
-                    tickLine={{ stroke: theme.palette.divider }}
-                    axisLine={{ stroke: theme.palette.divider }}
-                    tick={{
-                      fill: theme.palette.text.secondary,
-                      fontSize: 12,
-                    }}
-                  />
+                  <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+                  <XAxis dataKey="week" />
+                  <YAxis allowDecimals={false} />
                   <RechartsTooltip content={<CustomTooltip />} />
                   <Bar
                     dataKey="count"
-                    fill={theme.palette.primary.main}
                     radius={[4, 4, 0, 0]}
-                    barSize={60}
+                    fill={theme.palette.primary.main}
+                    fillOpacity={0.8}
                   />
                 </BarChart>
               </ResponsiveContainer>
             </Box>
-          </Paper>
+          </Box>
         </Grid>
 
-        {/* Daily Bookings */}
         <Grid item xs={12} lg={5}>
-          <Paper
-            elevation={0}
-            sx={{
-              p: 3,
-              borderRadius: 2,
-              height: "100%",
-              border: `1px solid ${theme.palette.divider}`,
-            }}
-          >
+          <Box sx={styles.chartContainer}>
             <Typography variant="h6" gutterBottom fontWeight="bold">
               Daily Bookings
             </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
+            <Typography variant="body2" sx={styles.textSecondary} paragraph>
               Number of bookings per day (last 7 days)
             </Typography>
             <Box sx={{ height: 400, mt: 2 }}>
@@ -622,42 +484,296 @@ export default function DashboardPage() {
                   data={dailyData}
                   margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                 >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke={alpha(theme.palette.divider, 0.5)}
-                  />
-                  <XAxis
-                    dataKey="date"
-                    tickLine={{ stroke: theme.palette.divider }}
-                    axisLine={{ stroke: theme.palette.divider }}
-                    tick={{
-                      fill: theme.palette.text.secondary,
-                      fontSize: 12,
-                    }}
-                  />
-                  <YAxis
-                    allowDecimals={false}
-                    tickLine={{ stroke: theme.palette.divider }}
-                    axisLine={{ stroke: theme.palette.divider }}
-                    tick={{
-                      fill: theme.palette.text.secondary,
-                      fontSize: 12,
-                    }}
-                  />
+                  <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+                  <XAxis dataKey="date" />
+                  <YAxis allowDecimals={false} />
                   <RechartsTooltip content={<CustomTooltip />} />
                   <Area
                     type="monotone"
                     dataKey="count"
-                    stroke={theme.palette.success.main}
-                    fill={alpha(theme.palette.success.main, 0.2)}
                     strokeWidth={2}
+                    stroke={theme.palette.info.main}
+                    fill={theme.palette.info.main}
+                    fillOpacity={0.2}
                   />
                 </AreaChart>
               </ResponsiveContainer>
             </Box>
-          </Paper>
+          </Box>
         </Grid>
       </Grid>
     </Container>
   );
 }
+
+// Enhanced styles combining neumorphism & glassmorphism
+const styles = {
+  centeredContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "80vh",
+  },
+  loadingContainer: {
+    position: "relative",
+    width: 80,
+    height: 80,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%",
+    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
+    boxShadow:
+      "10px 10px 20px rgba(0,0,0,0.1), -10px -10px 20px rgba(255,255,255,0.8)",
+  },
+  loadingSpinner: {
+    color: "primary.main",
+    position: "relative",
+    zIndex: 2,
+  },
+  headerContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    mb: 4,
+    p: 2,
+    borderRadius: 3,
+    background:
+      "linear-gradient(145deg, rgba(255,255,255,0.6), rgba(240,240,240,0.4))",
+    backdropFilter: "blur(10px)",
+    boxShadow:
+      "5px 5px 15px rgba(0,0,0,0.05), -5px -5px 15px rgba(255,255,255,0.6)",
+    border: "1px solid rgba(255,255,255,0.3)",
+  },
+  headerText: {
+    background: "linear-gradient(45deg,rgb(0, 0, 0),rgb(0, 0, 0))",
+    backgroundClip: "text",
+    textFillColor: "transparent",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  },
+  refreshButton: {
+    borderRadius: "50%",
+    p: 1.5,
+    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
+    boxShadow:
+      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    color: "primary.main",
+    transition: "all 0.3s ease",
+    "&:hover": {
+      transform: "translateY(-2px)",
+      boxShadow:
+        "7px 7px 15px rgba(0,0,0,0.1), -7px -7px 15px rgba(255,255,255,0.9)",
+    },
+    "&:active": {
+      transform: "translateY(0)",
+      boxShadow:
+        "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)",
+    },
+  },
+  refreshingButton: {
+    borderRadius: "50%",
+    p: 1.5,
+    background: "linear-gradient(145deg, #f0f0f0, #e6e6e6)",
+    boxShadow:
+      "inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    opacity: 0.8,
+  },
+  sectionContainer: {
+    p: 3,
+    mb: 4,
+    borderRadius: 3,
+    background:
+      "linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.5))",
+    backdropFilter: "blur(10px)",
+    boxShadow:
+      "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    "&:hover": {
+      transform: "translateY(-5px)",
+      boxShadow:
+        "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)",
+    },
+  },
+  sectionHeader: {
+    display: "flex",
+    alignItems: "center",
+    mb: 3,
+    pb: 2,
+    borderBottom: "1px solid rgba(0,0,0,0.05)",
+  },
+  iconContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 40,
+    height: 40,
+    borderRadius: "50%",
+    mr: 2,
+    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
+    boxShadow:
+      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
+  },
+  metricCard: {
+    height: "100%",
+    borderRadius: 3,
+    background:
+      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
+    backdropFilter: "blur(10px)",
+    boxShadow:
+      "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    overflow: "visible",
+    "&:hover": {
+      transform: "translateY(-7px) scale(1.02)",
+      boxShadow:
+        "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)",
+    },
+  },
+  inventoryCard: {
+    height: "100%",
+    borderRadius: 3,
+    background:
+      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
+    backdropFilter: "blur(10px)",
+    boxShadow:
+      "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    "&:hover": {
+      transform: "translateY(-7px)",
+      boxShadow:
+        "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)",
+    },
+  },
+  revenueCard: {
+    height: "100%",
+    borderRadius: 3,
+    background:
+      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
+    backdropFilter: "blur(10px)",
+    boxShadow:
+      "7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    "&:hover": {
+      transform: "translateY(-7px)",
+      boxShadow:
+        "10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)",
+    },
+  },
+  chartContainer: {
+    height: "100%",
+    p: 3,
+    borderRadius: 3,
+    background:
+      "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))",
+    backdropFilter: "blur(10px)",
+    boxShadow:
+      "10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    "&:hover": {
+      transform: "translateY(-5px)",
+      boxShadow:
+        "15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)",
+    },
+  },
+  metricIconWrapper: (color) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 48,
+    height: 48,
+    borderRadius: "50%",
+    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
+    boxShadow:
+      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
+    color,
+    transition: "transform 0.3s ease",
+    "&:hover": {
+      transform: "scale(1.1)",
+    },
+  }),
+  revenueIconWrapper: (color) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 36,
+    height: 36,
+    borderRadius: "50%",
+    background: "linear-gradient(145deg, #ffffff, #f0f0f0)",
+    boxShadow:
+      "5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)",
+    color,
+    transition: "transform 0.3s ease",
+    "&:hover": {
+      transform: "scale(1.1)",
+    },
+  }),
+  textSecondary: {
+    color: "text.secondary",
+    fontWeight: 500,
+  },
+  trendUp: {
+    color: "success.main",
+    display: "flex",
+    alignItems: "center",
+  },
+  trendDown: {
+    color: "error.main",
+    display: "flex",
+    alignItems: "center",
+  },
+  progressContainer: {
+    mt: 1.5,
+    p: 1,
+    borderRadius: 3,
+    background: "linear-gradient(145deg, #f0f0f0, #ffffff)",
+    boxShadow:
+      "inset 3px 3px 6px rgba(0,0,0,0.05), inset -3px -3px 6px rgba(255,255,255,0.8)",
+  },
+  progress: (color) => ({
+    height: 6,
+    borderRadius: 3,
+    background: "rgba(255,255,255,0.3)",
+    "& .MuiLinearProgress-bar": {
+      background: `linear-gradient(90deg, ${alpha(color, 0.7)}, ${color})`,
+      borderRadius: 3,
+      boxShadow: `0 0 10px ${alpha(color, 0.5)}`,
+    },
+  }),
+  tooltipPaper: {
+    p: 2,
+    borderRadius: 2,
+    backdropFilter: "blur(10px)",
+    background: "rgba(255,255,255,0.9)",
+    boxShadow:
+      "5px 5px 10px rgba(0,0,0,0.1), -5px -5px 10px rgba(255,255,255,0.5)",
+    border: "1px solid rgba(255,255,255,0.5)",
+  },
+  errorAlert: {
+    borderRadius: 3,
+    backdropFilter: "blur(10px)",
+    background:
+      "linear-gradient(145deg, rgba(244,67,54,0.9), rgba(229,57,53,0.7))",
+    boxShadow:
+      "7px 7px 14px rgba(0,0,0,0.1), -7px -7px 14px rgba(255,255,255,0.1)",
+    border: "1px solid rgba(255,255,255,0.2)",
+  },
+  alertButton: {
+    borderRadius: "50%",
+    background: "rgba(255,255,255,0.2)",
+    backdropFilter: "blur(5px)",
+    boxShadow:
+      "3px 3px 6px rgba(0,0,0,0.1), -3px -3px 6px rgba(255,255,255,0.1)",
+    "&:hover": {
+      background: "rgba(255,255,255,0.3)",
+    },
+  },
+};

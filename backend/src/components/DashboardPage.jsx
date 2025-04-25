@@ -1,0 +1,580 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Alert,
+  IconButton,
+  Tooltip,
+  Paper,
+  Container,
+  LinearProgress,
+  Stack,
+  useTheme,
+  alpha,
+} from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import FlightIcon from "@mui/icons-material/Flight";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip as RechartsTooltip,
+  AreaChart,
+  Area,
+  CartesianGrid,
+} from "recharts";
+
+export default function DashboardPage() {
+  const theme = useTheme();
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState("");
+  const [userMetrics, setUserMetrics] = useState({});
+  const [flightInv, setFlightInv] = useState({});
+  const [bookingRev, setBookingRev] = useState({});
+
+  const fetchData = async () => {
+    try {
+      setRefreshing(true);
+      const res = await fetch("/api/metrics");
+      if (!res.ok) throw new Error("Failed to load metrics");
+      const json = await res.json();
+      setUserMetrics(json.userMetrics || {});
+      setFlightInv(json.flightInventoryMetrics || {});
+      setBookingRev(json.bookingRevenueMetrics || {});
+      setError("");
+    } catch (e) {
+      console.error(e);
+      setError(e.message);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleRefresh = () => fetchData();
+
+  if (loading) {
+    return (
+      <Box sx={styles.centeredContainer}>
+        <Box sx={styles.loadingContainer}>
+          <CircularProgress 
+            size={60} 
+            thickness={4} 
+            sx={styles.loadingSpinner} 
+          />
+        </Box>
+        <Typography variant="h6" sx={{ ...styles.textSecondary, mt: 2 }}>
+          Loading dashboard data...
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <Alert
+          severity="error"
+          variant="filled"
+          action={
+            <IconButton 
+              color="inherit" 
+              size="small" 
+              onClick={handleRefresh}
+              sx={styles.alertButton}
+            >
+              <RefreshIcon />
+            </IconButton>
+          }
+          sx={styles.errorAlert}
+        >
+          {error}
+        </Alert>
+      </Container>
+    );
+  }
+
+  const weeklyData = Object.entries(bookingRev.bookingsCreatedWeekly || {}).map(
+    ([week, count]) => ({ week, count })
+  );
+
+  const dailyData = Object.entries(bookingRev.bookingsCreatedDaily || {}).map(
+    ([date, count]) => ({ date, count })
+  );
+
+  const CustomTooltip = ({ active, payload, label }) =>
+    active && payload?.length ? (
+      <Paper sx={styles.tooltipPaper} elevation={0}>
+        <Typography variant="subtitle2" sx={styles.textSecondary}>
+          {label}
+        </Typography>
+        <Typography variant="body1" fontWeight="bold">
+          {payload[0].value} bookings
+        </Typography>
+      </Paper>
+    ) : null;
+
+  return (
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* Header + Refresh */}
+      <Box sx={styles.headerContainer}>
+        <Typography variant="h4" fontWeight="bold" sx={styles.headerText}>
+          Analytics Dashboard
+        </Typography>
+        <Tooltip title="Refresh data">
+          <IconButton
+            onClick={handleRefresh}
+            disabled={refreshing}
+            sx={refreshing ? styles.refreshingButton : styles.refreshButton}
+          >
+            {refreshing ? <CircularProgress size={24} /> : <RefreshIcon />}
+          </IconButton>
+        </Tooltip>
+      </Box>
+
+      {/* User Metrics */}
+      <Box sx={styles.sectionContainer}>
+        <Box sx={styles.sectionHeader}>
+          <Box sx={styles.iconContainer}>
+            <PeopleAltIcon sx={{ color: theme.palette.primary.main }} />
+          </Box>
+          <Typography variant="h6" fontWeight="bold">
+            User Metrics
+          </Typography>
+        </Box>
+        <Grid container spacing={3}>
+          {[
+            { label: "Active Users", sub: "Last 24h", val: userMetrics.activeUsers24Hours, icon: <PeopleAltIcon />, colorKey: 'success', trend: userMetrics.activeUsers24HoursGrowthRate || 0, },
+            { label: "New Signups", sub: "Last 7d", val: userMetrics.newSignups7Days, icon: <PeopleAltIcon />, colorKey: 'info', trend: userMetrics.newSignups7DaysGrowthRate || 0, },
+            { label: "New Signups", sub: "Last 30d", val: userMetrics.newSignups30Days, icon: <PeopleAltIcon />, colorKey: 'warning', trend: userMetrics.newSignups30DaysGrowthRate || 0, },
+            { label: "Total Users", sub: "All time", val: userMetrics.totalUsers, icon: <PeopleAltIcon />, colorKey: 'primary', trend: userMetrics.totalUsersGrowthRate || 0, },
+          ].map(({ label, sub, val, icon, colorKey, trend }) => (
+            <Grid item xs={12} sm={6} md={3} key={`${label}-${sub}`}>  
+              <Card sx={styles.metricCard}>
+                <CardContent>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                    <Box>
+                      <Typography variant="subtitle2" sx={styles.textSecondary}>
+                        {label}
+                      </Typography>
+                      <Typography variant="h4" fontWeight="bold" sx={{ color: theme.palette[colorKey].main }}>
+                        {val?.toLocaleString() ?? '-'}
+                      </Typography>
+                      <Typography variant="caption" sx={styles.textSecondary}>
+                        {sub}
+                      </Typography>
+                    </Box>
+                    <Box sx={styles.metricIconWrapper(theme.palette[colorKey].main)}>
+                      {icon}
+                    </Box>
+                  </Box>
+                  {trend !== 0 && (
+                    <Stack direction="row" alignItems="center" spacing={0.5}>
+                      {trend > 0 ? <TrendingUpIcon sx={styles.trendUp} /> : <TrendingDownIcon sx={styles.trendDown} />}
+                      <Typography variant="caption" sx={trend > 0 ? styles.trendUp : styles.trendDown} fontWeight="bold">
+                        {Math.abs(trend)}%
+                      </Typography>
+                    </Stack>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* Flight Inventory */}
+      <Box sx={styles.sectionContainer}>
+        <Box sx={styles.sectionHeader}>
+          <Box sx={styles.iconContainer}>
+            <FlightIcon sx={{ color: theme.palette.info.main }} />
+          </Box>
+          <Typography variant="h6" fontWeight="bold">
+            Flight Inventory
+          </Typography>
+        </Box>
+        <Grid container spacing={3}>
+          {[
+            { label: 'Available Flights', val: flightInv.availableFlights, colorKey: 'success', pct: (flightInv.availableFlights / Math.max(flightInv.totalFlights||1,1))*100 },
+            { label: 'Upcoming Flights', sub: 'Next 7d', val: flightInv.upcomingFlights7Days, colorKey: 'info', pct: (flightInv.upcomingFlights7Days/Math.max(flightInv.totalFlights||1,1))*100 },
+            { label: 'Recently Added', sub: 'Last 7d', val: flightInv.flightsAdded7Days, colorKey: 'warning', pct: (flightInv.flightsAdded7Days/Math.max(flightInv.totalFlights||1,1))*100 },
+            { label: 'Fully Booked', val: flightInv.fullyBookedFlights, colorKey: 'error', pct: (flightInv.fullyBookedFlights/Math.max(flightInv.totalFlights||1,1))*100 },
+            { label: 'Total Flights', val: flightInv.totalFlights, colorKey: 'primary', pct: 100 },
+          ].map(({ label, sub, val, colorKey, pct }) => (
+            <Grid item xs={12} sm={6} md={4} lg={2.4} key={label}>
+              <Card sx={styles.inventoryCard}>
+                <CardContent>
+                  <Typography variant="h5" fontWeight="bold" align="center"
+                    sx={{ color: theme.palette[colorKey].main }}>
+                    {val?.toLocaleString() ?? '-'}
+                  </Typography>
+                  <Typography variant="subtitle2" sx={styles.textSecondary} align="center">
+                    {label}
+                  </Typography>
+                  <Typography variant="caption" sx={styles.textSecondary} align="center" display="block" height="18px">
+                    {sub || "\u00A0"}
+                  </Typography>
+                  <Box sx={styles.progressContainer}>
+                    <LinearProgress 
+                      variant="determinate" 
+                      value={pct||0} 
+                      sx={styles.progress(theme.palette[colorKey].main)} 
+                    />
+                  </Box>
+                  <Typography variant="caption" sx={styles.textSecondary} align="right" display="block" mt={0.5}>
+                    {pct.toFixed(1)}%
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* Booking & Revenue */}
+      <Box sx={styles.sectionContainer}>
+        <Box sx={styles.sectionHeader}>
+          <Box sx={styles.iconContainer}>
+            <ShoppingCartIcon sx={{ color: theme.palette.success.main }} />
+          </Box>
+          <Typography variant="h6" fontWeight="bold">
+            Booking & Revenue
+          </Typography>
+        </Box>
+        <Grid container spacing={3}>
+          {[
+            { label: 'Weekly Bookings', val: weeklyData.reduce((sum,d)=>sum+d.count,0), icon: <ShoppingCartIcon />, colorKey: 'primary' },
+            { label: 'Total Revenue', val: `$${bookingRev.totalRevenue?.toLocaleString()}`, icon: <AttachMoneyIcon />, colorKey: 'success' },
+            { label: 'Avg Ticket Price', val: `$${bookingRev.averageTicketPrice?.toLocaleString()}`, icon: <AttachMoneyIcon />, colorKey: 'info' },
+            { label: 'Cart Abandonment', val: `${((bookingRev.cartAbandonmentRate||0)*100).toFixed(1)}%`, icon: <ShoppingCartIcon />, colorKey: 'warning' },
+            { label: 'Conversion Rate', val: `${((bookingRev.conversionRate||0)*100).toFixed(1)}%`, icon: <TrendingUpIcon />, colorKey: 'error' },
+          ].map(({ label, val, icon, colorKey }) => (
+            <Grid item xs={12} sm={6} md={4} lg={2.4} key={label}>
+              <Card sx={styles.revenueCard}>
+                <CardContent>
+                  <Box sx={{ display:'flex',justifyContent:'space-between',alignItems:'center',mb:1}}>
+                    <Typography variant="subtitle2" sx={styles.textSecondary}>{label}</Typography>
+                    <Box sx={styles.revenueIconWrapper(theme.palette[colorKey].main)}>
+                      {React.cloneElement(icon,{ fontSize:'small'})}
+                    </Box>
+                  </Box>
+                  <Typography variant="h5" fontWeight="bold" sx={{ color: theme.palette[colorKey].main }}>{val}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      {/* Charts */}
+      <Grid container spacing={4}>
+        <Grid item xs={12} lg={7}>
+          <Box sx={styles.chartContainer}>
+            <Typography variant="h6" gutterBottom fontWeight="bold">Weekly Bookings</Typography>
+            <Typography variant="body2" sx={styles.textSecondary} paragraph>Number of bookings per week (last 4 weeks)</Typography>
+            <Box sx={{ height:400,mt:2 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={weeklyData} margin={{ top:20,right:30,left:20,bottom:60 }}>
+                  <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+                  <XAxis dataKey="week"/>
+                  <YAxis allowDecimals={false}/>
+                  <RechartsTooltip content={<CustomTooltip/>}/>
+                  <Bar 
+                    dataKey="count" 
+                    radius={[4,4,0,0]} 
+                    fill={theme.palette.primary.main}
+                    fillOpacity={0.8}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </Box>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} lg={5}>
+          <Box sx={styles.chartContainer}>
+            <Typography variant="h6" gutterBottom fontWeight="bold">Daily Bookings</Typography>
+            <Typography variant="body2" sx={styles.textSecondary} paragraph>Number of bookings per day (last 7 days)</Typography>
+            <Box sx={{ height:400,mt:2 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={dailyData} margin={{ top:20,right:30,left:20,bottom:60 }}>
+                  <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+                  <XAxis dataKey="date"/>
+                  <YAxis allowDecimals={false}/>
+                  <RechartsTooltip content={<CustomTooltip/>}/>
+                  <Area 
+                    type="monotone" 
+                    dataKey="count" 
+                    strokeWidth={2} 
+                    stroke={theme.palette.info.main}
+                    fill={theme.palette.info.main}
+                    fillOpacity={0.2}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </Container>
+  );
+}
+
+// Enhanced styles combining neumorphism & glassmorphism
+const styles = {
+  centeredContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '80vh',
+  },
+  loadingContainer: {
+    position: 'relative',
+    width: 80,
+    height: 80,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+    boxShadow: '10px 10px 20px rgba(0,0,0,0.1), -10px -10px 20px rgba(255,255,255,0.8)',
+  },
+  loadingSpinner: {
+    color: 'primary.main',
+    position: 'relative',
+    zIndex: 2,
+  },
+  headerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    mb: 4,
+    p: 2,
+    borderRadius: 3,
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.6), rgba(240,240,240,0.4))',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '5px 5px 15px rgba(0,0,0,0.05), -5px -5px 15px rgba(255,255,255,0.6)',
+    border: '1px solid rgba(255,255,255,0.3)',
+  },
+  headerText: {
+    background: 'linear-gradient(45deg, #3f51b5, #2196f3)',
+    backgroundClip: 'text',
+    textFillColor: 'transparent',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+  },
+  refreshButton: {
+    borderRadius: '50%',
+    p: 1.5,
+    background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+    boxShadow: '5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    color: 'primary.main',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: '7px 7px 15px rgba(0,0,0,0.1), -7px -7px 15px rgba(255,255,255,0.9)',
+    },
+    '&:active': {
+      transform: 'translateY(0)',
+      boxShadow: 'inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)',
+    }
+  },
+  refreshingButton: {
+    borderRadius: '50%',
+    p: 1.5,
+    background: 'linear-gradient(145deg, #f0f0f0, #e6e6e6)',
+    boxShadow: 'inset 5px 5px 10px rgba(0,0,0,0.05), inset -5px -5px 10px rgba(255,255,255,0.8)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    opacity: 0.8,
+  },
+  sectionContainer: {
+    p: 3,
+    mb: 4,
+    borderRadius: 3,
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.5))',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: '15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)',
+    }
+  },
+  sectionHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    mb: 3,
+    pb: 2,
+    borderBottom: '1px solid rgba(0,0,0,0.05)',
+  },
+  iconContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: '50%',
+    mr: 2,
+    background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+    boxShadow: '5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)',
+  },
+  metricCard: {
+    height: '100%',
+    borderRadius: 3,
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    overflow: 'visible',
+    '&:hover': {
+      transform: 'translateY(-7px) scale(1.02)',
+      boxShadow: '10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)',
+    }
+  },
+  inventoryCard: {
+    height: '100%',
+    borderRadius: 3,
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-7px)',
+      boxShadow: '10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)',
+    }
+  },
+  revenueCard: {
+    height: '100%',
+    borderRadius: 3,
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '7px 7px 14px rgba(0,0,0,0.05), -7px -7px 14px rgba(255,255,255,0.8)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-7px)',
+      boxShadow: '10px 10px 20px rgba(0,0,0,0.08), -10px -10px 20px rgba(255,255,255,0.9)',
+    }
+  },
+  chartContainer: {
+    height: '100%',
+    p: 3,
+    borderRadius: 3,
+    background: 'linear-gradient(145deg, rgba(255,255,255,0.9), rgba(240,240,240,0.7))',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '10px 10px 20px rgba(0,0,0,0.05), -10px -10px 20px rgba(255,255,255,0.7)',
+    border: '1px solid rgba(255,255,255,0.3)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: '15px 15px 30px rgba(0,0,0,0.07), -15px -15px 30px rgba(255,255,255,0.8)',
+    }
+  },
+  metricIconWrapper: (color) => ({ 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 48,
+    height: 48,
+    borderRadius: '50%',
+    background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+    boxShadow: '5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)',
+    color,
+    transition: 'transform 0.3s ease',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    }
+  }),
+  revenueIconWrapper: (color) => ({ 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 36,
+    height: 36,
+    borderRadius: '50%',
+    background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+    boxShadow: '5px 5px 10px rgba(0,0,0,0.05), -5px -5px 10px rgba(255,255,255,0.8)',
+    color,
+    transition: 'transform 0.3s ease',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    }
+  }),
+  textSecondary: { 
+    color: 'text.secondary',
+    fontWeight: 500,
+  },
+  trendUp: { 
+    color: 'success.main',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  trendDown: { 
+    color: 'error.main',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  progressContainer: {
+    mt: 1.5,
+    p: 1,
+    borderRadius: 3,
+    background: 'linear-gradient(145deg, #f0f0f0, #ffffff)',
+    boxShadow: 'inset 3px 3px 6px rgba(0,0,0,0.05), inset -3px -3px 6px rgba(255,255,255,0.8)',
+  },
+  progress: (color) => ({ 
+    height: 6, 
+    borderRadius: 3, 
+    background: 'rgba(255,255,255,0.3)',
+    '& .MuiLinearProgress-bar': { 
+      background: `linear-gradient(90deg, ${alpha(color, 0.7)}, ${color})`,
+      borderRadius: 3,
+      boxShadow: `0 0 10px ${alpha(color, 0.5)}`,
+    } 
+  }),
+  tooltipPaper: {
+    p: 2,
+    borderRadius: 2,
+    backdropFilter: 'blur(10px)',
+    background: 'rgba(255,255,255,0.9)',
+    boxShadow: '5px 5px 10px rgba(0,0,0,0.1), -5px -5px 10px rgba(255,255,255,0.5)',
+    border: '1px solid rgba(255,255,255,0.5)',
+  },
+  errorAlert: {
+    borderRadius: 3,
+    backdropFilter: 'blur(10px)',
+    background: 'linear-gradient(145deg, rgba(244,67,54,0.9), rgba(229,57,53,0.7))',
+    boxShadow: '7px 7px 14px rgba(0,0,0,0.1), -7px -7px 14px rgba(255,255,255,0.1)',
+    border: '1px solid rgba(255,255,255,0.2)',
+  },
+  alertButton: {
+    borderRadius: '50%',
+    background: 'rgba(255,255,255,0.2)',
+    backdropFilter: 'blur(5px)',
+    boxShadow: '3px 3px 6px rgba(0,0,0,0.1), -3px -3px 6px rgba(255,255,255,0.1)',
+    '&:hover': {
+      background: 'rgba(255,255,255,0.3)',
+    }
+  }
+};
