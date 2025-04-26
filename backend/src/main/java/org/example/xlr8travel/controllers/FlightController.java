@@ -159,18 +159,12 @@ public class FlightController {
     }
 
     @GetMapping("/search")
-    // This endpoint is likely public, so no @Secured needed usually
     public ResponseEntity<List<FlightDTO>> searchFlights(
-            // Match parameters sent from React FlightSearchComponent
             @RequestParam String origin,
             @RequestParam String destination,
-            // Spring can usually parse yyyy-MM-dd into LocalDate without explicit format
             @RequestParam LocalDate departureDate,
-            // arrivalDate is optional for one-way searches
             @RequestParam(required = false) LocalDate arrivalDate,
-            // Get tripType if you need different logic for one-way vs round-trip
             @RequestParam(defaultValue = "roundTrip") String tripType,
-            // Include passenger counts if needed for availability/pricing logic
             @RequestParam(defaultValue = "1") int adults,
             @RequestParam(defaultValue = "0") int children,
             @RequestParam(defaultValue = "0") int infants
@@ -181,35 +175,18 @@ public class FlightController {
         try {
             List<Flight> foundFlights;
 
-            // --- TODO: Adapt Service/Repository Layer ---
-            // You need a service/repository method that can find flights based
-            // on the required parameters, handling the optional arrivalDate.
-            if ("oneWay".equalsIgnoreCase(tripType)) {
-                // Example: Call a method designed for one-way searches
-                // foundFlights = flightService.findAvailableOneWayFlights(origin, destination, departureDate, adults + children + infants);
-                // For now, using the existing method - THIS NEEDS ADJUSTMENT IN SERVICE/REPO
-                log.warn("Using round-trip search logic for one-way request - Implement specific one-way search in service/repo!");
-                // Find flights departing on the given date, ignoring arrival date from repo method perspective
-                foundFlights = flightService.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate); // You need to add this method
-            } else {
-                // For round trip, arrival date is required
-                if (arrivalDate == null) {
-                    log.warn("Round trip search requested but no arrivalDate provided.");
-                    // Return 400 Bad Request with an informative body
-                    return ResponseEntity.badRequest().body(List.of()); // Empty list for simplicity here
-                }
-                // Example: Call a method designed for round-trip searches
-                // foundFlights = flightService.findAvailableRoundTripFlights(origin, destination, departureDate, arrivalDate, adults + children + infants);
-                // For now, using the existing method - THIS NEEDS ADJUSTMENT IN SERVICE/REPO
-                log.warn("Using simple date match for round-trip - Implement specific round-trip search in service/repo!");
-                foundFlights = flightService.findByOriginAndDestinationAndArrivalDateAndDepartureDate(origin, destination, arrivalDate, departureDate);
-            }
-            // --- End TODO ---
+            // For both one-way and round trip searches, use the same method
+            log.info("Performing flight search from {} to {} on {}", origin, destination, departureDate);
+            foundFlights = flightService.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
 
+            // If no flights found, log detailed information for debugging
+            if (foundFlights.isEmpty()) {
+                log.warn("No flights found for search: {} to {} on {}", origin, destination, departureDate);
+            }
 
             // Convert found Flight entities to FlightDTOs before returning
             List<FlightDTO> flightDTOs = foundFlights.stream()
-                    .map(FlightDTO::fromFlight) // Create this static method in FlightDTO
+                    .map(FlightDTO::fromFlight)
                     .collect(Collectors.toList());
 
             log.info("Found {} available flights for search criteria.", flightDTOs.size());
@@ -217,7 +194,6 @@ public class FlightController {
 
         } catch (Exception e) {
             log.error("Error during flight search: {}", e.getMessage(), e);
-            // Return 500 Internal Server Error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
