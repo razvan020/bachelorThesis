@@ -49,6 +49,10 @@ function CheckoutPageContent() {
   const elements = useElements();
   const { fetchCartCount } = useAuth();
 
+  const [baggagePrice, setBaggagePrice] = useState(0);
+  const [seatPrice, setSeatPrice] = useState(0);
+  const [adjustedTotalPrice, setAdjustedTotalPrice] = useState(0);
+
   // Cart state
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -96,6 +100,48 @@ function CheckoutPageContent() {
     fetchCart();
   }, [fetchCart]);
 
+  useEffect(() => {
+    // Define baggage prices (same as in page.js)
+    const baggageOptions = [
+      { value: "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0", price: 0 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_10", price: 20 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_20", price: 30 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_26", price: 40 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_32", price: 50 },
+    ];
+
+    // Define seat prices (same as in page.js)
+    const seatTypes = [
+      { type: "SEAT_TYPE_STANDARD", price: 7 },
+      { type: "SEAT_TYPE_UPFRONT", price: 10 },
+      { type: "SEAT_TYPE_EXTRA_LEGROOM", price: 13 },
+    ];
+
+    // Get baggage and seat info from localStorage if available
+    const storedBaggageType =
+      localStorage.getItem("selectedBaggageType") ||
+      "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0";
+    const storedSeatType =
+      localStorage.getItem("selectedSeatType") || "SEAT_TYPE_STANDARD";
+
+    // Calculate prices
+    const baggage = baggageOptions.find(
+      (option) => option.value === storedBaggageType
+    );
+    const seat = seatTypes.find((option) => option.type === storedSeatType);
+
+    const baggageCost = baggage ? baggage.price : 0;
+    const seatCost = seat ? seat.price : 7; // Default to 7 if not found
+
+    // Set state
+    setBaggagePrice(baggageCost);
+    setSeatPrice(seatCost);
+
+    // Calculate adjusted total
+    const adjustedTotal = totalPrice + baggageCost + seatCost;
+    setAdjustedTotalPrice(adjustedTotal);
+  }, [totalPrice]); // Recalculate when totalPrice changes
+
   // Handle the Stripe payment flow
   const handleConfirmPurchase = async (e) => {
     e.preventDefault();
@@ -118,7 +164,7 @@ function CheckoutPageContent() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: Math.round(totalPrice * 100),
+          amount: Math.round(adjustedTotalPrice * 100),
           email: customerEmail,
         }),
       });
@@ -141,9 +187,37 @@ function CheckoutPageContent() {
 
       if (result.error) throw result.error;
       if (result.paymentIntent.status === "succeeded") {
-        setPaymentSuccess(true);
-        setOrderNumber(result.paymentIntent.id);
-        fetchCartCount();
+        try {
+          const token = localStorage.getItem("token");
+
+          // Remove each item from the cart
+          for (const item of cartItems) {
+            await fetch(`/api/cart/remove/${item.id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            });
+          }
+
+          // Set empty cart items locally
+          setCartItems([]);
+          setTotalPrice(0);
+          setAdjustedTotalPrice(0);
+
+          // Update UI states
+          setPaymentSuccess(true);
+          setOrderNumber(result.paymentIntent.id);
+          fetchCartCount(); // This will update the cart count in the navbar
+        } catch (clearError) {
+          console.error("Error clearing cart:", clearError);
+          // Still mark payment as successful even if cart clearing fails
+          setPaymentSuccess(true);
+          setOrderNumber(result.paymentIntent.id);
+          fetchCartCount();
+        }
       } else {
         throw new Error("Payment did not succeed.");
       }
@@ -228,9 +302,21 @@ function CheckoutPageContent() {
                     </span>
                   </ListGroup.Item>
                 ))}
+                <ListGroup.Item className="d-flex justify-content-between">
+                  <span>Flight(s):</span>
+                  <span>${totalPrice.toFixed(2)}</span>
+                </ListGroup.Item>
+                <ListGroup.Item className="d-flex justify-content-between">
+                  <span>Baggage:</span>
+                  <span>${baggagePrice.toFixed(2)}</span>
+                </ListGroup.Item>
+                <ListGroup.Item className="d-flex justify-content-between">
+                  <span>Seat Selection:</span>
+                  <span>${seatPrice.toFixed(2)}</span>
+                </ListGroup.Item>
                 <ListGroup.Item className="d-flex justify-content-between fw-bold">
                   <span>Total Price:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>${adjustedTotalPrice.toFixed(2)}</span>
                 </ListGroup.Item>
               </ListGroup>
             </Card>

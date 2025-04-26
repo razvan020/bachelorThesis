@@ -116,45 +116,87 @@ public class DataLoader implements CommandLineRunner {
 // --------------------------------------------------------------
 
        // Flight flight1 = new Flight("xlr8Travel", LocalTime.of(3,30), LocalTime.of(6,30), "A", "1", LocalDateTime.now());
-        LocalDate date = LocalDate.of(2025, 4, 28);
-        Flight flight1 = new Flight(null, "Flight 101", LocalTime.of(3, 30), LocalTime.of(6, 30),
-                "LAX", "LHR", date, date, "A", "1", LocalDateTime.now(),
-                airline, // Pass the airline object if constructor requires non-null
-                new HashSet<Ticket>(), // Specify Ticket type
-                BigDecimal.valueOf(150.0)); // Convert double to BigDecimal
-        Flight flight2 = new Flight(null, "Flight 202", LocalTime.of(3, 30), LocalTime.of(6, 30), // Changed flight number for uniqueness example
-                "Romania", "Italy", date, date, "A", "1", LocalDateTime.now(),
+        // Base date for flights
+        LocalDate baseDate = LocalDate.of(2025, 4, 28);
+
+        // Create dates for round trips (different departure and return dates)
+        LocalDate returnDate1 = baseDate.plusDays(3); // Return date 3 days later
+        LocalDate returnDate2 = baseDate.plusDays(7); // Return date 7 days later
+
+        // LAX to LHR flight (outbound)
+        Flight flight1 = new Flight(null, "Flight 101", LocalTime.of(8, 30), LocalTime.of(14, 30),
+                "LAX", "LHR", baseDate, baseDate, "A", "1", LocalDateTime.now(),
                 airline,
                 new HashSet<Ticket>(),
-                BigDecimal.valueOf(200.0)); // Convert double to BigDecimal
+                BigDecimal.valueOf(150.0));
 
-        Flight flightdep = new Flight(null, "Flight blabla", LocalTime.of(3, 30), LocalTime.of(6, 30),
-                "LAX", "LHR", date, date, // Added missing 'date' for arrivalDate
+        // LHR to LAX flight (return) - 3 days later
+        Flight flight5 = new Flight(null, "Flight 102", LocalTime.of(10, 30), LocalTime.of(16, 30),
+                "LHR", "LAX", returnDate1, returnDate1, "D", "10", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(250.0));
+
+        // LHR to LAX flight (return) - 7 days later
+        Flight flight6 = new Flight(null, "Flight 103", LocalTime.of(15, 45), LocalTime.of(21, 45),
+                "LHR", "LAX", returnDate2, returnDate2, "B", "12", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(220.0));
+
+        // Romania to Italy flight
+        Flight flight2 = new Flight(null, "Flight 202", LocalTime.of(9, 15), LocalTime.of(11, 30),
+                "Romania", "Italy", baseDate, baseDate, "A", "1", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(200.0));
+
+        // Italy to Romania flight (return) - 3 days later
+        Flight flight7 = new Flight(null, "Flight 203", LocalTime.of(12, 45), LocalTime.of(15, 00),
+                "Italy", "Romania", returnDate1, returnDate1, "C", "5", LocalDateTime.now(),
+                airline,
+                new HashSet<Ticket>(),
+                BigDecimal.valueOf(190.0));
+
+        // Another LAX to LHR flight (different time)
+        Flight flightdep = new Flight(null, "Flight 104", LocalTime.of(14, 30), LocalTime.of(20, 30),
+                "LAX", "LHR", baseDate, baseDate,
                 "A", "1", LocalDateTime.now(),
                 airline,
                 new HashSet<Ticket>(),
-                BigDecimal.valueOf(200.0)); // Convert double to BigDecimal
+                BigDecimal.valueOf(200.0));
 
-        Flight flight3 = new Flight(null, "Flight 300", LocalTime.of(3, 30), LocalTime.of(6, 30),
-                "Germany", "Italy", date, date, "R", "10", LocalDateTime.now(),
+        // Germany to Italy flight
+        Flight flight3 = new Flight(null, "Flight 300", LocalTime.of(7, 30), LocalTime.of(9, 30),
+                "Germany", "Italy", baseDate, baseDate, "R", "10", LocalDateTime.now(),
                 airline,
                 new HashSet<Ticket>(),
-                BigDecimal.valueOf(200.0)); // Convert double to BigDecimal
+                BigDecimal.valueOf(200.0));
 
-        Flight flight4 = new Flight(null, "Flight 301", LocalTime.of(3, 30), LocalTime.of(6, 30),
-                "Germany", "Italy", date, date, "D", "10", LocalDateTime.now(),
+        // Another Germany to Italy flight (different time)
+        Flight flight4 = new Flight(null, "Flight 301", LocalTime.of(16, 30), LocalTime.of(18, 30),
+                "Germany", "Italy", baseDate, baseDate, "D", "10", LocalDateTime.now(),
                 airline,
                 new HashSet<Ticket>(),
-                BigDecimal.valueOf(250.0)); // Convert double to BigDecimal
+                BigDecimal.valueOf(250.0));
+        // Add all flights to the airline
         airline.addFlight(flight1);
         airline.addFlight(flight2);
         airline.addFlight(flight3);
         airline.addFlight(flight4);
+        airline.addFlight(flight5);
+        airline.addFlight(flight6);
+        airline.addFlight(flight7);
+        airline.addFlight(flightdep);
 
+        // Save all flights to the database
         flightService.save(flight1);
         flightService.save(flight2);
         flightService.save(flight3);
         flightService.save(flight4);
+        flightService.save(flight5);
+        flightService.save(flight6);
+        flightService.save(flight7);
         flightService.save(flightdep);
         System.out.println(flight1.getArrivalDate().toString());
         System.out.println(flight1.getDepartureDate().toString());
@@ -196,7 +238,7 @@ public class DataLoader implements CommandLineRunner {
         Seat seat3 = new Seat("2A", false, SeatType.SEAT_TYPE_EXTRA_LEGROOM);
 
         Baggage baggage1 = new Baggage(BaggageType.BAGGAGE_TYPE_CARRY_ON); // not sure about baggage type weight..
-        Baggage baggage2 = new Baggage(BaggageType.BAGGAGE_TYPE_CHECKED, BaggageTypeWeight.BAGGAGE_TYPE_WEIGHT_CHECKED_15);
+        Baggage baggage2 = new Baggage(BaggageType.BAGGAGE_TYPE_CHECKED, BaggageTypeWeight.BAGGAGE_TYPE_WEIGHT_CHECKED_10);
         Baggage baggage3 = new Baggage(BaggageType.BAGGAGE_TYPE_CHECKED, BaggageTypeWeight.BAGGAGE_TYPE_WEIGHT_CHECKED_20);
 
         Ticket ticket1 = new Ticket(

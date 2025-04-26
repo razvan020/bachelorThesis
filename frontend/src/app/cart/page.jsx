@@ -66,6 +66,9 @@ function CartPageContent() {
   const [error, setError] = useState(null);
   const [itemBeingAdjusted, setItemBeingAdjusted] = useState(null);
   const { fetchCartCount } = useAuth(); // Get function to update navbar cart count
+  const [baggagePrice, setBaggagePrice] = useState(0);
+  const [seatPrice, setSeatPrice] = useState(0);
+  const [adjustedTotalPrice, setAdjustedTotalPrice] = useState(0);
 
   // Define fetchCart using useCallback
   const fetchCart = useCallback(async () => {
@@ -108,6 +111,48 @@ function CartPageContent() {
   useEffect(() => {
     fetchCart();
   }, [fetchCart]); // Runs once on mount due to useCallback with empty deps
+
+  useEffect(() => {
+    // Define baggage prices (same as in page.js)
+    const baggageOptions = [
+      { value: "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0", price: 0 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_10", price: 20 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_20", price: 30 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_26", price: 40 },
+      { value: "BAGGAGE_TYPE_WEIGHT_CHECKED_32", price: 50 },
+    ];
+
+    // Define seat prices (same as in page.js)
+    const seatTypes = [
+      { type: "SEAT_TYPE_STANDARD", price: 7 },
+      { type: "SEAT_TYPE_UPFRONT", price: 10 },
+      { type: "SEAT_TYPE_EXTRA_LEGROOM", price: 13 },
+    ];
+
+    // Get baggage and seat info from localStorage if available
+    const storedBaggageType =
+      localStorage.getItem("selectedBaggageType") ||
+      "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0";
+    const storedSeatType =
+      localStorage.getItem("selectedSeatType") || "SEAT_TYPE_STANDARD";
+
+    // Calculate prices
+    const baggage = baggageOptions.find(
+      (option) => option.value === storedBaggageType
+    );
+    const seat = seatTypes.find((option) => option.type === storedSeatType);
+
+    const baggageCost = baggage ? baggage.price : 0;
+    const seatCost = seat ? seat.price : 7; // Default to 7 if not found
+
+    // Set state
+    setBaggagePrice(baggageCost);
+    setSeatPrice(seatCost);
+
+    // Calculate adjusted total
+    const adjustedTotal = totalPrice + baggageCost + seatCost;
+    setAdjustedTotalPrice(adjustedTotal);
+  }, [totalPrice]); // Recalculate when totalPrice changes
 
   // --- Update Cart Function (Handles Increase/Decrease/Remove) ---
   const updateCartItem = useCallback(
@@ -298,12 +343,30 @@ function CartPageContent() {
                   </tbody>
                 </Table>
                 <div className="d-flex justify-content-between align-items-center mt-4 flex-wrap">
-                  <h4 className="mb-2 mb-md-0">
-                    Total Price:{" "}
-                    <span className="text-primary fw-bold">
-                      ${totalPrice.toFixed(2)}
-                    </span>
-                  </h4>
+                  <div>
+                    <h4 className="mb-2 mb-md-0">Price Summary</h4>
+                    <div className="price-summary p-3 bg-light rounded mt-2">
+                      <div className="d-flex justify-content-between mb-2">
+                        <span>Flight(s):</span>
+                        <span>${totalPrice.toFixed(2)}</span>
+                      </div>
+                      <div className="d-flex justify-content-between mb-2">
+                        <span>Baggage:</span>
+                        <span>${baggagePrice.toFixed(2)}</span>
+                      </div>
+                      <div className="d-flex justify-content-between mb-2">
+                        <span>Seat Selection:</span>
+                        <span>${seatPrice.toFixed(2)}</span>
+                      </div>
+                      <hr />
+                      <div className="d-flex justify-content-between fw-bold">
+                        <span>Total:</span>
+                        <span className="text-primary">
+                          ${adjustedTotalPrice.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                   <div>
                     <Button
                       variant="secondary"
