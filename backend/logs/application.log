@@ -9885,3 +9885,649 @@ org.springframework.web.servlet.resource.NoResourceFoundException: No static res
 2025-04-29 16:38:28.282  INFO [NONE] 10132 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
 2025-04-29 16:38:28.351  INFO [NONE] 10132 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
 2025-04-29 16:38:28.362  INFO [NONE] 10132 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Started Xlr8travelApplication in 14.078 seconds (process running for 14.631)
+2025-04-29 16:38:55.670  INFO [NONE] 10132 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-29 16:38:55.671  INFO [NONE] 10132 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-29 16:38:55.673  INFO [NONE] 10132 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-04-29 16:38:55.689 DEBUG [1c23fb99-8834-4175-94d2-e600df35a821] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:38:55.822 ERROR [1c23fb99-8834-4175-94d2-e600df35a821] 10132 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-04-29 16:38:55.826 DEBUG [1c23fb99-8834-4175-94d2-e600df35a821] 10132 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:38:55.831  WARN [1c23fb99-8834-4175-94d2-e600df35a821] 10132 --- [nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/api/user/me' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2025-04-29 16:38:55.848 DEBUG [1c23fb99-8834-4175-94d2-e600df35a821] 10132 --- [nio-8080-exec-1] s.w.a.DelegatingAuthenticationEntryPoint : Trying to match using Ant [pattern='/api/**']
+2025-04-29 16:38:55.849 DEBUG [1c23fb99-8834-4175-94d2-e600df35a821] 10132 --- [nio-8080-exec-1] s.w.a.DelegatingAuthenticationEntryPoint : Match found! Executing org.springframework.security.web.authentication.HttpStatusEntryPoint@10e8af7
+2025-04-29 16:38:55.863 DEBUG [780bc206-d622-40a9-923a-8aa4941df538] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/token/refresh
+2025-04-29 16:38:55.876 DEBUG [780bc206-d622-40a9-923a-8aa4941df538] 10132 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:38:55.882 DEBUG [780bc206-d622-40a9-923a-8aa4941df538] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /api/token/refresh
+2025-04-29 16:38:55.981  INFO [780bc206-d622-40a9-923a-8aa4941df538] 10132 --- [nio-8080-exec-2] o.e.x.controllers.TokenController        : Generated new access token for user: 104658082982173093135
+2025-04-29 16:39:07.208 DEBUG [d737adef-c0b5-4415-9d55-fd98cc79ee78] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /oauth2/authorization/google
+2025-04-29 16:39:07.216 DEBUG [d737adef-c0b5-4415-9d55-fd98cc79ee78] 10132 --- [nio-8080-exec-3] o.s.s.web.DefaultRedirectStrategy        : Redirecting to https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=280181287068-i92p696f0ja6qv5lecrhi4dmn2hsrvie.apps.googleusercontent.com&scope=email%20profile&state=0JkPGGHtFHCgtcVcFyHbmo15vLNxe1qvyQV-pfcUoD4%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+2025-04-29 16:39:08.813 DEBUG [44ff4432-db0b-4d85-9441-8a06a606cbab] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /login/oauth2/code/google?state=0JkPGGHtFHCgtcVcFyHbmo15vLNxe1qvyQV-pfcUoD4%3D&code=4%2F0Ab_5qlnroKCg10YyKk7TdvLO1vM2lPiCSlvYXYq7K4EGiqemuMCMq5yag5lB2me5pNIeLg&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=1&prompt=none
+2025-04-29 16:39:09.285  INFO [44ff4432-db0b-4d85-9441-8a06a606cbab] 10132 --- [nio-8080-exec-4] o.e.x.security.CustomOAuth2UserService   : Creating new user from OAuth2 login: ****@****.***
+2025-04-29 16:39:09.362  INFO [44ff4432-db0b-4d85-9441-8a06a606cbab] 10132 --- [nio-8080-exec-4] o.e.x.security.CustomOAuth2UserService   : Successfully created new user from OAuth2 login: ****@****.***
+2025-04-29 16:39:09.371 DEBUG [44ff4432-db0b-4d85-9441-8a06a606cbab] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from DC90EDC713B30FACD193FA95FEC02CEB
+2025-04-29 16:39:09.371 DEBUG [44ff4432-db0b-4d85-9441-8a06a606cbab] 10132 --- [nio-8080-exec-4] .s.o.c.w.OAuth2LoginAuthenticationFilter : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [104658082982173093135], Granted Authorities: [[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]], User Attributes: [{sub=104658082982173093135, name=Razvan Uleia, given_name=Razvan, family_name=Uleia, picture=https://lh3.googleusercontent.com/a/ACg8ocJi61HPFJ4MxC53TnL4U_AL4Tuu_gASX5yvf0NxGSQWc6-YeA=s96-c, email=****@****.***, email_verified=true}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=DC90EDC713B30FACD193FA95FEC02CEB], Granted Authorities=[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]]
+2025-04-29 16:39:09.374 DEBUG [44ff4432-db0b-4d85-9441-8a06a606cbab] 10132 --- [nio-8080-exec-4] o.s.s.web.DefaultRedirectStrategy        : Redirecting to http://localhost:3000/login?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYXp2YW4udWxlaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ1OTMzOTQ5LCJleHAiOjE3NDYwMjAzNDl9.ejy06UhpK6eHjeRGyu6fuXEf6TY1zZ6CkbQR9B3Tv5db4WQdTSmMXdKvycKN2-jVbAX4mHer6xTs_IxHAwES9g&refreshToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDQ2NTgwODI5ODIxNzMwOTMxMzUiLCJpYXQiOjE3NDU5MzM5NDksImV4cCI6MTc0NjUzODc0OX0.esi44V6KYQF4yWC3dqjTHWvkpRmlmIvuFHKQS1OKHwA-GTbWYM3BOrWaQ7i6jAvLHLE-WEIpWZcYexZc1mjIMw
+2025-04-29 16:39:09.879 DEBUG [a8e87c7e-7e9e-4c69-81b1-a33cbcd749c2] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:39:09.889 ERROR [a8e87c7e-7e9e-4c69-81b1-a33cbcd749c2] 10132 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
+2025-04-29 16:39:09.889 DEBUG [a8e87c7e-7e9e-4c69-81b1-a33cbcd749c2] 10132 --- [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:39:09.892 DEBUG [a8e87c7e-7e9e-4c69-81b1-a33cbcd749c2] 10132 --- [nio-8080-exec-5] s.w.a.DelegatingAuthenticationEntryPoint : Trying to match using Ant [pattern='/api/**']
+2025-04-29 16:39:09.893 DEBUG [a8e87c7e-7e9e-4c69-81b1-a33cbcd749c2] 10132 --- [nio-8080-exec-5] s.w.a.DelegatingAuthenticationEntryPoint : Match found! Executing org.springframework.security.web.authentication.HttpStatusEntryPoint@10e8af7
+2025-04-29 16:39:09.907 DEBUG [55f85454-b483-4e7c-b4df-7dc0feb4a180] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/token/refresh
+2025-04-29 16:39:09.908 DEBUG [55f85454-b483-4e7c-b4df-7dc0feb4a180] 10132 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:39:09.909 DEBUG [55f85454-b483-4e7c-b4df-7dc0feb4a180] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/token/refresh
+2025-04-29 16:39:09.914  INFO [55f85454-b483-4e7c-b4df-7dc0feb4a180] 10132 --- [nio-8080-exec-6] o.e.x.controllers.TokenController        : Generated new access token for user: 104658082982173093135
+2025-04-29 16:39:10.027 DEBUG [341081ef-cb45-40dc-88a9-00c6350bb929] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:39:10.045 DEBUG [341081ef-cb45-40dc-88a9-00c6350bb929] 10132 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from FC0FDEE0F89A697EFC55E3DDC6967FB3
+2025-04-29 16:39:10.047 DEBUG [341081ef-cb45-40dc-88a9-00c6350bb929] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:39:10.050  INFO [341081ef-cb45-40dc-88a9-00c6350bb929] 10132 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:39:10.062  INFO [341081ef-cb45-40dc-88a9-00c6350bb929] 10132 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:39:10.099 DEBUG [3ea7f9dc-4a82-45d0-8d86-5fda47070921] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:39:10.099 DEBUG [921e964a-0dd3-411a-96dc-9d95bb307291] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:10.111 DEBUG [921e964a-0dd3-411a-96dc-9d95bb307291] 10132 --- [nio-8080-exec-9] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from DBB3D9632D764AD62701E865F5086124
+2025-04-29 16:39:10.114 DEBUG [921e964a-0dd3-411a-96dc-9d95bb307291] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:10.115  INFO [921e964a-0dd3-411a-96dc-9d95bb307291] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:10.118 DEBUG [3ea7f9dc-4a82-45d0-8d86-5fda47070921] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:39:10.131  WARN [3ea7f9dc-4a82-45d0-8d86-5fda47070921] 10132 --- [nio-8080-exec-8] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:39:10.131  INFO [921e964a-0dd3-411a-96dc-9d95bb307291] 10132 --- [nio-8080-exec-9] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user ****@****.*** with ID 4, creating a new one.
+2025-04-29 16:39:10.141  WARN [3ea7f9dc-4a82-45d0-8d86-5fda47070921] 10132 --- [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:39:10.152  INFO [921e964a-0dd3-411a-96dc-9d95bb307291] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:39:18.575 DEBUG [503c2f67-237e-4fc5-82a1-22594350fbbe] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:39:18.591 DEBUG [503c2f67-237e-4fc5-82a1-22594350fbbe] 10132 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from C60A9C03A78008FABCA616F7FA02A5A4
+2025-04-29 16:39:18.594 DEBUG [503c2f67-237e-4fc5-82a1-22594350fbbe] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:39:18.595  INFO [503c2f67-237e-4fc5-82a1-22594350fbbe] 10132 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:39:18.605  INFO [503c2f67-237e-4fc5-82a1-22594350fbbe] 10132 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:39:18.661 DEBUG [45eec346-7fe3-4d38-9690-e8b052667e94] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:39:18.661 DEBUG [359aae6b-d372-4743-8586-2fb90c9f7587] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:39:18.661 DEBUG [bf8c671c-53b6-4a56-8c0c-2595fdf28374] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:18.662 DEBUG [359aae6b-d372-4743-8586-2fb90c9f7587] 10132 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:39:18.664 DEBUG [359aae6b-d372-4743-8586-2fb90c9f7587] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:39:18.676 DEBUG [45eec346-7fe3-4d38-9690-e8b052667e94] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 230AF6037CB38067D423CAAE58D1AA6C
+2025-04-29 16:39:18.677 DEBUG [bf8c671c-53b6-4a56-8c0c-2595fdf28374] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:18.679  INFO [bf8c671c-53b6-4a56-8c0c-2595fdf28374] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:18.679  INFO [359aae6b-d372-4743-8586-2fb90c9f7587] 10132 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LAX, Dest=LHR, Depart=2025-04-30, Return=null, Pax=1/0/0
+2025-04-29 16:39:18.679 DEBUG [45eec346-7fe3-4d38-9690-e8b052667e94] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:39:18.680  INFO [359aae6b-d372-4743-8586-2fb90c9f7587] 10132 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Performing flight search from LAX to LHR on 2025-04-30
+2025-04-29 16:39:18.689  WARN [45eec346-7fe3-4d38-9690-e8b052667e94] 10132 --- [nio-8080-exec-1] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:39:18.691  WARN [45eec346-7fe3-4d38-9690-e8b052667e94] 10132 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:39:18.699 DEBUG [c5912f4e-5445-46d9-8b14-56c8daf929ed] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:39:18.699  INFO [bf8c671c-53b6-4a56-8c0c-2595fdf28374] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:39:18.731 DEBUG [c5912f4e-5445-46d9-8b14-56c8daf929ed] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:39:18.741  WARN [c5912f4e-5445-46d9-8b14-56c8daf929ed] 10132 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:39:18.742  WARN [c5912f4e-5445-46d9-8b14-56c8daf929ed] 10132 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:39:18.743  INFO [359aae6b-d372-4743-8586-2fb90c9f7587] 10132 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Found 2 available flights for search criteria.
+2025-04-29 16:39:18.761 DEBUG [a0cfa895-5319-4a14-99cf-5344d11ca603] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:39:18.762 DEBUG [a0cfa895-5319-4a14-99cf-5344d11ca603] 10132 --- [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:39:18.762 DEBUG [a0cfa895-5319-4a14-99cf-5344d11ca603] 10132 --- [nio-8080-exec-5] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 230AF6037CB38067D423CAAE58D1AA6C
+2025-04-29 16:39:18.763 DEBUG [a0cfa895-5319-4a14-99cf-5344d11ca603] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:39:18.765  INFO [a0cfa895-5319-4a14-99cf-5344d11ca603] 10132 --- [nio-8080-exec-5] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LAX, Dest=LHR, Depart=2025-04-30, Return=null, Pax=1/0/0
+2025-04-29 16:39:18.766  INFO [a0cfa895-5319-4a14-99cf-5344d11ca603] 10132 --- [nio-8080-exec-5] o.e.x.controllers.FlightController       : Performing flight search from LAX to LHR on 2025-04-30
+2025-04-29 16:39:18.799 DEBUG [3fd741dd-4a6c-4783-a1a1-18799066516e] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:39:18.801 DEBUG [3fd741dd-4a6c-4783-a1a1-18799066516e] 10132 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:39:18.802 DEBUG [3fd741dd-4a6c-4783-a1a1-18799066516e] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:39:18.804  INFO [3fd741dd-4a6c-4783-a1a1-18799066516e] 10132 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LHR, Dest=LAX, Depart=2025-05-03, Return=null, Pax=1/0/0
+2025-04-29 16:39:18.804  INFO [3fd741dd-4a6c-4783-a1a1-18799066516e] 10132 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Performing flight search from LHR to LAX on 2025-05-03
+2025-04-29 16:39:18.811  INFO [a0cfa895-5319-4a14-99cf-5344d11ca603] 10132 --- [nio-8080-exec-5] o.e.x.controllers.FlightController       : Found 2 available flights for search criteria.
+2025-04-29 16:39:18.838  INFO [3fd741dd-4a6c-4783-a1a1-18799066516e] 10132 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-04-29 16:39:18.856 DEBUG [fa32c565-0c13-434f-ae0a-6750e33c0ff8] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:39:18.857 DEBUG [fa32c565-0c13-434f-ae0a-6750e33c0ff8] 10132 --- [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:39:18.858 DEBUG [fa32c565-0c13-434f-ae0a-6750e33c0ff8] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:39:18.860  INFO [fa32c565-0c13-434f-ae0a-6750e33c0ff8] 10132 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LHR, Dest=LAX, Depart=2025-05-03, Return=null, Pax=1/0/0
+2025-04-29 16:39:18.861  INFO [fa32c565-0c13-434f-ae0a-6750e33c0ff8] 10132 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Performing flight search from LHR to LAX on 2025-05-03
+2025-04-29 16:39:18.895  INFO [fa32c565-0c13-434f-ae0a-6750e33c0ff8] 10132 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-04-29 16:39:28.391 DEBUG [059044e2-24c8-47d9-892f-271a369aaf9e] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/cart/add
+2025-04-29 16:39:28.402 DEBUG [059044e2-24c8-47d9-892f-271a369aaf9e] 10132 --- [nio-8080-exec-8] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 11392E233EA4200E366CCADDB1C93CE7
+2025-04-29 16:39:28.403 DEBUG [059044e2-24c8-47d9-892f-271a369aaf9e] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/cart/add
+2025-04-29 16:39:28.437  INFO [059044e2-24c8-47d9-892f-271a369aaf9e] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : User ****@****.*** request to add flight ID 1 to persistent cart
+2025-04-29 16:39:28.468  INFO [059044e2-24c8-47d9-892f-271a369aaf9e] 10132 --- [nio-8080-exec-8] o.e.xlr8travel.services.CartServiceImpl  : Added new flight ID 1 to cart for user ****@****.***
+2025-04-29 16:39:28.493  INFO [059044e2-24c8-47d9-892f-271a369aaf9e] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Flight ID 1 added/incremented in persistent cart for user ****@****.***.
+2025-04-29 16:39:28.513 DEBUG [d3402fcf-e699-4484-b457-dda45e528a46] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /api/cart/add
+2025-04-29 16:39:28.532 DEBUG [d3402fcf-e699-4484-b457-dda45e528a46] 10132 --- [nio-8080-exec-9] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 6E1DE6DACFC252F7A241E705FF64178F
+2025-04-29 16:39:28.533 DEBUG [d3402fcf-e699-4484-b457-dda45e528a46] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /api/cart/add
+2025-04-29 16:39:28.542  INFO [d3402fcf-e699-4484-b457-dda45e528a46] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : User ****@****.*** request to add flight ID 5 to persistent cart
+2025-04-29 16:39:28.568  INFO [d3402fcf-e699-4484-b457-dda45e528a46] 10132 --- [nio-8080-exec-9] o.e.xlr8travel.services.CartServiceImpl  : Added new flight ID 5 to cart for user ****@****.***
+2025-04-29 16:39:28.581  INFO [d3402fcf-e699-4484-b457-dda45e528a46] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Flight ID 5 added/incremented in persistent cart for user ****@****.***.
+2025-04-29 16:39:28.594 DEBUG [35b26da8-5824-479d-b5de-015b59d7fd90] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:28.605 DEBUG [35b26da8-5824-479d-b5de-015b59d7fd90] 10132 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 1662B1528AE79CACB2231659B49CDDCF
+2025-04-29 16:39:28.607 DEBUG [35b26da8-5824-479d-b5de-015b59d7fd90] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:28.607  INFO [35b26da8-5824-479d-b5de-015b59d7fd90] 10132 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:28.653  INFO [35b26da8-5824-479d-b5de-015b59d7fd90] 10132 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:39:28.883 DEBUG [bebddb00-822b-48b8-90b1-ec74a30de59f] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:28.899 DEBUG [bebddb00-822b-48b8-90b1-ec74a30de59f] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 7E4CBC781B24A537232851BD245D3B6B
+2025-04-29 16:39:28.900 DEBUG [bebddb00-822b-48b8-90b1-ec74a30de59f] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:28.901  INFO [bebddb00-822b-48b8-90b1-ec74a30de59f] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:28.950  INFO [bebddb00-822b-48b8-90b1-ec74a30de59f] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:39:28.959 DEBUG [c2b8f88f-0cf8-4505-851e-474ebbfe1b7b] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:28.971 DEBUG [c2b8f88f-0cf8-4505-851e-474ebbfe1b7b] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:28.971  INFO [c2b8f88f-0cf8-4505-851e-474ebbfe1b7b] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:29.003  INFO [c2b8f88f-0cf8-4505-851e-474ebbfe1b7b] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:39:29.988 DEBUG [dc1d6304-d2f3-4bf7-bc41-fb3cee720f7a] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:30.002 DEBUG [dc1d6304-d2f3-4bf7-bc41-fb3cee720f7a] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 069AC04A8EA5E662624D0EAC84C6A1D6
+2025-04-29 16:39:30.003 DEBUG [dc1d6304-d2f3-4bf7-bc41-fb3cee720f7a] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:30.004  INFO [dc1d6304-d2f3-4bf7-bc41-fb3cee720f7a] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:30.041  INFO [dc1d6304-d2f3-4bf7-bc41-fb3cee720f7a] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:39:30.050 DEBUG [01de064d-87e0-40d2-800a-ced7c70e4985] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:30.063 DEBUG [01de064d-87e0-40d2-800a-ced7c70e4985] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:30.064  INFO [01de064d-87e0-40d2-800a-ced7c70e4985] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:30.102  INFO [01de064d-87e0-40d2-800a-ced7c70e4985] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:39:33.908 DEBUG [9c50d5bd-3dde-413e-87f6-db0ac5fd273e] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:39:33.918 DEBUG [9c50d5bd-3dde-413e-87f6-db0ac5fd273e] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from A0A7DB6ACABB12D39C9CCEE923DD9AF4
+2025-04-29 16:39:33.920 DEBUG [9c50d5bd-3dde-413e-87f6-db0ac5fd273e] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:39:33.921  INFO [9c50d5bd-3dde-413e-87f6-db0ac5fd273e] 10132 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:39:33.926  INFO [9c50d5bd-3dde-413e-87f6-db0ac5fd273e] 10132 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:39:33.992 DEBUG [307ce733-7747-4943-b898-9d48a1cf3286] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:39:33.992 DEBUG [3a612d9e-5b2b-4291-b15f-edcd326e1a8e] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:39:33.992 DEBUG [60da4625-9f5e-4b73-a763-9a093d6e59a2] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:34.017 DEBUG [3a612d9e-5b2b-4291-b15f-edcd326e1a8e] 10132 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from DECD2D6A42EDF63040AADF6CC50987B6
+2025-04-29 16:39:34.019 DEBUG [60da4625-9f5e-4b73-a763-9a093d6e59a2] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:34.019 DEBUG [307ce733-7747-4943-b898-9d48a1cf3286] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:39:34.020 DEBUG [3a612d9e-5b2b-4291-b15f-edcd326e1a8e] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:39:34.020  INFO [60da4625-9f5e-4b73-a763-9a093d6e59a2] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:34.027  INFO [3a612d9e-5b2b-4291-b15f-edcd326e1a8e] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:39:34.027  WARN [307ce733-7747-4943-b898-9d48a1cf3286] 10132 --- [nio-8080-exec-6] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:39:34.027  INFO [3a612d9e-5b2b-4291-b15f-edcd326e1a8e] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:39:34.028  WARN [307ce733-7747-4943-b898-9d48a1cf3286] 10132 --- [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:39:34.036 DEBUG [e2e542a2-182c-4440-8a88-22e3c88502b4] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:39:34.063 DEBUG [e2e542a2-182c-4440-8a88-22e3c88502b4] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:39:34.081  WARN [e2e542a2-182c-4440-8a88-22e3c88502b4] 10132 --- [nio-8080-exec-9] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:39:34.082  WARN [e2e542a2-182c-4440-8a88-22e3c88502b4] 10132 --- [nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:39:34.105  INFO [60da4625-9f5e-4b73-a763-9a093d6e59a2] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:39:34.120  INFO [3a612d9e-5b2b-4291-b15f-edcd326e1a8e] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Found 0 tickets eligible for check-in for user 4
+2025-04-29 16:39:34.148 DEBUG [a8172e5c-136f-4c7b-9e00-3c30c8521bda] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:39:34.184 DEBUG [a8172e5c-136f-4c7b-9e00-3c30c8521bda] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:39:34.210  INFO [a8172e5c-136f-4c7b-9e00-3c30c8521bda] 10132 --- [io-8080-exec-10] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:39:34.211  INFO [a8172e5c-136f-4c7b-9e00-3c30c8521bda] 10132 --- [io-8080-exec-10] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:39:34.277  INFO [a8172e5c-136f-4c7b-9e00-3c30c8521bda] 10132 --- [io-8080-exec-10] o.e.x.services.TicketServiceImpl         : Found 0 tickets eligible for check-in for user 4
+2025-04-29 16:39:43.609 DEBUG [5f7cb14a-2c16-4bf7-9ec7-ca51731bbb45] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/checkout/create-payment-intent
+2025-04-29 16:39:43.610 DEBUG [5f7cb14a-2c16-4bf7-9ec7-ca51731bbb45] 10132 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:39:43.611 DEBUG [5f7cb14a-2c16-4bf7-9ec7-ca51731bbb45] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/checkout/create-payment-intent
+2025-04-29 16:39:43.629  INFO [5f7cb14a-2c16-4bf7-9ec7-ca51731bbb45] 10132 --- [nio-8080-exec-1] o.e.x.controllers.PaymentController      : Creating payment intent for amount: 44300 usd
+2025-04-29 16:39:44.314  INFO [5f7cb14a-2c16-4bf7-9ec7-ca51731bbb45] 10132 --- [nio-8080-exec-1] o.e.x.controllers.PaymentController      : Payment intent created successfully: pi_3RJENwGf8s1WZJnq1CpaAcbJ
+2025-04-29 16:39:45.697 DEBUG [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/checkout/confirm
+2025-04-29 16:39:45.707 DEBUG [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 2910F8517276AD7E69EF2AF67F5D3423
+2025-04-29 16:39:45.708 DEBUG [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/checkout/confirm
+2025-04-29 16:39:45.710  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckoutController     : Received purchase confirmation request.
+2025-04-29 16:39:45.714  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckoutController     : Processing purchase for user: ****@****.***
+2025-04-29 16:39:45.744  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckoutController     : User ****@****.*** persistent cart has 2 items.
+2025-04-29 16:39:45.745  WARN [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckoutController     : !!! SIMULATING successful payment processing for user ****@****.*** !!!
+2025-04-29 16:39:45.746  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.services.OrderServiceImpl          : Creating order from persistent cart for user: ****@****.***
+2025-04-29 16:39:45.753  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.services.OrderServiceImpl          : Order 1 created for user ****@****.***, status: PENDING_PAYMENT. Total: 400.00
+2025-04-29 16:39:45.753  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.services.OrderServiceImpl          : Created ticket for flight Flight 101 for user ****@****.***
+2025-04-29 16:39:45.754  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.services.OrderServiceImpl          : Created ticket for flight Flight 102 for user ****@****.***
+2025-04-29 16:39:56.906  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.services.EmailServiceImpl          : Purchase confirmation email sent to ****@****.***
+2025-04-29 16:39:56.907  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.services.OrderServiceImpl          : Purchase confirmation email sent to user: ****@****.***
+2025-04-29 16:39:56.919  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckoutController     : Order successfully created for user ****@****.***. Confirmation: 1
+2025-04-29 16:39:56.923  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.xlr8travel.services.CartServiceImpl  : Clearing 2 items from cart for user ****@****.***
+2025-04-29 16:39:56.945  INFO [b360ecc2-55f3-49df-a70d-1d1334da1350] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckoutController     : Persistent cart cleared for user ****@****.***.
+2025-04-29 16:39:56.956 DEBUG [7bcdeb7b-aa0d-48aa-88ea-8ef966ad2573] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing DELETE /api/cart/remove/1
+2025-04-29 16:39:56.988 DEBUG [7bcdeb7b-aa0d-48aa-88ea-8ef966ad2573] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 8D80A4653BF8821B0F5E92F466E686E9
+2025-04-29 16:39:56.989 DEBUG [7bcdeb7b-aa0d-48aa-88ea-8ef966ad2573] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured DELETE /api/cart/remove/1
+2025-04-29 16:39:57.017  INFO [7bcdeb7b-aa0d-48aa-88ea-8ef966ad2573] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : User ****@****.*** request to remove flight ID 1 from persistent cart
+2025-04-29 16:39:57.025  WARN [7bcdeb7b-aa0d-48aa-88ea-8ef966ad2573] 10132 --- [nio-8080-exec-4] o.e.xlr8travel.services.CartServiceImpl  : Attempted to remove flight ID 1 not found in cart for user ****@****.***
+2025-04-29 16:39:57.028  WARN [7bcdeb7b-aa0d-48aa-88ea-8ef966ad2573] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : Attempted to remove flight ID 1 not found in persistent cart for user ****@****.***
+2025-04-29 16:39:57.038 DEBUG [2c73ca7f-d923-457b-a88b-186f313db42e] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing DELETE /api/cart/remove/5
+2025-04-29 16:39:57.070 DEBUG [2c73ca7f-d923-457b-a88b-186f313db42e] 10132 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from DD8C5F079846EF09A65528EE4F9BFAB8
+2025-04-29 16:39:57.071 DEBUG [2c73ca7f-d923-457b-a88b-186f313db42e] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured DELETE /api/cart/remove/5
+2025-04-29 16:39:57.100  INFO [2c73ca7f-d923-457b-a88b-186f313db42e] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : User ****@****.*** request to remove flight ID 5 from persistent cart
+2025-04-29 16:39:57.108  WARN [2c73ca7f-d923-457b-a88b-186f313db42e] 10132 --- [nio-8080-exec-2] o.e.xlr8travel.services.CartServiceImpl  : Attempted to remove flight ID 5 not found in cart for user ****@****.***
+2025-04-29 16:39:57.109  WARN [2c73ca7f-d923-457b-a88b-186f313db42e] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : Attempted to remove flight ID 5 not found in persistent cart for user ****@****.***
+2025-04-29 16:39:57.121 DEBUG [b133424f-a304-4192-82e9-2869e0b3d3c4] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:39:57.156 DEBUG [b133424f-a304-4192-82e9-2869e0b3d3c4] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from B4E771B914FD1B807F7AC6AA39FD03F4
+2025-04-29 16:39:57.157 DEBUG [b133424f-a304-4192-82e9-2869e0b3d3c4] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:39:57.157  INFO [b133424f-a304-4192-82e9-2869e0b3d3c4] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:39:57.190  INFO [b133424f-a304-4192-82e9-2869e0b3d3c4] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:39:58.535 DEBUG [0e906c00-9b11-4e6d-8b77-310d9aa50490] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:39:58.576 DEBUG [0e906c00-9b11-4e6d-8b77-310d9aa50490] 10132 --- [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 28F4050B10EDBE19781120215C2E2A17
+2025-04-29 16:39:58.579 DEBUG [0e906c00-9b11-4e6d-8b77-310d9aa50490] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:39:58.611  INFO [0e906c00-9b11-4e6d-8b77-310d9aa50490] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:39:58.611  INFO [0e906c00-9b11-4e6d-8b77-310d9aa50490] 10132 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:39:58.617  INFO [0e906c00-9b11-4e6d-8b77-310d9aa50490] 10132 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:39:58.637 DEBUG [7044a51b-876c-4a6a-a502-16aa52f2384a] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:39:58.671 DEBUG [7044a51b-876c-4a6a-a502-16aa52f2384a] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:39:58.701  INFO [7044a51b-876c-4a6a-a502-16aa52f2384a] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:39:58.702  INFO [7044a51b-876c-4a6a-a502-16aa52f2384a] 10132 --- [nio-8080-exec-9] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:39:58.707  INFO [7044a51b-876c-4a6a-a502-16aa52f2384a] 10132 --- [nio-8080-exec-9] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:40:06.006 DEBUG [c983106a-a7ef-4867-855d-e0ee3c93a2ac] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:40:06.045 DEBUG [c983106a-a7ef-4867-855d-e0ee3c93a2ac] 10132 --- [nio-8080-exec-8] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from ECFB9543C2ED907A187439A2826FEE0E
+2025-04-29 16:40:06.048 DEBUG [c983106a-a7ef-4867-855d-e0ee3c93a2ac] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:40:06.048  INFO [c983106a-a7ef-4867-855d-e0ee3c93a2ac] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:40:06.049  INFO [c983106a-a7ef-4867-855d-e0ee3c93a2ac] 10132 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:40:06.081 DEBUG [0d9d5728-5a1a-4095-8648-f71ce0a04a2a] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:40:06.117 DEBUG [0d9d5728-5a1a-4095-8648-f71ce0a04a2a] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:40:06.118  INFO [0d9d5728-5a1a-4095-8648-f71ce0a04a2a] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:40:06.118  INFO [0d9d5728-5a1a-4095-8648-f71ce0a04a2a] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:40:15.074 DEBUG [b2a16336-79ee-48d5-8676-6a4c607f0e36] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/check-in/4/with-seat
+2025-04-29 16:40:15.107 DEBUG [b2a16336-79ee-48d5-8676-6a4c607f0e36] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from EA417A3C592624E37DCB22C3A6EBF5FB
+2025-04-29 16:40:15.108 DEBUG [b2a16336-79ee-48d5-8676-6a4c607f0e36] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/check-in/4/with-seat
+2025-04-29 16:40:15.138  INFO [b2a16336-79ee-48d5-8676-6a4c607f0e36] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckinController      : Checking in ticket 4 with seat for user: ****@****.***
+2025-04-29 16:40:15.143  INFO [b2a16336-79ee-48d5-8676-6a4c607f0e36] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Checking in ticket 4 with seat 1B of type SEAT_TYPE_UPFRONT
+2025-04-29 16:40:15.143  INFO [b2a16336-79ee-48d5-8676-6a4c607f0e36] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Checking if seat 1B is booked for flight 5
+2025-04-29 16:40:15.149  INFO [b2a16336-79ee-48d5-8676-6a4c607f0e36] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Successfully checked in ticket 4 with seat 1B
+2025-04-29 16:40:18.783 DEBUG [c27a0bb0-f678-4d7e-b895-d89e4630bd63] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:40:18.822 DEBUG [c27a0bb0-f678-4d7e-b895-d89e4630bd63] 10132 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 7F915D1BDE1221282B6A16B7F010B926
+2025-04-29 16:40:18.824 DEBUG [c27a0bb0-f678-4d7e-b895-d89e4630bd63] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:40:18.825  INFO [c27a0bb0-f678-4d7e-b895-d89e4630bd63] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 1
+2025-04-29 16:40:18.825  INFO [c27a0bb0-f678-4d7e-b895-d89e4630bd63] 10132 --- [nio-8080-exec-3] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 1
+2025-04-29 16:40:18.854 DEBUG [6b311fab-90d2-4035-b71e-1fe389a03de5] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:40:18.886 DEBUG [6b311fab-90d2-4035-b71e-1fe389a03de5] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:40:18.887  INFO [6b311fab-90d2-4035-b71e-1fe389a03de5] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 1
+2025-04-29 16:40:18.887  INFO [6b311fab-90d2-4035-b71e-1fe389a03de5] 10132 --- [nio-8080-exec-4] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 1
+2025-04-29 16:40:26.005 DEBUG [fa7e37da-4781-44a1-8d85-272d467f975c] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/check-in/3/with-seat
+2025-04-29 16:40:26.036 DEBUG [fa7e37da-4781-44a1-8d85-272d467f975c] 10132 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 05D556F67E27927793F6BB55757B2094
+2025-04-29 16:40:26.037 DEBUG [fa7e37da-4781-44a1-8d85-272d467f975c] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /api/check-in/3/with-seat
+2025-04-29 16:40:26.063  INFO [fa7e37da-4781-44a1-8d85-272d467f975c] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CheckinController      : Checking in ticket 3 with seat for user: ****@****.***
+2025-04-29 16:40:26.067  INFO [fa7e37da-4781-44a1-8d85-272d467f975c] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Checking in ticket 3 with seat 1C of type SEAT_TYPE_UPFRONT
+2025-04-29 16:40:26.067  INFO [fa7e37da-4781-44a1-8d85-272d467f975c] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Checking if seat 1C is booked for flight 1
+2025-04-29 16:40:26.071  INFO [fa7e37da-4781-44a1-8d85-272d467f975c] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Successfully checked in ticket 3 with seat 1C
+2025-04-29 16:40:28.250 DEBUG [f2f1371f-25d5-4f91-b58e-47ad683f4173] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:40:28.292 DEBUG [f2f1371f-25d5-4f91-b58e-47ad683f4173] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from FB7923C0A969E4843F8B1E2047273067
+2025-04-29 16:40:28.293 DEBUG [f2f1371f-25d5-4f91-b58e-47ad683f4173] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:40:28.323  INFO [f2f1371f-25d5-4f91-b58e-47ad683f4173] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:40:28.323  INFO [f2f1371f-25d5-4f91-b58e-47ad683f4173] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:40:28.334 DEBUG [ac47cf78-f9af-49a1-b9ff-1cc4489e2539] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:40:28.368 DEBUG [ac47cf78-f9af-49a1-b9ff-1cc4489e2539] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:40:28.395  INFO [ac47cf78-f9af-49a1-b9ff-1cc4489e2539] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:40:28.396  INFO [ac47cf78-f9af-49a1-b9ff-1cc4489e2539] 10132 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:40:33.767 DEBUG [3bc90423-7f59-4915-a496-19347c900d64] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:40:33.814 DEBUG [3bc90423-7f59-4915-a496-19347c900d64] 10132 --- [nio-8080-exec-9] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 7CC4C8228D8FD369A3222F992D1EBF33
+2025-04-29 16:40:33.816 DEBUG [3bc90423-7f59-4915-a496-19347c900d64] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:40:33.816  INFO [3bc90423-7f59-4915-a496-19347c900d64] 10132 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:40:33.852  INFO [3bc90423-7f59-4915-a496-19347c900d64] 10132 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:40:33.865 DEBUG [414ff808-03f6-4cb1-9ee6-e12084e3e71c] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:40:33.868 DEBUG [99265db6-a244-4f67-b063-c4f559b205a3] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:40:33.902 DEBUG [99265db6-a244-4f67-b063-c4f559b205a3] 10132 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 63E219F2E6FEB6C34795123EE70D3107
+2025-04-29 16:40:33.903 DEBUG [414ff808-03f6-4cb1-9ee6-e12084e3e71c] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:40:33.903 DEBUG [99265db6-a244-4f67-b063-c4f559b205a3] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:40:33.903  INFO [414ff808-03f6-4cb1-9ee6-e12084e3e71c] 10132 --- [nio-8080-exec-8] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:40:33.936  INFO [414ff808-03f6-4cb1-9ee6-e12084e3e71c] 10132 --- [nio-8080-exec-8] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:40:33.936  WARN [99265db6-a244-4f67-b063-c4f559b205a3] 10132 --- [nio-8080-exec-7] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:40:33.937  WARN [99265db6-a244-4f67-b063-c4f559b205a3] 10132 --- [nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:40:33.949 DEBUG [1e6164bf-f22d-42f9-b4fd-4257c9b2e842] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:40:33.985 DEBUG [1e6164bf-f22d-42f9-b4fd-4257c9b2e842] 10132 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 29E746521D2CECCBB510DD5D2497A9B0
+2025-04-29 16:40:33.986 DEBUG [1e6164bf-f22d-42f9-b4fd-4257c9b2e842] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:40:34.021  WARN [1e6164bf-f22d-42f9-b4fd-4257c9b2e842] 10132 --- [io-8080-exec-10] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:40:34.022  WARN [1e6164bf-f22d-42f9-b4fd-4257c9b2e842] 10132 --- [io-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:40:35.033 DEBUG [d6e52b72-4286-4ce4-90d6-7e6d3e43c3a1] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:40:35.074 DEBUG [d6e52b72-4286-4ce4-90d6-7e6d3e43c3a1] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from D984A69C9EAC28FD72AECAC4B3B7011D
+2025-04-29 16:40:35.076 DEBUG [d6e52b72-4286-4ce4-90d6-7e6d3e43c3a1] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:40:35.107  INFO [d6e52b72-4286-4ce4-90d6-7e6d3e43c3a1] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:40:35.108  INFO [d6e52b72-4286-4ce4-90d6-7e6d3e43c3a1] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:40:35.113  INFO [d6e52b72-4286-4ce4-90d6-7e6d3e43c3a1] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Found 0 tickets eligible for check-in for user 4
+2025-04-29 16:40:35.120 DEBUG [de4aadcf-0090-48be-adb1-8ac1f88b7d96] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:40:35.154 DEBUG [de4aadcf-0090-48be-adb1-8ac1f88b7d96] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:40:35.182  INFO [de4aadcf-0090-48be-adb1-8ac1f88b7d96] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:40:35.183  INFO [de4aadcf-0090-48be-adb1-8ac1f88b7d96] 10132 --- [nio-8080-exec-3] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:40:35.187  INFO [de4aadcf-0090-48be-adb1-8ac1f88b7d96] 10132 --- [nio-8080-exec-3] o.e.x.services.TicketServiceImpl         : Found 0 tickets eligible for check-in for user 4
+2025-04-29 16:40:40.380 DEBUG [cdddf01c-97cf-4737-b4a0-5d7cd7f32cf7] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:40:40.416 DEBUG [cdddf01c-97cf-4737-b4a0-5d7cd7f32cf7] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 60C06369CBE114BA8778F2A22605F93F
+2025-04-29 16:40:40.417 DEBUG [cdddf01c-97cf-4737-b4a0-5d7cd7f32cf7] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:40:40.418  INFO [cdddf01c-97cf-4737-b4a0-5d7cd7f32cf7] 10132 --- [nio-8080-exec-4] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:40:40.449  INFO [cdddf01c-97cf-4737-b4a0-5d7cd7f32cf7] 10132 --- [nio-8080-exec-4] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:40:40.499 DEBUG [3c44968d-792a-45b2-ac7f-7f85f3c88d37] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:40:40.499 DEBUG [9d608f64-96fd-4bac-960a-540c2fb73a83] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:40:40.499 DEBUG [9108fc90-6363-4302-a685-8d09f1b9bb19] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:40:40.556 DEBUG [9d608f64-96fd-4bac-960a-540c2fb73a83] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 1A5A73FF8255997C1B59E67E3B2841C3
+2025-04-29 16:40:40.557 DEBUG [9d608f64-96fd-4bac-960a-540c2fb73a83] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:40:40.558 DEBUG [9108fc90-6363-4302-a685-8d09f1b9bb19] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:40:40.559 DEBUG [3c44968d-792a-45b2-ac7f-7f85f3c88d37] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:40:40.559  INFO [9108fc90-6363-4302-a685-8d09f1b9bb19] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:40:40.592  INFO [9d608f64-96fd-4bac-960a-540c2fb73a83] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:40:40.592  WARN [3c44968d-792a-45b2-ac7f-7f85f3c88d37] 10132 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:40:40.593  INFO [9d608f64-96fd-4bac-960a-540c2fb73a83] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:40:40.594  WARN [3c44968d-792a-45b2-ac7f-7f85f3c88d37] 10132 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:40:40.599  INFO [9108fc90-6363-4302-a685-8d09f1b9bb19] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:40:40.602 DEBUG [4c99f123-96f5-4f2d-a37b-6e8a51ad3a35] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:40:40.607 DEBUG [7a636d2f-00fc-432f-933c-b1c337f5bea7] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:40:40.653 DEBUG [4c99f123-96f5-4f2d-a37b-6e8a51ad3a35] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:40:40.655 DEBUG [7a636d2f-00fc-432f-933c-b1c337f5bea7] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:40:40.688  WARN [4c99f123-96f5-4f2d-a37b-6e8a51ad3a35] 10132 --- [nio-8080-exec-9] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:40:40.688  INFO [7a636d2f-00fc-432f-933c-b1c337f5bea7] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:40:40.689  WARN [4c99f123-96f5-4f2d-a37b-6e8a51ad3a35] 10132 --- [nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:40:40.689  INFO [7a636d2f-00fc-432f-933c-b1c337f5bea7] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:41:01.919 DEBUG [4425a52d-40ea-4d79-8588-05eb62339b46] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:41:01.968 DEBUG [4425a52d-40ea-4d79-8588-05eb62339b46] 10132 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 4CE4F7D6331878B595ED2489A0964FE5
+2025-04-29 16:41:01.969 DEBUG [4425a52d-40ea-4d79-8588-05eb62339b46] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:41:02.004  INFO [4425a52d-40ea-4d79-8588-05eb62339b46] 10132 --- [io-8080-exec-10] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:41:02.005  INFO [4425a52d-40ea-4d79-8588-05eb62339b46] 10132 --- [io-8080-exec-10] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:41:02.015 DEBUG [ad43a91e-a869-481f-abe0-9353ee8b161f] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:41:02.053 DEBUG [ad43a91e-a869-481f-abe0-9353ee8b161f] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:41:02.086  INFO [ad43a91e-a869-481f-abe0-9353ee8b161f] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:41:02.086  INFO [ad43a91e-a869-481f-abe0-9353ee8b161f] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:41:08.130 DEBUG [8d5d40ef-9571-4ea4-983b-4979f8f65100] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:41:08.171 DEBUG [8d5d40ef-9571-4ea4-983b-4979f8f65100] 10132 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 5E0611761C1B86544DC12C2EDA28B295
+2025-04-29 16:41:08.171 DEBUG [8d5d40ef-9571-4ea4-983b-4979f8f65100] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:41:08.201  INFO [8d5d40ef-9571-4ea4-983b-4979f8f65100] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:41:08.201  INFO [8d5d40ef-9571-4ea4-983b-4979f8f65100] 10132 --- [nio-8080-exec-3] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:41:08.211 DEBUG [88753785-78dc-4da0-82df-74e079dbcd9c] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:41:08.243 DEBUG [88753785-78dc-4da0-82df-74e079dbcd9c] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:41:08.271  INFO [88753785-78dc-4da0-82df-74e079dbcd9c] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:41:08.271  INFO [88753785-78dc-4da0-82df-74e079dbcd9c] 10132 --- [nio-8080-exec-4] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:41:19.570 DEBUG [55978822-e0e1-4c3a-8bcf-b9729dad4191] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:41:19.606 DEBUG [55978822-e0e1-4c3a-8bcf-b9729dad4191] 10132 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 0DAEE0E93C95364EA577E82097387397
+2025-04-29 16:41:19.607 DEBUG [55978822-e0e1-4c3a-8bcf-b9729dad4191] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:41:19.607  INFO [55978822-e0e1-4c3a-8bcf-b9729dad4191] 10132 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:41:19.636  INFO [55978822-e0e1-4c3a-8bcf-b9729dad4191] 10132 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:41:19.680 DEBUG [1b1e87a1-da79-46ba-82f1-cfd9a3d97160] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:41:19.684 DEBUG [503528bd-9e63-4ecd-a171-5d5758825148] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:41:19.683 DEBUG [58cb5c6b-bd35-4092-90f6-dddc2b82cd15] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:41:19.685 DEBUG [58cb5c6b-bd35-4092-90f6-dddc2b82cd15] 10132 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:41:19.686 DEBUG [58cb5c6b-bd35-4092-90f6-dddc2b82cd15] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:41:19.688  INFO [58cb5c6b-bd35-4092-90f6-dddc2b82cd15] 10132 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LAX, Dest=LHR, Depart=2025-04-30, Return=null, Pax=1/0/0
+2025-04-29 16:41:19.688  INFO [58cb5c6b-bd35-4092-90f6-dddc2b82cd15] 10132 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Performing flight search from LAX to LHR on 2025-04-30
+2025-04-29 16:41:19.730  INFO [58cb5c6b-bd35-4092-90f6-dddc2b82cd15] 10132 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Found 2 available flights for search criteria.
+2025-04-29 16:41:19.735 DEBUG [1b1e87a1-da79-46ba-82f1-cfd9a3d97160] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 0338311D5E6CDF38838A01C9FAE85BF3
+2025-04-29 16:41:19.737 DEBUG [1b1e87a1-da79-46ba-82f1-cfd9a3d97160] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:41:19.739 DEBUG [503528bd-9e63-4ecd-a171-5d5758825148] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:41:19.739  INFO [503528bd-9e63-4ecd-a171-5d5758825148] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:41:19.741 DEBUG [ac4c1158-576e-4f0b-8bdc-57c4067ad618] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:41:19.742 DEBUG [ac4c1158-576e-4f0b-8bdc-57c4067ad618] 10132 --- [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:41:19.744 DEBUG [ac4c1158-576e-4f0b-8bdc-57c4067ad618] 10132 --- [nio-8080-exec-7] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 0338311D5E6CDF38838A01C9FAE85BF3
+2025-04-29 16:41:19.747 DEBUG [ac4c1158-576e-4f0b-8bdc-57c4067ad618] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LAX&destination=LHR&departureDate=2025-04-30&tripType=oneWay
+2025-04-29 16:41:19.749 DEBUG [28a60319-e64b-4f8a-86f6-330309cf80da] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:41:19.749  INFO [ac4c1158-576e-4f0b-8bdc-57c4067ad618] 10132 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LAX, Dest=LHR, Depart=2025-04-30, Return=null, Pax=1/0/0
+2025-04-29 16:41:19.749  INFO [ac4c1158-576e-4f0b-8bdc-57c4067ad618] 10132 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Performing flight search from LAX to LHR on 2025-04-30
+2025-04-29 16:41:19.750 DEBUG [28a60319-e64b-4f8a-86f6-330309cf80da] 10132 --- [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:41:19.750 DEBUG [28a60319-e64b-4f8a-86f6-330309cf80da] 10132 --- [nio-8080-exec-8] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 0338311D5E6CDF38838A01C9FAE85BF3
+2025-04-29 16:41:19.751 DEBUG [28a60319-e64b-4f8a-86f6-330309cf80da] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:41:19.753  INFO [28a60319-e64b-4f8a-86f6-330309cf80da] 10132 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LHR, Dest=LAX, Depart=2025-05-03, Return=null, Pax=1/0/0
+2025-04-29 16:41:19.753  INFO [28a60319-e64b-4f8a-86f6-330309cf80da] 10132 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Performing flight search from LHR to LAX on 2025-05-03
+2025-04-29 16:41:19.782  INFO [ac4c1158-576e-4f0b-8bdc-57c4067ad618] 10132 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Found 2 available flights for search criteria.
+2025-04-29 16:41:19.784  WARN [1b1e87a1-da79-46ba-82f1-cfd9a3d97160] 10132 --- [nio-8080-exec-5] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:41:19.785  WARN [1b1e87a1-da79-46ba-82f1-cfd9a3d97160] 10132 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:41:19.788  INFO [28a60319-e64b-4f8a-86f6-330309cf80da] 10132 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-04-29 16:41:19.793  INFO [503528bd-9e63-4ecd-a171-5d5758825148] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:41:19.793 DEBUG [fc64fc25-9e44-405f-8bc1-eafb8611df41] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:41:19.820 DEBUG [8d438780-ca17-49d3-b255-e6ef1a07ddf4] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:41:19.821 DEBUG [8d438780-ca17-49d3-b255-e6ef1a07ddf4] 10132 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:41:19.821 DEBUG [8d438780-ca17-49d3-b255-e6ef1a07ddf4] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=LHR&destination=LAX&departureDate=2025-05-03&tripType=oneWay
+2025-04-29 16:41:19.823  INFO [8d438780-ca17-49d3-b255-e6ef1a07ddf4] 10132 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=LHR, Dest=LAX, Depart=2025-05-03, Return=null, Pax=1/0/0
+2025-04-29 16:41:19.823  INFO [8d438780-ca17-49d3-b255-e6ef1a07ddf4] 10132 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Performing flight search from LHR to LAX on 2025-05-03
+2025-04-29 16:41:19.840 DEBUG [fc64fc25-9e44-405f-8bc1-eafb8611df41] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:41:19.853  INFO [8d438780-ca17-49d3-b255-e6ef1a07ddf4] 10132 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-04-29 16:41:19.877  WARN [fc64fc25-9e44-405f-8bc1-eafb8611df41] 10132 --- [io-8080-exec-10] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:41:19.878  WARN [fc64fc25-9e44-405f-8bc1-eafb8611df41] 10132 --- [io-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:41:27.020 DEBUG [3dfa9449-34a8-49e6-a3bb-8f6f711434a7] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/cart/add
+2025-04-29 16:41:27.051 DEBUG [3dfa9449-34a8-49e6-a3bb-8f6f711434a7] 10132 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 1A3EF9F0D2B3137B17E8473E29A2620F
+2025-04-29 16:41:27.052 DEBUG [3dfa9449-34a8-49e6-a3bb-8f6f711434a7] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/cart/add
+2025-04-29 16:41:27.079  INFO [3dfa9449-34a8-49e6-a3bb-8f6f711434a7] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : User ****@****.*** request to add flight ID 1 to persistent cart
+2025-04-29 16:41:27.086  INFO [3dfa9449-34a8-49e6-a3bb-8f6f711434a7] 10132 --- [nio-8080-exec-3] o.e.xlr8travel.services.CartServiceImpl  : Added new flight ID 1 to cart for user ****@****.***
+2025-04-29 16:41:27.100  INFO [3dfa9449-34a8-49e6-a3bb-8f6f711434a7] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Flight ID 1 added/incremented in persistent cart for user ****@****.***.
+2025-04-29 16:41:27.110 DEBUG [bd1f56e9-adf1-4d58-bf8f-7a41806c55f1] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/cart/add
+2025-04-29 16:41:27.140 DEBUG [bd1f56e9-adf1-4d58-bf8f-7a41806c55f1] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 81BE7393082AAE9B6D539BDABFB5C0D9
+2025-04-29 16:41:27.141 DEBUG [bd1f56e9-adf1-4d58-bf8f-7a41806c55f1] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/cart/add
+2025-04-29 16:41:27.169  INFO [bd1f56e9-adf1-4d58-bf8f-7a41806c55f1] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : User ****@****.*** request to add flight ID 5 to persistent cart
+2025-04-29 16:41:27.176  INFO [bd1f56e9-adf1-4d58-bf8f-7a41806c55f1] 10132 --- [nio-8080-exec-4] o.e.xlr8travel.services.CartServiceImpl  : Added new flight ID 5 to cart for user ****@****.***
+2025-04-29 16:41:27.190  INFO [bd1f56e9-adf1-4d58-bf8f-7a41806c55f1] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : Flight ID 5 added/incremented in persistent cart for user ****@****.***.
+2025-04-29 16:41:27.203 DEBUG [c60382db-a8d8-4a60-b567-7bc9e8834b03] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:41:27.239 DEBUG [c60382db-a8d8-4a60-b567-7bc9e8834b03] 10132 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 61DAB5A2DFEE0EB1A4C5BBDB4B44E1FC
+2025-04-29 16:41:27.240 DEBUG [c60382db-a8d8-4a60-b567-7bc9e8834b03] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:41:27.240  INFO [c60382db-a8d8-4a60-b567-7bc9e8834b03] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:41:27.280  INFO [c60382db-a8d8-4a60-b567-7bc9e8834b03] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:41:27.513 DEBUG [1a3e8285-d80e-48ac-bcd0-a723eb105729] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:41:27.558 DEBUG [1a3e8285-d80e-48ac-bcd0-a723eb105729] 10132 --- [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 955955EB6F7FDD72CB03EFE50FAF08BD
+2025-04-29 16:41:27.559 DEBUG [1a3e8285-d80e-48ac-bcd0-a723eb105729] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:41:27.560  INFO [1a3e8285-d80e-48ac-bcd0-a723eb105729] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:41:27.599  INFO [1a3e8285-d80e-48ac-bcd0-a723eb105729] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:41:27.607 DEBUG [585c2c82-6993-4626-91cd-9fa394b50c9b] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:41:27.641 DEBUG [585c2c82-6993-4626-91cd-9fa394b50c9b] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:41:27.642  INFO [585c2c82-6993-4626-91cd-9fa394b50c9b] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:41:27.677  INFO [585c2c82-6993-4626-91cd-9fa394b50c9b] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:41:28.846 DEBUG [fde3dfba-cb97-40ca-807a-23f3b52ae089] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:41:28.896 DEBUG [fde3dfba-cb97-40ca-807a-23f3b52ae089] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 34D1D45705888A61658AC86BD4512B7B
+2025-04-29 16:41:28.898 DEBUG [fde3dfba-cb97-40ca-807a-23f3b52ae089] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:41:28.899  INFO [fde3dfba-cb97-40ca-807a-23f3b52ae089] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:41:28.943  INFO [fde3dfba-cb97-40ca-807a-23f3b52ae089] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:41:28.952 DEBUG [c3ea04ba-212b-4d14-8d3f-4ffbb2b37c3b] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:41:28.997 DEBUG [c3ea04ba-212b-4d14-8d3f-4ffbb2b37c3b] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:41:28.998  INFO [c3ea04ba-212b-4d14-8d3f-4ffbb2b37c3b] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:41:29.041  INFO [c3ea04ba-212b-4d14-8d3f-4ffbb2b37c3b] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 2 items, 2 total quantity.
+2025-04-29 16:41:36.955 DEBUG [eb438972-6f45-4e51-a0c0-f2f181b97b3e] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /api/checkout/create-payment-intent
+2025-04-29 16:41:36.955 DEBUG [eb438972-6f45-4e51-a0c0-f2f181b97b3e] 10132 --- [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-04-29 16:41:36.956 DEBUG [eb438972-6f45-4e51-a0c0-f2f181b97b3e] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /api/checkout/create-payment-intent
+2025-04-29 16:41:36.957  INFO [eb438972-6f45-4e51-a0c0-f2f181b97b3e] 10132 --- [nio-8080-exec-9] o.e.x.controllers.PaymentController      : Creating payment intent for amount: 42700 usd
+2025-04-29 16:41:37.427  INFO [eb438972-6f45-4e51-a0c0-f2f181b97b3e] 10132 --- [nio-8080-exec-9] o.e.x.controllers.PaymentController      : Payment intent created successfully: pi_3RJEPlGf8s1WZJnq0PGa10Yd
+2025-04-29 16:41:38.757 DEBUG [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/checkout/confirm
+2025-04-29 16:41:38.788 DEBUG [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 390D75900845ACB7CD1864666D98AAB1
+2025-04-29 16:41:38.789 DEBUG [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/checkout/confirm
+2025-04-29 16:41:38.794  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckoutController     : Received purchase confirmation request.
+2025-04-29 16:41:38.839  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckoutController     : Processing purchase for user: ****@****.***
+2025-04-29 16:41:38.847  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckoutController     : User ****@****.*** persistent cart has 2 items.
+2025-04-29 16:41:38.847  WARN [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckoutController     : !!! SIMULATING successful payment processing for user ****@****.*** !!!
+2025-04-29 16:41:38.848  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.services.OrderServiceImpl          : Creating order from persistent cart for user: ****@****.***
+2025-04-29 16:41:38.853  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.services.OrderServiceImpl          : Order 2 created for user ****@****.***, status: PENDING_PAYMENT. Total: 400.00
+2025-04-29 16:41:38.854  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.services.OrderServiceImpl          : Created ticket for flight Flight 101 for user ****@****.***
+2025-04-29 16:41:38.854  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.services.OrderServiceImpl          : Created ticket for flight Flight 102 for user ****@****.***
+2025-04-29 16:41:50.100  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.services.EmailServiceImpl          : Purchase confirmation email sent to ****@****.***
+2025-04-29 16:41:50.100  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.services.OrderServiceImpl          : Purchase confirmation email sent to user: ****@****.***
+2025-04-29 16:41:50.113  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckoutController     : Order successfully created for user ****@****.***. Confirmation: 2
+2025-04-29 16:41:50.116  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.xlr8travel.services.CartServiceImpl  : Clearing 2 items from cart for user ****@****.***
+2025-04-29 16:41:50.128  INFO [c0aa3db7-dd42-4120-bc66-2a21591d2829] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckoutController     : Persistent cart cleared for user ****@****.***.
+2025-04-29 16:41:50.139 DEBUG [858da653-2650-4fd8-b51a-5d16de7ca5a3] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing DELETE /api/cart/remove/1
+2025-04-29 16:41:50.169 DEBUG [858da653-2650-4fd8-b51a-5d16de7ca5a3] 10132 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from F41847C13A4B1D169176000080EB883A
+2025-04-29 16:41:50.170 DEBUG [858da653-2650-4fd8-b51a-5d16de7ca5a3] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured DELETE /api/cart/remove/1
+2025-04-29 16:41:50.197  INFO [858da653-2650-4fd8-b51a-5d16de7ca5a3] 10132 --- [io-8080-exec-10] o.e.x.controllers.CartController         : User ****@****.*** request to remove flight ID 1 from persistent cart
+2025-04-29 16:41:50.203  WARN [858da653-2650-4fd8-b51a-5d16de7ca5a3] 10132 --- [io-8080-exec-10] o.e.xlr8travel.services.CartServiceImpl  : Attempted to remove flight ID 1 not found in cart for user ****@****.***
+2025-04-29 16:41:50.205  WARN [858da653-2650-4fd8-b51a-5d16de7ca5a3] 10132 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Attempted to remove flight ID 1 not found in persistent cart for user ****@****.***
+2025-04-29 16:41:50.216 DEBUG [5559780c-a123-47df-81d5-4c065de3f819] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing DELETE /api/cart/remove/5
+2025-04-29 16:41:50.247 DEBUG [5559780c-a123-47df-81d5-4c065de3f819] 10132 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from CD202CB07F074637B97F466FC43900D4
+2025-04-29 16:41:50.248 DEBUG [5559780c-a123-47df-81d5-4c065de3f819] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured DELETE /api/cart/remove/5
+2025-04-29 16:41:50.274  INFO [5559780c-a123-47df-81d5-4c065de3f819] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : User ****@****.*** request to remove flight ID 5 from persistent cart
+2025-04-29 16:41:50.280  WARN [5559780c-a123-47df-81d5-4c065de3f819] 10132 --- [nio-8080-exec-3] o.e.xlr8travel.services.CartServiceImpl  : Attempted to remove flight ID 5 not found in cart for user ****@****.***
+2025-04-29 16:41:50.282  WARN [5559780c-a123-47df-81d5-4c065de3f819] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Attempted to remove flight ID 5 not found in persistent cart for user ****@****.***
+2025-04-29 16:41:50.293 DEBUG [73bb8cd2-796d-43ca-b20c-ed6dcddc2e9b] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:41:50.323 DEBUG [73bb8cd2-796d-43ca-b20c-ed6dcddc2e9b] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from EEA30EA70C4DA07ACBCDA54739DF89FD
+2025-04-29 16:41:50.323 DEBUG [73bb8cd2-796d-43ca-b20c-ed6dcddc2e9b] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:41:50.324  INFO [73bb8cd2-796d-43ca-b20c-ed6dcddc2e9b] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:41:50.357  INFO [73bb8cd2-796d-43ca-b20c-ed6dcddc2e9b] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:41:55.625 DEBUG [48c15f79-5b4e-4bcd-a21b-1871e255f3b4] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:41:55.668 DEBUG [48c15f79-5b4e-4bcd-a21b-1871e255f3b4] 10132 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from DDC5968DF575BCA4A201B157553D27C0
+2025-04-29 16:41:55.669 DEBUG [48c15f79-5b4e-4bcd-a21b-1871e255f3b4] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:41:55.705  INFO [48c15f79-5b4e-4bcd-a21b-1871e255f3b4] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:41:55.705  INFO [48c15f79-5b4e-4bcd-a21b-1871e255f3b4] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:41:55.715 DEBUG [6b6fd8e2-129e-4654-817d-1655d33c48af] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:41:55.751 DEBUG [6b6fd8e2-129e-4654-817d-1655d33c48af] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:41:55.788  INFO [6b6fd8e2-129e-4654-817d-1655d33c48af] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:41:55.788  INFO [6b6fd8e2-129e-4654-817d-1655d33c48af] 10132 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:41:56.437 DEBUG [339a78ae-68b8-4327-9e58-4ef78a279097] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:41:56.483 DEBUG [339a78ae-68b8-4327-9e58-4ef78a279097] 10132 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from C4BF58E26C5AF7754927AF762B9C44D6
+2025-04-29 16:41:56.485 DEBUG [339a78ae-68b8-4327-9e58-4ef78a279097] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:41:56.521  INFO [339a78ae-68b8-4327-9e58-4ef78a279097] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:41:56.522  INFO [339a78ae-68b8-4327-9e58-4ef78a279097] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:41:56.527  INFO [339a78ae-68b8-4327-9e58-4ef78a279097] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:41:56.535 DEBUG [256df391-5753-45b9-8d34-f7210608fed2] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:41:56.571 DEBUG [256df391-5753-45b9-8d34-f7210608fed2] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:41:56.603  INFO [256df391-5753-45b9-8d34-f7210608fed2] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:41:56.603  INFO [256df391-5753-45b9-8d34-f7210608fed2] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:41:56.608  INFO [256df391-5753-45b9-8d34-f7210608fed2] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:41:57.505 DEBUG [9c29c665-9a28-495d-872d-cfa3a9d1c689] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:41:57.544 DEBUG [9c29c665-9a28-495d-872d-cfa3a9d1c689] 10132 --- [nio-8080-exec-8] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from A7C7BE0EC655F7A303992AEB85F159B6
+2025-04-29 16:41:57.545 DEBUG [9c29c665-9a28-495d-872d-cfa3a9d1c689] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:41:57.546  INFO [9c29c665-9a28-495d-872d-cfa3a9d1c689] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 1
+2025-04-29 16:41:57.546  INFO [9c29c665-9a28-495d-872d-cfa3a9d1c689] 10132 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 1
+2025-04-29 16:41:57.576 DEBUG [91fefb18-81fe-40b9-8043-68f590ecfbcb] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:41:57.610 DEBUG [91fefb18-81fe-40b9-8043-68f590ecfbcb] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:41:57.611  INFO [91fefb18-81fe-40b9-8043-68f590ecfbcb] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 1
+2025-04-29 16:41:57.611  INFO [91fefb18-81fe-40b9-8043-68f590ecfbcb] 10132 --- [nio-8080-exec-9] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 1
+2025-04-29 16:42:06.452 DEBUG [ac4e77c1-6d2f-4a38-980a-9f3d98bac98e] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:06.487 DEBUG [ac4e77c1-6d2f-4a38-980a-9f3d98bac98e] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 76529EA08188735ED2FCC621F64A5721
+2025-04-29 16:42:06.489 DEBUG [ac4e77c1-6d2f-4a38-980a-9f3d98bac98e] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:06.489  INFO [ac4e77c1-6d2f-4a38-980a-9f3d98bac98e] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:06.489  INFO [ac4e77c1-6d2f-4a38-980a-9f3d98bac98e] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:06.520 DEBUG [59c236f1-d4eb-41b1-a02a-1213517d0618] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:06.559 DEBUG [59c236f1-d4eb-41b1-a02a-1213517d0618] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:06.559  INFO [59c236f1-d4eb-41b1-a02a-1213517d0618] 10132 --- [io-8080-exec-10] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:06.559  INFO [59c236f1-d4eb-41b1-a02a-1213517d0618] 10132 --- [io-8080-exec-10] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:09.427 DEBUG [fe9f6712-3932-4ab8-9699-b2a3d0c0c1c6] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:09.460 DEBUG [fe9f6712-3932-4ab8-9699-b2a3d0c0c1c6] 10132 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from C9B3939E18D56971440E453C4067653B
+2025-04-29 16:42:09.461 DEBUG [fe9f6712-3932-4ab8-9699-b2a3d0c0c1c6] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:09.462  INFO [fe9f6712-3932-4ab8-9699-b2a3d0c0c1c6] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:09.462  INFO [fe9f6712-3932-4ab8-9699-b2a3d0c0c1c6] 10132 --- [nio-8080-exec-3] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:09.490 DEBUG [054c887b-651a-424e-b15b-b659a8de71f7] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:09.522 DEBUG [054c887b-651a-424e-b15b-b659a8de71f7] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:09.524  INFO [054c887b-651a-424e-b15b-b659a8de71f7] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:09.524  INFO [054c887b-651a-424e-b15b-b659a8de71f7] 10132 --- [nio-8080-exec-4] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:11.770 DEBUG [ea425f8d-830b-4d55-8eb9-bb7af9b98a58] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:11.812 DEBUG [ea425f8d-830b-4d55-8eb9-bb7af9b98a58] 10132 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from CE5600B8A0E6C775356E0D6E869E122E
+2025-04-29 16:42:11.814 DEBUG [ea425f8d-830b-4d55-8eb9-bb7af9b98a58] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:11.843  INFO [ea425f8d-830b-4d55-8eb9-bb7af9b98a58] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:11.844  INFO [ea425f8d-830b-4d55-8eb9-bb7af9b98a58] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:11.854 DEBUG [933ef7c3-f538-4e69-97f4-3f915af73cbc] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:11.888 DEBUG [933ef7c3-f538-4e69-97f4-3f915af73cbc] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:11.918  INFO [933ef7c3-f538-4e69-97f4-3f915af73cbc] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:11.918  INFO [933ef7c3-f538-4e69-97f4-3f915af73cbc] 10132 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:14.520 DEBUG [9d6323c1-1600-457e-8049-cb2c54c6e4c7] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:42:14.563 DEBUG [9d6323c1-1600-457e-8049-cb2c54c6e4c7] 10132 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from B9C9888BB4E9B9F5BEBBCBE0B17183F3
+2025-04-29 16:42:14.564 DEBUG [9d6323c1-1600-457e-8049-cb2c54c6e4c7] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:42:14.597  INFO [9d6323c1-1600-457e-8049-cb2c54c6e4c7] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:42:14.598  INFO [9d6323c1-1600-457e-8049-cb2c54c6e4c7] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:42:14.604  INFO [9d6323c1-1600-457e-8049-cb2c54c6e4c7] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:42:14.613 DEBUG [b3ddd932-36dd-4c51-9a05-373b3fbe00cf] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:42:14.649 DEBUG [b3ddd932-36dd-4c51-9a05-373b3fbe00cf] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:42:14.680  INFO [b3ddd932-36dd-4c51-9a05-373b3fbe00cf] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:42:14.681  INFO [b3ddd932-36dd-4c51-9a05-373b3fbe00cf] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:42:14.685  INFO [b3ddd932-36dd-4c51-9a05-373b3fbe00cf] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:42:16.231 DEBUG [a757b117-5410-4bba-861f-f0a45511d3c9] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:16.281 DEBUG [a757b117-5410-4bba-861f-f0a45511d3c9] 10132 --- [nio-8080-exec-8] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 5C9B3B7E42DCE73E032636DC6BE7E07E
+2025-04-29 16:42:16.282 DEBUG [a757b117-5410-4bba-861f-f0a45511d3c9] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:16.324  INFO [a757b117-5410-4bba-861f-f0a45511d3c9] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:16.324  INFO [a757b117-5410-4bba-861f-f0a45511d3c9] 10132 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:16.334 DEBUG [7721d6ee-a6f5-460a-a7e1-bf66390db958] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:16.368 DEBUG [7721d6ee-a6f5-460a-a7e1-bf66390db958] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:16.398  INFO [7721d6ee-a6f5-460a-a7e1-bf66390db958] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:16.399  INFO [7721d6ee-a6f5-460a-a7e1-bf66390db958] 10132 --- [nio-8080-exec-9] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:19.867 DEBUG [7f27827c-a369-4fee-bb7d-56324fedd080] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:42:19.905 DEBUG [7f27827c-a369-4fee-bb7d-56324fedd080] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 9BED142D40B4E8072E2C4BAB68A4B14F
+2025-04-29 16:42:19.907 DEBUG [7f27827c-a369-4fee-bb7d-56324fedd080] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:42:19.938  INFO [7f27827c-a369-4fee-bb7d-56324fedd080] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:42:19.939  INFO [7f27827c-a369-4fee-bb7d-56324fedd080] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:42:19.944  INFO [7f27827c-a369-4fee-bb7d-56324fedd080] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:42:19.952 DEBUG [d19475e0-731a-44f2-b265-3c5bc2817778] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:42:19.987 DEBUG [d19475e0-731a-44f2-b265-3c5bc2817778] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:42:20.015  INFO [d19475e0-731a-44f2-b265-3c5bc2817778] 10132 --- [io-8080-exec-10] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:42:20.015  INFO [d19475e0-731a-44f2-b265-3c5bc2817778] 10132 --- [io-8080-exec-10] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:42:20.020  INFO [d19475e0-731a-44f2-b265-3c5bc2817778] 10132 --- [io-8080-exec-10] o.e.x.services.TicketServiceImpl         : Found 2 tickets eligible for check-in for user 4
+2025-04-29 16:42:20.483 DEBUG [cbb28026-e5e6-4de1-aa6a-558181d58bb5] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:20.515 DEBUG [cbb28026-e5e6-4de1-aa6a-558181d58bb5] 10132 --- [nio-8080-exec-3] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 51840279A378C1B42292DFD3EC555F78
+2025-04-29 16:42:20.516 DEBUG [cbb28026-e5e6-4de1-aa6a-558181d58bb5] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:20.517  INFO [cbb28026-e5e6-4de1-aa6a-558181d58bb5] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:20.517  INFO [cbb28026-e5e6-4de1-aa6a-558181d58bb5] 10132 --- [nio-8080-exec-3] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:20.547 DEBUG [7f0fee29-188e-49f1-9fdb-7fcf1f1594d0] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:20.581 DEBUG [7f0fee29-188e-49f1-9fdb-7fcf1f1594d0] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:20.581  INFO [7f0fee29-188e-49f1-9fdb-7fcf1f1594d0] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:20.581  INFO [7f0fee29-188e-49f1-9fdb-7fcf1f1594d0] 10132 --- [nio-8080-exec-4] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:26.106 DEBUG [00f28cd8-3956-49c2-8879-8407e805ee63] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:42:26.140 DEBUG [00f28cd8-3956-49c2-8879-8407e805ee63] 10132 --- [nio-8080-exec-2] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from B93E3F31003C57EB396A1D2BFAC28447
+2025-04-29 16:42:26.142 DEBUG [00f28cd8-3956-49c2-8879-8407e805ee63] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:42:26.142  INFO [00f28cd8-3956-49c2-8879-8407e805ee63] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 1
+2025-04-29 16:42:26.142  INFO [00f28cd8-3956-49c2-8879-8407e805ee63] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 1
+2025-04-29 16:42:26.173 DEBUG [2e8f8220-cca9-4faa-8a34-373f179735aa] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:42:26.215 DEBUG [2e8f8220-cca9-4faa-8a34-373f179735aa] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/1/booked-seats
+2025-04-29 16:42:26.215  INFO [2e8f8220-cca9-4faa-8a34-373f179735aa] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 1
+2025-04-29 16:42:26.215  INFO [2e8f8220-cca9-4faa-8a34-373f179735aa] 10132 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 1
+2025-04-29 16:42:33.020 DEBUG [75dd9d20-b774-4019-bad9-ed8b27a274c4] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /api/check-in/5/with-seat
+2025-04-29 16:42:33.050 DEBUG [75dd9d20-b774-4019-bad9-ed8b27a274c4] 10132 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 0F3A337F8F05D7CE9B0D107F4B75B1F1
+2025-04-29 16:42:33.051 DEBUG [75dd9d20-b774-4019-bad9-ed8b27a274c4] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /api/check-in/5/with-seat
+2025-04-29 16:42:33.079  INFO [75dd9d20-b774-4019-bad9-ed8b27a274c4] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Checking in ticket 5 with seat for user: ****@****.***
+2025-04-29 16:42:33.083  INFO [75dd9d20-b774-4019-bad9-ed8b27a274c4] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Checking in ticket 5 with seat 4B of type SEAT_TYPE_UPFRONT
+2025-04-29 16:42:33.083  INFO [75dd9d20-b774-4019-bad9-ed8b27a274c4] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Checking if seat 4B is booked for flight 1
+2025-04-29 16:42:33.086  INFO [75dd9d20-b774-4019-bad9-ed8b27a274c4] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Successfully checked in ticket 5 with seat 4B
+2025-04-29 16:42:36.834 DEBUG [017d367f-b577-43c3-a905-b2021dc8f11f] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:36.867 DEBUG [017d367f-b577-43c3-a905-b2021dc8f11f] 10132 --- [nio-8080-exec-8] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 3D5A5551DF4198135A934463271DE3E7
+2025-04-29 16:42:36.869 DEBUG [017d367f-b577-43c3-a905-b2021dc8f11f] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:36.869  INFO [017d367f-b577-43c3-a905-b2021dc8f11f] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:36.869  INFO [017d367f-b577-43c3-a905-b2021dc8f11f] 10132 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:36.898 DEBUG [8fd73eec-9d02-42f5-bcfa-93c1761b3aeb] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:36.930 DEBUG [8fd73eec-9d02-42f5-bcfa-93c1761b3aeb] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/flights/5/booked-seats
+2025-04-29 16:42:36.931  INFO [8fd73eec-9d02-42f5-bcfa-93c1761b3aeb] 10132 --- [nio-8080-exec-9] o.e.x.controllers.CheckinController      : Getting booked seats for flight: 5
+2025-04-29 16:42:36.931  INFO [8fd73eec-9d02-42f5-bcfa-93c1761b3aeb] 10132 --- [nio-8080-exec-9] o.e.x.services.TicketServiceImpl         : Getting booked seats for flight 5
+2025-04-29 16:42:41.845 DEBUG [a5daf0c6-216d-4892-afd0-58a7c07be6e5] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/check-in/6/with-seat
+2025-04-29 16:42:41.877 DEBUG [a5daf0c6-216d-4892-afd0-58a7c07be6e5] 10132 --- [nio-8080-exec-1] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 62D40287A904016F961B04AD147FF21A
+2025-04-29 16:42:41.878 DEBUG [a5daf0c6-216d-4892-afd0-58a7c07be6e5] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/check-in/6/with-seat
+2025-04-29 16:42:41.906  INFO [a5daf0c6-216d-4892-afd0-58a7c07be6e5] 10132 --- [nio-8080-exec-1] o.e.x.controllers.CheckinController      : Checking in ticket 6 with seat for user: ****@****.***
+2025-04-29 16:42:41.910  INFO [a5daf0c6-216d-4892-afd0-58a7c07be6e5] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Checking in ticket 6 with seat 3C of type SEAT_TYPE_UPFRONT
+2025-04-29 16:42:41.910  INFO [a5daf0c6-216d-4892-afd0-58a7c07be6e5] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Checking if seat 3C is booked for flight 5
+2025-04-29 16:42:41.912  INFO [a5daf0c6-216d-4892-afd0-58a7c07be6e5] 10132 --- [nio-8080-exec-1] o.e.x.services.TicketServiceImpl         : Successfully checked in ticket 6 with seat 3C
+2025-04-29 16:42:43.458 DEBUG [8b3f706d-8c74-42b3-be95-efafad913950] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:43.498 DEBUG [8b3f706d-8c74-42b3-be95-efafad913950] 10132 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from F178E024FA1D3409DDCC8A2EF5562F50
+2025-04-29 16:42:43.499 DEBUG [8b3f706d-8c74-42b3-be95-efafad913950] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:43.531  INFO [8b3f706d-8c74-42b3-be95-efafad913950] 10132 --- [io-8080-exec-10] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:43.531  INFO [8b3f706d-8c74-42b3-be95-efafad913950] 10132 --- [io-8080-exec-10] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:43.541 DEBUG [2f99997e-4deb-4908-a88a-c44a1627e8ed] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:43.576 DEBUG [2f99997e-4deb-4908-a88a-c44a1627e8ed] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:43.604  INFO [2f99997e-4deb-4908-a88a-c44a1627e8ed] 10132 --- [nio-8080-exec-3] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:43.604  INFO [2f99997e-4deb-4908-a88a-c44a1627e8ed] 10132 --- [nio-8080-exec-3] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:50.402 DEBUG [930d457a-37e4-4da9-a087-d1c16cb3f796] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:50.446 DEBUG [930d457a-37e4-4da9-a087-d1c16cb3f796] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 623F78815B8463858F66A4B4B43CC089
+2025-04-29 16:42:50.447 DEBUG [930d457a-37e4-4da9-a087-d1c16cb3f796] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:50.479  INFO [930d457a-37e4-4da9-a087-d1c16cb3f796] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:50.479  INFO [930d457a-37e4-4da9-a087-d1c16cb3f796] 10132 --- [nio-8080-exec-4] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:50.489 DEBUG [3114942e-3e40-47c8-88ff-25c3969b1dcb] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:42:50.529 DEBUG [3114942e-3e40-47c8-88ff-25c3969b1dcb] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:42:50.558  INFO [3114942e-3e40-47c8-88ff-25c3969b1dcb] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:42:50.558  INFO [3114942e-3e40-47c8-88ff-25c3969b1dcb] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:42:53.091 DEBUG [f312dd2e-3467-41be-94b4-90ab0f889305] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:42:53.132 DEBUG [f312dd2e-3467-41be-94b4-90ab0f889305] 10132 --- [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from C17106B1A91CCE736E4827571E43B59D
+2025-04-29 16:42:53.133 DEBUG [f312dd2e-3467-41be-94b4-90ab0f889305] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:42:53.134  INFO [f312dd2e-3467-41be-94b4-90ab0f889305] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:42:53.176  INFO [f312dd2e-3467-41be-94b4-90ab0f889305] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:42:53.183 DEBUG [f5be0c53-d297-44ca-8476-10620518fdf9] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:42:53.216 DEBUG [f5be0c53-d297-44ca-8476-10620518fdf9] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:42:53.217  INFO [f5be0c53-d297-44ca-8476-10620518fdf9] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:42:53.251  INFO [f5be0c53-d297-44ca-8476-10620518fdf9] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:42:53.998 DEBUG [152dabc1-9e61-47f5-afe4-ef2bcb823e38] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:42:54.045 DEBUG [152dabc1-9e61-47f5-afe4-ef2bcb823e38] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from CE3FACA6386EF603A8DBD2988E2375AB
+2025-04-29 16:42:54.046 DEBUG [152dabc1-9e61-47f5-afe4-ef2bcb823e38] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:42:54.085  INFO [152dabc1-9e61-47f5-afe4-ef2bcb823e38] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:42:54.085  INFO [152dabc1-9e61-47f5-afe4-ef2bcb823e38] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:42:54.091  INFO [152dabc1-9e61-47f5-afe4-ef2bcb823e38] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Found 0 tickets eligible for check-in for user 4
+2025-04-29 16:42:54.099 DEBUG [c7a44a24-5546-45f8-ba30-45231452deef] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/eligible-tickets
+2025-04-29 16:42:54.137 DEBUG [c7a44a24-5546-45f8-ba30-45231452deef] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/eligible-tickets
+2025-04-29 16:42:54.173  INFO [c7a44a24-5546-45f8-ba30-45231452deef] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CheckinController      : Getting eligible tickets for check-in for user: ****@****.***
+2025-04-29 16:42:54.174  INFO [c7a44a24-5546-45f8-ba30-45231452deef] 10132 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Finding tickets eligible for check-in for user 4
+2025-04-29 16:42:54.182  INFO [c7a44a24-5546-45f8-ba30-45231452deef] 10132 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Found 0 tickets eligible for check-in for user 4
+2025-04-29 16:42:55.172 DEBUG [b0bed750-d216-406e-841d-9f8ca954e901] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-04-29 16:42:55.212 DEBUG [b0bed750-d216-406e-841d-9f8ca954e901] 10132 --- [nio-8080-exec-9] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 1153536770A61467E6133A5BA071353C
+2025-04-29 16:42:55.213 DEBUG [b0bed750-d216-406e-841d-9f8ca954e901] 10132 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-04-29 16:42:55.213  INFO [b0bed750-d216-406e-841d-9f8ca954e901] 10132 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-04-29 16:42:55.244  INFO [b0bed750-d216-406e-841d-9f8ca954e901] 10132 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-04-29 16:42:55.284 DEBUG [a1b60a52-5e01-4e3d-aece-2df602d8d4cb] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-04-29 16:42:55.284 DEBUG [2596ad89-9538-443a-8da0-854f8b0b246c] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:42:55.346 DEBUG [a1b60a52-5e01-4e3d-aece-2df602d8d4cb] 10132 --- [io-8080-exec-10] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 6B4F2DDA5FDEF086A84962DD7862650D
+2025-04-29 16:42:55.347 DEBUG [a1b60a52-5e01-4e3d-aece-2df602d8d4cb] 10132 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-04-29 16:42:55.348  INFO [a1b60a52-5e01-4e3d-aece-2df602d8d4cb] 10132 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-04-29 16:42:55.350 DEBUG [2596ad89-9538-443a-8da0-854f8b0b246c] 10132 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:42:55.384  WARN [2596ad89-9538-443a-8da0-854f8b0b246c] 10132 --- [nio-8080-exec-1] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:42:55.385  WARN [2596ad89-9538-443a-8da0-854f8b0b246c] 10132 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:42:55.390  INFO [a1b60a52-5e01-4e3d-aece-2df602d8d4cb] 10132 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-04-29 16:42:55.392 DEBUG [d06688ad-1f67-4ec7-91fb-eb828c67aef3] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-04-29 16:42:55.438 DEBUG [d06688ad-1f67-4ec7-91fb-eb828c67aef3] 10132 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-04-29 16:42:55.483  WARN [d06688ad-1f67-4ec7-91fb-eb828c67aef3] 10132 --- [nio-8080-exec-3] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-04-29 16:42:55.484  WARN [d06688ad-1f67-4ec7-91fb-eb828c67aef3] 10132 --- [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-04-29 16:43:00.786 DEBUG [266313b9-8d91-460d-89d9-51da54653ad3] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:43:00.824 DEBUG [266313b9-8d91-460d-89d9-51da54653ad3] 10132 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from F4757466808C7296295760F3EC8B0516
+2025-04-29 16:43:00.825 DEBUG [266313b9-8d91-460d-89d9-51da54653ad3] 10132 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:43:00.854  INFO [266313b9-8d91-460d-89d9-51da54653ad3] 10132 --- [nio-8080-exec-4] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:43:00.855  INFO [266313b9-8d91-460d-89d9-51da54653ad3] 10132 --- [nio-8080-exec-4] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:43:00.864 DEBUG [bd6e27fe-02fb-4fda-b856-bcca242510ea] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:43:00.899 DEBUG [bd6e27fe-02fb-4fda-b856-bcca242510ea] 10132 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:43:00.926  INFO [bd6e27fe-02fb-4fda-b856-bcca242510ea] 10132 --- [nio-8080-exec-2] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:43:00.926  INFO [bd6e27fe-02fb-4fda-b856-bcca242510ea] 10132 --- [nio-8080-exec-2] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:43:16.628 DEBUG [a6ac43f1-b046-40f8-90f8-ac8e170ca2d9] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:43:16.688 DEBUG [a6ac43f1-b046-40f8-90f8-ac8e170ca2d9] 10132 --- [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from E46ED349275FD43D8F1832F4BA4753CE
+2025-04-29 16:43:16.690 DEBUG [a6ac43f1-b046-40f8-90f8-ac8e170ca2d9] 10132 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:43:16.737  INFO [a6ac43f1-b046-40f8-90f8-ac8e170ca2d9] 10132 --- [nio-8080-exec-6] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:43:16.737  INFO [a6ac43f1-b046-40f8-90f8-ac8e170ca2d9] 10132 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:43:16.749 DEBUG [4526020a-a705-4b9f-b360-b57fd9869150] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:43:16.791 DEBUG [4526020a-a705-4b9f-b360-b57fd9869150] 10132 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:43:16.822  INFO [4526020a-a705-4b9f-b360-b57fd9869150] 10132 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:43:16.822  INFO [4526020a-a705-4b9f-b360-b57fd9869150] 10132 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:43:20.987 DEBUG [39138103-1a41-4126-9988-d39bd357934a] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:43:21.028 DEBUG [39138103-1a41-4126-9988-d39bd357934a] 10132 --- [nio-8080-exec-5] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 5669851D6072303C7774133FD50D72E1
+2025-04-29 16:43:21.029 DEBUG [39138103-1a41-4126-9988-d39bd357934a] 10132 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:43:21.059  INFO [39138103-1a41-4126-9988-d39bd357934a] 10132 --- [nio-8080-exec-5] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:43:21.060  INFO [39138103-1a41-4126-9988-d39bd357934a] 10132 --- [nio-8080-exec-5] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:43:21.070 DEBUG [f60f0e9b-4798-4d51-b43d-5404c9ff74f5] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-04-29 16:43:21.103 DEBUG [f60f0e9b-4798-4d51-b43d-5404c9ff74f5] 10132 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-04-29 16:43:21.130  INFO [f60f0e9b-4798-4d51-b43d-5404c9ff74f5] 10132 --- [nio-8080-exec-8] o.e.x.controllers.CheckinController      : Getting boarding passes for user: ****@****.***
+2025-04-29 16:43:21.131  INFO [f60f0e9b-4798-4d51-b43d-5404c9ff74f5] 10132 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 4
+2025-04-29 16:55:14.081  INFO [NONE] 10132 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-29 16:55:14.084  INFO [NONE] 10132 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-29 16:55:14.091  INFO [NONE] 10132 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

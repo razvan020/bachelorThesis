@@ -8,6 +8,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: "/api/dashboard-data",
+        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/metrics`,
+      },
+      {
         source: "/api/:path*",
         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/:path*`,
       },

@@ -396,11 +396,33 @@ function DashboardContent() {
   // Get dynamic styles based on current theme mode
   const styles = getStyles(mode, muiTheme);
 
+  const refreshToken = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) return false;
+
+    try {
+      const res = await fetch(`/api/token/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (!res.ok) return false;
+
+      const data = await res.json();
+      localStorage.setItem("token", data.accessToken);
+      return true;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      return false;
+    }
+  };
+
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
       setRefreshing(true);
-      const res = await fetch("/api/metrics", {
+      const res = await fetch(`/api/dashboard-data`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -408,7 +430,36 @@ function DashboardContent() {
         },
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to load metrics");
+
+      if (!res.ok) {
+        // If unauthorized or forbidden, try to refresh the token
+        if (res.status === 401 || res.status === 403) {
+          const refreshed = await refreshToken();
+          if (refreshed) {
+            // Retry the request with the new token
+            const newToken = localStorage.getItem("token");
+            const retryRes = await fetch(`/api/dashboard-data`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${newToken}`,
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            });
+
+            if (retryRes.ok) {
+              const json = await retryRes.json();
+              setUserMetrics(json.userMetrics || {});
+              setFlightInv(json.flightInventoryMetrics || {});
+              setBookingRev(json.bookingRevenueMetrics || {});
+              setError("");
+              return;
+            }
+          }
+        }
+        throw new Error("Failed to load metrics");
+      }
+
       const json = await res.json();
       setUserMetrics(json.userMetrics || {});
       setFlightInv(json.flightInventoryMetrics || {});
