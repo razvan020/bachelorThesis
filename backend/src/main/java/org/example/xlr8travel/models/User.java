@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -139,6 +140,7 @@ public class User implements UserDetails {
         return Objects.hash(firstname, lastname, username, age, gender, email, password, dob, roles, accountStatus);
     }
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Address> addresses = new HashSet<>();
 

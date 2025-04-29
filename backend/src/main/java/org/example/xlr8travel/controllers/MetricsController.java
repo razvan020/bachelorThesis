@@ -71,4 +71,17 @@ public class MetricsController {
         log.info("Returning booking and revenue metrics with {} data points", metrics.size());
         return ResponseEntity.ok(metrics);
     }
+
+    /**
+     * Get ticket-specific metrics
+     * @return Map containing ticket metrics
+     */
+    @GetMapping("/tickets")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Object>> getTicketMetrics() {
+        log.info("Request received for ticket metrics");
+        Map<String, Object> metrics = metricsService.getTicketMetrics();
+        log.info("Returning ticket metrics with {} data points", metrics.size());
+        return ResponseEntity.ok(metrics);
+    }
 }

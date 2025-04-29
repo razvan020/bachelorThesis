@@ -2,6 +2,7 @@ package org.example.xlr8travel.models;
 
 import lombok.*;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.*;
 
@@ -39,6 +40,7 @@ public class Address {
     @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private City city;
 
+    @JsonBackReference
     @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private User user;
 
