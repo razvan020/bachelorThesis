@@ -1,11 +1,10 @@
-version: '3.8'
-
 services:
   jenkins:
     build:
       context: .
       dockerfile: jenkins-with-docker.Dockerfile
     container_name: jenkins-docker
+    user: root                    
     ports:
       - "8081:8080"
       - "50000:50000"
