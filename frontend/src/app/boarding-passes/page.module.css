@@ -1,0 +1,55 @@
+.boarding-pass {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: white;
+}
+
+.boarding-pass:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.boarding-pass-header {
+    background-color: #0056b3;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    border-bottom: 1px dashed #ccc;
+}
+
+.boarding-pass-body {
+    padding: 20px;
+}
+
+.boarding-pass-footer {
+    background-color: #f8f9fa;
+    border-top: 1px dashed #ccc;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.seat-highlight {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px dashed #0056b3;
+}
+
+.seat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 5px;
+}
+
+.seat-type {
+    font-size: 1rem;
+    color: #6c757d;
+    text-transform: capitalize;
+}

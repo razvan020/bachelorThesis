@@ -24,7 +24,9 @@ pipeline {
           string(credentialsId: 'stripe-sk', variable: 'SK'),
           string(credentialsId: 'jwt-sk', variable: 'JWT'),
           string(credentialsId: 'gclientid', variable: 'GCL'),
-          string(credentialsId: 'g-sk', variable: 'GSK')
+          string(credentialsId: 'g-sk', variable: 'GSK'),
+          string(credentialsId: 'gmail', variable: 'GMAIL'),
+          string(credentialsId: 'gmail-pass', variable: 'GMAILPASS')
 
 
         ]) {
@@ -37,6 +39,8 @@ pipeline {
             JWT_SECRET=\$JWT
             GOOGLE_CLIENT_ID=\$GCL
             GOOGLE_CLIENT_SECRET=\$GSK
+            SPRING_MAIL_USERNAME=\$GMAIL
+            SPRING_MAIL_PASSWORD=\$GMAILPASS
             EOF
           """
         }

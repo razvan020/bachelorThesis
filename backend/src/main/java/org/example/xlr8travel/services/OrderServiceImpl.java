@@ -6,6 +6,7 @@ import org.example.xlr8travel.dto.CheckoutRequestDTO;
 import org.example.xlr8travel.dto.FlightCartItemDTO;
 import org.example.xlr8travel.models.*; // Import relevant entities
 import org.example.xlr8travel.repositories.*; // Import relevant repositories
+import org.example.xlr8travel.repositories.TicketRepository; // Explicitly import TicketRepository
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,19 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository; // Inject repository for OrderItems
     private final FlightRepository flightRepository;       // Inject repository to fetch Flights
+    private final EmailService emailService;               // Inject email service
+    private final TicketRepository ticketRepository;       // Inject repository for Tickets
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             OrderItemRepository orderItemRepository,
-                            FlightRepository flightRepository) {
+                            FlightRepository flightRepository,
+                            EmailService emailService,
+                            TicketRepository ticketRepository) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.flightRepository = flightRepository;
+        this.emailService = emailService;
+        this.ticketRepository = ticketRepository;
     }
 
     /**
@@ -161,8 +168,32 @@ public class OrderServiceImpl implements OrderService {
         // --- Optional: Post-Save Actions ---
         // e.g., Decrease flight available seats? Send confirmation email?
         // inventoryService.updateStock(savedOrder);
-        // emailService.sendOrderConfirmation(savedOrder);
 
+        // Create tickets for each order item
+        for (OrderItem item : orderItems) {
+            // Create a ticket for each quantity in the order item
+            for (int i = 0; i < item.getQuantity(); i++) {
+                Ticket ticket = new Ticket();
+                ticket.setPrice(item.getPricePerItem().floatValue());
+                ticket.setPurchaseTime(LocalDateTime.now());
+                ticket.setTicketStatus(TicketStatus.TICKET_STATUS_CONFIRMED);
+                ticket.setUser(user);
+                ticket.setFlight(item.getFlight());
+
+                // Save the ticket
+                ticketRepository.save(ticket);
+                log.info("Created ticket for flight {} for user {}", item.getFlight().getName(), user.getUsername());
+            }
+        }
+
+        // Send purchase confirmation email
+        boolean emailSent = emailService.sendPurchaseConfirmationEmail(savedOrder, user);
+        if (emailSent) {
+            log.info("Purchase confirmation email sent to user: {}", user.getUsername());
+        } else {
+            log.warn("Failed to send purchase confirmation email to user: {}", user.getUsername());
+            // Note: We continue processing even if email fails - don't block the order completion
+        }
 
         // Return confirmation (e.g., the Order ID as a String)
         // Assumes Order entity has getId() via Lombok or manual method

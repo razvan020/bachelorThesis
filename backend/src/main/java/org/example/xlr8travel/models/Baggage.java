@@ -2,6 +2,7 @@ package org.example.xlr8travel.models;
 
 import lombok.*;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.*;
 @Data
@@ -58,6 +59,7 @@ public class Baggage {
         return ticket;
     }*/
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "baggages", cascade = CascadeType.PERSIST)
     private Set<Ticket> tickets = new HashSet<>();
 

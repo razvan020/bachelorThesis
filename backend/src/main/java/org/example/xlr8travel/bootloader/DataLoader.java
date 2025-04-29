@@ -117,7 +117,7 @@ public class DataLoader implements CommandLineRunner {
 
        // Flight flight1 = new Flight("xlr8Travel", LocalTime.of(3,30), LocalTime.of(6,30), "A", "1", LocalDateTime.now());
         // Base date for flights
-        LocalDate baseDate = LocalDate.of(2025, 4, 28);
+        LocalDate baseDate = LocalDate.of(2025, 4, 30);
 
         // Create dates for round trips (different departure and return dates)
         LocalDate returnDate1 = baseDate.plusDays(3); // Return date 3 days later

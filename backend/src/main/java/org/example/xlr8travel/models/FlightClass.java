@@ -3,6 +3,7 @@ package org.example.xlr8travel.models;
 
 import lombok.*;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.*;
 
 @Data
@@ -38,6 +39,7 @@ public class FlightClass {
         return Objects.hash(fare, flightClassType);
     }
 
+    @JsonBackReference
     @OneToMany(mappedBy = "flightClass", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Ticket> tickets = new HashSet<>();
 

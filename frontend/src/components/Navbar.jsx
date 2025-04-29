@@ -22,7 +22,8 @@ export default function NavBarComponent() {
   const baseLinks = [
     { href: "/", label: "Home" },
     { href: "/plan", label: "Plan" },
-    { href: "/checkin/1", label: "Check-in & Booking" },
+    { href: "/check-in", label: "Check-in & Booking" },
+    { href: "/boarding-passes", label: "Boarding Passes" },
   ];
   if (isAdmin) {
     baseLinks.push({ href: "/dashboard", label: "Dashboard" });

@@ -2,6 +2,7 @@ package org.example.xlr8travel.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -49,6 +50,7 @@ public class Ticket {
         return Objects.hash(price, purchaseTime, ticketStatus, seat);
     }
 
+    @JsonManagedReference
     @ManyToOne
     private User user;
 
@@ -73,6 +75,7 @@ public class Ticket {
         this.baggages = baggages;
     }*/
 
+    @JsonManagedReference
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
             @JoinTable(
                     name = "ticket_baggage",
@@ -86,6 +89,7 @@ public class Ticket {
         baggage.getTickets().add(this);
     }
 
+    @JsonManagedReference
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private FlightClass flightClass;
 

@@ -190,7 +190,30 @@ function CheckoutPageContent() {
         try {
           const token = localStorage.getItem("token");
 
-          // Remove each item from the cart
+          // Call the backend to create order and send email
+          const orderRes = await fetch("/api/checkout/confirm", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              customerName: customerName,
+              customerEmail: customerEmail,
+              // Add any other fields needed by CheckoutRequestDTO
+            }),
+          });
+
+          const orderData = await orderRes.json();
+          if (!orderRes.ok) {
+            console.error("Order creation failed:", orderData.error);
+            // Still continue with cart clearing
+          } else {
+            // Use order ID from backend instead of payment intent ID
+            setOrderNumber(orderData.orderId || result.paymentIntent.id);
+          }
+
+          // Continue with existing cart clearing logic...
           for (const item of cartItems) {
             await fetch(`/api/cart/remove/${item.id}`, {
               method: "DELETE",
