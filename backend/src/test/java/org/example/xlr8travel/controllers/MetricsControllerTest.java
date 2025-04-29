@@ -101,4 +101,27 @@ public class MetricsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
+
+    @Test
+    public void testGetTicketMetrics() throws Exception {
+        // Prepare test data
+        Map<String, Object> metrics = new HashMap<>();
+        metrics.put("totalTickets", 300L);
+
+        Map<String, Long> ticketsByStatus = new HashMap<>();
+        ticketsByStatus.put("TICKET_STATUS_BOOKED", 50L);
+        ticketsByStatus.put("TICKET_STATUS_CONFIRMED", 150L);
+        ticketsByStatus.put("TICKET_STATUS_CANCELLED", 30L);
+        ticketsByStatus.put("TICKET_STATUS_CHECKED_IN", 70L);
+        metrics.put("ticketsByStatus", ticketsByStatus);
+
+        // Mock service response
+        when(metricsService.getTicketMetrics()).thenReturn(metrics);
+
+        // Perform request and verify response
+        mockMvc.perform(get("/api/metrics/tickets")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
 }

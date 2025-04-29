@@ -25,6 +25,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import FlightIcon from "@mui/icons-material/Flight";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import { ThemeProvider, useAppTheme } from "@/contexts/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 import {
@@ -37,6 +38,10 @@ import {
   AreaChart,
   Area,
   CartesianGrid,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from "recharts";
 
 // Function to get styles based on theme mode
@@ -392,6 +397,7 @@ function DashboardContent() {
   const [userMetrics, setUserMetrics] = useState({});
   const [flightInv, setFlightInv] = useState({});
   const [bookingRev, setBookingRev] = useState({});
+  const [ticketMetrics, setTicketMetrics] = useState({});
 
   // Get dynamic styles based on current theme mode
   const styles = getStyles(mode, muiTheme);
@@ -422,6 +428,7 @@ function DashboardContent() {
     try {
       const token = localStorage.getItem("token");
       setRefreshing(true);
+
       const res = await fetch(`/api/dashboard-data`, {
         method: "GET",
         headers: {
@@ -452,6 +459,7 @@ function DashboardContent() {
               setUserMetrics(json.userMetrics || {});
               setFlightInv(json.flightInventoryMetrics || {});
               setBookingRev(json.bookingRevenueMetrics || {});
+              setTicketMetrics(json.ticketMetrics || {});
               setError("");
               return;
             }
@@ -464,6 +472,7 @@ function DashboardContent() {
       setUserMetrics(json.userMetrics || {});
       setFlightInv(json.flightInventoryMetrics || {});
       setBookingRev(json.bookingRevenueMetrics || {});
+      setTicketMetrics(json.ticketMetrics || {});
       setError("");
     } catch (e) {
       console.error(e);
@@ -530,16 +539,28 @@ function DashboardContent() {
     ([date, count]) => ({ date, count })
   );
 
+  // We no longer need these data structures as we're using the ticketsByStatus data directly in the charts
+  // Keeping the COLORS array for use in the charts
+
+  // Colors for pie charts
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#A4DE6C'];
+
   // Custom tooltip for charts
-  const CustomTooltip = ({ active, payload, label }) =>
-    active && payload?.length ? (
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (!active || !payload?.length) return null;
+
+    // Determine if this is a booking chart or ticket chart
+    const isTicketChart = payload[0]?.name === "value";
+
+    return (
       <Paper sx={styles.tooltipPaper} elevation={0}>
         <Typography variant="subtitle2">{label}</Typography>
         <Typography variant="body1" fontWeight="bold">
-          {payload[0].value} bookings
+          {payload[0].value} {isTicketChart ? "tickets" : "bookings"}
         </Typography>
       </Paper>
-    ) : null;
+    );
+  };
 
   // Main dashboard content
   return (
@@ -771,6 +792,182 @@ function DashboardContent() {
         </Grid>
       </Box>
 
+      {/* Ticket Metrics */}
+      <Box sx={styles.sectionContainer}>
+        <Box sx={styles.sectionHeader}>
+          <Box sx={styles.iconContainer}>
+            <ConfirmationNumberIcon sx={{ color: muiTheme.palette.warning.main }} />
+          </Box>
+          <Typography variant="h6" fontWeight="bold">
+            Ticket Metrics
+          </Typography>
+        </Box>
+
+        {/* Ticket Summary */}
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          {[
+            {
+              label: "Total Tickets",
+              val: ticketMetrics.totalTickets,
+              colorKey: "primary",
+              pct: 100,
+            },
+            {
+              label: "Created",
+              sub: "Last 7d",
+              val: ticketMetrics.ticketsCreatedLast7Days,
+              colorKey: "success",
+              trend: ticketMetrics.ticketsCreated7DaysGrowthRate || 0,
+            },
+            {
+              label: "Created",
+              sub: "Last 30d",
+              val: ticketMetrics.ticketsCreatedLast30Days,
+              colorKey: "info",
+              trend: ticketMetrics.ticketsCreated30DaysGrowthRate || 0,
+            },
+            {
+              label: "Checked-in",
+              val: ticketMetrics.checkedInTickets,
+              colorKey: "warning",
+              pct:
+                (ticketMetrics.checkedInTickets /
+                  Math.max(ticketMetrics.totalTickets || 1, 1)) *
+                100,
+            },
+            {
+              label: "Boarding Passes",
+              val: ticketMetrics.boardingPasses,
+              colorKey: "error",
+              pct:
+                (ticketMetrics.boardingPasses /
+                  Math.max(ticketMetrics.totalTickets || 1, 1)) *
+                100,
+            },
+          ].map(({ label, sub, val, colorKey, pct, trend }) => (
+            <Grid item xs={12} sm={6} md={4} lg={2.4} key={label}>
+              <Card sx={styles.inventoryCard}>
+                <CardContent>
+                  <Typography
+                    variant="h5"
+                    fontWeight="bold"
+                    align="center"
+                    sx={{ color: muiTheme.palette[colorKey].main }}
+                  >
+                    {val?.toLocaleString() ?? "-"}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    sx={styles.textSecondary}
+                    align="center"
+                  >
+                    {label}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    sx={styles.textSecondary}
+                    align="center"
+                    display="block"
+                    height="18px"
+                  >
+                    {sub || "\u00A0"}
+                  </Typography>
+
+                  {pct !== undefined && (
+                    <>
+                      <Box sx={styles.progressContainer}>
+                        <LinearProgress
+                          variant="determinate"
+                          value={pct || 0}
+                          sx={styles.progress(muiTheme.palette[colorKey].main)}
+                        />
+                      </Box>
+                      <Typography
+                        variant="caption"
+                        sx={styles.textSecondary}
+                        align="right"
+                        display="block"
+                        mt={0.5}
+                      >
+                        {pct.toFixed(1)}%
+                      </Typography>
+                    </>
+                  )}
+
+                  {trend !== undefined && trend !== 0 && (
+                    <Stack direction="row" alignItems="center" spacing={0.5} justifyContent="center" mt={1}>
+                      {trend > 0 ? (
+                        <TrendingUpIcon sx={styles.trendUp} fontSize="small" />
+                      ) : (
+                        <TrendingDownIcon sx={styles.trendDown} fontSize="small" />
+                      )}
+                      <Typography
+                        variant="caption"
+                        sx={trend > 0 ? styles.trendUp : styles.trendDown}
+                        fontWeight="bold"
+                      >
+                        {Math.abs(trend)}%
+                      </Typography>
+                    </Stack>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+        {/* Ticket Status */}
+        <Typography variant="h6" sx={{ mb: 2 }}>Ticket Status Distribution</Typography>
+        <Grid container spacing={3}>
+          {Object.entries(ticketMetrics.ticketsByStatus || {}).map(([status, count], index) => {
+            const statusName = status.replace('TICKET_STATUS_', '');
+            const percentage = ticketMetrics.ticketStatusPercentages?.[status] || 0;
+            const colorKeys = ["primary", "success", "info", "warning", "error"];
+            const colorKey = colorKeys[index % colorKeys.length];
+
+            return (
+              <Grid item xs={12} sm={6} md={3} key={status}>
+                <Card sx={styles.inventoryCard}>
+                  <CardContent>
+                    <Typography
+                      variant="h5"
+                      fontWeight="bold"
+                      align="center"
+                      sx={{ color: muiTheme.palette[colorKey].main }}
+                    >
+                      {count}
+                    </Typography>
+                    <Typography
+                      variant="subtitle2"
+                      sx={styles.textSecondary}
+                      align="center"
+                    >
+                      {statusName}
+                    </Typography>
+                    <Box sx={styles.progressContainer}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={percentage}
+                        sx={styles.progress(muiTheme.palette[colorKey].main)}
+                      />
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      sx={styles.textSecondary}
+                      align="right"
+                      display="block"
+                      mt={0.5}
+                    >
+                      {percentage.toFixed(1)}%
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
+
       {/* Booking & Revenue */}
       <Box sx={styles.sectionContainer}>
         <Box sx={styles.sectionHeader}>
@@ -912,6 +1109,98 @@ function DashboardContent() {
                   />
                 </AreaChart>
               </ResponsiveContainer>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+
+      {/* Ticket Charts */}
+      <Grid container spacing={4} sx={{ mt: 2 }}>
+        <Grid item xs={12} lg={6}>
+          <Box sx={styles.chartContainer}>
+            <Typography variant="h6" gutterBottom fontWeight="bold">
+              Tickets by Status
+            </Typography>
+            <Typography variant="body2" sx={styles.textSecondary} paragraph>
+              Distribution of tickets by status
+            </Typography>
+            <Box sx={{ height: 400, mt: 2 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={Object.entries(ticketMetrics.ticketsByStatus || {}).map(([status, count]) => ({
+                      name: status.replace('TICKET_STATUS_', ''),
+                      value: count
+                    }))}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={true}
+                    outerRadius={150}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {Object.keys(ticketMetrics.ticketsByStatus || {}).map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                  <RechartsTooltip
+                    formatter={(value, name) => [`${value} tickets`, name]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </Box>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} lg={6}>
+          <Box sx={styles.chartContainer}>
+            <Typography variant="h6" gutterBottom fontWeight="bold">
+              Tickets Growth
+            </Typography>
+            <Typography variant="body2" sx={styles.textSecondary} paragraph>
+              Tickets created in the last 30 days
+            </Typography>
+            <Box sx={{ height: 400, mt: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Typography variant="h3" fontWeight="bold" color="primary.main">
+                {ticketMetrics.ticketsCreatedLast30Days}
+              </Typography>
+              <Typography variant="subtitle1" sx={{ mt: 2 }}>
+                Total tickets created in the last 30 days
+              </Typography>
+
+              <Box sx={{ display: 'flex', alignItems: 'center', mt: 4, gap: 2 }}>
+                <Card sx={{ p: 3, borderRadius: 2, width: '45%' }}>
+                  <Typography variant="h6" align="center" gutterBottom>
+                    7-Day Growth
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <TrendingUpIcon sx={{ color: 'success.main', mr: 1 }} />
+                    <Typography variant="h4" color="success.main" fontWeight="bold">
+                      {ticketMetrics.ticketsCreated7DaysGrowthRate}%
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+                    {ticketMetrics.ticketsCreatedLast7Days} tickets in last 7 days
+                  </Typography>
+                </Card>
+
+                <Card sx={{ p: 3, borderRadius: 2, width: '45%' }}>
+                  <Typography variant="h6" align="center" gutterBottom>
+                    30-Day Growth
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <TrendingUpIcon sx={{ color: 'success.main', mr: 1 }} />
+                    <Typography variant="h4" color="success.main" fontWeight="bold">
+                      {ticketMetrics.ticketsCreated30DaysGrowthRate}%
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+                    Compared to previous period
+                  </Typography>
+                </Card>
+              </Box>
             </Box>
           </Box>
         </Grid>

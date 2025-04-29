@@ -7867,3 +7867,18 @@ org.springframework.web.servlet.resource.NoResourceFoundException: No static res
 
 2025-04-29 16:38:55.822 ERROR [1c23fb99-8834-4175-94d2-e600df35a821] 10132 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
 2025-04-29 16:39:09.889 ERROR [a8e87c7e-7e9e-4c69-81b1-a33cbcd749c2] 10132 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
+2025-04-29 18:43:28.642 ERROR [NONE] 10284 --- [  restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in org.example.xlr8travel.controllers.LoginController required a bean of type 'org.example.xlr8travel.services.MetricsService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.example.xlr8travel.services.MetricsService' in your configuration.
+
