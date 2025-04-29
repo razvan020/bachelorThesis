@@ -28,6 +28,8 @@ services:
       GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
       APP_FRONTEND_URL: "http://localhost:3000"
       APP_OAUTH2_REDIRECT_BASE_URL: "http://localhost:8080"
+      SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
+      SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
 
 
   frontend:

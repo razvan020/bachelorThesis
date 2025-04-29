@@ -13,6 +13,16 @@ public interface TicketRepository extends CrudRepository<Ticket, Long> {
 
     List<Ticket> findAll();
 
+    // Find tickets by flight ID and seat number
+    @Query("SELECT t FROM Ticket t WHERE t.flight.id = :flightId AND t.seat.seatNumber = :seatNumber")
+    List<Ticket> findByFlightIdAndSeatNumber(@Param("flightId") Long flightId, @Param("seatNumber") String seatNumber);
+
+    // Find all tickets for a flight
+    List<Ticket> findByFlightId(Long flightId);
+
+    // Find all checked-in tickets for a user
+    List<Ticket> findByUserIdAndTicketStatus(Long userId, TicketStatus ticketStatus);
+
     // Find tickets by purchase time after a certain date
     List<Ticket> findByPurchaseTimeAfter(LocalDateTime date);
 

@@ -1,0 +1,161 @@
+.seatMapContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.planeHeader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.cockpit {
+    width: 60px;
+    height: 60px;
+    background-color: #343a40;
+    border-radius: 50% 50% 0 0;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+}
+
+.seatMap {
+    display: flex;
+    width: 100%;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.rowLabels {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.rowLabel {
+    height: 30px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: #495057;
+}
+
+.seats {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    height: 30px;
+    margin-bottom: 5px;
+    justify-content: space-between;
+}
+
+/* Add a gap in the middle to represent the aisle */
+.row > div:nth-child(3) {
+    margin-right: 20px;
+}
+
+.seat {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.seat:hover:not(.occupied) {
+    transform: scale(1.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Seat types */
+.standard {
+    background-color: #6c757d;
+    color: white;
+}
+
+.upfront {
+    background-color: #007bff;
+    color: white;
+}
+
+.extraLegroom {
+    background-color: #28a745;
+    color: white;
+}
+
+.occupied {
+    background-color: #dc3545;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.selected {
+    background-color: #ffc107;
+    color: #212529;
+    border: 2px solid #212529;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .seatMapContainer {
+        padding: 10px;
+    }
+    
+    .seat {
+        width: 25px;
+        height: 25px;
+        font-size: 0.7rem;
+    }
+    
+    .rowLabel {
+        height: 25px;
+        font-size: 0.7rem;
+    }
+    
+    .row {
+        height: 25px;
+    }
+    
+    .row > div:nth-child(3) {
+        margin-right: 10px;
+    }
+}

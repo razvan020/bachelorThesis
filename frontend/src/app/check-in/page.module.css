@@ -1,0 +1,62 @@
+/* Custom styles for the check-in page */
+
+.seat-selection-modal {
+    max-width: 800px;
+}
+
+/* Add some spacing in the modal body */
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Make the boarding pass look more like a real ticket */
+.boarding-pass {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.boarding-pass-header {
+    background-color: #0056b3;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.boarding-pass-body {
+    padding: 1.5rem;
+}
+
+.boarding-pass-footer {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px dashed #dee2e6;
+}
+
+.seat-highlight {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.seat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.seat-type {
+    color: #6c757d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .seat-selection-modal {
+        max-width: 95%;
+    }
+}
