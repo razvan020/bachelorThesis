@@ -102,6 +102,7 @@ public class DataLoader implements CommandLineRunner {
         //single Airline
         Airline airline = new Airline("xlr8Travel", "XT");
 //test commit
+        //testcommit2
         airline.addAircraft(aircraft1);
         airline.addAircraft(aircraft2);
         airline.addRoute(route1);
