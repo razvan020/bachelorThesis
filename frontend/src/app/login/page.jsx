@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { FaGoogle, FaFacebookF, FaSun, FaMoon } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function LoginPage() {
   const [darkMode, setDarkMode] = useState(false);
@@ -12,6 +13,8 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState("");
+  const recaptchaRef = useRef(null);
   const router = useRouter();
   const auth = useAuth();
 
@@ -52,16 +55,30 @@ export default function LoginPage() {
 
   const handleToggleTheme = () => setDarkMode((m) => !m);
 
+  const handleRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    // Verify reCAPTCHA
+    if (!recaptchaToken) {
+      setError("Please complete the reCAPTCHA verification");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      // Use the existing auth.login function
-      await auth.login(email, password);
+      // Use the existing auth.login function with recaptcha token
+      await auth.login(email, password, recaptchaToken);
     } catch (err) {
       console.error("Login error:", err);
       setError(err.message || "Login failed");
+      // Reset reCAPTCHA on error
+      recaptchaRef.current.reset();
+      setRecaptchaToken("");
     } finally {
       setIsLoading(false);
     }
@@ -197,6 +214,15 @@ export default function LoginPage() {
                     <a href="#" style={{ color: linkColor }}>
                       Forgot password?
                     </a>
+                  </div>
+
+                  <div className="mb-4 d-flex justify-content-center">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                      onChange={handleRecaptchaChange}
+                      theme={darkMode ? "dark" : "light"}
+                    />
                   </div>
 
                   <div className="d-grid mb-3">

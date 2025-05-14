@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link"; // Import Link for navigation
 import { useRouter } from "next/navigation"; // Import for potential redirect
 import { FaGoogle, FaFacebookF, FaSun, FaMoon } from "react-icons/fa";
 // import { signIn } from "next-auth/react"; // Only needed if using NextAuth for social
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Optional: Import React-Bootstrap Alert/Spinner
 import Alert from "react-bootstrap/Alert";
@@ -22,10 +23,16 @@ export default function SignupPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState("");
+  const recaptchaRef = useRef(null);
 
   const router = useRouter(); // Hook for navigation
 
   const handleToggleTheme = () => setDarkMode(!darkMode);
+
+  const handleRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
+  };
 
   // Handle Form Submission (API Call)
   const handleSubmit = async (e) => {
@@ -44,6 +51,12 @@ export default function SignupPage() {
       return;
     }
 
+    // Verify reCAPTCHA
+    if (!recaptchaToken) {
+      setError("Please complete the reCAPTCHA verification");
+      return;
+    }
+
     setIsLoading(true); // Show loading indicator
 
     // Data to send to the backend (matches UserSignupDTO)
@@ -51,6 +64,7 @@ export default function SignupPage() {
       fullname,
       email,
       password,
+      recaptchaToken,
     };
 
     try {
@@ -86,6 +100,9 @@ export default function SignupPage() {
       setError(
         "Cannot connect to server or an error occurred. Please try again later."
       );
+      // Reset reCAPTCHA on error
+      recaptchaRef.current.reset();
+      setRecaptchaToken("");
     } finally {
       setIsLoading(false); // Hide loading indicator
     }
@@ -244,6 +261,16 @@ export default function SignupPage() {
                   onChange={(e) => setVerifyPassword(e.target.value)}
                 />
                 <label htmlFor="verifyInputPassword1">Verify Password</label>
+              </div>
+
+              {/* reCAPTCHA */}
+              <div className="mb-4 d-flex justify-content-center">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onChange={handleRecaptchaChange}
+                  theme={darkMode ? "dark" : "light"}
+                />
               </div>
 
               {/* Submit Button */}
