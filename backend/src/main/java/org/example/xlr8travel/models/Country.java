@@ -1,6 +1,7 @@
 package org.example.xlr8travel.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.*;
@@ -35,8 +36,9 @@ public class Country {
         return Objects.hash(name);
     }
 
-    @OneToMany(mappedBy = "country")//, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<City> cities = new HashSet<>();
+@OneToMany(mappedBy = "country")
+@JsonManagedReference
+private Set<City> cities = new HashSet<>();
 
     public void addCity(City city) {
         this.getCities().add(city);
