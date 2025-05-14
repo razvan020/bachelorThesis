@@ -4,6 +4,7 @@ import org.example.xlr8travel.dto.LoginRequest;
 import org.example.xlr8travel.dto.LoginResponse;
 import org.example.xlr8travel.security.JwtUtils;
 import org.example.xlr8travel.services.MetricsService;
+import org.example.xlr8travel.services.RecaptchaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,17 +27,36 @@ public class LoginController {
     private final AuthenticationManager authenticationManager;
     private final MetricsService metricsService;
     private final JwtUtils jwtUtils;
+    private final RecaptchaService recaptchaService;
 
-    public LoginController(AuthenticationManager authenticationManager, MetricsService metricsService, JwtUtils jwtUtils) {
+    public LoginController(AuthenticationManager authenticationManager, MetricsService metricsService, 
+                          JwtUtils jwtUtils, RecaptchaService recaptchaService) {
         this.authenticationManager = authenticationManager;
         this.metricsService = metricsService;
         this.jwtUtils = jwtUtils;
+        this.recaptchaService = recaptchaService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         log.info("Attempting authentication for user: {}", loginRequest.getUsername());
         try {
+            // Verify reCAPTCHA token
+            String recaptchaToken = loginRequest.getRecaptchaToken();
+            if (recaptchaToken == null || recaptchaToken.isEmpty()) {
+                log.warn("reCAPTCHA token is missing for user: {}", loginRequest.getUsername());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "reCAPTCHA verification is required."));
+            }
+
+            if (!recaptchaService.verifyToken(recaptchaToken)) {
+                log.warn("reCAPTCHA verification failed for user: {}", loginRequest.getUsername());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "reCAPTCHA verification failed."));
+            }
+
+            log.info("reCAPTCHA verification successful for user: {}", loginRequest.getUsername());
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),

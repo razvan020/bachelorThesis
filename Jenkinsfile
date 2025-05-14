@@ -26,7 +26,9 @@ pipeline {
           string(credentialsId: 'gclientid', variable: 'GCL'),
           string(credentialsId: 'g-sk', variable: 'GSK'),
           string(credentialsId: 'gmail', variable: 'GMAIL'),
-          string(credentialsId: 'gmail-pass', variable: 'GMAILPASS')
+          string(credentialsId: 'gmail-pass', variable: 'GMAILPASS'),
+          string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
+          string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY')
 
 
         ]) {
@@ -41,6 +43,8 @@ pipeline {
             GOOGLE_CLIENT_SECRET=\$GSK
             SPRING_MAIL_USERNAME=\$GMAIL
             SPRING_MAIL_PASSWORD=\$GMAILPASS
+            NEXT_PUBLIC_RECAPTCHA_SITE_KEY=\$RECAPTCHA_SITE_KEY
+            RECAPTCHA_SECRET_KEY=\$RECAPTCHA_SECRET_KEY
             EOF
           """
         }

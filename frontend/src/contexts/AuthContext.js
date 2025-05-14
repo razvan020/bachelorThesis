@@ -15,7 +15,7 @@ const AuthContext = createContext({
   isAuthenticated: false,
   loading: true,
   cartItemCount: 0,
-  login: async (username, password) => {},
+  login: async (username, password, recaptchaToken) => {},
   handleOAuthLogin: async (token, refreshToken) => {}, // New method
   logout: async () => {},
   fetchCartCount: async () => {},
@@ -35,12 +35,12 @@ export const AuthProvider = ({ children }) => {
 
   // ——— LOGIN ———
   const login = useCallback(
-    async (username, password) => {
+    async (username, password, recaptchaToken) => {
       const res = await fetch(api("/api/login"), {
         method: "POST",
         credentials: "include", // cookies
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, recaptchaToken }),
       });
 
       if (!res.ok) {

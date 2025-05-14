@@ -24,5 +24,8 @@ public class UserSignupDTO {
     @Size(min = 6, message = "Password must be at least 6 characters") // Example minimum length
     private String password;
 
+    @NotEmpty(message = "reCAPTCHA verification is required")
+    private String recaptchaToken;
+
 
 }

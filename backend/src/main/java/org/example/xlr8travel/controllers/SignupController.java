@@ -5,6 +5,7 @@ import org.example.xlr8travel.dto.UserSignupDTO; // Import the DTO
 import org.example.xlr8travel.models.Role;
 import org.example.xlr8travel.models.User;
 import org.example.xlr8travel.security.JwtUtils;
+import org.example.xlr8travel.services.RecaptchaService;
 import org.example.xlr8travel.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,15 +30,18 @@ public class SignupController {
     private final PasswordEncoder passwordEncoder; // Inject PasswordEncoder
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+    private final RecaptchaService recaptchaService;
     private static final Logger log = LoggerFactory.getLogger(SignupController.class);
 
     // Constructor Injection
     public SignupController(UserService userService, PasswordEncoder passwordEncoder, 
-                           JwtUtils jwtUtils, AuthenticationManager authenticationManager) {
+                           JwtUtils jwtUtils, AuthenticationManager authenticationManager,
+                           RecaptchaService recaptchaService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
+        this.recaptchaService = recaptchaService;
     }
 
     // Removed showRegistrationForm GET method - React handles the UI
@@ -45,6 +49,22 @@ public class SignupController {
     @PostMapping // Handles POST requests to /api/signup
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserSignupDTO userSignupDTO) { // Use DTO and @Valid
         log.info("Received registration request for email: {}", userSignupDTO.getEmail());
+
+        // Verify reCAPTCHA token
+        String recaptchaToken = userSignupDTO.getRecaptchaToken();
+        if (recaptchaToken == null || recaptchaToken.isEmpty()) {
+            log.warn("reCAPTCHA token is missing for user: {}", userSignupDTO.getEmail());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "reCAPTCHA verification is required."));
+        }
+
+        if (!recaptchaService.verifyToken(recaptchaToken)) {
+            log.warn("reCAPTCHA verification failed for user: {}", userSignupDTO.getEmail());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "reCAPTCHA verification failed."));
+        }
+
+        log.info("reCAPTCHA verification successful for user: {}", userSignupDTO.getEmail());
 
         // --- Basic Validation Example: Check if email already exists ---
         // You might have a more specific method in UserService like existsByEmail()

@@ -30,6 +30,7 @@ services:
       APP_OAUTH2_REDIRECT_BASE_URL: "http://localhost:8080"
       SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
       SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
+      RECAPTCHA_SECRET_KEY: "${RECAPTCHA_SECRET_KEY}"
 
 
   frontend:
@@ -40,6 +41,7 @@ services:
         NEXT_PUBLIC_BACKEND_URL: "http://backend:8080"
         NEXT_PUBLIC_BACKEND_URL_GOOGLE: "http://localhost:8080"
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}"
+        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: "${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}"
     environment:
       # run‑time variables for both client and middleware.ts
       NEXT_PUBLIC_BACKEND_URL: "${NEXT_PUBLIC_BACKEND_URL}"
@@ -47,6 +49,7 @@ services:
       BACKEND_URL: "http://backend:8080"
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}"
       JWT_SECRET: "${JWT_SECRET}"
+      NEXT_PUBLIC_RECAPTCHA_SITE_KEY: "${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}"
     depends_on:
       - backend
     ports:
