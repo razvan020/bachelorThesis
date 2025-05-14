@@ -1,6 +1,7 @@
 package org.example.xlr8travel.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.*;
