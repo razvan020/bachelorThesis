@@ -395,3 +395,5 @@
 2025-05-14 12:47:17.359 DEBUG [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
 2025-05-14 12:47:17.365  WARN [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
 2025-05-14 12:47:17.366  WARN [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:48:03.867 DEBUG [8950e688-1c1b-4469-9e77-84f1219d8ac9] 29952 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-05-14 12:48:03.868 DEBUG [8950e688-1c1b-4469-9e77-84f1219d8ac9] 29952 --- [nio-8080-exec-3] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]

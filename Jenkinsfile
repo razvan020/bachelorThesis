@@ -26,7 +26,7 @@ pipeline {
           string(credentialsId: 'gclientid', variable: 'GCL'),
           string(credentialsId: 'g-sk', variable: 'GSK'),
           string(credentialsId: 'gmail', variable: 'GMAIL'),
-          string(credentialsId: 'gmail-pass', variable: 'GMAILPASS')
+          string(credentialsId: 'gmail-pass', variable: 'GMAILPASS'),
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY')
 
