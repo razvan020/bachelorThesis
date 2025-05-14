@@ -46,8 +46,9 @@ public class Airport {
         return Objects.hash(name, iataCode, description);
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private City city;
+@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+@JsonBackReference
+private City city;
 
 
     @OneToMany(mappedBy = "sourceAirport",cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

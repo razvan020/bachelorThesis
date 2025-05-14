@@ -37,8 +37,9 @@ public class Address {
         return Objects.hash(street);
     }
 
-    @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private City city;
+@ManyToOne
+@JsonBackReference
+private City city;
 
     @JsonBackReference
     @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)

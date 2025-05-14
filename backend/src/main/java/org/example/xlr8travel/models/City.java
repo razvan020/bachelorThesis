@@ -1,9 +1,11 @@
 package org.example.xlr8travel.models;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,9 +37,11 @@ public class City {
     }
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JsonBackReference
     private Country country;
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Airport> airports = new HashSet<>();
 
     public void addAirport(Airport airport) {
@@ -45,7 +49,8 @@ public class City {
         airport.setCity(this);
     }
 
-    @OneToMany(mappedBy = "city",  cascade = {CascadeType.PERSIST, CascadeType.MERGE})//, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "city", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonManagedReference
     private Set<Address> addresses = new HashSet<>();
 
     public void addAddress(Address address) {
@@ -61,6 +66,4 @@ public class City {
                 ", name='" + name + '\'' +
                 '}';
     }
-
-
 }
