@@ -397,3 +397,6 @@
 2025-05-14 12:47:17.366  WARN [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
 2025-05-14 12:48:03.867 DEBUG [8950e688-1c1b-4469-9e77-84f1219d8ac9] 29952 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
 2025-05-14 12:48:03.868 DEBUG [8950e688-1c1b-4469-9e77-84f1219d8ac9] 29952 --- [nio-8080-exec-3] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-05-14 13:01:48.375  INFO [NONE] 29952 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-14 13:01:48.379  INFO [NONE] 29952 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-14 13:01:48.386  INFO [NONE] 29952 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
