@@ -91,7 +91,7 @@ export default function NavBarComponent() {
                 active={pathname === link.href}
                 className="text-uppercase mx-lg-2"
               >
-                {link.label}
+                <span className="nav-link-text-underline">{link.label}</span>
               </Nav.Link>
             ))}
           </Nav>
@@ -110,7 +110,7 @@ export default function NavBarComponent() {
                     aria-label="Shopping Cart"
                   >
                     <FaShoppingCart size="1.3em" className="me-2" />
-                    My Cart
+                    <span className="nav-link-text-underline">My Cart</span>
                     {cartItemCount > 0 && (
                       <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">
                         {cartItemCount}
@@ -149,14 +149,14 @@ export default function NavBarComponent() {
                   href="/login"
                   active={pathname === "/login"}
                 >
-                  Log In
+                  <span className="nav-link-text-underline">Log In</span>
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
                   href="/signup"
                   active={pathname === "/signup"}
                 >
-                  Sign Up
+                  <span className="nav-link-text-underline">Sign Up</span>
                 </Nav.Link>
               </>
             )}

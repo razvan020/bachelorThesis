@@ -427,8 +427,55 @@ background-color: transparent;
 pointer-events: none; /* Make them unclickable */
 }
 
-/* --- Custom Orange Radio Button Styling --- */
+/* --- Custom Orange Button and UI Element Styling --- */
 /* Add this to your global CSS (e.g., globals.css) or an imported CSS file */
+
+/* Primary buttons */
+.btn-primary {
+  background-color: #FF6F00 !important;
+  border-color: #FF6F00 !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 5px rgba(255, 111, 0, 0.2) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #e66400 !important;
+  border-color: #e66400 !important;
+  box-shadow: 0 4px 8px rgba(255, 111, 0, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Outline buttons */
+.btn-outline-primary {
+  color: #FF6F00 !important;
+  border-color: #FF6F00 !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: #FF6F00 !important;
+  color: white !important;
+  box-shadow: 0 4px 8px rgba(255, 111, 0, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Secondary buttons */
+.btn-outline-secondary:hover {
+  border-color: #FF6F00 !important;
+  background-color: #FF6F00 !important;
+  color: white !important;
+}
+
+/* Price text */
+.text-primary {
+  color: #FF6F00 !important;
+}
+
+/* Spinner */
+.spinner-border.text-primary {
+  color: #FF6F00 !important;
+}
 
 /* Target radio buttons specifically when checked */
 .form-check-input[type="radio"]:checked {
@@ -798,20 +845,35 @@ pointer-events: none; /* Make them unclickable */
 }
 
 .dropdown-btn {
-  background-color: #5DB4D0;
+  background-color: #FF6F00;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(255, 111, 0, 0.2);
+}
+
+.dropdown-btn:hover {
+  background-color: #e66400;
+  box-shadow: 0 4px 8px rgba(255, 111, 0, 0.3);
 }
 
 /* Button styling */
 .search-btn {
-  background-color: #5DB4D0;
+  background-color: #FF6F00;
   color: white;
   padding: 0.5rem 1.5rem;
   border: none;
   border-radius: 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(255, 111, 0, 0.2);
+}
+
+.search-btn:hover {
+  background-color: #e66400;
+  box-shadow: 0 4px 8px rgba(255, 111, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 /* Flexbox layout for inputs */
@@ -877,4 +939,3 @@ pointer-events: none; /* Make them unclickable */
 }
 
 /* =============== END OF YOUR ORIGINAL CSS =============== */
-

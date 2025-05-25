@@ -357,7 +357,7 @@ function CartPageContent() {
                             item.arrivalTime
                           )}
                         </td>
-                        <td className="text-end price-tag-react">
+                        <td className="text-end text-primary fw-bold">
                           {formatPrice(convertFromEUR(parseFloat(item.price || 0), userCurrency), userCurrency)}
                         </td>
                         <td
@@ -495,6 +495,5 @@ export default function CartPage() {
 
 // Add required CSS if needed
 /*
-.price-tag-react { font-weight: bold; color: #0d6efd; }
 .cart-container { ... }
 */
