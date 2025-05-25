@@ -75,6 +75,7 @@ public class SecurityConfig {
                         // Public API endpoints
                         .requestMatchers("/api/login", "/api/signup", "/api/register", "/api/token/refresh").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/flights/natural-language/**").permitAll()
 
                         // OAuth2 endpoints
                         .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()

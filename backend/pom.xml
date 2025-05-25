@@ -21,8 +21,20 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-aiplatform</artifactId>
+			<version>3.50.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-vertexai</artifactId>
+			<version>0.5.0</version>
 		</dependency>
 
 		<dependency>
@@ -171,6 +183,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<environmentVariables>
+						<GOOGLE_APPLICATION_CREDENTIALS>E:\Downloads\xlr8travel-6109563237b1.json</GOOGLE_APPLICATION_CREDENTIALS>
+					</environmentVariables>
 				</configuration>
 			</plugin>
 		</plugins>
