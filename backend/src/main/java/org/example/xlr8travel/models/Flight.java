@@ -33,7 +33,7 @@ public class Flight {
     private String terminal;
     private String gate;
     private LocalDateTime lastUpdated; // last updated time
-    private BigDecimal price;
+    private BigDecimal price; // Price in EUR
     private int totalSeats = 180; // default value
     private int availableSeats = 180; // default value
     private LocalDateTime createdAt;

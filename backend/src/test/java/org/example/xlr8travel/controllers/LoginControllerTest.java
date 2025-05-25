@@ -2,6 +2,9 @@ package org.example.xlr8travel.controllers;
 
 import org.example.xlr8travel.dto.LoginRequest;
 import org.example.xlr8travel.dto.LoginResponse;
+import org.example.xlr8travel.security.JwtUtils;
+import org.example.xlr8travel.services.MetricsService;
+import org.example.xlr8travel.services.RecaptchaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,12 +33,24 @@ public class LoginControllerTest {
     @Mock
     private Authentication authentication;
 
+    @Mock
+    private RecaptchaService recaptchaService;
+
+    @Mock
+    private JwtUtils jwtUtils;
+
+    @Mock
+    private MetricsService metricsService;
+
     @InjectMocks
     private LoginController loginController;
 
     private LoginRequest loginRequest;
     private final String TEST_USERNAME = "testuser";
     private final String TEST_PASSWORD = "password";
+    private final String TEST_RECAPTCHA_TOKEN = "test-recaptcha-token";
+    private final String TEST_JWT_TOKEN = "test-jwt-token";
+    private final String TEST_REFRESH_TOKEN = "test-refresh-token";
 
     @BeforeEach
     void setUp() {
@@ -43,9 +58,20 @@ public class LoginControllerTest {
         loginRequest = new LoginRequest();
         loginRequest.setUsername(TEST_USERNAME);
         loginRequest.setPassword(TEST_PASSWORD);
+        loginRequest.setRecaptchaToken(TEST_RECAPTCHA_TOKEN);
 
         // Mock Authentication behavior with lenient stubbing
         lenient().when(authentication.getName()).thenReturn(TEST_USERNAME);
+
+        // Mock RecaptchaService
+        lenient().when(recaptchaService.verifyToken(TEST_RECAPTCHA_TOKEN)).thenReturn(true);
+
+        // Mock JwtUtils
+        lenient().when(jwtUtils.generateJwtToken(any(Authentication.class))).thenReturn(TEST_JWT_TOKEN);
+        lenient().when(jwtUtils.generateRefreshToken(TEST_USERNAME)).thenReturn(TEST_REFRESH_TOKEN);
+
+        // Mock MetricsService
+        lenient().doNothing().when(metricsService).updateLastLogin(TEST_USERNAME);
     }
 
     @Test
@@ -64,6 +90,8 @@ public class LoginControllerTest {
         LoginResponse loginResponse = (LoginResponse) response.getBody();
         assertEquals("Login successful", loginResponse.getMessage());
         assertEquals(TEST_USERNAME, loginResponse.getUsername());
+        assertEquals(TEST_JWT_TOKEN, loginResponse.getToken());
+        assertEquals(TEST_REFRESH_TOKEN, loginResponse.getRefreshToken());
 
         // Verify authentication manager was called
         verify(authenticationManager).authenticate(
@@ -72,6 +100,12 @@ public class LoginControllerTest {
                     auth.getCredentials().equals(TEST_PASSWORD)
                 )
         );
+
+        // Verify other services were called
+        verify(recaptchaService).verifyToken(TEST_RECAPTCHA_TOKEN);
+        verify(jwtUtils).generateJwtToken(authentication);
+        verify(jwtUtils).generateRefreshToken(TEST_USERNAME);
+        verify(metricsService).updateLastLogin(TEST_USERNAME);
     }
 
     @Test

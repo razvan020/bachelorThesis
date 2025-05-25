@@ -37,7 +37,7 @@ public class PaymentControllerTest {
     @Mock
     private HttpServletRequest request;
 
-    private final String WEBHOOK_SECRET = "";
+    private final String WEBHOOK_SECRET = "test_webhook_secret";
 
     @BeforeEach
     void setUp() {

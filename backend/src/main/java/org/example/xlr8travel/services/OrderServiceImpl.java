@@ -187,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Send purchase confirmation email
-        boolean emailSent = emailService.sendPurchaseConfirmationEmail(savedOrder, user);
+        boolean emailSent = emailService.sendPurchaseConfirmationEmail(savedOrder, user, "€");
         if (emailSent) {
             log.info("Purchase confirmation email sent to user: {}", user.getUsername());
         } else {

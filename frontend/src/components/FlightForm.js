@@ -119,7 +119,7 @@ export default function FlightForm({ mode, flight, onCancel, onSuccess }) {
 
         {/* Price */}
         <Form.Group className="mb-3">
-          <Form.Label>Price (USD)</Form.Label>
+          <Form.Label>Price (EUR)</Form.Label>
           <Form.Control
             type="number"
             step="0.01"

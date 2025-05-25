@@ -2,42 +2,9 @@
 
 import React from "react"; // Removed unused hooks if only used for deleted sections
 import FlightSearchComponent from "@/components/FlightSearchComponent";
-import PackagesSection from "@/components/PackagesSection";
+import NearbyFlightsSection from "@/components/NearbyFlightsSection";
 import InfoCardsSection from "@/components/InfoCardsSection"; // <-- Import the new component
 
-// --- Sample Package Data (Keep as is or fetch) ---
-const samplePackages = [
-  // ... (your package data here)
-   {
-    id: 'bali',
-    title: 'Bali',
-    description: 'Discover the magic of Balis temples, beaches, and lush rice paddies.',
-    imageUrl: 'https://images.unsplash.com/photo-1574080344876-1f4089ba07fe?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3',
-    link: '/packages/bali' // Example link
-  },
-  {
-    id: 'delta',
-    title: 'Delta Dunarii',
-    description: 'Experience the unique biodiversity and tranquility of the Danube Delta.',
-    imageUrl: '/delta.jpg', // Ensure this image is in your public folder
-    link: '/packages/delta'
-  },
-  {
-    id: 'malaysia',
-    title: 'Malaysia',
-    description: 'Explore vibrant cities, stunning islands, and diverse cultures in Malaysia.',
-    imageUrl: 'https://images.unsplash.com/photo-1602427384420-71c70e2b2a2f?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3',
-    link: '/packages/malaysia'
-  },
-  {
-    id: 'canyon',
-    title: 'Grand Canyon',
-    description: 'Witness the breathtaking scale and beauty of the Grand Canyon.',
-    imageUrl: 'https://images.unsplash.com/photo-1575527048208-6475b441e0a0?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3',
-    link: '/packages/grand-canyon'
-  }
-];
-// --- End Sample Data ---
 
 
 export default function HomePage() {
@@ -92,8 +59,8 @@ export default function HomePage() {
       <FlightSearchComponent />
 
 
-      {/* --- Packages Section --- */}
-      <PackagesSection packages={samplePackages} />
+      {/* --- Nearby Flights Section --- */}
+      <NearbyFlightsSection />
 
 
       {/* --- Additional Info Cards Section --- */}

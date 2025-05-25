@@ -21,6 +21,7 @@ import {
   FaChair,
 } from "react-icons/fa"; // Icons
 import { useAuth } from "@/contexts/AuthContext"; // Import useAuth to update cart count
+import { getCurrencyForCountry, convertFromEUR, formatPrice } from '@/utils/currencyUtils';
 
 // Helper function to format date/time (customize as needed)
 const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
@@ -74,12 +75,63 @@ function FlightAvailabilityContent() {
   // Pricing
   const [totalPrice, setTotalPrice] = useState(0);
 
+  // Currency state
+  const [userCountry, setUserCountry] = useState('Romania'); // Default to Romania
+  const [userCurrency, setUserCurrency] = useState('RON'); // Default to RON
+
   // Get search criteria from URL
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
   const departureDate = searchParams.get("departureDate");
   const arrivalDate = searchParams.get("arrivalDate"); // Might be null for one-way
   const tripType = searchParams.get("tripType");
+
+  // Sample airport data with coordinates (same as in NearbyFlightsSection)
+  const airports = [
+    { code: "OTP", name: "Henri Coandă Intl.", city: "Bucharest", country: "Romania", lat: 44.5711, lng: 26.0858 },
+    { code: "BCN", name: "El Prat Airport", city: "Barcelona", country: "Spain", lat: 41.2974, lng: 2.0833 },
+    { code: "LHR", name: "Heathrow Airport", city: "London", country: "United Kingdom", lat: 51.4700, lng: -0.4543 },
+    { code: "JFK", name: "John F. Kennedy Intl.", city: "New York", country: "USA", lat: 40.6413, lng: -73.7781 },
+    { code: "LAX", name: "Los Angeles Intl.", city: "Los Angeles", country: "USA", lat: 33.9416, lng: -118.4085 },
+    { code: "TIA", name: "Rinas Mother Teresa", city: "Tirana", country: "Albania", lat: 41.4147, lng: 19.7206 },
+    { code: "EVN", name: "Zvartnots Intl", city: "Yerevan", country: "Armenia", lat: 40.1473, lng: 44.3959 },
+    { code: "VIE", name: "Vienna Intl", city: "Vienna", country: "Austria", lat: 48.1102, lng: 16.5697 },
+    { code: "GYD", name: "Heydar Aliyev Intl", city: "Baku", country: "Azerbaijan", lat: 40.4675, lng: 50.0467 },
+    { code: "CRL", name: "Brussels South Charleroi", city: "Brussels Charleroi", country: "Belgium", lat: 50.4592, lng: 4.4525 },
+    { code: "AMS", name: "Amsterdam Schiphol", city: "Amsterdam", country: "Netherlands", lat: 52.3105, lng: 4.7683 },
+  ];
+
+  // Function to calculate distance between two coordinates using Haversine formula
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const d = R * c; // Distance in km
+    return d;
+  };
+
+  // Function to find the closest airport to the user's location
+  const findClosestAirport = (userLat, userLng) => {
+    if (!userLat || !userLng) return null;
+
+    let closestAirport = null;
+    let minDistance = Infinity;
+
+    airports.forEach(airport => {
+      const distance = calculateDistance(userLat, userLng, airport.lat, airport.lng);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestAirport = airport;
+      }
+    });
+
+    return closestAirport;
+  };
 
   // Baggage options
   const baggageOptions = [
@@ -109,6 +161,32 @@ function FlightAvailabilityContent() {
       price: 50,
     },
   ];
+
+  // Get user's location and set country/currency
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          // Find closest airport
+          const closest = findClosestAirport(latitude, longitude);
+          if (closest) {
+            setUserCountry(closest.country);
+            setUserCurrency(getCurrencyForCountry(closest.country));
+            console.log(`User location detected: ${closest.country}, using currency: ${getCurrencyForCountry(closest.country)}`);
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          // Default values already set in state initialization
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      // Default values already set in state initialization
+    }
+  }, []);
 
   useEffect(() => {
     const fetchAvailableFlights = async () => {
@@ -452,7 +530,7 @@ function FlightAvailabilityContent() {
                       </Col>
                       <Col md={3} className="text-md-end mt-3 mt-md-0">
                         <h4 className="mb-2 price-tag-react">
-                          ${flight.price?.toFixed(2) ?? "N/A"}
+                          {formatPrice(convertFromEUR(parseFloat(flight.price || 0), userCurrency), userCurrency)}
                         </h4>
                         <Form.Check
                           type="radio"
@@ -532,7 +610,7 @@ function FlightAvailabilityContent() {
                           </Col>
                           <Col md={3} className="text-md-end mt-3 mt-md-0">
                             <h4 className="mb-2 price-tag-react">
-                              ${flight.price?.toFixed(2) ?? "N/A"}
+                              {formatPrice(convertFromEUR(parseFloat(flight.price || 0), userCurrency), userCurrency)}
                             </h4>
                             <Form.Check
                               type="radio"
@@ -653,7 +731,7 @@ function FlightAvailabilityContent() {
                 key={option.value}
                 type="radio"
                 id={`baggage-${option.value}`}
-                label={`${option.label} (+$${option.price.toFixed(2)})`}
+                label={`${option.label} (+${formatPrice(convertFromEUR(option.price, userCurrency), userCurrency)})`}
                 name="baggageType"
                 value={option.value}
                 checked={passengerDetails.baggageType === option.value}
@@ -717,7 +795,7 @@ function FlightAvailabilityContent() {
                 >
                   <div className="d-flex flex-column align-items-center">
                     <small>{seat.number}</small>
-                    <small>${seat.price}</small>
+                    <small>{formatPrice(convertFromEUR(seat.price, userCurrency), userCurrency)}</small>
                   </div>
                 </Button>
               ))}
@@ -738,8 +816,7 @@ function FlightAvailabilityContent() {
 
           {selectedSeat && (
             <Alert variant="success">
-              You selected seat {selectedSeat.number} ($
-              {selectedSeat.price.toFixed(2)})
+              You selected seat {selectedSeat.number} ({formatPrice(convertFromEUR(selectedSeat.price, userCurrency), userCurrency)})
             </Alert>
           )}
         </div>
@@ -749,30 +826,52 @@ function FlightAvailabilityContent() {
           <div className="d-flex justify-content-between mb-2">
             <span>Flight(s):</span>
             <span>
-              $
-              {(
-                selectedOutboundFlight?.price +
-                (selectedReturnFlight?.price || 0)
-              ).toFixed(2)}
+              {formatPrice(
+                convertFromEUR(
+                  (selectedOutboundFlight?.price || 0) +
+                  (selectedReturnFlight?.price || 0),
+                  userCurrency
+                ),
+                userCurrency
+              )}
             </span>
           </div>
           <div className="d-flex justify-content-between mb-2">
             <span>Baggage:</span>
             <span>
-              $
-              {baggageOptions
-                .find((option) => option.value === passengerDetails.baggageType)
-                ?.price.toFixed(2) || "0.00"}
+              {formatPrice(
+                convertFromEUR(
+                  baggageOptions.find((option) => option.value === passengerDetails.baggageType)?.price || 0,
+                  userCurrency
+                ),
+                userCurrency
+              )}
             </span>
           </div>
           <div className="d-flex justify-content-between mb-2">
             <span>Seat Selection:</span>
-            <span>${selectedSeat?.price.toFixed(2) || "0.00"}</span>
+            <span>
+              {formatPrice(
+                convertFromEUR(
+                  selectedSeat?.price || 0,
+                  userCurrency
+                ),
+                userCurrency
+              )}
+            </span>
           </div>
           <hr />
           <div className="d-flex justify-content-between fw-bold">
             <span>Total:</span>
-            <span>${totalPrice.toFixed(2)}</span>
+            <span>
+              {formatPrice(
+                convertFromEUR(
+                  totalPrice,
+                  userCurrency
+                ),
+                userCurrency
+              )}
+            </span>
           </div>
         </div>
 

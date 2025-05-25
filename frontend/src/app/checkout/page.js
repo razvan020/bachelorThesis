@@ -14,6 +14,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import { useAuth } from "@/contexts/AuthContext";
+import { getCurrencyForCountry, convertFromEUR, formatPrice } from '@/utils/currencyUtils';
 
 // Helper for date/time formatting
 const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
@@ -69,6 +70,10 @@ function CheckoutPageContent() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
 
+  // Currency state
+  const [userCountry, setUserCountry] = useState('Romania'); // Default to Romania
+  const [userCurrency, setUserCurrency] = useState('RON'); // Default to RON
+
   // Load the cart
   const fetchCart = useCallback(async () => {
     setLoadingCart(true);
@@ -99,6 +104,79 @@ function CheckoutPageContent() {
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
+
+  // Sample airport data with coordinates (same as in cart page)
+  const airports = [
+    { code: "OTP", name: "Henri Coandă Intl.", city: "Bucharest", country: "Romania", lat: 44.5711, lng: 26.0858 },
+    { code: "BCN", name: "El Prat Airport", city: "Barcelona", country: "Spain", lat: 41.2974, lng: 2.0833 },
+    { code: "LHR", name: "Heathrow Airport", city: "London", country: "United Kingdom", lat: 51.4700, lng: -0.4543 },
+    { code: "JFK", name: "John F. Kennedy Intl.", city: "New York", country: "USA", lat: 40.6413, lng: -73.7781 },
+    { code: "LAX", name: "Los Angeles Intl.", city: "Los Angeles", country: "USA", lat: 33.9416, lng: -118.4085 },
+    { code: "TIA", name: "Rinas Mother Teresa", city: "Tirana", country: "Albania", lat: 41.4147, lng: 19.7206 },
+    { code: "EVN", name: "Zvartnots Intl", city: "Yerevan", country: "Armenia", lat: 40.1473, lng: 44.3959 },
+    { code: "VIE", name: "Vienna Intl", city: "Vienna", country: "Austria", lat: 48.1102, lng: 16.5697 },
+    { code: "GYD", name: "Heydar Aliyev Intl", city: "Baku", country: "Azerbaijan", lat: 40.4675, lng: 50.0467 },
+    { code: "CRL", name: "Brussels South Charleroi", city: "Brussels Charleroi", country: "Belgium", lat: 50.4592, lng: 4.4525 },
+    { code: "AMS", name: "Amsterdam Schiphol", city: "Amsterdam", country: "Netherlands", lat: 52.3105, lng: 4.7683 },
+  ];
+
+  // Function to calculate distance between two coordinates using Haversine formula
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const d = R * c; // Distance in km
+    return d;
+  };
+
+  // Function to find the closest airport to the user's location
+  const findClosestAirport = (userLat, userLng) => {
+    if (!userLat || !userLng) return null;
+
+    let closestAirport = null;
+    let minDistance = Infinity;
+
+    airports.forEach(airport => {
+      const distance = calculateDistance(userLat, userLng, airport.lat, airport.lng);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestAirport = airport;
+      }
+    });
+
+    return closestAirport;
+  };
+
+  // Get user's location and set country/currency
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          // Find closest airport
+          const closest = findClosestAirport(latitude, longitude);
+          if (closest) {
+            setUserCountry(closest.country);
+            setUserCurrency(getCurrencyForCountry(closest.country));
+            console.log(`User location detected: ${closest.country}, using currency: ${getCurrencyForCountry(closest.country)}`);
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          // Default values already set in state initialization
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      // Default values already set in state initialization
+    }
+  }, []);
 
   useEffect(() => {
     // Define baggage prices (same as in page.js)
@@ -164,8 +242,9 @@ function CheckoutPageContent() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: Math.round(adjustedTotalPrice * 100),
+          amount: Math.round(convertFromEUR(adjustedTotalPrice, userCurrency) * 100),
           email: customerEmail,
+          currency: userCurrency.toLowerCase(),
         }),
       });
       const intentBody = await intentRes.json();
@@ -321,25 +400,25 @@ function CheckoutPageContent() {
                       </small>
                     </div>
                     <span className="text-nowrap fw-bold ms-3">
-                      {item.quantity} x ${item.price.toFixed(2)}
+                      {item.quantity} x {formatPrice(convertFromEUR(parseFloat(item.price || 0), userCurrency), userCurrency)}
                     </span>
                   </ListGroup.Item>
                 ))}
                 <ListGroup.Item className="d-flex justify-content-between">
                   <span>Flight(s):</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>{formatPrice(convertFromEUR(totalPrice, userCurrency), userCurrency)}</span>
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex justify-content-between">
                   <span>Baggage:</span>
-                  <span>${baggagePrice.toFixed(2)}</span>
+                  <span>{formatPrice(convertFromEUR(baggagePrice, userCurrency), userCurrency)}</span>
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex justify-content-between">
                   <span>Seat Selection:</span>
-                  <span>${seatPrice.toFixed(2)}</span>
+                  <span>{formatPrice(convertFromEUR(seatPrice, userCurrency), userCurrency)}</span>
                 </ListGroup.Item>
                 <ListGroup.Item className="d-flex justify-content-between fw-bold">
                   <span>Total Price:</span>
-                  <span>${adjustedTotalPrice.toFixed(2)}</span>
+                  <span>{formatPrice(convertFromEUR(adjustedTotalPrice, userCurrency), userCurrency)}</span>
                 </ListGroup.Item>
               </ListGroup>
             </Card>

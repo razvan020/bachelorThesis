@@ -85,6 +85,14 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findByOriginAndDestinationAndDepartureDate(origin, destination, departureDate);
     }
 
+    // Implementation for finding flights by origin for nearby flights feature
+    @Override
+    @Transactional(readOnly = true)
+    public List<Flight> findByOriginAndDepartureDateAfter(String origin, LocalDate departureDate) {
+        // Optional: Add checks for null parameters if needed
+        return flightRepository.findByOriginAndDepartureDateAfter(origin, departureDate);
+    }
+
     // Optional: existsById implementation if needed by controller/other services
     // public boolean existsById(Long id) {
     //    return flightRepository.existsById(id);

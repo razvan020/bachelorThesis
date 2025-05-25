@@ -28,6 +28,9 @@ public interface FlightRepository extends CrudRepository<Flight, Long> {
     // --- Optional: Add other finders if needed ---
     // List<Flight> findByOriginIgnoreCaseAndDestinationIgnoreCaseAndDepartureDate(String origin, String destination, LocalDate departureDate);
 
+    // Find flights by origin only (for nearby flights feature)
+    List<Flight> findByOriginAndDepartureDateAfter(String origin, LocalDate departureDate);
+
     // --- Metrics related queries ---
 
     // Find flights with departure date after the given date

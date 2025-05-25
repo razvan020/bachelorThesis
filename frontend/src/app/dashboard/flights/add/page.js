@@ -270,7 +270,7 @@ export default function AddFlightPage() {
 
                 {/* Price */}
                 <Form.Group className="mb-4" controlId="price">
-                  <Form.Label>Price ($)</Form.Label>
+                  <Form.Label>Price (€)</Form.Label>
                   <Form.Control
                     type="number"
                     placeholder="e.g., 199.99"

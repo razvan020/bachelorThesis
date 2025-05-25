@@ -505,7 +505,7 @@ const AddFlightForm = ({ onCancel, onFlightAdded }) => {
             {/* Price */}
             <TextField
               id="price"
-              label="Price ($)"
+              label="Price (€)"
               type="number"
               variant="outlined"
               fullWidth
@@ -977,7 +977,7 @@ export default function ManageFlightsPage() {
                                   color: theme.palette.secondary.main,
                                 }}
                               >
-                                ${flight.price?.toFixed(2) ?? "N/A"}
+                                €{flight.price?.toFixed(2) ?? "N/A"}
                               </Typography>
                             </TableCell>
                             <TableCell align="right">
