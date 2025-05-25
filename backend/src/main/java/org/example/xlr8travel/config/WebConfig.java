@@ -26,10 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
 
-        // Ensure that API requests are not treated as static resource requests
-        registry.addResourceHandler("/api/**")
-                .addResourceLocations("classpath:/non-existent-folder/")
-                .resourceChain(false);
+        // Removed the problematic configuration that was treating API requests as static resources
     }
 
     // Keep other WebMvcConfigurer methods if you have them

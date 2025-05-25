@@ -241,36 +241,47 @@ public class FlightController {
             @RequestParam String origin,
             @RequestParam(required = false) LocalDate departureDate
     ) {
+        log.info("Received request for nearby flights from origin: {}, departureDate: {}", origin, departureDate);
         try {
             // If no departure date is provided, use today's date
             LocalDate searchDate = departureDate != null ? departureDate : LocalDate.now();
+            log.info("Using search date: {}", searchDate);
 
             // Create a cache key based on origin and date
             String cacheKey = origin + "-" + searchDate.toString();
+            log.info("Cache key: {}", cacheKey);
 
             // Check if we have a valid cached result
             CachedFlights cachedResult = nearbyFlightsCache.get(cacheKey);
             if (cachedResult != null && !cachedResult.isExpired()) {
-                log.info("Returning cached nearby flights for origin: {}", origin);
+                log.info("Returning cached nearby flights for origin: {}, found {} flights", 
+                         origin, cachedResult.flights.size());
                 return ResponseEntity.ok(cachedResult.flights);
             }
 
-            log.info("Searching nearby flights from origin: {}, after date: {}", origin, searchDate);
+            log.info("No valid cache found. Searching nearby flights from origin: {}, after date: {}", origin, searchDate);
 
             try {
+                log.info("Calling flightService.findByOriginAndDepartureDateAfter for origin: {}, date: {}", origin, searchDate);
                 List<Flight> foundFlights = flightService.findByOriginAndDepartureDateAfter(origin, searchDate);
+                log.info("Database query completed, found {} flights", foundFlights.size());
 
                 // If no flights found, log detailed information for debugging
                 if (foundFlights.isEmpty()) {
-                    log.warn("No nearby flights found from: {} after date: {}", origin, searchDate);
+                    log.warn("No nearby flights found from: {} after date: {}. This may cause the frontend to show a loading spinner indefinitely.", origin, searchDate);
+                    // Return an empty list instead of null to avoid NPE
+                    return ResponseEntity.ok(Collections.emptyList());
                 }
 
                 // Convert found Flight entities to FlightDTOs
+                log.info("Converting {} Flight entities to FlightDTOs", foundFlights.size());
                 List<FlightDTO> allFlightDTOs = foundFlights.stream()
                         .map(FlightDTO::fromFlight)
                         .collect(Collectors.toList());
+                log.info("Converted to {} FlightDTOs", allFlightDTOs.size());
 
                 // Group flights by destination country to ensure diversity
+                log.info("Grouping flights by destination country");
                 Map<String, List<FlightDTO>> flightsByCountry = allFlightDTOs.stream()
                         .collect(Collectors.groupingBy(flight -> {
                             // Extract country from destination code
@@ -288,44 +299,59 @@ public class FlightController {
                             if (destination.equals("CLJ")) return "Romania"; // Same country as origin, but different city
                             return "Other"; // Default category
                         }));
+                log.info("Grouped flights into {} countries", flightsByCountry.size());
 
                 // Select diverse flights - one from each country first, then add more if needed
                 List<FlightDTO> diverseFlights = new java.util.ArrayList<>();
+                log.info("Selecting diverse flights - one from each country first");
 
                 // First pass: take one flight from each country
-                for (List<FlightDTO> countryFlights : flightsByCountry.values()) {
+                for (Map.Entry<String, List<FlightDTO>> entry : flightsByCountry.entrySet()) {
+                    String country = entry.getKey();
+                    List<FlightDTO> countryFlights = entry.getValue();
+
                     if (!countryFlights.isEmpty()) {
+                        log.info("Adding first flight from {} (has {} flights)", country, countryFlights.size());
                         diverseFlights.add(countryFlights.get(0));
                     }
 
                     // Stop if we have 6 flights already
                     if (diverseFlights.size() >= 6) {
+                        log.info("Reached 6 flights after first pass, stopping");
                         break;
                     }
                 }
 
                 // Second pass: if we still need more flights, add additional ones from countries with multiple flights
                 if (diverseFlights.size() < 6) {
-                    for (List<FlightDTO> countryFlights : flightsByCountry.values()) {
+                    log.info("First pass only yielded {} flights, adding more in second pass", diverseFlights.size());
+                    for (Map.Entry<String, List<FlightDTO>> entry : flightsByCountry.entrySet()) {
+                        String country = entry.getKey();
+                        List<FlightDTO> countryFlights = entry.getValue();
+
                         if (countryFlights.size() > 1) {
+                            log.info("Country {} has {} additional flights to consider", country, countryFlights.size() - 1);
                             // Start from the second flight (index 1) since we already added the first one
                             for (int i = 1; i < countryFlights.size() && diverseFlights.size() < 6; i++) {
+                                log.info("Adding additional flight from {}", country);
                                 diverseFlights.add(countryFlights.get(i));
                             }
                         }
 
                         // Stop if we have 6 flights
                         if (diverseFlights.size() >= 6) {
+                            log.info("Reached 6 flights after second pass, stopping");
                             break;
                         }
                     }
                 }
 
                 // Cache the result
+                log.info("Caching {} diverse flights with key: {}", diverseFlights.size(), cacheKey);
                 nearbyFlightsCache.put(cacheKey, new CachedFlights(diverseFlights));
 
                 // If we still don't have enough flights, just use what we have
-                log.info("Found {} diverse nearby flights from: {}", diverseFlights.size(), origin);
+                log.info("Returning {} diverse nearby flights from: {}", diverseFlights.size(), origin);
                 return ResponseEntity.ok(diverseFlights);
 
             } catch (Exception e) {

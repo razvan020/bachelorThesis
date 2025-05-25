@@ -9148,3 +9148,6 @@ Caused by: io.grpc.StatusRuntimeException: INVALID_ARGUMENT: Please use a valid 
 	at io.grpc.Status.asRuntimeException(Status.java:533)
 	... 17 common frames omitted
 
+2025-05-25 20:11:38.777 ERROR [ce4d7d2e-7c2d-47e4-a127-86ae93a25d4e] 37600 --- [nio-8080-exec-2] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-25 20:17:59.429 ERROR [7ba579e8-536a-4999-8eb5-17d536f77780] 37600 --- [nio-8080-exec-7] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-25 20:18:01.582 ERROR [16483d23-c1d9-4638-aa23-8c8c5b9f1acb] 37600 --- [nio-8080-exec-8] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
