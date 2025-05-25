@@ -297,6 +297,8 @@ public class FlightController {
                             if (destination.equals("ATH")) return "Greece";
                             if (destination.equals("ZRH")) return "Switzerland";
                             if (destination.equals("CLJ")) return "Romania"; // Same country as origin, but different city
+                            if (destination.equals("CRL")) return "Belgium"; // Brussels Charleroi
+                            if (destination.equals("OTP")) return "Romania"; // Bucharest
                             return "Other"; // Default category
                         }));
                 log.info("Grouped flights into {} countries", flightsByCountry.size());
