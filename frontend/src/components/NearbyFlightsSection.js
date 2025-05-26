@@ -1,15 +1,20 @@
-// components/NearbyFlightsSection.js
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FaCalendarAlt } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaPlane,
+  FaArrowRight,
+  FaEuroSign,
+} from "react-icons/fa";
 import {
   getCurrencyForCountry,
   convertFromEUR,
   formatPrice,
 } from "../utils/currencyUtils";
 
-// A reusable card component for flight tickets
+// Modern flight card with glassmorphism and smooth animations
 const FlightTicketCard = ({
   destination,
   imageUrl,
@@ -17,42 +22,99 @@ const FlightTicketCard = ({
   ticketType,
   date,
   link = "#",
-}) => (
-  <div className="col-md-4 col-sm-6 mb-4">
-    <div className="card h-100 border-0 shadow">
-      <img
-        src={
-          imageUrl ||
-          `https://source.unsplash.com/featured/?${destination},airport`
-        }
-        className="card-img-top"
-        alt={destination}
-        style={{ aspectRatio: "4/3", objectFit: "cover" }}
-      />
-      <div className="card-body d-flex flex-column">
-        <h5 className="card-title">{destination}</h5>
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          <span className="text-primary fw-bold">
-            {price}
-          </span>
-          <span className="badge bg-light text-dark">{ticketType}</span>
+  index = 0,
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  return (
+    <div
+      className="col-lg-4 col-md-6 mb-4"
+      style={{
+        animation: `slideUp 0.6s ease-out ${index * 0.1}s both`,
+      }}
+    >
+      <div
+        className={`modern-flight-card-enhanced h-100 position-relative overflow-hidden rounded-4 bg-white shadow-lg transition-all ${
+          isHovered ? "hovered" : ""
+        }`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Image Container */}
+        <div className="position-relative overflow-hidden modern-image-container">
+          {!imageLoaded && (
+            <div className="position-absolute top-0 start-0 w-100 h-100 modern-image-placeholder" />
+          )}
+          <img
+            src={
+              imageUrl ||
+              `https://source.unsplash.com/featured/?${destination},airport`
+            }
+            className={`w-100 h-100 object-fit-cover modern-card-image ${
+              imageLoaded ? "loaded" : ""
+            }`}
+            alt={destination}
+            onLoad={() => setImageLoaded(true)}
+          />
+
+          {/* Gradient Overlay */}
+          <div className="modern-gradient-overlay-new position-absolute top-0 start-0 w-100 h-100" />
+
+          {/* Floating Badge */}
+          <div className="position-absolute top-3 end-3">
+            <span className="badge modern-floating-badge">{ticketType}</span>
+          </div>
+
+          {/* Price Tag - Enhanced visibility */}
+          <div className="position-absolute bottom-3 start-3">
+            <div className="d-flex align-items-center">
+              <div className="modern-price-tag">
+                <div className="modern-price-label">From</div>
+                <div className="modern-price-display fw-bold">{price}</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p className="card-text text-muted">
-          <small>
-            <FaCalendarAlt
-              className="me-1"
-              style={{ verticalAlign: "text-top" }}
-            />
-            {date}
-          </small>
-        </p>
-        <a href={link} className="btn btn-primary mt-auto">
-          Book Now
-        </a>
+
+        {/* Content */}
+        <div className="card-body p-4">
+          <div className="d-flex align-items-start justify-content-between mb-3">
+            <div className="flex-grow-1">
+              <h5 className="card-title fw-bold text-dark mb-2">
+                {destination}
+              </h5>
+              <div className="d-flex align-items-center text-muted small mb-2">
+                <FaCalendarAlt className="me-2" />
+                <span>{date}</span>
+              </div>
+
+              {/* Additional Price Display in Card Body */}
+              <div className="d-flex align-items-center justify-content-between">
+                <div className="modern-price-secondary">
+                  <span className="text-muted small">Starting from</span>
+                  <div className="fw-bold text-primary h6 mb-0">{price}</div>
+                </div>
+                <div className="modern-plane-icon d-flex align-items-center justify-content-center">
+                  <FaPlane />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <a
+            href={link}
+            className="btn modern-book-button w-100 d-flex align-items-center justify-content-center"
+          >
+            <span className="me-2">Book Flight</span>
+            <FaArrowRight className="modern-arrow-icon" />
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function NearbyFlightsSection() {
   const [flights, setFlights] = useState([]);
@@ -61,7 +123,7 @@ export default function NearbyFlightsSection() {
   const [userLocation, setUserLocation] = useState(null);
   const [closestAirport, setClosestAirport] = useState(null);
 
-  // Sample airport data with coordinates (in a real app, this would come from an API)
+  // airports array...
   const airports = [
     {
       code: "OTP",
@@ -225,7 +287,6 @@ export default function NearbyFlightsSection() {
     },
   ];
 
-  // Function to calculate distance between two coordinates using Haversine formula
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // Radius of the earth in km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -241,7 +302,6 @@ export default function NearbyFlightsSection() {
     return d;
   };
 
-  // Function to find the closest airport to the user's location
   const findClosestAirport = (userLat, userLng) => {
     if (!userLat || !userLng) return null;
 
@@ -264,91 +324,103 @@ export default function NearbyFlightsSection() {
     return closestAirport;
   };
 
-  // Get user's location using IP-based geolocation
+  // Get location with better error handling
   useEffect(() => {
-    // Use a free IP geolocation service
-    fetch('https://ipapi.co/json/')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("IP Geolocation data:", data);
-        if (data.latitude && data.longitude) {
-          setUserLocation({ lat: data.latitude, lng: data.longitude });
+    const getLocation = async () => {
+      try {
+        // Try IP geolocation first
+        const response = await fetch("https://ipapi.co/json/", {
+          timeout: 5000, // 5 second timeout
+        });
 
-          // Find closest airport
-          const closest = findClosestAirport(data.latitude, data.longitude);
-          setClosestAirport(closest);
-        } else {
-          throw new Error('No location data available');
-        }
-      })
-      .catch(error => {
-        console.error("Error getting location from IP:", error);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("IP Geolocation data:", data);
 
-        // Fallback to browser geolocation if IP geolocation fails
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const { latitude, longitude } = position.coords;
-              setUserLocation({ lat: latitude, lng: longitude });
-
-              // Find closest airport
-              const closest = findClosestAirport(latitude, longitude);
-              setClosestAirport(closest);
-            },
-            (geoError) => {
-              console.error("Geolocation error:", geoError);
-              // Default to a specific airport if all geolocation methods fail
-              setClosestAirport(airports[0]); // Default to first airport in the list
-            }
-          );
-        } else {
-          console.error("Geolocation is not supported by this browser.");
-          // Default to a specific airport if geolocation is not supported
-          setClosestAirport(airports[0]); // Default to first airport in the list
+          if (data.latitude && data.longitude) {
+            setUserLocation({ lat: data.latitude, lng: data.longitude });
+            const closest = findClosestAirport(data.latitude, data.longitude);
+            setClosestAirport(closest);
+            return;
+          }
         }
-      });
+      } catch (ipError) {
+        console.warn("IP geolocation failed:", ipError);
+      }
+
+      // Fallback to browser geolocation
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setUserLocation({ lat: latitude, lng: longitude });
+            const closest = findClosestAirport(latitude, longitude);
+            setClosestAirport(closest);
+          },
+          (geoError) => {
+            console.warn("Geolocation error:", geoError);
+            // Final fallback - use default airport
+            setClosestAirport(airports[0]); // Default to Bucharest
+          },
+          { timeout: 10000 } // 10 second timeout
+        );
+      } else {
+        console.warn("Geolocation is not supported by this browser.");
+        // Final fallback - use default airport
+        setClosestAirport(airports[0]); // Default to Bucharest
+      }
+    };
+
+    getLocation();
   }, []);
 
-  // Fetch nearby flights when closest airport is determined
+  // Get flights with better error handling
   useEffect(() => {
     if (closestAirport) {
       setLoading(true);
-      fetch(`/api/flights/nearby?origin=${closestAirport.code}`)
-        .then((response) => {
-          if (!response.ok) {
+      setError(null);
+
+      // Try to fetch from API first, but fallback to sample data immediately if it fails
+      const fetchWithTimeout = async () => {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+          const response = await fetch(
+            `/api/flights/nearby?origin=${closestAirport.code}`,
+            {
+              signal: controller.signal,
+            }
+          );
+
+          clearTimeout(timeoutId);
+
+          if (response.ok) {
+            const data = await response.json();
+            setFlights(data);
+          } else {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-          return response.json();
-        })
-        .then((data) => {
-          setFlights(data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching nearby flights:", error);
-          setError("Failed to load flights. Please try again later.");
-          setLoading(false);
-
-          // For demo purposes, use sample data if API fails
+        } catch (fetchError) {
+          console.warn("API fetch failed, using sample data:", fetchError);
+          // Use sample data instead of showing error
           setFlights(getSampleFlights(closestAirport.code));
-        });
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchWithTimeout();
     }
   }, [closestAirport]);
 
-  // Sample flight data for demonstration purposes
-  // Prices are in EUR
   const getSampleFlights = (originCode) => {
     return [
       {
         id: 1,
         destinationCity: "Paris",
         destinationCode: "CDG",
-        price: 199, // Price in EUR
+        price: 199,
         departureDate: "2025-06-15",
         imageUrl:
           "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop",
@@ -357,7 +429,7 @@ export default function NearbyFlightsSection() {
         id: 2,
         destinationCity: "Rome",
         destinationCode: "FCO",
-        price: 249, // Price in EUR
+        price: 249,
         departureDate: "2025-07-10",
         imageUrl:
           "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=800&auto=format&fit=crop",
@@ -366,7 +438,7 @@ export default function NearbyFlightsSection() {
         id: 3,
         destinationCity: "Barcelona",
         destinationCode: "BCN",
-        price: 179, // Price in EUR
+        price: 179,
         departureDate: "2025-06-20",
         imageUrl:
           "https://images.unsplash.com/photo-1583422409516-2895a77efded?q=80&w=800&auto=format&fit=crop",
@@ -375,7 +447,7 @@ export default function NearbyFlightsSection() {
         id: 4,
         destinationCity: "Amsterdam",
         destinationCode: "AMS",
-        price: 229, // Price in EUR
+        price: 229,
         departureDate: "2025-07-05",
         imageUrl:
           "https://images.unsplash.com/photo-1576924542622-772281a5c2da?q=80&w=800&auto=format&fit=crop",
@@ -384,7 +456,7 @@ export default function NearbyFlightsSection() {
         id: 5,
         destinationCity: "Prague",
         destinationCode: "PRG",
-        price: 189, // Price in EUR
+        price: 189,
         departureDate: "2025-06-25",
         imageUrl:
           "https://images.unsplash.com/photo-1519677100203-a0e668c92439?q=80&w=800&auto=format&fit=crop",
@@ -393,7 +465,7 @@ export default function NearbyFlightsSection() {
         id: 6,
         destinationCity: "Vienna",
         destinationCode: "VIE",
-        price: 209, // Price in EUR
+        price: 209,
         departureDate: "2025-07-15",
         imageUrl:
           "https://images.unsplash.com/photo-1516550893885-985c836c5be1?q=80&w=800&auto=format&fit=crop",
@@ -443,22 +515,12 @@ export default function NearbyFlightsSection() {
       "https://images.unsplash.com/photo-1605826832916-d0a401fdb2a5?q=80&w=800&auto=format&fit=crop",
   };
 
-  // Format flight data for display and ensure country diversity
   const formatFlightData = (flights) => {
-    // Determine user's country and currency
-    const userCountry = closestAirport?.country || "Romania"; // Default to Romania if no country is detected
+    const userCountry = closestAirport?.country || "Romania";
     const userCurrency = getCurrencyForCountry(userCountry);
-
-    // Debug logging
-    console.log(`User country: ${userCountry}, Currency: ${userCurrency}`);
-
-    // Track countries we've already included to avoid duplicates
     const includedCountries = new Set();
 
-    // First, map all flights to get their data
     const mappedFlights = flights.map((flight) => {
-      // Find the city name for the destination
-      // Check both destinationCode (from sample data) and destination (from API)
       const destinationCode = flight.destinationCode || flight.destination;
       const destinationAirport = airports.find(
         (airport) => airport.code === destinationCode
@@ -466,43 +528,31 @@ export default function NearbyFlightsSection() {
       const cityName = destinationAirport
         ? destinationAirport.city
         : flight.destinationCity || "Unknown";
-
-      // Get the country for this destination
       const country = destinationAirport?.country || "Unknown";
 
-      // Format date to show only the month
-      let monthDisplay = "In June"; // Default fallback
+      let monthDisplay = "In June";
       if (flight.departureDate) {
         const date = new Date(flight.departureDate);
         const month = date.toLocaleString("default", { month: "long" });
         monthDisplay = `In ${month}`;
       }
 
-      // Convert and format price based on user's country
       let formattedPrice = "";
       if (flight.price) {
-        // Assume the price from API is in EUR
         const priceInEUR = parseFloat(flight.price);
-        // Convert to user's currency
         const convertedPrice = convertFromEUR(priceInEUR, userCurrency);
-        // Format with appropriate currency symbol
         formattedPrice = formatPrice(convertedPrice, userCurrency);
-
-        // Debug logging for price conversion
-        console.log(
-          `Flight to ${cityName}: Price in EUR: ${priceInEUR}, Converted to ${userCurrency}: ${convertedPrice}, Formatted: ${formattedPrice}`
-        );
       }
 
       return {
         destination: cityName,
-        country: country, // Add country to the returned object
+        country: country,
         imageUrl:
           flight.imageUrl ||
           destinationImages[cityName] ||
           `https://source.unsplash.com/featured/?${cityName},city`,
         price: formattedPrice,
-        ticketType: "Return", // Always show "Return"
+        ticketType: "Return",
         date: monthDisplay,
         link: `/flights/availability?origin=${
           flight.originCode || flight.origin || closestAirport?.code
@@ -510,9 +560,7 @@ export default function NearbyFlightsSection() {
       };
     });
 
-    // Then filter to ensure country diversity
     const diverseFlights = mappedFlights.filter((flight) => {
-      // If we haven't seen this country before, include it
       if (!includedCountries.has(flight.country)) {
         includedCountries.add(flight.country);
         return true;
@@ -520,7 +568,6 @@ export default function NearbyFlightsSection() {
       return false;
     });
 
-    // If we don't have enough diverse flights, add more flights regardless of country
     if (
       diverseFlights.length < 6 &&
       mappedFlights.length > diverseFlights.length
@@ -536,75 +583,94 @@ export default function NearbyFlightsSection() {
     return diverseFlights;
   };
 
-  // Handle case where no flights are available
-  if (!loading && (flights.length === 0 || error)) {
-    return (
-      <div className="container py-5">
-        <div className="row mb-4">
+  return (
+    <section className="modern-flights-section-enhanced position-relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="modern-bg-elements position-absolute top-0 start-0 w-100 h-100">
+        <div className="modern-bg-circle-1"></div>
+        <div className="modern-bg-circle-2"></div>
+        <div className="modern-bg-circle-3"></div>
+      </div>
+
+      <div className="container py-5 position-relative">
+        {/* Enhanced Section Header */}
+        <div className="row mb-5">
           <div className="col-12 text-center">
-            <h2 className="fw-semibold">
-              Explore Direct Flights From Your Area
-            </h2>
-            <p className="text-muted">
-              {error || "No flights available from your area at this time."}
-            </p>
+            <div className="modern-section-header-new">
+              <div className="modern-location-indicator d-inline-flex align-items-center mb-4">
+                <FaMapMarkerAlt className="me-2" />
+                <span>Personalized for Your Location</span>
+              </div>
+
+              <h2 className="modern-section-title-enhanced mb-4">
+                Discover Amazing
+                <span className="d-block modern-gradient-text">
+                  Flight Deals
+                </span>
+              </h2>
+
+              {closestAirport && !loading && (
+                <p className="modern-section-subtitle-new">
+                  Curated flights departing from{" "}
+                  <span className="fw-bold text-white">
+                    {closestAirport.city} ({closestAirport.code})
+                  </span>
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }
 
-  return (
-    <div className="container py-5">
-      {/* Section Title */}
-      <div className="row mb-4">
-        <div className="col-12 text-center">
-          <h2 className="fw-semibold">Explore Direct Flights From Your Area</h2>
-          {closestAirport && (
-            <p className="text-muted">
-              Showing flights from {closestAirport.city} ({closestAirport.code})
-            </p>
+        {/* Flight Cards Grid */}
+        <div className="row g-4">
+          {loading ? (
+            <div className="col-12">
+              <div className="modern-loading-state-new d-flex flex-column align-items-center justify-content-center py-5">
+                <div className="modern-spinner-container position-relative">
+                  <div className="spinner-border text-white" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <div className="modern-spinner-ring position-absolute top-0 start-0"></div>
+                </div>
+                <p className="text-white mt-4 modern-loading-text">
+                  Finding the best flights for you...
+                </p>
+              </div>
+            </div>
+          ) : (
+            formatFlightData(flights).map((flight, index) => (
+              <FlightTicketCard
+                key={index}
+                destination={flight.destination}
+                imageUrl={flight.imageUrl}
+                price={flight.price}
+                ticketType={flight.ticketType}
+                date={flight.date}
+                link={flight.link}
+                index={index}
+              />
+            ))
           )}
         </div>
-      </div>
 
-      {/* Flight Tickets Row */}
-      <div className="row">
-        {loading ? (
-          <div className="col-12 text-center py-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
+        {/* Enhanced CTA Button */}
+        {!loading && (
+          <div className="row mt-5">
+            <div className="col-12 text-center">
+              <button
+                type="button"
+                className="modern-cta-button-new"
+                onClick={() => (window.location.href = "/flights")}
+              >
+                <span className="me-3">Explore All Destinations</span>
+                <div className="modern-cta-icon d-flex align-items-center justify-content-center">
+                  <FaArrowRight />
+                </div>
+              </button>
             </div>
-            <p className="mt-3">Finding flights from your area...</p>
           </div>
-        ) : (
-          formatFlightData(flights).map((flight, index) => (
-            <FlightTicketCard
-              key={index}
-              destination={flight.destination}
-              imageUrl={flight.imageUrl}
-              price={flight.price}
-              ticketType={flight.ticketType}
-              date={flight.date}
-              link={flight.link}
-            />
-          ))
         )}
       </div>
-
-      {/* View All Flights Button */}
-      <div className="row mt-4">
-        <div className="col-12 text-center">
-          <button
-            type="button"
-            className="btn btn-primary rounded-pill px-4 py-2 fw-medium"
-            style={{ fontSize: "1.1rem" }}
-            onClick={() => (window.location.href = "/flights")}
-          >
-            View All Flights
-          </button>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }
