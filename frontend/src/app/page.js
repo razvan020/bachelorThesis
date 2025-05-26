@@ -65,7 +65,22 @@ export default function HomePage() {
 
             {/* Enhanced CTA Button */}
             <div className="hero-cta-enhanced mb-4">
-              <button className="btn hero-btn-modern btn-lg rounded-pill fw-semibold">
+              <button
+                className="btn hero-btn-modern btn-lg rounded-pill fw-semibold"
+                onClick={() => {
+                  const target = document.getElementById(
+                    "flight-search-section"
+                  );
+                  if (target) {
+                    const yOffset = -300; // Adjust this value as needed
+                    const y =
+                      target.getBoundingClientRect().top +
+                      window.pageYOffset +
+                      yOffset;
+                    window.scrollTo({ top: y, behavior: "smooth" });
+                  }
+                }}
+              >
                 <span className="btn-text">Start Your Journey</span>
                 <div className="btn-icon-modern">
                   <svg
@@ -109,7 +124,9 @@ export default function HomePage() {
       </div>
 
       {/* --- MODERN SEARCH SECTION --- */}
-      <FlightSearchComponent />
+      <div id="flight-search-section">
+        <FlightSearchComponent />
+      </div>
 
       {/* --- Nearby Flights Section --- */}
       <NearbyFlightsSection />
