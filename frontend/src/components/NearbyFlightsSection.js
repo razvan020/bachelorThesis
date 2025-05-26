@@ -67,7 +67,10 @@ const FlightTicketCard = ({
           </div>
 
           {/* Price Tag - Enhanced visibility */}
-          <div className="position-absolute bottom-3 start-3">
+          <div
+            className="position-absolute top-0 start-0 m-3"
+            style={{ zIndex: 4 }}
+          >
             <div className="d-flex align-items-center">
               <div className="modern-price-tag">
                 <div className="modern-price-label">From</div>
@@ -91,10 +94,7 @@ const FlightTicketCard = ({
 
               {/* Additional Price Display in Card Body */}
               <div className="d-flex align-items-center justify-content-between">
-                <div className="modern-price-secondary">
-                  <span className="text-muted small">Starting from</span>
-                  <div className="fw-bold text-primary h6 mb-0">{price}</div>
-                </div>
+                <div className="modern-price-secondary"></div>
                 <div className="modern-plane-icon d-flex align-items-center justify-content-center">
                   <FaPlane />
                 </div>
