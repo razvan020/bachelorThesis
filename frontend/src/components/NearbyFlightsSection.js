@@ -264,29 +264,54 @@ export default function NearbyFlightsSection() {
     return closestAirport;
   };
 
-  // Get user's location
+  // Get user's location using IP-based geolocation
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation({ lat: latitude, lng: longitude });
+    // Use a free IP geolocation service
+    fetch('https://ipapi.co/json/')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("IP Geolocation data:", data);
+        if (data.latitude && data.longitude) {
+          setUserLocation({ lat: data.latitude, lng: data.longitude });
 
           // Find closest airport
-          const closest = findClosestAirport(latitude, longitude);
+          const closest = findClosestAirport(data.latitude, data.longitude);
           setClosestAirport(closest);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          // Default to a specific airport if geolocation fails
+        } else {
+          throw new Error('No location data available');
+        }
+      })
+      .catch(error => {
+        console.error("Error getting location from IP:", error);
+
+        // Fallback to browser geolocation if IP geolocation fails
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              setUserLocation({ lat: latitude, lng: longitude });
+
+              // Find closest airport
+              const closest = findClosestAirport(latitude, longitude);
+              setClosestAirport(closest);
+            },
+            (geoError) => {
+              console.error("Geolocation error:", geoError);
+              // Default to a specific airport if all geolocation methods fail
+              setClosestAirport(airports[0]); // Default to first airport in the list
+            }
+          );
+        } else {
+          console.error("Geolocation is not supported by this browser.");
+          // Default to a specific airport if geolocation is not supported
           setClosestAirport(airports[0]); // Default to first airport in the list
         }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-      // Default to a specific airport if geolocation is not supported
-      setClosestAirport(airports[0]); // Default to first airport in the list
-    }
+      });
   }, []);
 
   // Fetch nearby flights when closest airport is determined

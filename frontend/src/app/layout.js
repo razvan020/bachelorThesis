@@ -13,6 +13,8 @@ import ThemeRegistry from "@/components/ThemeRegistry";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // load your public key from env
 const stripePromise = loadStripe(
@@ -68,6 +70,9 @@ export default function RootLayout({ children }) {
                 </div>
               </Elements>
             </AuthProvider>
+
+            <Analytics />
+            <SpeedInsights />
 
             {/* Bootstrap JS */}
             <Script

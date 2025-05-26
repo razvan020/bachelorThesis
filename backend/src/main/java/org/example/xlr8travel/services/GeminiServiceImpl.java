@@ -27,6 +27,12 @@ public class GeminiServiceImpl implements GeminiService {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GeminiServiceImpl.class);
 
+    private final AirportLocationService airportLocationService;
+
+    public GeminiServiceImpl(AirportLocationService airportLocationService) {
+        this.airportLocationService = airportLocationService;
+    }
+
     @org.springframework.beans.factory.annotation.Value("${gemini.api.key}")
     private String apiKey;
 
@@ -50,14 +56,51 @@ public class GeminiServiceImpl implements GeminiService {
     @Override
     public NaturalLanguageSearchResponseDTO processNaturalLanguageQuery(NaturalLanguageSearchRequestDTO request) {
         try {
+            // Determine the closest airport if not already provided
+            String closestAirport = request.getClosestAirport();
+
+            // If closest airport is not provided but coordinates are, find the closest airport
+            if ((closestAirport == null || closestAirport.isEmpty()) && 
+                request.getUserLatitude() != null && request.getUserLongitude() != null) {
+
+                AirportLocationService.Airport airport = 
+                    airportLocationService.findClosestAirport(
+                        request.getUserLatitude(), 
+                        request.getUserLongitude()
+                    );
+
+                closestAirport = airport.getCode();
+                log.info("Determined closest airport from coordinates: {}", closestAirport);
+            }
+
+            // If we still don't have a closest airport, default to OTP
+            if (closestAirport == null || closestAirport.isEmpty()) {
+                closestAirport = "OTP"; // Default to Bucharest Otopeni
+                log.info("No closest airport provided or determined, defaulting to OTP");
+            }
+
+            // Update the request with the determined airport
+            request.setClosestAirport(closestAirport);
+
+            // Log the closest airport from the request
+            log.info("Processing natural language query with closest airport: {}", request.getClosestAirport());
+
             // Configure the prompt for flight search
-            String prompt = buildFlightSearchPrompt(request.getQuery());
+            String prompt = buildFlightSearchPrompt(request.getQuery(), request.getClosestAirport());
+
+            // Log the generated prompt
+            log.debug("Generated prompt for Gemini API: {}", prompt);
 
             // Call Gemini API
             String geminiResponse = callGeminiAPI(prompt);
 
+            // Log the Gemini API response
+            log.debug("Gemini API response: {}", geminiResponse);
+
             // Parse the response
-            return parseGeminiResponse(geminiResponse);
+            // Log the closest airport being passed to parseGeminiResponse
+            log.debug("Passing closest airport to parseGeminiResponse: '{}'", request.getClosestAirport());
+            return parseGeminiResponse(geminiResponse, request.getClosestAirport());
         } catch (Exception e) {
             log.error("Error processing natural language query", e);
             NaturalLanguageSearchResponseDTO response = new NaturalLanguageSearchResponseDTO();
@@ -75,20 +118,69 @@ public class GeminiServiceImpl implements GeminiService {
         }
     }
 
-private String buildFlightSearchPrompt(String userQuery) {
-    int currentYear = LocalDate.now().getYear(); // Get the current year dynamically
+    private String buildFlightSearchPrompt(String userQuery, String userClosestAirport) {
+        int currentYear = LocalDate.now().getYear(); // Get the current year dynamically
+        LocalDate today = LocalDate.now(); // Get today's date
 
-    return "You are a flight search assistant. Extract the following information from this query: " +
-           "origin city, destination city, departure date, return date (if applicable), trip type (one-way or round-trip), " +
-           "and number of passengers (adults, children, infants). " +
-           "If any information is missing, use reasonable defaults. " +
-           "IMPORTANT: When extracting dates, use the current year (" + currentYear + ") for any dates where the year is not explicitly specified. " +
-           "Format your response as a JSON object with the following fields: " +
-           "origin (airport code), destination (airport code), departureDate (YYYY-MM-DD), " +
-           "returnDate (YYYY-MM-DD or null for one-way), tripType (oneWay or roundTrip), " +
-           "adults (number), children (number), infants (number). " +
-           "Here's the user query: \"" + userQuery + "\"";
-}
+        // Add information about the user's closest airport if available
+        String locationInfo = "";
+        String originRule = "3. IMPORTANT: If the user specifies an origin in the query (e.g., 'from Paris', 'departing London'), " +
+                "   you MUST use that origin. Only if no origin is provided in the query, " +
+                "   assume the origin is the closest airport to the user's location. " +
+                "   Use 'CLOSEST_AIRPORT' as the origin code in this case, and the backend will resolve it. ";
+
+        if (userClosestAirport != null && !userClosestAirport.trim().isEmpty()) {
+            locationInfo = "The user's closest airport is " + userClosestAirport + ". ";
+            originRule = "3. IMPORTANT: If the user specifies an origin in the query (e.g., 'from Paris', 'departing London'), " +
+                    "   you MUST use that origin. Only if no origin is provided in the query, " +
+                    "   use '" + userClosestAirport + "' as the origin. " +
+                    "   This is the closest airport to the user's current location. ";
+        }
+
+        // Add a rule about using specific IATA airport codes
+        String airportCodeRule = "4. CRITICAL: You MUST use the correct IATA airport codes for cities. DO NOT use generic city codes. " +
+                "   For example, use 'FCO' for Rome (not 'ROM'), 'LHR' for London (not 'LON'), 'CDG' for Paris, etc. " +
+                "   Here are the correct airport codes for common cities: " +
+                "   - Rome: FCO (Leonardo da Vinci Fiumicino) " +
+                "   - London: LHR (Heathrow Airport) " +
+                "   - Paris: CDG (Charles de Gaulle) " +
+                "   - New York: JFK (John F. Kennedy) " +
+                "   - Los Angeles: LAX (Los Angeles Intl) " +
+                "   - Barcelona: BCN (El Prat Airport) " +
+                "   - Madrid: MAD (Adolfo Suárez Madrid–Barajas) " +
+                "   - Berlin: BER (Berlin Brandenburg) " +
+                "   - Munich: MUC (Franz Josef Strauss) " +
+                "   - Milan: MXP (Milano Malpensa) " +
+                "   - Amsterdam: AMS (Amsterdam Schiphol) " +
+                "   - Vienna: VIE (Vienna Intl) " +
+                "   - Zurich: ZRH (Zurich Airport) " +
+                "   - Athens: ATH (Athens International) " +
+                "   - Bucharest: OTP (Henri Coandă Intl) " +
+                "   - Cluj: CLJ (Avram Iancu) " +
+                "   - Brussels: CRL (Brussels South Charleroi) " +
+                "   - Baku: GYD (Heydar Aliyev Intl) " +
+                "   - Yerevan: EVN (Zvartnots Intl) " +
+                "   - Tirana: TIA (Rinas Mother Teresa) ";
+
+        return "You are a flight search assistant. Extract the following information from this query: " +
+                "origin city, destination city, departure date, return date (if applicable), trip type (one-way or round-trip), " +
+                "and number of passengers (adults, children, infants). " +
+                "If any information is missing, use reasonable defaults. " +
+                locationInfo +
+                "IMPORTANT RULES: " +
+                "1. When extracting dates, use the current year (" + currentYear + ") for any dates where the year is not explicitly specified. " +
+                "2. If the query mentions a 'weekend trip' or similar weekend travel, and specific dates aren't provided, " +
+                "   set the departure and return dates to be within 1-2 weeks from today (" + today + "). " +
+                "   For example, if today is " + today + ", a good departure date would be between " +
+                today.plusDays(7) + " and " + today.plusDays(14) + ", with the return date 2-3 days after departure. " +
+                originRule +
+                airportCodeRule +
+                "Format your response as a JSON object with the following fields: " +
+                "origin (airport code), destination (airport code), departureDate (YYYY-MM-DD), " +
+                "returnDate (YYYY-MM-DD or null for one-way), tripType (oneWay or roundTrip), " +
+                "adults (number), children (number), infants (number). " +
+                "Here's the user query: \"" + userQuery + "\";";
+    }
 
 private String callGeminiAPI(String prompt) throws IOException {
     // Check if project ID is set
@@ -146,7 +238,7 @@ Content content = Content.newBuilder()
         }
     }
 
-    private NaturalLanguageSearchResponseDTO parseGeminiResponse(String geminiResponse) {
+    private NaturalLanguageSearchResponseDTO parseGeminiResponse(String geminiResponse, String userClosestAirport) {
         try {
             if (geminiResponse == null || geminiResponse.trim().isEmpty()) {
                 log.warn("Empty response received from Gemini API");
@@ -212,7 +304,28 @@ Content content = Content.newBuilder()
             // Set fields from JSON with safe access
             try {
                 if (json.has("origin") && !json.get("origin").isJsonNull()) {
-                    response.setOrigin(json.get("origin").getAsString());
+                    String originCode = json.get("origin").getAsString();
+                    log.debug("Origin code from Gemini API: '{}', userClosestAirport: '{}'", originCode, userClosestAirport);
+
+                    // Handle the special CLOSEST_AIRPORT placeholder
+                    // Use case-insensitive comparison and trim whitespace
+                    String trimmedOriginCode = originCode.trim();
+                    boolean isClosestAirportPlaceholder = "CLOSEST_AIRPORT".equalsIgnoreCase(trimmedOriginCode);
+                    log.debug("Trimmed origin code: '{}', isClosestAirportPlaceholder: {}", trimmedOriginCode, isClosestAirportPlaceholder);
+
+                    if (isClosestAirportPlaceholder) {
+                        if (userClosestAirport != null && !userClosestAirport.trim().isEmpty()) {
+                            // Use the closest airport provided by the frontend
+                            log.info("Using user's closest airport as origin: {}", userClosestAirport);
+                            response.setOrigin(userClosestAirport);
+                        } else {
+                            // Fallback to a default airport if no closest airport is provided
+                            log.info("No closest airport provided, defaulting to OTP");
+                            response.setOrigin("OTP"); // Default to Bucharest Otopeni
+                        }
+                    } else {
+                        response.setOrigin(originCode);
+                    }
                 }
             } catch (Exception e) {
                 log.warn("Error parsing origin field: {}", e.getMessage());
@@ -326,6 +439,21 @@ Content content = Content.newBuilder()
             }
 
             response.setSuccess(true);
+
+            // Log the final origin after potential CLOSEST_AIRPORT replacement
+            log.debug("Final origin after processing: '{}'", response.getOrigin());
+
+            // Add an info log to make it more visible in the logs
+            if (response.getOrigin() != null) {
+                log.info("Final origin after processing: '{}'", response.getOrigin());
+            }
+
+            // Log the parsed response
+            log.info("Parsed response: origin={}, destination={}, departureDate={}, returnDate={}, tripType={}, adults={}, children={}, infants={}",
+                    response.getOrigin(), response.getDestination(), response.getDepartureDate(), 
+                    response.getReturnDate(), response.getTripType(), response.getAdults(), 
+                    response.getChildren(), response.getInfants());
+
             return response;
 
         } catch (Exception e) {

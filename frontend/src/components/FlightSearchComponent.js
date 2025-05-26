@@ -7,8 +7,8 @@ import { Typeahead, Menu, MenuItem } from "react-bootstrap-typeahead";
 import DatePicker from "react-datepicker";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown"; // Needed for Dropdown.Header
-import { FaSearch, FaMagic, FaKeyboard, FaSpinner } from 'react-icons/fa';
-import axios from 'axios';
+import { FaSearch, FaMagic, FaKeyboard, FaSpinner } from "react-icons/fa";
+import axios from "axios";
 
 // Import CSS
 import "react-bootstrap-typeahead/css/Typeahead.css";
@@ -25,6 +25,8 @@ const sampleStructuredAirportOptions = [
     name: "Rinas Mother Teresa",
     city: "Tirana",
     country: "Albania",
+    lat: 41.4147,
+    lng: 19.7206,
   },
   {
     id: "EVN",
@@ -32,6 +34,8 @@ const sampleStructuredAirportOptions = [
     name: "Zvartnots Intl",
     city: "Yerevan",
     country: "Armenia",
+    lat: 40.1473,
+    lng: 44.3959,
   },
   {
     id: "VIE",
@@ -39,6 +43,8 @@ const sampleStructuredAirportOptions = [
     name: "Vienna Intl",
     city: "Vienna",
     country: "Austria",
+    lat: 48.1102,
+    lng: 16.5697,
   },
   {
     id: "GYD",
@@ -46,6 +52,8 @@ const sampleStructuredAirportOptions = [
     name: "Heydar Aliyev Intl",
     city: "Baku",
     country: "Azerbaijan",
+    lat: 40.4675,
+    lng: 50.0467,
   },
   {
     id: "GBB",
@@ -53,6 +61,8 @@ const sampleStructuredAirportOptions = [
     name: "Qabala Intl",
     city: "Gabala",
     country: "Azerbaijan",
+    lat: 40.8222,
+    lng: 47.7125,
   },
   {
     id: "CRL",
@@ -60,6 +70,8 @@ const sampleStructuredAirportOptions = [
     name: "Brussels South Charleroi",
     city: "Brussels Charleroi",
     country: "Belgium",
+    lat: 50.4592,
+    lng: 4.4525,
   },
   {
     id: "OTP",
@@ -67,6 +79,8 @@ const sampleStructuredAirportOptions = [
     name: "Henri Coandă Intl.",
     city: "Bucharest",
     country: "Romania",
+    lat: 44.5711,
+    lng: 26.0858,
   },
   {
     id: "CLJ",
@@ -74,6 +88,8 @@ const sampleStructuredAirportOptions = [
     name: "Avram Iancu",
     city: "Cluj",
     country: "Romania",
+    lat: 46.7852,
+    lng: 23.6862,
   },
   {
     id: "BCN",
@@ -81,6 +97,8 @@ const sampleStructuredAirportOptions = [
     name: "El Prat Airport",
     city: "Barcelona",
     country: "Spain",
+    lat: 41.2974,
+    lng: 2.0833,
   },
   {
     id: "MAD",
@@ -88,6 +106,8 @@ const sampleStructuredAirportOptions = [
     name: "Adolfo Suárez Madrid–Barajas",
     city: "Madrid",
     country: "Spain",
+    lat: 40.4983,
+    lng: -3.5676,
   },
   {
     id: "LHR",
@@ -95,6 +115,8 @@ const sampleStructuredAirportOptions = [
     name: "Heathrow Airport",
     city: "London",
     country: "United Kingdom",
+    lat: 51.47,
+    lng: -0.4543,
   },
   {
     id: "JFK",
@@ -102,6 +124,8 @@ const sampleStructuredAirportOptions = [
     name: "John F. Kennedy Intl.",
     city: "New York",
     country: "USA",
+    lat: 40.6413,
+    lng: -73.7781,
   },
   {
     id: "LAX",
@@ -109,6 +133,8 @@ const sampleStructuredAirportOptions = [
     name: "Los Angeles Intl.",
     city: "Los Angeles",
     country: "USA",
+    lat: 33.9416,
+    lng: -118.4085,
   },
   {
     id: "AMS",
@@ -116,6 +142,8 @@ const sampleStructuredAirportOptions = [
     name: "Amsterdam Schiphol",
     city: "Amsterdam",
     country: "Netherlands",
+    lat: 52.3105,
+    lng: 4.7683,
   },
   {
     id: "CDG",
@@ -123,6 +151,8 @@ const sampleStructuredAirportOptions = [
     name: "Charles de Gaulle Airport",
     city: "Paris",
     country: "France",
+    lat: 49.0097,
+    lng: 2.5479,
   },
   {
     id: "FCO",
@@ -130,6 +160,8 @@ const sampleStructuredAirportOptions = [
     name: "Leonardo da Vinci Fiumicino",
     city: "Rome",
     country: "Italy",
+    lat: 41.8002,
+    lng: 12.2388,
   },
   {
     id: "MXP",
@@ -137,6 +169,8 @@ const sampleStructuredAirportOptions = [
     name: "Milano Malpensa",
     city: "Milan",
     country: "Italy",
+    lat: 45.63,
+    lng: 8.7255,
   },
   {
     id: "MUC",
@@ -144,6 +178,8 @@ const sampleStructuredAirportOptions = [
     name: "Franz Josef Strauss",
     city: "Munich",
     country: "Germany",
+    lat: 48.3537,
+    lng: 11.775,
   },
   {
     id: "BER",
@@ -151,6 +187,8 @@ const sampleStructuredAirportOptions = [
     name: "Berlin Brandenburg",
     city: "Berlin",
     country: "Germany",
+    lat: 52.3667,
+    lng: 13.5033,
   },
   {
     id: "ATH",
@@ -158,6 +196,8 @@ const sampleStructuredAirportOptions = [
     name: "Athens International",
     city: "Athens",
     country: "Greece",
+    lat: 37.9364,
+    lng: 23.9445,
   },
   {
     id: "ZRH",
@@ -165,6 +205,8 @@ const sampleStructuredAirportOptions = [
     name: "Zurich Airport",
     city: "Zurich",
     country: "Switzerland",
+    lat: 47.4647,
+    lng: 8.5492,
   },
 ];
 // --- End Sample Data ---
@@ -244,24 +286,26 @@ const extractDate = (text) => {
   }
 
   // Handle "in X days/weeks/months"
-  const inTimeMatch = text.match(/\bin\s+(\d+)\s+(day|days|week|weeks|month|months)\b/i);
+  const inTimeMatch = text.match(
+    /\bin\s+(\d+)\s+(day|days|week|weeks|month|months)\b/i
+  );
   if (inTimeMatch) {
     const amount = parseInt(inTimeMatch[1]);
     const unit = inTimeMatch[2].toLowerCase();
 
     const date = new Date(today);
 
-    if (unit === 'day' || unit === 'days') {
+    if (unit === "day" || unit === "days") {
       date.setDate(date.getDate() + amount);
       return date;
     }
 
-    if (unit === 'week' || unit === 'weeks') {
-      date.setDate(date.getDate() + (amount * 7));
+    if (unit === "week" || unit === "weeks") {
+      date.setDate(date.getDate() + amount * 7);
       return date;
     }
 
-    if (unit === 'month' || unit === 'months') {
+    if (unit === "month" || unit === "months") {
       date.setMonth(date.getMonth() + amount);
       return date;
     }
@@ -286,12 +330,22 @@ const extractDate = (text) => {
 
   // Handle specific months
   const months = [
-    'january', 'february', 'march', 'april', 'may', 'june', 
-    'july', 'august', 'september', 'october', 'november', 'december'
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
   ];
 
   for (let i = 0; i < months.length; i++) {
-    const monthRegex = new RegExp(`\\b${months[i]}\\b`, 'i');
+    const monthRegex = new RegExp(`\\b${months[i]}\\b`, "i");
     if (text.match(monthRegex)) {
       const date = new Date(today);
       const targetMonth = i;
@@ -305,7 +359,9 @@ const extractDate = (text) => {
       date.setDate(15); // Default to middle of the month
 
       // Check for specific day
-      const dayMatch = text.match(new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+${months[i]}\\b`, 'i'));
+      const dayMatch = text.match(
+        new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+${months[i]}\\b`, "i")
+      );
       if (dayMatch) {
         const day = parseInt(dayMatch[1]);
         if (day >= 1 && day <= 31) {
@@ -318,12 +374,16 @@ const extractDate = (text) => {
   }
 
   // Handle MM/DD or DD/MM format
-  const dateFormatMatch = text.match(/\b(\d{1,2})[\/\-\.](\d{1,2})(?:[\/\-\.](\d{2,4}))?\b/);
+  const dateFormatMatch = text.match(
+    /\b(\d{1,2})[\/\-\.](\d{1,2})(?:[\/\-\.](\d{2,4}))?\b/
+  );
   if (dateFormatMatch) {
     // Assume MM/DD format for US, but could be configurable based on locale
     const firstNumber = parseInt(dateFormatMatch[1]);
     const secondNumber = parseInt(dateFormatMatch[2]);
-    let year = dateFormatMatch[3] ? parseInt(dateFormatMatch[3]) : today.getFullYear();
+    let year = dateFormatMatch[3]
+      ? parseInt(dateFormatMatch[3])
+      : today.getFullYear();
 
     // Handle 2-digit year
     if (year < 100) {
@@ -370,13 +430,17 @@ const extractBudget = (text) => {
   }
 
   // Match "under X" or "less than X" patterns
-  const underMatch = text.match(/\b(?:under|less than|below|max|maximum)\s+(?:[\$\€\£\¥])?(\d+)/i);
+  const underMatch = text.match(
+    /\b(?:under|less than|below|max|maximum)\s+(?:[\$\€\£\¥])?(\d+)/i
+  );
   if (underMatch) {
     return parseInt(underMatch[1]);
   }
 
   // Match "X dollars/euros/pounds" patterns
-  const amountMatch = text.match(/\b(\d+)\s+(?:dollars|euros|pounds|usd|eur|gbp)\b/i);
+  const amountMatch = text.match(
+    /\b(\d+)\s+(?:dollars|euros|pounds|usd|eur|gbp)\b/i
+  );
   if (amountMatch) {
     return parseInt(amountMatch[1]);
   }
@@ -388,11 +452,11 @@ const extractTripType = (text) => {
   if (!text) return null;
 
   if (text.match(/\bone[\s-]?way\b/i)) {
-    return 'oneWay';
+    return "oneWay";
   }
 
   if (text.match(/\b(?:round[\s-]?trip|return|two[\s-]?way)\b/i)) {
-    return 'roundTrip';
+    return "roundTrip";
   }
 
   return null;
@@ -416,7 +480,9 @@ const extractPassengers = (text) => {
   }
 
   // Extract infants
-  const infantsMatch = text.match(/\b(\d+)\s+(?:infant|infants|baby|babies)\b/i);
+  const infantsMatch = text.match(
+    /\b(\d+)\s+(?:infant|infants|baby|babies)\b/i
+  );
   if (infantsMatch) {
     result.infants = parseInt(infantsMatch[1]);
   }
@@ -445,17 +511,21 @@ export default function FlightSearchComponent() {
 
   // --- New State for Natural Language Search ---
   const [showNlpSearch, setShowNlpSearch] = useState(false);
-  const [nlpQuery, setNlpQuery] = useState('');
+  const [nlpQuery, setNlpQuery] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingSteps, setProcessingSteps] = useState([]);
   const [nlpError, setNlpError] = useState(null);
   const [nlpSuggestions, setNlpSuggestions] = useState([
-    'Weekend trip from Bucharest to Paris',
-    'One way to London next month',
-    'Flights from Bucharest to Barcelona under $200',
-    'Family vacation to Rome in July with 2 kids',
-    'Business trip to Berlin next week'
+    "Weekend trip from Bucharest to Paris",
+    "One way to London next month",
+    "Flights from Bucharest to Barcelona under $200",
+    "Family vacation to Rome in July with 2 kids",
+    "Business trip to Berlin next week",
   ]);
+
+  // State for user's location and closest airport
+  const [userLocation, setUserLocation] = useState(null);
+  const [closestAirport, setClosestAirport] = useState(null);
 
   // --- Refs ---
   const dropdownBtnRef = useRef(null);
@@ -488,6 +558,114 @@ export default function FlightSearchComponent() {
     };
     fetchAirports();
   }, []);
+
+  // Function to calculate distance between two coordinates using Haversine formula
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // Distance in km
+    return d;
+  };
+
+  // Function to find the closest airport to the user's location
+  const findClosestAirport = (userLat, userLng) => {
+    if (!userLat || !userLng) return null;
+
+    let closestAirport = null;
+    let minDistance = Infinity;
+
+    // Filter airports that have lat and lng properties
+    const airportsWithCoordinates = allAirportOptions.filter(
+      (airport) => airport.lat && airport.lng
+    );
+
+    if (airportsWithCoordinates.length === 0) {
+      // If no airports have coordinates, return a default airport
+      return (
+        allAirportOptions.find((airport) => airport.code === "OTP") ||
+        allAirportOptions[0]
+      );
+    }
+
+    airportsWithCoordinates.forEach((airport) => {
+      const distance = calculateDistance(
+        userLat,
+        userLng,
+        airport.lat,
+        airport.lng
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestAirport = airport;
+      }
+    });
+
+    return closestAirport;
+  };
+
+  // Get user's location using IP-based geolocation
+  useEffect(() => {
+    // Use a free IP geolocation service
+    fetch("https://ipapi.co/json/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("IP Geolocation data:", data);
+        if (data.latitude && data.longitude) {
+          setUserLocation({ lat: data.latitude, lng: data.longitude });
+
+          // Find closest airport
+          const closest = findClosestAirport(data.latitude, data.longitude);
+          setClosestAirport(closest);
+        } else {
+          throw new Error("No location data available");
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting location from IP:", error);
+
+        // Fallback to browser geolocation if IP geolocation fails
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              setUserLocation({ lat: latitude, lng: longitude });
+
+              // Find closest airport
+              const closest = findClosestAirport(latitude, longitude);
+              setClosestAirport(closest);
+            },
+            (geoError) => {
+              console.error("Geolocation error:", geoError);
+              // Default to a specific airport if all geolocation methods fail
+              setClosestAirport(
+                allAirportOptions.find((airport) => airport.code === "OTP") ||
+                  allAirportOptions[0]
+              );
+            }
+          );
+        } else {
+          console.error("Geolocation is not supported by this browser.");
+          // Default to a specific airport if geolocation is not supported
+          setClosestAirport(
+            allAirportOptions.find((airport) => airport.code === "OTP") ||
+              allAirportOptions[0]
+          );
+        }
+      });
+  }, [allAirportOptions]);
 
   // --- Functions ---
   const increment = (id) => {
@@ -573,165 +751,239 @@ export default function FlightSearchComponent() {
   }, [showNlpSearch]);
 
   // Parse natural language query
-  const parseNaturalLanguageQuery = useCallback(async (query) => {
-    if (!query.trim()) {
-      setNlpError("Please enter a search query");
-      return { result: null, canSearch: false };
-    }
-
-    setIsProcessing(true);
-    setProcessingSteps([]);
-    setNlpError(null);
-
-    try {
-      // Add initial processing step
-      setProcessingSteps(prev => [...prev, "Analyzing your query..."]);
-
-      // Call the Gemini API through our backend
-      const response = await axios.post('/api/flights/natural-language/search', {
-        query: query
-      });
-
-      const searchParams = response.data;
-
-      if (!searchParams.success) {
-        setNlpError(searchParams.error || 'Failed to process your search query');
+  const parseNaturalLanguageQuery = useCallback(
+    async (query) => {
+      if (!query.trim()) {
+        setNlpError("Please enter a search query");
         return { result: null, canSearch: false };
       }
 
-      // Initialize result object with the API response
-      const result = {
-        origin: searchParams.origin,
-        destination: searchParams.destination,
-        departureDate: searchParams.departureDate ? new Date(searchParams.departureDate) : null,
-        returnDate: searchParams.returnDate ? new Date(searchParams.returnDate) : null,
-        tripType: searchParams.tripType || 'roundTrip',
-        passengers: {
-          adults: searchParams.adults || 1,
-          children: searchParams.children || 0,
-          infants: searchParams.infants || 0
+      setIsProcessing(true);
+      setProcessingSteps([]);
+      setNlpError(null);
+
+      try {
+        // Add initial processing step
+        setProcessingSteps((prev) => [...prev, "Analyzing your query..."]);
+
+        // Call the Gemini API through our backend
+        const response = await axios.post(
+          "/api/flights/natural-language/search",
+          {
+            query: query,
+            closestAirport: closestAirport ? closestAirport.code : null,
+            userLatitude: userLocation ? userLocation.lat : null,
+            userLongitude: userLocation ? userLocation.lng : null,
+          }
+        );
+
+        const searchParams = response.data;
+
+        if (!searchParams.success) {
+          setNlpError(
+            searchParams.error || "Failed to process your search query"
+          );
+          return { result: null, canSearch: false };
         }
-      };
 
-      // Add processing steps based on the API response
-      if (result.tripType) {
-        setProcessingSteps(prev => [...prev, `Detected trip type: ${result.tripType === 'oneWay' ? 'One Way' : 'Round Trip'}`]);
-      } else {
-        setProcessingSteps(prev => [...prev, "Assuming Round Trip (default)"]);
-      }
+        // Initialize result object with the API response
+        const result = {
+          origin: searchParams.origin,
+          destination: searchParams.destination,
+          departureDate: searchParams.departureDate
+            ? new Date(searchParams.departureDate)
+            : null,
+          returnDate: searchParams.returnDate
+            ? new Date(searchParams.returnDate)
+            : null,
+          tripType: searchParams.tripType || "roundTrip",
+          passengers: {
+            adults: searchParams.adults || 1,
+            children: searchParams.children || 0,
+            infants: searchParams.infants || 0,
+          },
+        };
 
-      if (result.origin) {
-        const originAirport = allAirportOptions.find(airport => airport.code === result.origin);
-        if (originAirport) {
-          setProcessingSteps(prev => [...prev, `Found origin airport: ${originAirport.city} (${originAirport.code})`]);
+        // Add processing steps based on the API response
+        if (result.tripType) {
+          setProcessingSteps((prev) => [
+            ...prev,
+            `Detected trip type: ${
+              result.tripType === "oneWay" ? "One Way" : "Round Trip"
+            }`,
+          ]);
         } else {
-          setProcessingSteps(prev => [...prev, `Found origin airport code: ${result.origin}`]);
+          setProcessingSteps((prev) => [
+            ...prev,
+            "Assuming Round Trip (default)",
+          ]);
         }
-      } else {
-        setProcessingSteps(prev => [...prev, "No origin location detected"]);
-      }
 
-      if (result.destination) {
-        const destAirport = allAirportOptions.find(airport => airport.code === result.destination);
-        if (destAirport) {
-          setProcessingSteps(prev => [...prev, `Found destination airport: ${destAirport.city} (${destAirport.code})`]);
+        if (result.origin) {
+          const originAirport = allAirportOptions.find(
+            (airport) => airport.code === result.origin
+          );
+          if (originAirport) {
+            setProcessingSteps((prev) => [
+              ...prev,
+              `Found origin airport: ${originAirport.city} (${originAirport.code})`,
+            ]);
+          } else {
+            setProcessingSteps((prev) => [
+              ...prev,
+              `Found origin airport code: ${result.origin}`,
+            ]);
+          }
         } else {
-          setProcessingSteps(prev => [...prev, `Found destination airport code: ${result.destination}`]);
+          setProcessingSteps((prev) => [
+            ...prev,
+            "No origin location detected",
+          ]);
         }
-      } else {
-        setProcessingSteps(prev => [...prev, "No destination location detected"]);
-      }
 
-      setProcessingSteps(prev => [...prev, "Looking for travel dates..."]);
-
-      if (result.departureDate) {
-        setProcessingSteps(prev => [...prev, `Found departure date: ${result.departureDate.toLocaleDateString()}`]);
-      } else {
-        setProcessingSteps(prev => [...prev, "No departure date found"]);
-      }
-
-      if (result.tripType === 'roundTrip') {
-        if (result.returnDate) {
-          setProcessingSteps(prev => [...prev, `Found return date: ${result.returnDate.toLocaleDateString()}`]);
+        if (result.destination) {
+          const destAirport = allAirportOptions.find(
+            (airport) => airport.code === result.destination
+          );
+          if (destAirport) {
+            setProcessingSteps((prev) => [
+              ...prev,
+              `Found destination airport: ${destAirport.city} (${destAirport.code})`,
+            ]);
+          } else {
+            setProcessingSteps((prev) => [
+              ...prev,
+              `Found destination airport code: ${result.destination}`,
+            ]);
+          }
         } else {
-          setProcessingSteps(prev => [...prev, "No return date found"]);
+          setProcessingSteps((prev) => [
+            ...prev,
+            "No destination location detected",
+          ]);
         }
-      }
 
-      if (result.passengers) {
-        setProcessingSteps(prev => [
-          ...prev, 
-          `Detected passengers: ${result.passengers.adults} adult(s), ${result.passengers.children} child(ren), ${result.passengers.infants} infant(s)`
+        setProcessingSteps((prev) => [...prev, "Looking for travel dates..."]);
+
+        if (result.departureDate) {
+          setProcessingSteps((prev) => [
+            ...prev,
+            `Found departure date: ${result.departureDate.toLocaleDateString()}`,
+          ]);
+        } else {
+          setProcessingSteps((prev) => [...prev, "No departure date found"]);
+        }
+
+        if (result.tripType === "roundTrip") {
+          if (result.returnDate) {
+            setProcessingSteps((prev) => [
+              ...prev,
+              `Found return date: ${result.returnDate.toLocaleDateString()}`,
+            ]);
+          } else {
+            setProcessingSteps((prev) => [...prev, "No return date found"]);
+          }
+        }
+
+        if (result.passengers) {
+          setProcessingSteps((prev) => [
+            ...prev,
+            `Detected passengers: ${result.passengers.adults} adult(s), ${result.passengers.children} child(ren), ${result.passengers.infants} infant(s)`,
+          ]);
+        } else {
+          setProcessingSteps((prev) => [
+            ...prev,
+            "Using default passenger count: 1 adult",
+          ]);
+        }
+
+        // Final processing
+        setProcessingSteps((prev) => [
+          ...prev,
+          "Finalizing search parameters...",
         ]);
-      } else {
-        setProcessingSteps(prev => [...prev, "Using default passenger count: 1 adult"]);
-      }
 
-      // Final processing
-      setProcessingSteps(prev => [...prev, "Finalizing search parameters..."]);
-
-      // Update form state with parsed values
-      if (result.origin) {
-        const originAirport = allAirportOptions.find(airport => airport.code === result.origin);
-        if (originAirport) {
-          setSelectedOrigin([originAirport]);
-          setOrigin(result.origin);
+        // Update form state with parsed values
+        if (result.origin) {
+          const originAirport = allAirportOptions.find(
+            (airport) => airport.code === result.origin
+          );
+          if (originAirport) {
+            setSelectedOrigin([originAirport]);
+            setOrigin(result.origin);
+          }
         }
-      }
 
-      if (result.destination) {
-        const destAirport = allAirportOptions.find(airport => airport.code === result.destination);
-        if (destAirport) {
-          setSelectedDestination([destAirport]);
-          setDestination(result.destination);
+        if (result.destination) {
+          const destAirport = allAirportOptions.find(
+            (airport) => airport.code === result.destination
+          );
+          if (destAirport) {
+            setSelectedDestination([destAirport]);
+            setDestination(result.destination);
+          }
         }
+
+        if (result.departureDate) {
+          setDepartureDate(result.departureDate);
+        }
+
+        if (result.returnDate) {
+          setArrivalDate(result.returnDate);
+        }
+
+        if (result.tripType) {
+          setTripType(result.tripType);
+        }
+
+        if (result.passengers) {
+          setAdults(result.passengers.adults);
+          setChildren(result.passengers.children);
+          setInfants(result.passengers.infants);
+        }
+
+        // Check if we have enough information to perform a search
+        const canSearch =
+          result.origin &&
+          result.destination &&
+          result.departureDate &&
+          (result.tripType !== "roundTrip" || result.returnDate);
+
+        if (canSearch) {
+          setProcessingSteps((prev) => [
+            ...prev,
+            "Search parameters complete! Ready to search.",
+          ]);
+        } else {
+          // Identify missing parameters
+          const missing = [];
+          if (!result.origin) missing.push("origin");
+          if (!result.destination) missing.push("destination");
+          if (!result.departureDate) missing.push("departure date");
+          if (result.tripType === "roundTrip" && !result.returnDate)
+            missing.push("return date");
+
+          setProcessingSteps((prev) => [
+            ...prev,
+            `Missing required parameters: ${missing.join(", ")}`,
+          ]);
+          setNlpError(`Please provide ${missing.join(", ")}`);
+        }
+
+        return { result, canSearch };
+      } catch (error) {
+        console.error("Error parsing natural language query:", error);
+        setNlpError(
+          error.response?.data?.error ||
+            "Sorry, I couldn't understand that query. Please try again or use the standard search form."
+        );
+        return { result: null, canSearch: false };
+      } finally {
+        setIsProcessing(false);
       }
-
-      if (result.departureDate) {
-        setDepartureDate(result.departureDate);
-      }
-
-      if (result.returnDate) {
-        setArrivalDate(result.returnDate);
-      }
-
-      if (result.tripType) {
-        setTripType(result.tripType);
-      }
-
-      if (result.passengers) {
-        setAdults(result.passengers.adults);
-        setChildren(result.passengers.children);
-        setInfants(result.passengers.infants);
-      }
-
-      // Check if we have enough information to perform a search
-      const canSearch = result.origin && result.destination && result.departureDate && 
-                        (result.tripType !== 'roundTrip' || result.returnDate);
-
-      if (canSearch) {
-        setProcessingSteps(prev => [...prev, "Search parameters complete! Ready to search."]);
-      } else {
-        // Identify missing parameters
-        const missing = [];
-        if (!result.origin) missing.push("origin");
-        if (!result.destination) missing.push("destination");
-        if (!result.departureDate) missing.push("departure date");
-        if (result.tripType === 'roundTrip' && !result.returnDate) missing.push("return date");
-
-        setProcessingSteps(prev => [...prev, `Missing required parameters: ${missing.join(", ")}`]);
-        setNlpError(`Please provide ${missing.join(", ")}`);
-      }
-
-      return { result, canSearch };
-    } catch (error) {
-      console.error("Error parsing natural language query:", error);
-      setNlpError(error.response?.data?.error || "Sorry, I couldn't understand that query. Please try again or use the standard search form.");
-      return { result: null, canSearch: false };
-    } finally {
-      setIsProcessing(false);
-    }
-  }, [allAirportOptions]);
+    },
+    [allAirportOptions]
+  );
 
   // Handle NLP search submission
   const handleNlpSubmit = async (event) => {
@@ -755,8 +1007,8 @@ export default function FlightSearchComponent() {
           tripType: result.tripType,
         });
 
-        if (result.tripType === 'roundTrip' && result.returnDate) {
-          params.append('arrivalDate', formatDateForSubmit(result.returnDate));
+        if (result.tripType === "roundTrip" && result.returnDate) {
+          params.append("arrivalDate", formatDateForSubmit(result.returnDate));
         }
 
         // Redirect to flight search results
@@ -851,7 +1103,11 @@ export default function FlightSearchComponent() {
             <div className="d-flex justify-content-end mb-3 w-100">
               <button
                 type="button"
-                className={`btn btn-sm ${showNlpSearch ? 'btn-outline-primary' : 'btn-outline-secondary'}`}
+                className={`btn btn-sm ${
+                  showNlpSearch
+                    ? "btn-outline-primary"
+                    : "btn-outline-secondary"
+                }`}
                 onClick={() => setShowNlpSearch(!showNlpSearch)}
               >
                 {showNlpSearch ? (
@@ -870,7 +1126,9 @@ export default function FlightSearchComponent() {
               <div className="w-100 mb-4">
                 <div className="card border-0 shadow-sm">
                   <div className="card-body">
-                    <h5 className="card-title mb-3">Search flights using natural language</h5>
+                    <h5 className="card-title mb-3">
+                      Search flights using natural language
+                    </h5>
                     <div className="position-relative mb-3">
                       <input
                         ref={nlpInputRef}
@@ -880,7 +1138,7 @@ export default function FlightSearchComponent() {
                         value={nlpQuery}
                         onChange={(e) => setNlpQuery(e.target.value)}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                             handleNlpSubmit();
                           }
@@ -928,7 +1186,9 @@ export default function FlightSearchComponent() {
 
                     {/* Suggestions */}
                     <div>
-                      <p className="text-muted small mb-2">Try these examples:</p>
+                      <p className="text-muted small mb-2">
+                        Try these examples:
+                      </p>
                       <div className="d-flex flex-wrap gap-2">
                         {nlpSuggestions.map((suggestion, index) => (
                           <button
@@ -1074,7 +1334,10 @@ export default function FlightSearchComponent() {
                   {/* --- Date Picker Section - REVERTED to separate pickers --- */}
                   {/* Departure DatePicker */}
                   <div className="modern-input-group">
-                    <label htmlFor="departureDate" className="modern-input-label">
+                    <label
+                      htmlFor="departureDate"
+                      className="modern-input-label"
+                    >
                       Depart
                     </label>
                     <DatePicker
@@ -1094,7 +1357,10 @@ export default function FlightSearchComponent() {
                   {/* Arrival DatePicker - CONDITIONAL based on tripType */}
                   {tripType === "roundTrip" && (
                     <div className="modern-input-group">
-                      <label htmlFor="arrivalDate" className="modern-input-label">
+                      <label
+                        htmlFor="arrivalDate"
+                        className="modern-input-label"
+                      >
                         Return
                       </label>
                       <DatePicker
@@ -1177,7 +1443,8 @@ export default function FlightSearchComponent() {
                         </div>
                         <div className="passenger-type d-flex justify-content-between align-items-center mb-2">
                           <label className="me-3">
-                            Children <small className="text-muted">(2-14)</small>
+                            Children{" "}
+                            <small className="text-muted">(2-14)</small>
                           </label>
                           <div
                             className="input-group input-group-sm"
