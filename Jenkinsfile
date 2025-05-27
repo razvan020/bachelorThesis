@@ -29,7 +29,7 @@ pipeline {
           string(credentialsId: 'gmail-pass', variable: 'GMAILPASS'),
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY'),
-          string(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDENTIALS_BASE64'),
+          string(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDENTIALS_JSON_CONTENT'),
           string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
           string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID')
 
@@ -41,9 +41,7 @@ pipeline {
  # Ensure any old google-credentials.json (file or directory) is removed
             rm -rf google-credentials.json
 
-       cat > google-credentials.json << 'EOF'
-\$GOOGLE_CREDENTIALS_JSON
-EOF
+            echo "\$GOOGLE_CREDENTIALS_JSON_CONTENT" > google-credentials.json
 
             cat > .env <<EOF
             NEXT_PUBLIC_BACKEND_URL=http://backend:8080
