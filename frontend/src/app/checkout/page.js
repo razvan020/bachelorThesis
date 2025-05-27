@@ -463,7 +463,7 @@ function CheckoutPageContent() {
         <style jsx global>{`
           .checkout-error-page {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, rgb(0, 0, 0) 0%, #1e293b 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -496,7 +496,7 @@ function CheckoutPageContent() {
         <style jsx global>{`
           .checkout-empty-page {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, rgb(0, 0, 0rgb(0, 0, 0)e293b 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -504,7 +504,7 @@ function CheckoutPageContent() {
           }
 
           .checkout-empty-alert {
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 20px;
             color: rgba(255, 255, 255, 0.9);
@@ -926,7 +926,7 @@ function CheckoutPageContent() {
 
         /* Error Alert */
         .payment-error-alert {
-          background: rgba(239, 68, 68, 0.1);
+          background: rgba(0, 0, 0, 0.1);
           border: 1px solid rgba(239, 68, 68, 0.3);
           border-radius: 12px;
           color: #fca5a5;
@@ -936,7 +936,7 @@ function CheckoutPageContent() {
         /* Success State */
         .success-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          background: transparent;
           display: flex;
           align-items: center;
           justify-content: center;

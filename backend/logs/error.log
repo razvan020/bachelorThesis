@@ -2024,3 +2024,247 @@ Caused by: java.net.ConnectException: Connection refused: getsockopt
 2025-05-27 16:36:21.563 ERROR [ae8f9db8-efb7-4326-81c9-d9ecf8292d18] 33352 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
 2025-05-27 16:36:21.727 ERROR [4d51ed1e-cdb8-4fae-b434-d5cdf4fc70a5] 33352 --- [nio-8080-exec-4] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
 2025-05-27 16:54:48.329 ERROR [b896e889-0b5c-4ff6-a82d-0f594ed8e17d] 33352 --- [io-8080-exec-10] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-27 17:24:01.931 ERROR [069252f6-f307-4274-a0a4-c3605b97c6da] 33352 --- [nio-8080-exec-8] o.e.x.config.GlobalExceptionHandler      : Unhandled exception occurred
+
+org.springframework.web.multipart.MaxUploadSizeExceededException: Maximum upload size exceeded
+	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest.handleParseFailure(StandardMultipartHttpServletRequest.java:122)
+	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest.parseRequest(StandardMultipartHttpServletRequest.java:110)
+	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest.<init>(StandardMultipartHttpServletRequest.java:86)
+	at org.springframework.web.multipart.support.StandardServletMultipartResolver.resolveMultipart(StandardServletMultipartResolver.java:112)
+	at org.springframework.web.servlet.DispatcherServlet.checkMultipart(DispatcherServlet.java:1227)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1061)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.example.xlr8travel.security.SecurityHeadersFilter.doFilter(SecurityHeadersFilter.java:47)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.example.xlr8travel.security.RateLimitingFilter.doFilterInternal(RateLimitingFilter.java:78)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.ObservationFilterChainDecorator$FilterObservation$SimpleFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:479)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$1(ObservationFilterChainDecorator.java:340)
+	at org.springframework.security.web.ObservationFilterChainDecorator.lambda$wrapSecured$0(ObservationFilterChainDecorator.java:82)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:128)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:181)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter.doFilterInternal(DefaultLogoutPageGeneratingFilter.java:58)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:189)
+	at org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter.doFilter(DefaultLoginPageGeneratingFilter.java:175)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.example.xlr8travel.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter.doFilterInternal(OAuth2AuthorizationRequestRedirectFilter.java:181)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:227)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:240)
+	at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:323)
+	at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:224)
+	at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:137)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.example.xlr8travel.config.RequestIdFilter.doFilter(RequestIdFilter.java:45)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException: The field file exceeds its maximum permitted size of 1048576 bytes.
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2825)
+	at org.apache.catalina.connector.Request.getParts(Request.java:2685)
+	at org.apache.catalina.connector.RequestFacade.getParts(RequestFacade.java:773)
+	at jakarta.servlet.http.HttpServletRequestWrapper.getParts(HttpServletRequestWrapper.java:315)
+	at jakarta.servlet.http.HttpServletRequestWrapper.getParts(HttpServletRequestWrapper.java:315)
+	at jakarta.servlet.http.HttpServletRequestWrapper.getParts(HttpServletRequestWrapper.java:315)
+	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest.parseRequest(StandardMultipartHttpServletRequest.java:93)
+	... 164 common frames omitted
+Caused by: org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException: The field file exceeds its maximum permitted size of 1048576 bytes.
+	at org.apache.tomcat.util.http.fileupload.impl.FileItemStreamImpl$1.raiseError(FileItemStreamImpl.java:117)
+	at org.apache.tomcat.util.http.fileupload.util.LimitedInputStream.checkLimit(LimitedInputStream.java:76)
+	at org.apache.tomcat.util.http.fileupload.util.LimitedInputStream.read(LimitedInputStream.java:135)
+	at java.base/java.io.FilterInputStream.read(FilterInputStream.java:95)
+	at org.apache.tomcat.util.http.fileupload.util.Streams.copy(Streams.java:96)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:292)
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2784)
+	... 170 common frames omitted
+
+2025-05-27 17:36:44.702 ERROR [b52d240b-9dee-455d-87d8-040034949ce7] 33032 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:37:36.766 ERROR [8235d299-6578-4bc8-918b-82ab2ffeaae6] 33032 --- [io-8080-exec-10] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:40:55.857 ERROR [f63d82b0-be72-45a3-94fe-a632305a7588] 23080 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:00.466 ERROR [6aa2c266-70d8-4cb0-873c-4f655f039f11] 23080 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:05.375 ERROR [b151dcec-fceb-4696-bb08-f6abcd0758ca] 23080 --- [nio-8080-exec-3] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:06.720 ERROR [c034bba7-0e93-4016-83ac-7cd06d7b979b] 23080 --- [nio-8080-exec-6] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:06.802 ERROR [27b0df9d-5263-4bd7-ab19-3a61ed76e036] 23080 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:06.849 ERROR [9697f90c-166a-4979-a6a3-b271af7e7908] 23080 --- [nio-8080-exec-7] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:06.852 ERROR [1ee765db-9cbb-4f53-8625-98cbd828934e] 23080 --- [nio-8080-exec-8] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:06.893 ERROR [bdbdcfe6-020e-4e75-bff3-eb8851a24355] 23080 --- [nio-8080-exec-9] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:10.491 ERROR [11e580fc-15ad-47cb-8040-c5ca2550fd9a] 23080 --- [io-8080-exec-10] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:17.282 ERROR [8d858c41-6bb8-4e91-bbe9-15f8f5795807] 23080 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:20.745 ERROR [09909e78-f741-46d2-8ba5-d87ea02a518d] 23080 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:20.862 ERROR [dd52c13d-e047-4fe8-bba8-6c6712051ac3] 23080 --- [nio-8080-exec-3] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:20.872 ERROR [24257895-d2a7-4ef9-87cb-1f6099caacd2] 23080 --- [nio-8080-exec-4] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:21.256 ERROR [f746599c-eae3-4cf5-b2da-cd3537660244] 23080 --- [nio-8080-exec-6] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:47.273 ERROR [2899cd02-e8c7-4e95-81ac-fa2d0b7a38bb] 23080 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:55.555 ERROR [f94e5c88-2f2f-49e1-9598-a88679093801] 23080 --- [nio-8080-exec-7] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:58.808 ERROR [03a2aad6-e572-4eed-b30f-d5a4f3767741] 23080 --- [nio-8080-exec-8] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:58.909 ERROR [a6e6b269-1baa-4f09-a8bf-9450d1f8f5bd] 23080 --- [nio-8080-exec-9] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:58.931 ERROR [b57f4742-d0fc-4bf4-9768-cf6b629d1b2a] 23080 --- [io-8080-exec-10] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:41:58.996 ERROR [1b07dc0c-d126-47e0-9db6-c29e56607f1e] 23080 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:43:39.800 ERROR [236790ec-3d5f-4949-858a-c8e27a7ec2a4] 35756 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:43:42.129 ERROR [0a8835a2-4447-49b7-bc0c-215ae5614b97] 35756 --- [nio-8080-exec-3] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:43:47.835 ERROR [f9943314-e738-457f-856b-0a94831754e6] 35756 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:43:52.228 ERROR [f431fc24-b5c1-49e6-9ae1-dae788c2e88b] 35756 --- [nio-8080-exec-4] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:43:52.346 ERROR [4845e66d-7128-47ac-bca0-744a6b84f754] 35756 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:43:52.352 ERROR [b215b66a-3188-49ea-a3fe-06230fb5baa0] 35756 --- [nio-8080-exec-6] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:43:52.436 ERROR [62e993c7-4495-4110-b9c1-4930773b4081] 35756 --- [nio-8080-exec-7] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:46:37.003 ERROR [e1689299-a740-4d64-9e2e-d30d1fbfabf3] 33076 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:46:42.253 ERROR [c985d656-a2e6-452c-a900-ac944ad69aa0] 33076 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:46:44.995 ERROR [e31fab7c-d12a-4cd7-9b9e-de084f184afd] 33076 --- [nio-8080-exec-3] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:46:45.003 ERROR [18e52e2e-1044-4ed9-bac1-ab00d9c4adc8] 33076 --- [nio-8080-exec-4] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:46:47.177 ERROR [a2e587c5-d7ae-4c3d-8e2e-36cb93d57a17] 33076 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:07.340 ERROR [a0a9458d-dd2e-4525-8879-d6d0ed1946fe] 33076 --- [nio-8080-exec-6] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:07.377 ERROR [a9644812-ad37-4804-838e-e58fe0c458a8] 33076 --- [nio-8080-exec-7] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:14.565 ERROR [9fd35f61-3ec4-4a9e-a3ef-705aa9deb914] 33076 --- [nio-8080-exec-8] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:18.132 ERROR [512af962-aa6c-4850-bf14-6ad84c3db2f7] 33076 --- [nio-8080-exec-9] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:18.251 ERROR [62b50a4d-f53f-4589-a107-29f62f4db562] 33076 --- [io-8080-exec-10] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:23.170 ERROR [dffea242-b400-4a3a-afcd-edd4b648ed10] 33076 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:32.613 ERROR [352fc231-48c8-4401-9500-a37b80e04d4a] 33076 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:35.892 ERROR [b3f41b0e-4ddf-4e09-96b6-3952de03257e] 33076 --- [nio-8080-exec-4] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:35.993 ERROR [7d2b8b83-e3b5-4f27-ad10-df676f30dbd6] 33076 --- [nio-8080-exec-3] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:36.002 ERROR [427625e5-1106-4d5e-a52d-e008ccd871b9] 33076 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:47:36.074 ERROR [8285d73a-d2be-4841-9137-9695a231b363] 33076 --- [nio-8080-exec-6] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:48:29.678 ERROR [fd459e71-df9c-4faf-a7bd-f22bf470155a] 33076 --- [nio-8080-exec-7] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:48:44.501 ERROR [a2766b70-5b1c-4afd-beda-c63c256a3e06] 33076 --- [nio-8080-exec-8] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:48:44.582 ERROR [aae84460-137e-4506-9251-b2774510014c] 33076 --- [nio-8080-exec-9] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:48:44.635 ERROR [d6242b02-f116-42e4-83ee-c1fc77b80a82] 33076 --- [io-8080-exec-10] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:48:44.684 ERROR [49acab4e-5631-4d27-bdcd-321685818e66] 33076 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:51:07.729 ERROR [2dc0ebc6-6942-4978-9740-a2e1a352b643] 25860 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:51:13.818 ERROR [c3cdefd8-6843-4ccd-83d1-9632b8a4c6f7] 25860 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:51:17.976 ERROR [b9bc60c6-4082-4821-8d20-7f5e048d6c04] 25860 --- [nio-8080-exec-3] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:51:18.082 ERROR [312575de-e0f5-41f6-b546-d8dd4faf747a] 25860 --- [nio-8080-exec-4] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:51:18.127 ERROR [ded7980a-9bf8-45e5-948a-9d6e8b5aff25] 25860 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 17:51:18.182 ERROR [e105bf18-fb26-4443-963f-6cbd3399ebb6] 25860 --- [nio-8080-exec-6] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found

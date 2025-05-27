@@ -269,6 +269,7 @@ public class DataLoader implements CommandLineRunner {
         // Create flights from OTP (Bucharest) to different destinations
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
+        LocalDate fourDays = today.plusDays(4);
         LocalDate nextWeek = today.plusDays(7);
 
         // OTP to Barcelona (BCN)
@@ -292,11 +293,15 @@ public class DataLoader implements CommandLineRunner {
         // OTP to Paris (CDG)
         Flight otpToCdg1 = new Flight(null, "XT-OTP-CDG-1", LocalTime.of(9, 15), LocalTime.of(11, 30),
                 "OTP", "CDG", tomorrow, tomorrow, "E", "2", LocalDateTime.now(),
-                airline, new HashSet<Ticket>(), BigDecimal.valueOf(31.99)); // Price in EUR
+                airline, new HashSet<Ticket>(), BigDecimal.valueOf(31.99));// Price in EUR
 
         Flight otpToCdg2 = new Flight(null, "XT-OTP-CDG-2", LocalTime.of(18, 45), LocalTime.of(21, 00),
                 "OTP", "CDG", nextWeek, nextWeek, "F", "4", LocalDateTime.now(),
                 airline, new HashSet<Ticket>(), BigDecimal.valueOf(37.99)); // Price in EUR
+
+        Flight cdgToOtp1 = new Flight(null, "XT-CDG-OTP-1", LocalTime.of(9, 15), LocalTime.of(11, 30),
+                "CDG", "OTP", fourDays, fourDays, "E", "3", LocalDateTime.now(),
+                airline, new HashSet<Ticket>(), BigDecimal.valueOf(31.99)); // Price in EUR
 
         // OTP to Rome (FCO)
         Flight otpToFco1 = new Flight(null, "XT-OTP-FCO-1", LocalTime.of(10, 30), LocalTime.of(12, 15),
@@ -316,6 +321,10 @@ public class DataLoader implements CommandLineRunner {
                 "OTP", "AMS", nextWeek, nextWeek, "J", "12", LocalDateTime.now(),
                 airline, new HashSet<Ticket>(), BigDecimal.valueOf(39.99)); // Price in EUR
 
+        LocalDate dayAfterTomorrow = tomorrow.plusDays(1);
+        Flight cdgToOtp_tomorrow_plus_1 = new Flight(null, "XT-CDG-OTP-2", LocalTime.of(14, 15), LocalTime.of(16, 30),
+                "CDG", "OTP", dayAfterTomorrow, dayAfterTomorrow, "F", "5", LocalDateTime.now(),
+                airline, new HashSet<Ticket>(), BigDecimal.valueOf(33.99));
         // AMS to OTP
         Flight amsToOtp1 = new Flight(null, "XT-AMS-OTP-1", LocalTime.of(12, 30), LocalTime.of(15, 15),
                 "AMS", "OTP", tomorrow, tomorrow, "K", "14", LocalDateTime.now(),
@@ -332,15 +341,18 @@ public class DataLoader implements CommandLineRunner {
         airline.addFlight(otpToLhr2);
         airline.addFlight(otpToCdg1);
         airline.addFlight(otpToCdg2);
+        airline.addFlight(cdgToOtp1);
         airline.addFlight(otpToFco1);
         airline.addFlight(otpToFco2);
         airline.addFlight(otpToAms1);
         airline.addFlight(otpToAms2);
         airline.addFlight(amsToOtp1);
         airline.addFlight(amsToOtp2);
+        airline.addFlight(cdgToOtp_tomorrow_plus_1);
 
         // Save all flights to the database
         flightService.save(flight1);
+        flightService.save(cdgToOtp_tomorrow_plus_1);
         flightService.save(flight2);
         flightService.save(flight3);
         flightService.save(flight4);
@@ -423,6 +435,7 @@ public class DataLoader implements CommandLineRunner {
         flightService.save(otpToLhr1);
         flightService.save(otpToLhr2);
         flightService.save(otpToCdg1);
+        flightService.save(cdgToOtp1);
         flightService.save(otpToCdg2);
         flightService.save(otpToFco1);
         flightService.save(otpToFco2);

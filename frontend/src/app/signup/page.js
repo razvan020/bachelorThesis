@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   FaGoogle,
   FaFacebookF,
@@ -39,6 +40,69 @@ export default function SignupPage() {
   const recaptchaRef = useRef(null);
 
   const router = useRouter();
+  const auth = useAuth();
+
+  // Check for OAuth completion parameter in URL on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const oauthParam = urlParams.get("oauth");
+
+    // After OAuth redirect, check if we need to fetch tokens from session
+    const checkOAuthLogin = async () => {
+      try {
+        console.log(
+          "OAuth success detected, retrieving tokens from session..."
+        );
+
+        // Make request to get tokens from session
+        const response = await fetch("/api/oauth/complete", {
+          method: "POST",
+          credentials: "include", // Important: include session cookies
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to retrieve OAuth tokens from session");
+        }
+
+        const data = await response.json();
+
+        // Store tokens in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("username", data.username);
+
+        // Update auth context
+        await auth.handleOAuthLogin(data.token, data.refreshToken);
+
+        // Redirect to home page after successful login
+        router.push("/");
+
+        console.log("OAuth login successful, session tokens processed");
+      } catch (err) {
+        console.error("Error checking OAuth login:", err);
+        setError("Failed to complete login. Please try again.");
+      }
+    };
+
+    if (oauthParam === "success") {
+      // Clean up the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+      checkOAuthLogin();
+    } else if (oauthParam === "complete") {
+      // For backward compatibility
+      window.history.replaceState({}, document.title, window.location.pathname);
+      auth
+        .handleOAuthLogin()
+        .then(() => router.push("/"))
+        .catch((err) => {
+          console.error("Error with legacy OAuth login:", err);
+          setError("Failed to complete login. Please try again.");
+        });
+    }
+  }, [auth, router]);
 
   const handleToggleTheme = () => setDarkMode(!darkMode);
 
@@ -122,12 +186,16 @@ export default function SignupPage() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    alert("Google Sign-In not implemented yet.");
+  const [oauthLoading, setOauthLoading] = useState(false);
+
+  const handleGoogleSignIn = () => {
+    setOauthLoading(true);
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/oauth2/authorization/google`;
   };
 
-  const handleFacebookSignIn = async () => {
-    alert("Facebook Sign-In not implemented yet.");
+  const handleFacebookSignIn = () => {
+    setOauthLoading(true);
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/oauth2/authorization/facebook`;
   };
 
   return (
@@ -490,8 +558,8 @@ export default function SignupPage() {
         }
 
         .social-btn-google:hover {
-          border-color: #4285f4;
-          box-shadow: 0 8px 25px rgba(66, 133, 244, 0.3);
+          border-color: #ff6f00;
+          box-shadow: 0 8px 25px rgba(255, 111, 0, 0.3);
         }
 
         .social-btn-facebook:hover {
@@ -1008,18 +1076,18 @@ export default function SignupPage() {
               <button
                 className="social-btn social-btn-google"
                 onClick={handleGoogleSignIn}
-                disabled={isLoading}
+                disabled={isLoading || oauthLoading}
               >
                 <FaGoogle />
-                Google
+                {oauthLoading ? "Connecting..." : "Google"}
               </button>
               <button
                 className="social-btn social-btn-facebook"
                 onClick={handleFacebookSignIn}
-                disabled={isLoading}
+                disabled={isLoading || oauthLoading}
               >
                 <FaFacebookF />
-                Facebook
+                {oauthLoading ? "Connecting..." : "Facebook"}
               </button>
             </div>
 

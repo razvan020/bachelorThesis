@@ -14,6 +14,10 @@ import {
   FaUpload,
   FaShieldAlt,
   FaSave,
+  FaUserCircle,
+  FaEnvelope,
+  FaAt,
+  FaCloudUploadAlt,
 } from "react-icons/fa";
 
 export default function ProfilePage() {
@@ -277,71 +281,1170 @@ export default function ProfilePage() {
 
   if (error && !profile) {
     return (
-      <div className="modern-profile-page">
-        <div className="profile-container">
-          <div className="alert alert-error">
-            <div className="alert-content">
-              <FaTimes />
-              <span>{error}</span>
+      <>
+        <style jsx global>{`
+          :root {
+            --primary-orange: #ff6f00;
+            --secondary-gold: #fbbf24;
+            --success-green: #10b981;
+            --error-red: #ef4444;
+            --dark-bg: #000000;
+            --darker-bg: #000000;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --hover-bg: rgba(255, 255, 255, 0.05);
+          }
+        `}</style>
+
+        <div className="modern-profile-page">
+          <div className="profile-container">
+            <div className="error-state">
+              <div className="error-icon">
+                <FaTimes />
+              </div>
+              <h2>Access Denied</h2>
+              <p>{error}</p>
+              <button
+                className="retry-btn"
+                onClick={() => window.location.reload()}
+              >
+                Try Again
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (!profile) {
     return (
-      <div className="modern-profile-page">
-        <div className="profile-loading">
-          <div className="loading-spinner"></div>
-          <p>Loading profile…</p>
+      <>
+        <style jsx global>{`
+          :root {
+            --primary-orange: #ff6f00;
+            --secondary-gold: #fbbf24;
+            --success-green: #10b981;
+            --error-red: #ef4444;
+            --dark-bg: #000000;
+            --darker-bg: #000000;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --hover-bg: rgba(255, 255, 255, 0.05);
+          }
+        `}</style>
+
+        <div className="modern-profile-page">
+          <div className="loading-state">
+            <div className="loading-animation">
+              <div className="loading-circle"></div>
+              <div className="loading-circle"></div>
+              <div className="loading-circle"></div>
+            </div>
+            <h3>Loading your profile</h3>
+            <p>Please wait while we fetch your information...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="modern-profile-page">
-      <div className="profile-container">
-        {/* Header Section */}
-        <div className="profile-header">
-          <div className="header-background">
-            <div className="header-gradient"></div>
-            <div className="header-pattern"></div>
-          </div>
+    <>
+      <style jsx global>{`
+        :root {
+          --primary-orange: #ff6f00;
+          --secondary-gold: #fbbf24;
+          --success-green: #10b981;
+          --error-red: #ef4444;
+          --dark-bg: #000000;
+          --darker-bg: #000000;
+          --glass-bg: rgba(255, 255, 255, 0.02);
+          --glass-border: rgba(255, 255, 255, 0.08);
+          --text-primary: #ffffff;
+          --text-secondary: rgba(255, 255, 255, 0.8);
+          --text-muted: rgba(255, 255, 255, 0.5);
+          --card-bg: rgba(255, 255, 255, 0.03);
+          --hover-bg: rgba(255, 255, 255, 0.05);
+        }
 
-          <div className="profile-header-content">
-            <div className="profile-avatar-section">
-              {/* Avatar Upload Area */}
-              <div
-                className={`avatar-upload-container ${
-                  isDragOver ? "drag-over" : ""
-                }`}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-              >
-                <div className="avatar-wrapper">
-                  <img
-                    src={avatarUrl || "/avatarSrc.png"}
-                    alt="Profile Avatar"
-                    className="profile-avatar"
-                  />
-                  <div className="avatar-overlay">
-                    <button
-                      className="avatar-upload-btn"
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+          background: var(--dark-bg);
+          color: var(--text-primary);
+          line-height: 1.6;
+        }
+
+        .modern-profile-page {
+          min-height: 100vh;
+          background: linear-gradient(
+            135deg,
+            var(--darker-bg) 0%,
+            var(--dark-bg) 100%
+          );
+          padding: 3rem 0;
+          position: relative;
+          overflow-x: hidden;
+        }
+
+        .modern-profile-page::before {
+          content: "";
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(
+              circle at 20% 20%,
+              rgba(255, 111, 0, 0.03) 0%,
+              transparent 50%
+            ),
+            radial-gradient(
+              circle at 80% 80%,
+              rgba(251, 191, 36, 0.02) 0%,
+              transparent 50%
+            ),
+            radial-gradient(
+              circle at 40% 60%,
+              rgba(255, 111, 0, 0.01) 0%,
+              transparent 50%
+            );
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .profile-container {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 2rem;
+          position: relative;
+          z-index: 1;
+        }
+
+        /* Loading State */
+        .loading-state {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 60vh;
+          text-align: center;
+          gap: 2rem;
+        }
+
+        .loading-animation {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        .loading-circle {
+          width: 12px;
+          height: 12px;
+          background: var(--primary-orange);
+          border-radius: 50%;
+          animation: loadingBounce 1.4s ease-in-out infinite both;
+        }
+
+        .loading-circle:nth-child(1) {
+          animation-delay: -0.32s;
+        }
+        .loading-circle:nth-child(2) {
+          animation-delay: -0.16s;
+        }
+
+        @keyframes loadingBounce {
+          0%,
+          80%,
+          100% {
+            transform: scale(0);
+          }
+          40% {
+            transform: scale(1);
+          }
+        }
+
+        .loading-state h3 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+
+        .loading-state p {
+          color: var(--text-secondary);
+          font-size: 1rem;
+        }
+
+        /* Error State */
+        .error-state {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 60vh;
+          text-align: center;
+          gap: 2rem;
+          background: var(--card-bg);
+          backdrop-filter: blur(20px);
+          border: 1px solid var(--glass-border);
+          border-radius: 24px;
+          padding: 4rem 2rem;
+        }
+
+        .error-icon {
+          width: 80px;
+          height: 80px;
+          background: rgba(239, 68, 68, 0.1);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--error-red);
+          font-size: 2rem;
+        }
+
+        .error-state h2 {
+          font-size: 2rem;
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+
+        .error-state p {
+          color: var(--text-secondary);
+          font-size: 1.1rem;
+          max-width: 400px;
+        }
+
+        .retry-btn {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange),
+            var(--secondary-gold)
+          );
+          border: none;
+          color: white;
+          padding: 1rem 2rem;
+          border-radius: 16px;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 8px 32px rgba(255, 111, 0, 0.2);
+        }
+
+        .retry-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 40px rgba(255, 111, 0, 0.3);
+        }
+
+        /* Header Section */
+        .profile-header {
+          background: var(--card-bg);
+          backdrop-filter: blur(20px);
+          border: 1px solid var(--glass-border);
+          border-radius: 32px;
+          padding: 4rem 3rem 3rem;
+          margin-bottom: 3rem;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .profile-header::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 120px;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 111, 0, 0.05) 0%,
+            rgba(251, 191, 36, 0.03) 100%
+          );
+          z-index: 0;
+        }
+
+        .profile-header-content {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          gap: 4rem;
+        }
+
+        /* Avatar Section */
+        .avatar-section {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2rem;
+        }
+
+        .avatar-container {
+          position: relative;
+          transition: all 0.3s ease;
+        }
+
+        .avatar-container:hover {
+          transform: translateY(-4px);
+        }
+
+        .avatar-wrapper {
+          width: 160px;
+          height: 160px;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 4px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+          background: var(--glass-bg);
+          transition: all 0.3s ease;
+        }
+
+        .avatar-wrapper:hover {
+          border-color: var(--primary-orange);
+          box-shadow: 0 0 0 8px rgba(255, 111, 0, 0.1);
+        }
+
+        .profile-avatar {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: all 0.3s ease;
+        }
+
+        .avatar-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: all 0.3s ease;
+          cursor: pointer;
+        }
+
+        .avatar-wrapper:hover .avatar-overlay {
+          opacity: 1;
+        }
+
+        .avatar-upload-btn {
+          background: var(--primary-orange);
+          border: none;
+          color: white;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 1.2rem;
+          box-shadow: 0 4px 16px rgba(255, 111, 0, 0.3);
+        }
+
+        .avatar-upload-btn:hover {
+          background: #e66400;
+          transform: scale(1.1);
+          box-shadow: 0 6px 24px rgba(255, 111, 0, 0.4);
+        }
+
+        .upload-area {
+          background: var(--glass-bg);
+          border: 2px dashed var(--glass-border);
+          border-radius: 20px;
+          padding: 2rem;
+          text-align: center;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          min-width: 280px;
+        }
+
+        .upload-area.drag-over {
+          border-color: var(--primary-orange);
+          background: rgba(255, 111, 0, 0.05);
+          transform: scale(1.02);
+        }
+
+        .upload-area:hover {
+          border-color: rgba(255, 111, 0, 0.5);
+          background: var(--hover-bg);
+        }
+
+        .upload-icon {
+          width: 60px;
+          height: 60px;
+          background: rgba(255, 111, 0, 0.1);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 1rem;
+          color: var(--primary-orange);
+          font-size: 1.5rem;
+        }
+
+        .upload-text {
+          color: var(--text-primary);
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+          color: var(--text-muted);
+          font-size: 0.9rem;
+        }
+
+        .upload-actions {
+          display: flex;
+          gap: 1rem;
+          margin-top: 2rem;
+        }
+
+        .upload-confirm-btn {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange),
+            var(--secondary-gold)
+          );
+          border: none;
+          color: white;
+          padding: 1rem 2rem;
+          border-radius: 16px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 16px rgba(255, 111, 0, 0.2);
+          flex: 1;
+        }
+
+        .upload-confirm-btn:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(255, 111, 0, 0.3);
+        }
+
+        .upload-confirm-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        /* Profile Info */
+        .profile-info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+        }
+
+        .profile-name-section {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .profile-name {
+          font-size: 3rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          line-height: 1.1;
+          margin: 0;
+          background: linear-gradient(
+            135deg,
+            var(--text-primary),
+            rgba(255, 255, 255, 0.8)
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .profile-username {
+          font-size: 1.2rem;
+          color: var(--primary-orange);
+          font-weight: 500;
+          margin: 0;
+        }
+
+        .profile-details {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .profile-detail-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          background: var(--glass-bg);
+          padding: 1rem 1.5rem;
+          border-radius: 16px;
+          border: 1px solid var(--glass-border);
+          transition: all 0.3s ease;
+        }
+
+        .profile-detail-item:hover {
+          background: var(--hover-bg);
+          border-color: rgba(255, 111, 0, 0.2);
+        }
+
+        .detail-icon {
+          width: 40px;
+          height: 40px;
+          background: rgba(255, 111, 0, 0.1);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--primary-orange);
+        }
+
+        .detail-content {
+          flex: 1;
+        }
+
+        .detail-label {
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+          font-size: 1.1rem;
+          color: var(--text-primary);
+          font-weight: 600;
+          margin-top: 0.25rem;
+        }
+
+        /* Alert Messages */
+        .alert {
+          background: var(--card-bg);
+          backdrop-filter: blur(20px);
+          border: 1px solid;
+          border-radius: 20px;
+          padding: 1.5rem 2rem;
+          margin-bottom: 2rem;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          animation: slideIn 0.4s ease;
+        }
+
+        .alert-success {
+          border-color: rgba(16, 185, 129, 0.3);
+          background: rgba(16, 185, 129, 0.05);
+        }
+
+        .alert-error {
+          border-color: rgba(239, 68, 68, 0.3);
+          background: rgba(239, 68, 68, 0.05);
+        }
+
+        .alert-icon {
+          width: 24px;
+          height: 24px;
+          flex-shrink: 0;
+        }
+
+        .alert-success .alert-icon {
+          color: var(--success-green);
+        }
+
+        .alert-error .alert-icon {
+          color: var(--error-red);
+        }
+
+        .alert-message {
+          font-weight: 500;
+          font-size: 1rem;
+        }
+
+        .alert-success .alert-message {
+          color: var(--success-green);
+        }
+
+        .alert-error .alert-message {
+          color: var(--error-red);
+        }
+
+        /* Main Content */
+        .profile-content {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+        }
+
+        .profile-card {
+          background: var(--card-bg);
+          backdrop-filter: blur(20px);
+          border: 1px solid var(--glass-border);
+          border-radius: 24px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          height: fit-content;
+        }
+
+        .profile-card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(255, 111, 0, 0.2);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+          padding: 2rem 2rem 1rem;
+          border-bottom: 1px solid var(--glass-border);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .card-title-section {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .card-icon {
+          width: 50px;
+          height: 50px;
+          background: rgba(255, 111, 0, 0.1);
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--primary-orange);
+          font-size: 1.2rem;
+        }
+
+        .card-title {
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        .card-subtitle {
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+          margin: 0.25rem 0 0 0;
+        }
+
+        .edit-toggle-btn {
+          background: rgba(255, 111, 0, 0.1);
+          border: 1px solid rgba(255, 111, 0, 0.3);
+          color: var(--primary-orange);
+          padding: 0.75rem 1.5rem;
+          border-radius: 12px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 0.9rem;
+        }
+
+        .edit-toggle-btn:hover:not(:disabled) {
+          background: rgba(255, 111, 0, 0.2);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 16px rgba(255, 111, 0, 0.2);
+        }
+
+        .edit-toggle-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .card-content {
+          padding: 2rem;
+        }
+
+        /* Form Styles */
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+          margin-bottom: 2rem;
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          margin-bottom: 2rem;
+        }
+
+        .security-form .form-group {
+          margin-bottom: 2.5rem;
+        }
+
+        .security-form .form-group:last-of-type {
+          margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .form-input {
+          background: var(--glass-bg);
+          border: 2px solid var(--glass-border);
+          border-radius: 16px;
+          padding: 1.25rem 1.5rem;
+          color: var(--text-primary);
+          font-size: 1rem;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+          outline: none;
+          border-color: var(--primary-orange);
+          box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.1);
+          background: var(--hover-bg);
+        }
+
+        .form-input:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          background: var(--glass-bg);
+        }
+
+        .form-input::placeholder {
+          color: var(--text-muted);
+        }
+
+        .form-input:hover:not(:disabled) {
+          border-color: rgba(255, 111, 0, 0.3);
+          background: var(--hover-bg);
+        }
+
+        /* Security Form Specific Styles */
+        .security-form {
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* Password Requirements */
+        .password-requirements {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: 16px;
+          padding: 1.5rem;
+          margin-bottom: 2rem;
+        }
+
+        .requirements-title {
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin-bottom: 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .requirements-title::before {
+          content: "";
+          width: 4px;
+          height: 20px;
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange),
+            var(--secondary-gold)
+          );
+          border-radius: 2px;
+        }
+
+        .requirements-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .requirement-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          font-size: 0.9rem;
+          color: var(--text-muted);
+          transition: all 0.3s ease;
+        }
+
+        .requirement-item.met {
+          color: var(--success-green);
+        }
+
+        .requirement-icon {
+          width: 16px;
+          height: 16px;
+          opacity: 0.3;
+          transition: all 0.3s ease;
+        }
+
+        .requirement-item.met .requirement-icon {
+          opacity: 1;
+          color: var(--success-green);
+        }
+
+        /* Password Input */
+        .password-input-container {
+          position: relative;
+        }
+
+        .password-toggle {
+          position: absolute;
+          right: 1.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          color: var(--text-muted);
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          font-size: 1rem;
+        }
+
+        .password-toggle:hover {
+          color: var(--primary-orange);
+          background: rgba(255, 111, 0, 0.1);
+        }
+
+        /* Password Strength */
+        .password-strength {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-top: 0.75rem;
+        }
+
+        .strength-bar {
+          flex: 1;
+          height: 6px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 3px;
+          overflow: hidden;
+        }
+
+        .strength-fill {
+          height: 100%;
+          transition: all 0.4s ease;
+          border-radius: 3px;
+        }
+
+        .strength-label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          min-width: 80px;
+          text-align: right;
+        }
+
+        .password-mismatch {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: var(--error-red);
+          font-size: 0.9rem;
+          margin-top: 0.5rem;
+          font-weight: 500;
+        }
+
+        /* Form Actions */
+        .form-actions {
+          display: flex;
+          gap: 1rem;
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 1px solid var(--glass-border);
+        }
+
+        .action-btn {
+          padding: 1rem 2rem;
+          border-radius: 16px;
+          font-weight: 600;
+          font-size: 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+          flex: 1;
+          justify-content: center;
+        }
+
+        .primary-btn {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange),
+            var(--secondary-gold)
+          );
+          color: white;
+          box-shadow: 0 8px 24px rgba(255, 111, 0, 0.2);
+        }
+
+        .primary-btn:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 32px rgba(255, 111, 0, 0.3);
+        }
+
+        .secondary-btn {
+          background: rgba(239, 68, 68, 0.1);
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          color: var(--error-red);
+        }
+
+        .secondary-btn:hover:not(:disabled) {
+          background: rgba(239, 68, 68, 0.2);
+          transform: translateY(-1px);
+        }
+
+        .action-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        /* Button Spinner */
+        .btn-spinner {
+          width: 18px;
+          height: 18px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top: 2px solid white;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+          .profile-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .modern-profile-page {
+            padding: 2rem 0;
+          }
+
+          .profile-container {
+            padding: 0 1rem;
+          }
+
+          .profile-header {
+            padding: 2rem 1.5rem;
+            margin-bottom: 2rem;
+          }
+
+          .profile-header-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 2rem;
+          }
+
+          .profile-name {
+            font-size: 2.5rem;
+          }
+
+          .form-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+
+          .card-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1.5rem;
+            padding: 1.5rem;
+          }
+
+          .card-content {
+            padding: 1.5rem;
+          }
+
+          .form-actions {
+            flex-direction: column;
+          }
+
+          .avatar-wrapper {
+            width: 120px;
+            height: 120px;
+          }
+
+          .upload-area {
+            min-width: auto;
+            padding: 1.5rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .profile-header {
+            padding: 1.5rem 1rem;
+          }
+
+          .profile-name {
+            font-size: 2rem;
+          }
+
+          .card-content {
+            padding: 1rem;
+          }
+
+          .form-input {
+            padding: 1rem 1.25rem;
+          }
+
+          .action-btn {
+            padding: 0.875rem 1.5rem;
+            font-size: 0.95rem;
+          }
+
+          .upload-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+          }
+        }
+
+        /* Accessibility */
+        .action-btn:focus,
+        .edit-toggle-btn:focus,
+        .password-toggle:focus,
+        .upload-confirm-btn:focus,
+        .avatar-upload-btn:focus {
+          outline: 2px solid var(--primary-orange);
+          outline-offset: 2px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+          :root {
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-muted: rgba(255, 255, 255, 0.8);
+          }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: var(--glass-bg);
+          border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: rgba(255, 111, 0, 0.3);
+          border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 111, 0, 0.5);
+        }
+      `}</style>
+
+      <div className="modern-profile-page">
+        <div className="profile-container">
+          {/* Header Section */}
+          <header className="profile-header">
+            <div className="profile-header-content">
+              <div className="avatar-section">
+                <div className="avatar-container">
+                  <div className="avatar-wrapper">
+                    <img
+                      src={avatarUrl || "/avatarSrc.png"}
+                      alt="Profile Avatar"
+                      className="profile-avatar"
+                    />
+                    <div
+                      className="avatar-overlay"
                       onClick={() => fileInputRef.current?.click()}
-                      disabled={isLoading}
                     >
-                      <FaCamera />
-                    </button>
+                      <button
+                        className="avatar-upload-btn"
+                        disabled={isLoading}
+                      >
+                        <FaCamera />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                <div className="upload-hint">
-                  <p>Click to upload or drag & drop</p>
-                  <span>PNG, JPG up to 2MB</span>
+                <div
+                  className={`upload-area ${isDragOver ? "drag-over" : ""}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <div className="upload-icon">
+                    <FaCloudUploadAlt />
+                  </div>
+                  <div className="upload-text">
+                    {newPic ? newPic.name : "Upload new photo"}
+                  </div>
+                  <div className="upload-hint">
+                    Drop files here or click to browse
+                  </div>
                 </div>
 
                 <input
@@ -351,65 +1454,91 @@ export default function ProfilePage() {
                   onChange={(e) => handleFileSelect(e.target.files?.[0])}
                   style={{ display: "none" }}
                 />
+
+                {newPic && (
+                  <div className="upload-actions">
+                    <button
+                      className="upload-confirm-btn"
+                      onClick={uploadPic}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="btn-spinner"></div>
+                          <span>Uploading...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaUpload />
+                          <span>Save Photo</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {newPic && (
-                <button
-                  className="upload-confirm-btn"
-                  onClick={uploadPic}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <div className="btn-spinner"></div>
-                      <span>Uploading...</span>
-                    </>
-                  ) : (
-                    <>
-                      <FaUpload />
-                      <span>Save Photo</span>
-                    </>
-                  )}
-                </button>
-              )}
-            </div>
+              <div className="profile-info">
+                <div className="profile-name-section">
+                  <h1 className="profile-name">
+                    {profile.firstname} {profile.lastname}
+                  </h1>
+                  <p className="profile-username">@{profile.username}</p>
+                </div>
 
-            <div className="profile-info">
-              <div className="profile-name">
-                <h1>
-                  {profile.firstname} {profile.lastname}
-                </h1>
-                <p className="profile-username">@{profile.username}</p>
+                <div className="profile-details">
+                  <div className="profile-detail-item">
+                    <div className="detail-icon">
+                      <FaEnvelope />
+                    </div>
+                    <div className="detail-content">
+                      <div className="detail-label">Email Address</div>
+                      <div className="detail-value">{profile.email}</div>
+                    </div>
+                  </div>
+
+                  <div className="profile-detail-item">
+                    <div className="detail-icon">
+                      <FaUserCircle />
+                    </div>
+                    <div className="detail-content">
+                      <div className="detail-label">Account Status</div>
+                      <div className="detail-value">Active Member</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="profile-email">
-                <span>{profile.email}</span>
+            </div>
+          </header>
+
+          {/* Alert Messages */}
+          {(msg || error) && (
+            <div className={`alert ${error ? "alert-error" : "alert-success"}`}>
+              <div className="alert-icon">
+                {error ? <FaTimes /> : <FaCheck />}
               </div>
+              <div className="alert-message">{msg || error}</div>
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* Alert Messages */}
-        {(msg || error) && (
-          <div className={`alert ${error ? "alert-error" : "alert-success"}`}>
-            <div className="alert-content">
-              {error ? <FaTimes /> : <FaCheck />}
-              <span>{msg || error}</span>
-            </div>
-          </div>
-        )}
-
-        {/* Main Content */}
-        <div className="profile-content">
-          <div className="profile-cards">
+          {/* Main Content */}
+          <div className="profile-content">
             {/* Personal Information Card */}
             <div className="profile-card">
               <div className="card-header">
-                <div className="card-title">
-                  <FaUser className="card-icon" />
-                  <h3>Personal Information</h3>
+                <div className="card-title-section">
+                  <div className="card-icon">
+                    <FaUser />
+                  </div>
+                  <div>
+                    <h3 className="card-title">Personal Information</h3>
+                    <p className="card-subtitle">
+                      Manage your personal details
+                    </p>
+                  </div>
                 </div>
                 <button
-                  className="edit-btn"
+                  className="edit-toggle-btn"
                   onClick={() =>
                     isEditing ? saveProfile() : setIsEditing(true)
                   }
@@ -427,12 +1556,12 @@ export default function ProfilePage() {
               </div>
 
               <div className="card-content">
-                <div className="form-row">
+                <div className="form-grid">
                   <div className="form-group">
-                    <label>First Name</label>
+                    <label className="form-label">First Name</label>
                     <input
                       type="text"
-                      className="modern-input"
+                      className="form-input"
                       value={
                         isEditing
                           ? editedProfile.firstname || ""
@@ -449,10 +1578,10 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Last Name</label>
+                    <label className="form-label">Last Name</label>
                     <input
                       type="text"
-                      className="modern-input"
+                      className="form-input"
                       value={
                         isEditing
                           ? editedProfile.lastname || ""
@@ -470,12 +1599,12 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="form-row">
+                <div className="form-grid">
                   <div className="form-group">
-                    <label>Username</label>
+                    <label className="form-label">Username</label>
                     <input
                       type="text"
-                      className="modern-input"
+                      className="form-input"
                       value={
                         isEditing
                           ? editedProfile.username || ""
@@ -492,10 +1621,10 @@ export default function ProfilePage() {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Email Address</label>
+                    <label className="form-label">Email Address</label>
                     <input
                       type="email"
-                      className="modern-input"
+                      className="form-input"
                       value={
                         isEditing
                           ? editedProfile.email || ""
@@ -516,7 +1645,7 @@ export default function ProfilePage() {
                 {isEditing && (
                   <div className="form-actions">
                     <button
-                      className="cancel-btn"
+                      className="action-btn secondary-btn"
                       onClick={() => {
                         setIsEditing(false);
                         setEditedProfile(profile);
@@ -534,19 +1663,24 @@ export default function ProfilePage() {
             {/* Security Card */}
             <div className="profile-card">
               <div className="card-header">
-                <div className="card-title">
-                  <FaShieldAlt className="card-icon" />
-                  <h3>Security Settings</h3>
+                <div className="card-title-section">
+                  <div className="card-icon">
+                    <FaShieldAlt />
+                  </div>
+                  <div>
+                    <h3 className="card-title">Security Settings</h3>
+                    <p className="card-subtitle">Update your password</p>
+                  </div>
                 </div>
               </div>
 
               <div className="card-content">
                 <div className="form-group">
-                  <label>Current Password</label>
-                  <div className="password-input-wrapper">
+                  <label className="form-label">Current Password</label>
+                  <div className="password-input-container">
                     <input
                       type={showOldPassword ? "text" : "password"}
-                      className="modern-input"
+                      className="form-input"
                       value={oldPassword}
                       onChange={(e) => setOld(e.target.value)}
                       placeholder="Enter your current password"
@@ -563,11 +1697,11 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="form-group">
-                  <label>New Password</label>
-                  <div className="password-input-wrapper">
+                  <label className="form-label">New Password</label>
+                  <div className="password-input-container">
                     <input
                       type={showNewPassword ? "text" : "password"}
-                      className="modern-input"
+                      className="form-input"
                       value={newPassword}
                       onChange={(e) => setNew(e.target.value)}
                       placeholder="Enter your new password"
@@ -604,11 +1738,11 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="form-group">
-                  <label>Confirm New Password</label>
-                  <div className="password-input-wrapper">
+                  <label className="form-label">Confirm New Password</label>
+                  <div className="password-input-container">
                     <input
                       type={showConfirmPassword ? "text" : "password"}
-                      className="modern-input"
+                      className="form-input"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm your new password"
@@ -635,7 +1769,7 @@ export default function ProfilePage() {
 
                 <div className="form-actions">
                   <button
-                    className="update-password-btn"
+                    className="action-btn primary-btn"
                     onClick={changePwd}
                     disabled={
                       !oldPassword ||
@@ -662,783 +1796,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        .modern-profile-page {
-          min-height: 100vh;
-          background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-          padding: 2rem 0;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-            sans-serif;
-        }
-
-        .profile-container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 1rem;
-        }
-
-        .profile-loading {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          min-height: 50vh;
-          color: white;
-        }
-
-        .loading-spinner {
-          width: 40px;
-          height: 40px;
-          border: 3px solid rgba(255, 111, 0, 0.3);
-          border-top: 3px solid #ff6f00;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin-bottom: 1rem;
-        }
-
-        /* Header Section */
-        .profile-header {
-          position: relative;
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(20px);
-          border-radius: 24px;
-          overflow: hidden;
-          margin-bottom: 2rem;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .header-background {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 120px;
-          overflow: hidden;
-        }
-
-        .header-gradient {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 100%;
-          background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%);
-          opacity: 0.8;
-        }
-
-        .header-pattern {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 100%;
-          background: radial-gradient(
-              circle at 20% 20%,
-              rgba(255, 255, 255, 0.1) 0%,
-              transparent 50%
-            ),
-            radial-gradient(
-              circle at 80% 80%,
-              rgba(255, 255, 255, 0.05) 0%,
-              transparent 50%
-            );
-        }
-
-        .profile-header-content {
-          position: relative;
-          display: flex;
-          align-items: end;
-          padding: 2rem;
-          gap: 2rem;
-          z-index: 2;
-        }
-
-        /* Avatar Section */
-        .profile-avatar-section {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1rem;
-        }
-
-        .avatar-upload-container {
-          position: relative;
-          border-radius: 20px;
-          padding: 1rem;
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(10px);
-          border: 2px dashed rgba(255, 255, 255, 0.3);
-          transition: all 0.3s ease;
-        }
-
-        .avatar-upload-container.drag-over {
-          border-color: #ff6f00;
-          background: rgba(255, 111, 0, 0.1);
-          transform: scale(1.02);
-        }
-
-        .avatar-wrapper {
-          position: relative;
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          overflow: hidden;
-          border: 4px solid rgba(255, 255, 255, 0.2);
-          transition: all 0.3s ease;
-        }
-
-        .avatar-wrapper:hover {
-          transform: scale(1.05);
-          border-color: #ff6f00;
-        }
-
-        .profile-avatar {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .avatar-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .avatar-wrapper:hover .avatar-overlay {
-          opacity: 1;
-        }
-
-        .avatar-upload-btn {
-          background: #ff6f00;
-          border: none;
-          color: white;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .avatar-upload-btn:hover {
-          background: #e66400;
-          transform: scale(1.1);
-        }
-
-        .upload-hint {
-          text-align: center;
-          color: rgba(255, 255, 255, 0.8);
-        }
-
-        .upload-hint p {
-          margin: 0 0 0.25rem 0;
-          font-size: 0.9rem;
-          font-weight: 500;
-        }
-
-        .upload-hint span {
-          font-size: 0.8rem;
-          opacity: 0.7;
-        }
-
-        .upload-confirm-btn {
-          background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%);
-          border: none;
-          color: white;
-          padding: 0.75rem 1.5rem;
-          border-radius: 12px;
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 16px rgba(255, 111, 0, 0.3);
-        }
-
-        .upload-confirm-btn:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(255, 111, 0, 0.4);
-        }
-
-        .upload-confirm-btn:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-
-        /* Profile Info */
-        .profile-info {
-          flex: 1;
-          color: white;
-        }
-
-        .profile-name h1 {
-          font-size: 2.5rem;
-          font-weight: 700;
-          margin: 0 0 0.5rem 0;
-          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .profile-username {
-          font-size: 1.1rem;
-          opacity: 0.8;
-          margin: 0 0 1rem 0;
-          font-weight: 500;
-        }
-
-        .profile-email {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(10px);
-          padding: 0.75rem 1rem;
-          border-radius: 12px;
-          display: inline-block;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .profile-email span {
-          font-size: 0.95rem;
-          opacity: 0.9;
-        }
-
-        /* Alert Messages */
-        .alert {
-          margin-bottom: 2rem;
-          padding: 1rem 1.5rem;
-          border-radius: 16px;
-          backdrop-filter: blur(20px);
-          border: 1px solid;
-          animation: slideIn 0.3s ease;
-        }
-
-        .alert-success {
-          background: rgba(34, 197, 94, 0.1);
-          border-color: rgba(34, 197, 94, 0.3);
-          color: #22c55e;
-        }
-
-        .alert-error {
-          background: rgba(239, 68, 68, 0.1);
-          border-color: rgba(239, 68, 68, 0.3);
-          color: #ef4444;
-        }
-
-        .alert-content {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-weight: 500;
-        }
-
-        /* Profile Content */
-        .profile-content {
-          max-width: 800px;
-          margin: 0 auto;
-        }
-
-        .profile-cards {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-
-        .profile-card {
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(20px);
-          border-radius: 20px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          overflow: hidden;
-          transition: all 0.3s ease;
-        }
-
-        .profile-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-          border-color: rgba(255, 111, 0, 0.3);
-        }
-
-        .card-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1.5rem 2rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          background: rgba(255, 255, 255, 0.02);
-        }
-
-        .card-title {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          color: white;
-        }
-
-        .card-icon {
-          color: #ff6f00;
-          font-size: 1.2rem;
-        }
-
-        .card-title h3 {
-          margin: 0;
-          font-size: 1.3rem;
-          font-weight: 600;
-        }
-
-        .edit-btn {
-          background: rgba(255, 111, 0, 0.1);
-          border: 1px solid rgba(255, 111, 0, 0.3);
-          color: #ff6f00;
-          padding: 0.75rem 1.25rem;
-          border-radius: 12px;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .edit-btn:hover:not(:disabled) {
-          background: rgba(255, 111, 0, 0.2);
-          transform: translateY(-1px);
-        }
-
-        .edit-btn:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-
-        .card-content {
-          padding: 2rem;
-        }
-
-        /* Form Styles */
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .form-group label {
-          color: rgba(255, 255, 255, 0.9);
-          font-weight: 500;
-          font-size: 0.9rem;
-        }
-
-        .modern-input {
-          background: rgba(255, 255, 255, 0.05);
-          border: 2px solid rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          padding: 1rem;
-          color: white;
-          font-size: 0.95rem;
-          transition: all 0.3s ease;
-          backdrop-filter: blur(10px);
-        }
-
-        .modern-input:focus {
-          outline: none;
-          border-color: #ff6f00;
-          box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.1);
-          background: rgba(255, 255, 255, 0.08);
-        }
-
-        .modern-input:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-
-        .modern-input::placeholder {
-          color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Password Input */
-        .password-input-wrapper {
-          position: relative;
-        }
-
-        .password-toggle {
-          position: absolute;
-          right: 1rem;
-          top: 50%;
-          transform: translateY(-50%);
-          background: none;
-          border: none;
-          color: rgba(255, 255, 255, 0.6);
-          cursor: pointer;
-          padding: 0.25rem;
-          border-radius: 4px;
-          transition: all 0.3s ease;
-        }
-
-        .password-toggle:hover {
-          color: #ff6f00;
-          background: rgba(255, 111, 0, 0.1);
-        }
-
-        /* Password Strength */
-        .password-strength {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          margin-top: 0.5rem;
-        }
-
-        .strength-bar {
-          flex: 1;
-          height: 4px;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 2px;
-          overflow: hidden;
-        }
-
-        .strength-fill {
-          height: 100%;
-          transition: all 0.3s ease;
-          border-radius: 2px;
-        }
-
-        .strength-label {
-          font-size: 0.8rem;
-          font-weight: 500;
-        }
-
-        .password-mismatch {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: #ef4444;
-          font-size: 0.85rem;
-          margin-top: 0.5rem;
-        }
-
-        /* Form Actions */
-        .form-actions {
-          display: flex;
-          gap: 1rem;
-          margin-top: 2rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .cancel-btn {
-          background: rgba(239, 68, 68, 0.1);
-          border: 1px solid rgba(239, 68, 68, 0.3);
-          color: #ef4444;
-          padding: 0.75rem 1.5rem;
-          border-radius: 12px;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .cancel-btn:hover:not(:disabled) {
-          background: rgba(239, 68, 68, 0.2);
-          transform: translateY(-1px);
-        }
-
-        .update-password-btn {
-          background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%);
-          border: none;
-          color: white;
-          padding: 0.75rem 1.5rem;
-          border-radius: 12px;
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 16px rgba(255, 111, 0, 0.3);
-          flex: 1;
-          justify-content: center;
-        }
-
-        .update-password-btn:hover:not(:disabled) {
-          background: linear-gradient(135deg, #e66400 0%, #ff6f00 100%);
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(255, 111, 0, 0.4);
-        }
-
-        .update-password-btn:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-          transform: none;
-          box-shadow: 0 4px 16px rgba(255, 111, 0, 0.2);
-        }
-
-        /* Button Spinner */
-        .btn-spinner {
-          width: 16px;
-          height: 16px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          border-top: 2px solid white;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-
-        /* Animations */
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-
-        @keyframes slideIn {
-          0% {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeIn {
-          0% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-          .modern-profile-page {
-            padding: 1rem 0;
-          }
-
-          .profile-container {
-            padding: 0 0.5rem;
-          }
-
-          .profile-header-content {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 1.5rem;
-            padding: 1.5rem;
-          }
-
-          .profile-name h1 {
-            font-size: 2rem;
-          }
-
-          .form-row {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-
-          .card-header {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 1rem;
-            padding: 1.5rem;
-          }
-
-          .card-content {
-            padding: 1.5rem;
-          }
-
-          .form-actions {
-            flex-direction: column;
-          }
-
-          .avatar-wrapper {
-            width: 100px;
-            height: 100px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .profile-header-content {
-            padding: 1rem;
-          }
-
-          .profile-name h1 {
-            font-size: 1.75rem;
-          }
-
-          .card-content {
-            padding: 1rem;
-          }
-
-          .modern-input {
-            padding: 0.875rem;
-          }
-
-          .upload-confirm-btn {
-            padding: 0.625rem 1.25rem;
-            font-size: 0.9rem;
-          }
-        }
-
-        /* Dark mode enhancements */
-        @media (prefers-color-scheme: dark) {
-          .modern-profile-page {
-            background: linear-gradient(135deg, #000000 0%, #0f0f0f 100%);
-          }
-        }
-
-        /* High contrast mode */
-        @media (prefers-contrast: high) {
-          .profile-card {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-          }
-
-          .modern-input {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-          }
-
-          .modern-input:focus {
-            border: 2px solid #ff6f00;
-          }
-        }
-
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-          * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-          }
-        }
-
-        /* Focus styles for accessibility */
-        .edit-btn:focus,
-        .cancel-btn:focus,
-        .update-password-btn:focus,
-        .upload-confirm-btn:focus,
-        .avatar-upload-btn:focus,
-        .password-toggle:focus {
-          outline: 2px solid #ff6f00;
-          outline-offset: 2px;
-        }
-
-        /* Hover effects for better UX */
-        .profile-card {
-          animation: fadeIn 0.6s ease;
-        }
-
-        .profile-card:nth-child(1) {
-          animation-delay: 0.1s;
-        }
-
-        .profile-card:nth-child(2) {
-          animation-delay: 0.2s;
-        }
-
-        /* Loading states */
-        .form-group.loading .modern-input {
-          background: rgba(255, 255, 255, 0.02);
-          pointer-events: none;
-        }
-
-        /* Success states */
-        .modern-input.success {
-          border-color: #22c55e;
-          box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
-        }
-
-        /* Error states */
-        .modern-input.error {
-          border-color: #ef4444;
-          box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
-        }
-
-        /* Glassmorphism enhancement */
-        .profile-header::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: radial-gradient(
-              circle at 20% 20%,
-              rgba(255, 111, 0, 0.05) 0%,
-              transparent 50%
-            ),
-            radial-gradient(
-              circle at 80% 80%,
-              rgba(255, 143, 0, 0.03) 0%,
-              transparent 50%
-            );
-          pointer-events: none;
-          z-index: 1;
-        }
-
-        /* Enhanced shadows */
-        .profile-card {
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
-            0 8px 32px rgba(0, 0, 0, 0.05),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        .update-password-btn {
-          box-shadow: 0 4px 16px rgba(255, 111, 0, 0.3),
-            0 8px 32px rgba(255, 111, 0, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-
-        /* Micro-interactions */
-        .modern-input:hover:not(:disabled) {
-          border-color: rgba(255, 111, 0, 0.5);
-          background: rgba(255, 255, 255, 0.07);
-        }
-
-        .profile-avatar {
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .avatar-wrapper:hover .profile-avatar {
-          transform: scale(1.1);
-        }
-
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.05);
-          border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: rgba(255, 111, 0, 0.3);
-          border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 111, 0, 0.5);
-        }
-      `}</style>
-    </div>
+    </>
   );
 }
