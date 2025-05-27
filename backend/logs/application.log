@@ -2439,3 +2439,1330 @@ Caused by: java.net.ConnectException: Connection refused: getsockopt
 2025-05-27 01:31:31.744  INFO [a5ef6623-3292-41ce-af6b-6ba33f2a8112] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
 2025-05-27 01:31:31.744  INFO [a5ef6623-3292-41ce-af6b-6ba33f2a8112] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
 2025-05-27 01:31:31.745  INFO [a5ef6623-3292-41ce-af6b-6ba33f2a8112] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:33:30.869 DEBUG [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:33:30.869 DEBUG [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:33:30.871 DEBUG [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:33:30.872  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:33:30.872  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:33:30.873  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:33:30.873  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: OTP, after date: 2025-05-27
+2025-05-27 01:33:30.873  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: OTP, date: 2025-05-27
+2025-05-27 01:33:30.934  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Database query completed, found 16 flights
+2025-05-27 01:33:30.934  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Converting 16 Flight entities to FlightDTOs
+2025-05-27 01:33:30.934  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Converted to 16 FlightDTOs
+2025-05-27 01:33:30.934  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Grouping flights by destination country
+2025-05-27 01:33:30.935  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Grouped flights into 7 countries
+2025-05-27 01:33:30.935  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Selecting diverse flights - one from each country first
+2025-05-27 01:33:30.935  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Adding first flight from Greece (has 2 flights)
+2025-05-27 01:33:30.935  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Adding first flight from Netherlands (has 2 flights)
+2025-05-27 01:33:30.935  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Adding first flight from Italy (has 2 flights)
+2025-05-27 01:33:30.936  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Adding first flight from United Kingdom (has 2 flights)
+2025-05-27 01:33:30.936  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Adding first flight from France (has 2 flights)
+2025-05-27 01:33:30.936  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Adding first flight from Switzerland (has 2 flights)
+2025-05-27 01:33:30.936  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Reached 6 flights after first pass, stopping
+2025-05-27 01:33:30.936  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Caching 6 diverse flights with key: OTP-2025-05-27
+2025-05-27 01:33:30.936  INFO [bce4abb2-ecf1-4662-bb92-c2c1af0cca44] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Returning 6 diverse nearby flights from: OTP
+2025-05-27 01:34:14.835 DEBUG [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-27 01:34:14.836 DEBUG [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:34:14.837 DEBUG [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-27 01:34:14.873  INFO [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-27 01:34:15.308  INFO [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-27 01:34:15.308  INFO [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.LoginController        : reCAPTCHA verification successful for user: ****@****.***
+2025-05-27 01:34:15.548 DEBUG [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-27 01:34:15.549  INFO [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.LoginController        : Authentication successful for user: user1
+2025-05-27 01:34:15.611  INFO [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.LoginController        : Updated last login time for user: user1
+2025-05-27 01:34:15.611  INFO [d57effa4-6585-432b-9cfe-f96c0eeb7a0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.LoginController        : Returning successful response with JWT token for user: user1
+2025-05-27 01:34:15.654 DEBUG [e5000476-9ac5-4627-bae4-cafe0bebf5c2] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:34:15.654 DEBUG [46e6cce3-da4d-422b-a58d-9271b9d6edc6] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:34:15.834 DEBUG [46e6cce3-da4d-422b-a58d-9271b9d6edc6] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:34:15.835 DEBUG [e5000476-9ac5-4627-bae4-cafe0bebf5c2] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:34:15.838  INFO [46e6cce3-da4d-422b-a58d-9271b9d6edc6] 7968 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:34:15.942  WARN [e5000476-9ac5-4627-bae4-cafe0bebf5c2] 7968 --- [nio-8080-exec-1] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:34:15.945  INFO [46e6cce3-da4d-422b-a58d-9271b9d6edc6] 7968 --- [nio-8080-exec-2] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user user1 with ID 1, creating a new one.
+2025-05-27 01:34:15.951  WARN [e5000476-9ac5-4627-bae4-cafe0bebf5c2] 7968 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:34:15.968  INFO [46e6cce3-da4d-422b-a58d-9271b9d6edc6] 7968 --- [nio-8080-exec-2] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:34:18.450 DEBUG [9960a9e7-bed3-45ee-a688-422a18254e03] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:34:18.522 DEBUG [9960a9e7-bed3-45ee-a688-422a18254e03] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:34:18.523  INFO [9960a9e7-bed3-45ee-a688-422a18254e03] 7968 --- [nio-8080-exec-3] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:34:18.586  INFO [9960a9e7-bed3-45ee-a688-422a18254e03] 7968 --- [nio-8080-exec-3] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:34:18.602 DEBUG [6724a0d4-0d1a-4344-893f-5ab74f56bfa9] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:34:18.728 DEBUG [6724a0d4-0d1a-4344-893f-5ab74f56bfa9] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:34:18.921  WARN [6724a0d4-0d1a-4344-893f-5ab74f56bfa9] 7968 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:34:18.923 DEBUG [e99a2f40-065c-44b9-a1e9-60637fd299ac] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:34:18.923  WARN [6724a0d4-0d1a-4344-893f-5ab74f56bfa9] 7968 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:34:19.035 DEBUG [e99a2f40-065c-44b9-a1e9-60637fd299ac] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:34:19.036  INFO [e99a2f40-065c-44b9-a1e9-60637fd299ac] 7968 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:34:19.131  INFO [e99a2f40-065c-44b9-a1e9-60637fd299ac] 7968 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:34:19.142 DEBUG [b05b5d3a-3f43-463e-bfd2-e8e8fe9632ad] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:34:19.224 DEBUG [b05b5d3a-3f43-463e-bfd2-e8e8fe9632ad] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:34:19.293  WARN [b05b5d3a-3f43-463e-bfd2-e8e8fe9632ad] 7968 --- [nio-8080-exec-6] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:34:19.294  WARN [b05b5d3a-3f43-463e-bfd2-e8e8fe9632ad] 7968 --- [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:34:27.544 DEBUG [2039bf57-fedf-41a1-acf1-5041a40ad3eb] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:34:27.545 DEBUG [2039bf57-fedf-41a1-acf1-5041a40ad3eb] 7968 --- [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:34:27.546 DEBUG [2039bf57-fedf-41a1-acf1-5041a40ad3eb] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:34:27.546  INFO [2039bf57-fedf-41a1-acf1-5041a40ad3eb] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:34:27.547  INFO [2039bf57-fedf-41a1-acf1-5041a40ad3eb] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:34:27.547  INFO [2039bf57-fedf-41a1-acf1-5041a40ad3eb] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:34:27.547  INFO [2039bf57-fedf-41a1-acf1-5041a40ad3eb] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:36:00.295 DEBUG [519e0fd4-5191-49f7-85a5-a560776e967a] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:36:00.376 DEBUG [519e0fd4-5191-49f7-85a5-a560776e967a] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:36:00.377  INFO [519e0fd4-5191-49f7-85a5-a560776e967a] 7968 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:36:00.467  INFO [519e0fd4-5191-49f7-85a5-a560776e967a] 7968 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:36:00.564 DEBUG [1af95839-9873-4b8c-9737-7176d89c3050] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:36:00.568 DEBUG [05d84abc-ace0-4923-a4c5-8815015119de] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:36:00.690 DEBUG [5e9aacdf-ec8b-4375-a2d1-b192108742f9] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:36:00.694 DEBUG [5e9aacdf-ec8b-4375-a2d1-b192108742f9] 7968 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:36:00.696 DEBUG [5e9aacdf-ec8b-4375-a2d1-b192108742f9] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:36:00.698  INFO [5e9aacdf-ec8b-4375-a2d1-b192108742f9] 7968 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:36:00.698  INFO [5e9aacdf-ec8b-4375-a2d1-b192108742f9] 7968 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:36:00.698  INFO [5e9aacdf-ec8b-4375-a2d1-b192108742f9] 7968 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:36:00.699  INFO [5e9aacdf-ec8b-4375-a2d1-b192108742f9] 7968 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:36:00.704 DEBUG [1af95839-9873-4b8c-9737-7176d89c3050] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:36:00.711 DEBUG [05d84abc-ace0-4923-a4c5-8815015119de] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:36:00.712  INFO [05d84abc-ace0-4923-a4c5-8815015119de] 7968 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:36:00.816  WARN [1af95839-9873-4b8c-9737-7176d89c3050] 7968 --- [io-8080-exec-10] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:36:00.817  WARN [1af95839-9873-4b8c-9737-7176d89c3050] 7968 --- [io-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:36:00.825 DEBUG [0e2ee94d-99a4-45b0-a456-3c4e42d09aef] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:36:00.843  INFO [05d84abc-ace0-4923-a4c5-8815015119de] 7968 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:36:00.911 DEBUG [0e2ee94d-99a4-45b0-a456-3c4e42d09aef] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:36:00.982  WARN [0e2ee94d-99a4-45b0-a456-3c4e42d09aef] 7968 --- [nio-8080-exec-3] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:36:00.983  WARN [0e2ee94d-99a4-45b0-a456-3c4e42d09aef] 7968 --- [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:36:48.298 DEBUG [5a71712d-cf63-48da-a131-bd99702e3fb2] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:36:48.387 DEBUG [5a71712d-cf63-48da-a131-bd99702e3fb2] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:36:48.387  INFO [5a71712d-cf63-48da-a131-bd99702e3fb2] 7968 --- [nio-8080-exec-4] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:36:48.462  INFO [5a71712d-cf63-48da-a131-bd99702e3fb2] 7968 --- [nio-8080-exec-4] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:36:48.519 DEBUG [8ee50c3b-7169-42f1-8405-09ad50261123] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:36:48.519 DEBUG [ba07c3a4-f18b-4bdd-98da-8919c8f55259] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:36:48.628 DEBUG [4bf818b1-6e8a-4c45-8f70-ddaca9f71bfe] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:36:48.630 DEBUG [ba07c3a4-f18b-4bdd-98da-8919c8f55259] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:36:48.631 DEBUG [8ee50c3b-7169-42f1-8405-09ad50261123] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:36:48.631 DEBUG [4bf818b1-6e8a-4c45-8f70-ddaca9f71bfe] 7968 --- [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:36:48.633  INFO [8ee50c3b-7169-42f1-8405-09ad50261123] 7968 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:36:48.633 DEBUG [4bf818b1-6e8a-4c45-8f70-ddaca9f71bfe] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:36:48.634  INFO [4bf818b1-6e8a-4c45-8f70-ddaca9f71bfe] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:36:48.635  INFO [4bf818b1-6e8a-4c45-8f70-ddaca9f71bfe] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:36:48.635  INFO [4bf818b1-6e8a-4c45-8f70-ddaca9f71bfe] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:36:48.635  INFO [4bf818b1-6e8a-4c45-8f70-ddaca9f71bfe] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:36:48.719  WARN [ba07c3a4-f18b-4bdd-98da-8919c8f55259] 7968 --- [nio-8080-exec-5] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:36:48.720  WARN [ba07c3a4-f18b-4bdd-98da-8919c8f55259] 7968 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:36:48.727 DEBUG [6654db54-e60c-4398-bb96-4e85a730b188] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:36:48.728  INFO [8ee50c3b-7169-42f1-8405-09ad50261123] 7968 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:36:48.829 DEBUG [6654db54-e60c-4398-bb96-4e85a730b188] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:36:48.994  WARN [6654db54-e60c-4398-bb96-4e85a730b188] 7968 --- [nio-8080-exec-8] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:36:48.995  WARN [6654db54-e60c-4398-bb96-4e85a730b188] 7968 --- [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:37:03.330 DEBUG [73e9fd66-449c-4bc0-bf15-6c634c7b81dd] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:37:03.409 DEBUG [73e9fd66-449c-4bc0-bf15-6c634c7b81dd] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:37:03.409  INFO [73e9fd66-449c-4bc0-bf15-6c634c7b81dd] 7968 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:37:03.481  INFO [73e9fd66-449c-4bc0-bf15-6c634c7b81dd] 7968 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:37:03.565 DEBUG [96abe13f-9ede-4b47-80a9-cb57492c1bc7] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:37:03.566 DEBUG [635f993a-3b16-4a3b-abc8-4420951c738b] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:37:03.672 DEBUG [ad57a93d-9cac-4123-b2db-3e4f3d851607] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:37:03.679 DEBUG [ad57a93d-9cac-4123-b2db-3e4f3d851607] 7968 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:37:03.683 DEBUG [ad57a93d-9cac-4123-b2db-3e4f3d851607] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:37:03.686  INFO [ad57a93d-9cac-4123-b2db-3e4f3d851607] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:37:03.686  INFO [ad57a93d-9cac-4123-b2db-3e4f3d851607] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:37:03.686  INFO [ad57a93d-9cac-4123-b2db-3e4f3d851607] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:37:03.687  INFO [ad57a93d-9cac-4123-b2db-3e4f3d851607] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:37:03.692 DEBUG [96abe13f-9ede-4b47-80a9-cb57492c1bc7] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:37:03.693  INFO [96abe13f-9ede-4b47-80a9-cb57492c1bc7] 7968 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:37:03.694 DEBUG [635f993a-3b16-4a3b-abc8-4420951c738b] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:37:03.779  WARN [635f993a-3b16-4a3b-abc8-4420951c738b] 7968 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:37:03.782  WARN [635f993a-3b16-4a3b-abc8-4420951c738b] 7968 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:37:03.789 DEBUG [36fcf48a-a637-41f5-a22a-9bb2da80ed12] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:37:03.793  INFO [96abe13f-9ede-4b47-80a9-cb57492c1bc7] 7968 --- [io-8080-exec-10] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:37:03.877 DEBUG [36fcf48a-a637-41f5-a22a-9bb2da80ed12] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:37:03.942  WARN [36fcf48a-a637-41f5-a22a-9bb2da80ed12] 7968 --- [nio-8080-exec-3] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:37:03.943  WARN [36fcf48a-a637-41f5-a22a-9bb2da80ed12] 7968 --- [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:38:26.851 DEBUG [09b50f02-909a-4ffc-aec4-c6259619076d] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:38:26.945 DEBUG [09b50f02-909a-4ffc-aec4-c6259619076d] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:38:26.946  INFO [09b50f02-909a-4ffc-aec4-c6259619076d] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:38:27.019  INFO [09b50f02-909a-4ffc-aec4-c6259619076d] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:38:27.027 DEBUG [1fb9a97d-24bc-49e1-b8db-7b59b80b3f6c] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:38:27.102 DEBUG [1fb9a97d-24bc-49e1-b8db-7b59b80b3f6c] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:38:27.103  INFO [1fb9a97d-24bc-49e1-b8db-7b59b80b3f6c] 7968 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:38:27.179  INFO [1fb9a97d-24bc-49e1-b8db-7b59b80b3f6c] 7968 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:43:06.535 DEBUG [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:43:06.536 DEBUG [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:43:06.537 DEBUG [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:43:06.538  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:43:06.538  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:43:06.539  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:43:06.539  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: OTP, after date: 2025-05-27
+2025-05-27 01:43:06.539  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: OTP, date: 2025-05-27
+2025-05-27 01:43:06.590  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Database query completed, found 16 flights
+2025-05-27 01:43:06.590  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Converting 16 Flight entities to FlightDTOs
+2025-05-27 01:43:06.591  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Converted to 16 FlightDTOs
+2025-05-27 01:43:06.591  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Grouping flights by destination country
+2025-05-27 01:43:06.591  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Grouped flights into 7 countries
+2025-05-27 01:43:06.591  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Selecting diverse flights - one from each country first
+2025-05-27 01:43:06.591  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Greece (has 2 flights)
+2025-05-27 01:43:06.591  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Netherlands (has 2 flights)
+2025-05-27 01:43:06.591  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Italy (has 2 flights)
+2025-05-27 01:43:06.592  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from United Kingdom (has 2 flights)
+2025-05-27 01:43:06.592  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from France (has 2 flights)
+2025-05-27 01:43:06.592  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Switzerland (has 2 flights)
+2025-05-27 01:43:06.592  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Reached 6 flights after first pass, stopping
+2025-05-27 01:43:06.592  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Caching 6 diverse flights with key: OTP-2025-05-27
+2025-05-27 01:43:06.592  INFO [6a84d016-5b80-47eb-8b77-f71ba3d62ed9] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Returning 6 diverse nearby flights from: OTP
+2025-05-27 01:43:21.254 DEBUG [d2eb336f-c5c8-4616-82fb-43b626437404] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:43:21.348 DEBUG [d2eb336f-c5c8-4616-82fb-43b626437404] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:43:21.349  INFO [d2eb336f-c5c8-4616-82fb-43b626437404] 7968 --- [nio-8080-exec-8] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:43:21.469  INFO [d2eb336f-c5c8-4616-82fb-43b626437404] 7968 --- [nio-8080-exec-8] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:43:23.413 DEBUG [d0e96b01-fd3f-41b6-bd59-2bb33a74929b] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:43:23.413 DEBUG [ecca0e3e-5675-4e5f-9a55-7223679f9f45] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:43:23.507 DEBUG [ecca0e3e-5675-4e5f-9a55-7223679f9f45] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:43:23.507 DEBUG [d0e96b01-fd3f-41b6-bd59-2bb33a74929b] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:43:23.508  INFO [ecca0e3e-5675-4e5f-9a55-7223679f9f45] 7968 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:43:23.587  WARN [d0e96b01-fd3f-41b6-bd59-2bb33a74929b] 7968 --- [nio-8080-exec-9] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:43:23.588  WARN [d0e96b01-fd3f-41b6-bd59-2bb33a74929b] 7968 --- [nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:43:23.595 DEBUG [dbb55b0f-f693-42b6-85da-569e0a60ddaa] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:43:23.596  INFO [ecca0e3e-5675-4e5f-9a55-7223679f9f45] 7968 --- [nio-8080-exec-1] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:43:23.669 DEBUG [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=CRL
+2025-05-27 01:43:23.670 DEBUG [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:43:23.672 DEBUG [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=CRL
+2025-05-27 01:43:23.672  INFO [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: CRL, departureDate: null
+2025-05-27 01:43:23.672  INFO [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:43:23.673  INFO [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Cache key: CRL-2025-05-27
+2025-05-27 01:43:23.673  INFO [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: CRL, after date: 2025-05-27
+2025-05-27 01:43:23.674  INFO [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: CRL, date: 2025-05-27
+2025-05-27 01:43:23.680  INFO [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Database query completed, found 0 flights
+2025-05-27 01:43:23.681  WARN [8022479f-3b9e-49fc-94f6-d59225731ac4] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : No nearby flights found from: CRL after date: 2025-05-27. This may cause the frontend to show a loading spinner indefinitely.
+2025-05-27 01:43:23.690 DEBUG [dbb55b0f-f693-42b6-85da-569e0a60ddaa] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:43:23.777  WARN [dbb55b0f-f693-42b6-85da-569e0a60ddaa] 7968 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:43:23.778  WARN [dbb55b0f-f693-42b6-85da-569e0a60ddaa] 7968 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:43:25.920 DEBUG [30b1775c-50e3-4778-b4a4-fa10e3955884] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:43:25.998 DEBUG [30b1775c-50e3-4778-b4a4-fa10e3955884] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:43:25.998  INFO [30b1775c-50e3-4778-b4a4-fa10e3955884] 7968 --- [nio-8080-exec-3] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:43:26.069  INFO [30b1775c-50e3-4778-b4a4-fa10e3955884] 7968 --- [nio-8080-exec-3] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:43:26.127 DEBUG [0f9b55f7-98f5-4a94-bb88-1c22345858b3] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:43:26.127 DEBUG [9e1a705f-fc4e-4ecc-818c-a31f8f06fc45] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:43:26.220 DEBUG [9e1a705f-fc4e-4ecc-818c-a31f8f06fc45] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:43:26.220 DEBUG [0f9b55f7-98f5-4a94-bb88-1c22345858b3] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:43:26.220  INFO [9e1a705f-fc4e-4ecc-818c-a31f8f06fc45] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:43:26.289  WARN [0f9b55f7-98f5-4a94-bb88-1c22345858b3] 7968 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:43:26.290  WARN [0f9b55f7-98f5-4a94-bb88-1c22345858b3] 7968 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:43:26.296 DEBUG [41174b50-5ee1-4844-aaee-668e43c38007] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:43:26.296  INFO [9e1a705f-fc4e-4ecc-818c-a31f8f06fc45] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:43:26.374 DEBUG [41174b50-5ee1-4844-aaee-668e43c38007] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:43:26.440  WARN [41174b50-5ee1-4844-aaee-668e43c38007] 7968 --- [nio-8080-exec-5] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:43:26.442  WARN [41174b50-5ee1-4844-aaee-668e43c38007] 7968 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:43:28.586 DEBUG [6bb1c3e3-cfdd-48b6-bfa0-0bd9bd7c4d82] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:43:28.586 DEBUG [cdf45e4a-3282-4836-99d2-66374b966c0a] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:43:28.676 DEBUG [cdf45e4a-3282-4836-99d2-66374b966c0a] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:43:28.677 DEBUG [6bb1c3e3-cfdd-48b6-bfa0-0bd9bd7c4d82] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:43:28.677  INFO [cdf45e4a-3282-4836-99d2-66374b966c0a] 7968 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:43:28.699 DEBUG [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=CRL
+2025-05-27 01:43:28.701 DEBUG [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:43:28.701 DEBUG [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=CRL
+2025-05-27 01:43:28.703  INFO [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: CRL, departureDate: null
+2025-05-27 01:43:28.704  INFO [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:43:28.704  INFO [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Cache key: CRL-2025-05-27
+2025-05-27 01:43:28.704  INFO [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: CRL, after date: 2025-05-27
+2025-05-27 01:43:28.705  INFO [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: CRL, date: 2025-05-27
+2025-05-27 01:43:28.714  INFO [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Database query completed, found 0 flights
+2025-05-27 01:43:28.714  WARN [b09b22fd-0928-47d8-9ba8-388cb8fe7023] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : No nearby flights found from: CRL after date: 2025-05-27. This may cause the frontend to show a loading spinner indefinitely.
+2025-05-27 01:43:28.775  WARN [6bb1c3e3-cfdd-48b6-bfa0-0bd9bd7c4d82] 7968 --- [nio-8080-exec-6] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:43:28.776  WARN [6bb1c3e3-cfdd-48b6-bfa0-0bd9bd7c4d82] 7968 --- [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:43:28.783 DEBUG [0244d9a5-a2e8-4ae5-a54b-3ed1713e7625] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:43:28.784  INFO [cdf45e4a-3282-4836-99d2-66374b966c0a] 7968 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:43:28.865 DEBUG [0244d9a5-a2e8-4ae5-a54b-3ed1713e7625] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:43:28.937  WARN [0244d9a5-a2e8-4ae5-a54b-3ed1713e7625] 7968 --- [nio-8080-exec-1] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:43:28.938  WARN [0244d9a5-a2e8-4ae5-a54b-3ed1713e7625] 7968 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:44:18.211 DEBUG [9bd37fcd-bfe1-4815-bc85-68910d10ec4d] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:44:18.295 DEBUG [9bd37fcd-bfe1-4815-bc85-68910d10ec4d] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:44:18.295  INFO [9bd37fcd-bfe1-4815-bc85-68910d10ec4d] 7968 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:44:18.377  INFO [9bd37fcd-bfe1-4815-bc85-68910d10ec4d] 7968 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:44:18.441 DEBUG [66a52b0e-6a6c-4457-8a33-47c2b86ca7fc] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:44:18.441 DEBUG [44dc1057-83e2-4b68-971b-f1a21eb9e360] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:44:18.550 DEBUG [66a52b0e-6a6c-4457-8a33-47c2b86ca7fc] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:44:18.550 DEBUG [44dc1057-83e2-4b68-971b-f1a21eb9e360] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:44:18.550  INFO [66a52b0e-6a6c-4457-8a33-47c2b86ca7fc] 7968 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:44:18.634  WARN [44dc1057-83e2-4b68-971b-f1a21eb9e360] 7968 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:44:18.635  WARN [44dc1057-83e2-4b68-971b-f1a21eb9e360] 7968 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:44:18.647 DEBUG [7f96b14a-ac39-4f47-b976-8c1570c88c61] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:44:18.654  INFO [66a52b0e-6a6c-4457-8a33-47c2b86ca7fc] 7968 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:44:18.744 DEBUG [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=LHR
+2025-05-27 01:44:18.746 DEBUG [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:44:18.748 DEBUG [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=LHR
+2025-05-27 01:44:18.750  INFO [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: LHR, departureDate: null
+2025-05-27 01:44:18.750  INFO [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:44:18.750  INFO [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Cache key: LHR-2025-05-27
+2025-05-27 01:44:18.750  INFO [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: LHR, after date: 2025-05-27
+2025-05-27 01:44:18.751  INFO [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: LHR, date: 2025-05-27
+2025-05-27 01:44:18.760  INFO [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : Database query completed, found 0 flights
+2025-05-27 01:44:18.767  WARN [898b1a77-9b02-4349-974e-e7222035a8c9] 7968 --- [nio-8080-exec-7] o.e.x.controllers.FlightController       : No nearby flights found from: LHR after date: 2025-05-27. This may cause the frontend to show a loading spinner indefinitely.
+2025-05-27 01:44:18.827 DEBUG [7f96b14a-ac39-4f47-b976-8c1570c88c61] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:44:18.945  WARN [7f96b14a-ac39-4f47-b976-8c1570c88c61] 7968 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:44:18.946  WARN [7f96b14a-ac39-4f47-b976-8c1570c88c61] 7968 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:44:22.768 DEBUG [6527a392-c217-4f3e-8d6b-288dc0bd7924] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:44:22.883 DEBUG [6527a392-c217-4f3e-8d6b-288dc0bd7924] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:44:22.885  INFO [6527a392-c217-4f3e-8d6b-288dc0bd7924] 7968 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:44:22.969  INFO [6527a392-c217-4f3e-8d6b-288dc0bd7924] 7968 --- [nio-8080-exec-5] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:44:23.030 DEBUG [4a46bd52-ee64-49e8-810c-15bdbc3bb72e] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:44:23.041 DEBUG [591f3eb5-72a6-41e0-88e3-2eea121734ed] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:44:23.175 DEBUG [4a46bd52-ee64-49e8-810c-15bdbc3bb72e] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:44:23.178 DEBUG [591f3eb5-72a6-41e0-88e3-2eea121734ed] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:44:23.179  INFO [591f3eb5-72a6-41e0-88e3-2eea121734ed] 7968 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:44:23.269  WARN [4a46bd52-ee64-49e8-810c-15bdbc3bb72e] 7968 --- [nio-8080-exec-9] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:44:23.272  WARN [4a46bd52-ee64-49e8-810c-15bdbc3bb72e] 7968 --- [nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:44:23.282 DEBUG [52ce4dd9-302c-4ab3-93cb-dd3794ba8619] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:44:23.285  INFO [591f3eb5-72a6-41e0-88e3-2eea121734ed] 7968 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:44:23.375 DEBUG [52ce4dd9-302c-4ab3-93cb-dd3794ba8619] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:44:23.447  WARN [52ce4dd9-302c-4ab3-93cb-dd3794ba8619] 7968 --- [nio-8080-exec-8] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:44:23.447  WARN [52ce4dd9-302c-4ab3-93cb-dd3794ba8619] 7968 --- [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:44:28.603 DEBUG [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=LHR
+2025-05-27 01:44:28.604 DEBUG [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:44:28.605 DEBUG [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=LHR
+2025-05-27 01:44:28.606  INFO [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: LHR, departureDate: null
+2025-05-27 01:44:28.606  INFO [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:44:28.606  INFO [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Cache key: LHR-2025-05-27
+2025-05-27 01:44:28.606  INFO [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: LHR, after date: 2025-05-27
+2025-05-27 01:44:28.607  INFO [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: LHR, date: 2025-05-27
+2025-05-27 01:44:28.614  INFO [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : Database query completed, found 0 flights
+2025-05-27 01:44:28.614  WARN [59151d9a-2df9-43ac-af68-5cf11b806575] 7968 --- [nio-8080-exec-1] o.e.x.controllers.FlightController       : No nearby flights found from: LHR after date: 2025-05-27. This may cause the frontend to show a loading spinner indefinitely.
+2025-05-27 01:45:13.926 DEBUG [1db63981-57bf-489c-8b7f-aef014278e69] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:45:13.994 DEBUG [1db63981-57bf-489c-8b7f-aef014278e69] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:45:13.994  INFO [1db63981-57bf-489c-8b7f-aef014278e69] 7968 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:45:14.055  INFO [1db63981-57bf-489c-8b7f-aef014278e69] 7968 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:45:14.169 DEBUG [903ce4ab-81bc-4318-ac1b-34998a373f51] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:45:14.169 DEBUG [e6f832c4-81ce-4425-8a14-e5f89e1e5975] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:45:14.315 DEBUG [e6f832c4-81ce-4425-8a14-e5f89e1e5975] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:45:14.315 DEBUG [903ce4ab-81bc-4318-ac1b-34998a373f51] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:45:14.316  INFO [903ce4ab-81bc-4318-ac1b-34998a373f51] 7968 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:45:14.366 DEBUG [e1bb600b-d97d-496a-b521-a0369601778e] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:45:14.423  WARN [e6f832c4-81ce-4425-8a14-e5f89e1e5975] 7968 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:45:14.424  WARN [e6f832c4-81ce-4425-8a14-e5f89e1e5975] 7968 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:45:14.434 DEBUG [14323c6a-351c-4b74-8052-96e249058a64] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:45:14.434  INFO [903ce4ab-81bc-4318-ac1b-34998a373f51] 7968 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:45:14.476 DEBUG [e1bb600b-d97d-496a-b521-a0369601778e] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:45:14.477  INFO [e1bb600b-d97d-496a-b521-a0369601778e] 7968 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:45:14.540 DEBUG [14323c6a-351c-4b74-8052-96e249058a64] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:45:14.567  INFO [e1bb600b-d97d-496a-b521-a0369601778e] 7968 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:45:14.622  WARN [14323c6a-351c-4b74-8052-96e249058a64] 7968 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:45:14.623  WARN [14323c6a-351c-4b74-8052-96e249058a64] 7968 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:45:23.329 DEBUG [a80f2d77-e6f5-4ef5-ba10-0edfbc32f6d8] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:45:23.329 DEBUG [a80f2d77-e6f5-4ef5-ba10-0edfbc32f6d8] 7968 --- [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:45:23.330 DEBUG [a80f2d77-e6f5-4ef5-ba10-0edfbc32f6d8] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:45:23.330  INFO [a80f2d77-e6f5-4ef5-ba10-0edfbc32f6d8] 7968 --- [nio-8080-exec-5] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:45:23.331  INFO [a80f2d77-e6f5-4ef5-ba10-0edfbc32f6d8] 7968 --- [nio-8080-exec-5] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:45:23.331  INFO [a80f2d77-e6f5-4ef5-ba10-0edfbc32f6d8] 7968 --- [nio-8080-exec-5] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:45:23.331  INFO [a80f2d77-e6f5-4ef5-ba10-0edfbc32f6d8] 7968 --- [nio-8080-exec-5] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:45:33.464 DEBUG [947958d5-4774-4482-90b5-01a1b43eb7d6] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:45:33.534 DEBUG [947958d5-4774-4482-90b5-01a1b43eb7d6] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:45:33.534  INFO [947958d5-4774-4482-90b5-01a1b43eb7d6] 7968 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:45:33.600  INFO [947958d5-4774-4482-90b5-01a1b43eb7d6] 7968 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:45:33.658 DEBUG [7cf6c510-dea2-439e-9e18-7ac093cd9541] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:45:33.658 DEBUG [3ee85269-46db-4d98-98aa-390342c04f11] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:45:33.755 DEBUG [3ee85269-46db-4d98-98aa-390342c04f11] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:45:33.755 DEBUG [7cf6c510-dea2-439e-9e18-7ac093cd9541] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:45:33.755  INFO [7cf6c510-dea2-439e-9e18-7ac093cd9541] 7968 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:45:33.830  WARN [3ee85269-46db-4d98-98aa-390342c04f11] 7968 --- [nio-8080-exec-6] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:45:33.830  WARN [3ee85269-46db-4d98-98aa-390342c04f11] 7968 --- [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:45:33.837 DEBUG [644ecad3-af58-4625-bb22-76187c83a78d] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:45:33.838  INFO [7cf6c510-dea2-439e-9e18-7ac093cd9541] 7968 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:45:33.923 DEBUG [644ecad3-af58-4625-bb22-76187c83a78d] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:45:33.995  WARN [644ecad3-af58-4625-bb22-76187c83a78d] 7968 --- [nio-8080-exec-1] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:45:33.996  WARN [644ecad3-af58-4625-bb22-76187c83a78d] 7968 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:45:34.538 DEBUG [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=BCN
+2025-05-27 01:45:34.539 DEBUG [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:45:34.539 DEBUG [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=BCN
+2025-05-27 01:45:34.540  INFO [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: BCN, departureDate: null
+2025-05-27 01:45:34.540  INFO [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:45:34.540  INFO [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Cache key: BCN-2025-05-27
+2025-05-27 01:45:34.540  INFO [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: BCN, after date: 2025-05-27
+2025-05-27 01:45:34.541  INFO [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: BCN, date: 2025-05-27
+2025-05-27 01:45:34.548  INFO [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Database query completed, found 0 flights
+2025-05-27 01:45:34.548  WARN [ff040748-0c72-4844-934e-1cf245a7e53d] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : No nearby flights found from: BCN after date: 2025-05-27. This may cause the frontend to show a loading spinner indefinitely.
+2025-05-27 01:45:47.548 DEBUG [1e8c432a-4616-4e2d-94a0-78824a5c5b40] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:45:47.650 DEBUG [1e8c432a-4616-4e2d-94a0-78824a5c5b40] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:45:47.652  INFO [1e8c432a-4616-4e2d-94a0-78824a5c5b40] 7968 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:45:47.722  INFO [1e8c432a-4616-4e2d-94a0-78824a5c5b40] 7968 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:45:47.779 DEBUG [ccb6833f-b542-411f-aadb-1108af33d4c3] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:45:47.779 DEBUG [55e21937-96c0-4909-ab73-1c6cf257ee16] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:45:47.926 DEBUG [ccb6833f-b542-411f-aadb-1108af33d4c3] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:45:47.927 DEBUG [55e21937-96c0-4909-ab73-1c6cf257ee16] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:45:47.927  INFO [ccb6833f-b542-411f-aadb-1108af33d4c3] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:45:47.991 DEBUG [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=CRL
+2025-05-27 01:45:47.993 DEBUG [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:45:47.994 DEBUG [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=CRL
+2025-05-27 01:45:47.996  INFO [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: CRL, departureDate: null
+2025-05-27 01:45:47.996  INFO [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:45:47.996  INFO [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.e.x.controllers.FlightController       : Cache key: CRL-2025-05-27
+2025-05-27 01:45:47.996  INFO [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: CRL, after date: 2025-05-27
+2025-05-27 01:45:47.997  INFO [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: CRL, date: 2025-05-27
+2025-05-27 01:45:48.003  INFO [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.e.x.controllers.FlightController       : Database query completed, found 0 flights
+2025-05-27 01:45:48.003  WARN [5b2d8d36-d475-441f-93e7-ce1b635a7ad0] 7968 --- [nio-8080-exec-4] o.e.x.controllers.FlightController       : No nearby flights found from: CRL after date: 2025-05-27. This may cause the frontend to show a loading spinner indefinitely.
+2025-05-27 01:45:48.037  WARN [55e21937-96c0-4909-ab73-1c6cf257ee16] 7968 --- [nio-8080-exec-3] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:45:48.038  WARN [55e21937-96c0-4909-ab73-1c6cf257ee16] 7968 --- [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:45:48.044 DEBUG [dd90352b-8b0a-4940-8768-15c86377f634] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:45:48.047  INFO [ccb6833f-b542-411f-aadb-1108af33d4c3] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:45:48.175 DEBUG [dd90352b-8b0a-4940-8768-15c86377f634] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:45:48.322  WARN [dd90352b-8b0a-4940-8768-15c86377f634] 7968 --- [nio-8080-exec-5] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:45:48.323  WARN [dd90352b-8b0a-4940-8768-15c86377f634] 7968 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:46:01.071 DEBUG [72fe6270-1953-469e-b1aa-2c5858d1902d] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:46:01.169 DEBUG [72fe6270-1953-469e-b1aa-2c5858d1902d] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:46:01.170  INFO [72fe6270-1953-469e-b1aa-2c5858d1902d] 7968 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:46:01.241  INFO [72fe6270-1953-469e-b1aa-2c5858d1902d] 7968 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:46:01.249 DEBUG [f24cdb5f-2a08-4a1e-a3ab-6d98d64e3468] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:46:01.317 DEBUG [f24cdb5f-2a08-4a1e-a3ab-6d98d64e3468] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:46:01.318  INFO [f24cdb5f-2a08-4a1e-a3ab-6d98d64e3468] 7968 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:46:01.389  INFO [f24cdb5f-2a08-4a1e-a3ab-6d98d64e3468] 7968 --- [nio-8080-exec-6] o.e.x.controllers.CartController         : Returning persistent cart for user user1 with 0 items, 0 total quantity.
+2025-05-27 01:46:02.893 DEBUG [8bbfe3a0-edbd-4919-8c1e-c19832c7b867] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:02.894 DEBUG [8bbfe3a0-edbd-4919-8c1e-c19832c7b867] 7968 --- [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:46:02.894 DEBUG [8bbfe3a0-edbd-4919-8c1e-c19832c7b867] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:02.895  INFO [8bbfe3a0-edbd-4919-8c1e-c19832c7b867] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:46:02.895  INFO [8bbfe3a0-edbd-4919-8c1e-c19832c7b867] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:46:02.895  INFO [8bbfe3a0-edbd-4919-8c1e-c19832c7b867] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:46:02.895  INFO [8bbfe3a0-edbd-4919-8c1e-c19832c7b867] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:46:03.728 DEBUG [156f8432-47bf-4a44-867b-b608d11a11a6] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:03.796 DEBUG [156f8432-47bf-4a44-867b-b608d11a11a6] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:03.796  INFO [156f8432-47bf-4a44-867b-b608d11a11a6] 7968 --- [nio-8080-exec-1] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:46:03.855  INFO [156f8432-47bf-4a44-867b-b608d11a11a6] 7968 --- [nio-8080-exec-1] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:46:03.867 DEBUG [aad89f22-e3a8-45ca-b2e4-f05a756fc24d] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:46:03.945 DEBUG [aad89f22-e3a8-45ca-b2e4-f05a756fc24d] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:46:04.015  WARN [aad89f22-e3a8-45ca-b2e4-f05a756fc24d] 7968 --- [io-8080-exec-10] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:46:04.016  WARN [aad89f22-e3a8-45ca-b2e4-f05a756fc24d] 7968 --- [io-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:46:04.061 DEBUG [050542c0-45f7-4811-9255-79460a00efaa] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:04.130 DEBUG [050542c0-45f7-4811-9255-79460a00efaa] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:04.131  INFO [050542c0-45f7-4811-9255-79460a00efaa] 7968 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:46:04.194  INFO [050542c0-45f7-4811-9255-79460a00efaa] 7968 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:46:04.203 DEBUG [b07c8925-8e4f-4b3d-aa6d-45960824faad] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:46:04.272 DEBUG [b07c8925-8e4f-4b3d-aa6d-45960824faad] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:46:04.334  WARN [b07c8925-8e4f-4b3d-aa6d-45960824faad] 7968 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:46:04.335  WARN [b07c8925-8e4f-4b3d-aa6d-45960824faad] 7968 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:46:05.610 DEBUG [dfc1589e-ab85-4e03-9e4e-52729eeee741] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:05.611 DEBUG [dfc1589e-ab85-4e03-9e4e-52729eeee741] 7968 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:46:05.612 DEBUG [dfc1589e-ab85-4e03-9e4e-52729eeee741] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:05.613  INFO [dfc1589e-ab85-4e03-9e4e-52729eeee741] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:46:05.613  INFO [dfc1589e-ab85-4e03-9e4e-52729eeee741] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:46:05.613  INFO [dfc1589e-ab85-4e03-9e4e-52729eeee741] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:46:05.613  INFO [dfc1589e-ab85-4e03-9e4e-52729eeee741] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:46:06.323 DEBUG [bdf6a039-0baf-4127-a59a-56d5bf62cd2b] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:06.389 DEBUG [bdf6a039-0baf-4127-a59a-56d5bf62cd2b] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:06.390  INFO [bdf6a039-0baf-4127-a59a-56d5bf62cd2b] 7968 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Request received for current user details: user1
+2025-05-27 01:46:06.453  INFO [bdf6a039-0baf-4127-a59a-56d5bf62cd2b] 7968 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Returning details for user: user1
+2025-05-27 01:46:06.467 DEBUG [922081e7-45e4-4478-b71b-2e55411f167e] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:46:06.586 DEBUG [922081e7-45e4-4478-b71b-2e55411f167e] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:46:06.657  WARN [922081e7-45e4-4478-b71b-2e55411f167e] 7968 --- [nio-8080-exec-5] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:46:06.658  WARN [922081e7-45e4-4478-b71b-2e55411f167e] 7968 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:46:06.687 DEBUG [ccd15151-7495-4eeb-9556-bdea51be2d7b] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:06.759 DEBUG [ccd15151-7495-4eeb-9556-bdea51be2d7b] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:06.759  WARN [ccd15151-7495-4eeb-9556-bdea51be2d7b] 7968 --- [nio-8080-exec-9] o.e.x.security.RateLimitingFilter        : Rate limit exceeded for IP: 0:0:0:0:0:0:0:1 on path: /api/user/me
+2025-05-27 01:46:08.031 DEBUG [060374e6-613d-4c9d-baeb-ac9c5e6baa8f] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:08.031 DEBUG [060374e6-613d-4c9d-baeb-ac9c5e6baa8f] 7968 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:46:08.032 DEBUG [060374e6-613d-4c9d-baeb-ac9c5e6baa8f] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:08.033  INFO [060374e6-613d-4c9d-baeb-ac9c5e6baa8f] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:46:08.033  INFO [060374e6-613d-4c9d-baeb-ac9c5e6baa8f] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:46:08.033  INFO [060374e6-613d-4c9d-baeb-ac9c5e6baa8f] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:46:08.033  INFO [060374e6-613d-4c9d-baeb-ac9c5e6baa8f] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:46:08.750 DEBUG [25cf9fd5-0530-4ec9-9dd5-44dab65a1442] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:08.827 DEBUG [25cf9fd5-0530-4ec9-9dd5-44dab65a1442] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:08.827  WARN [25cf9fd5-0530-4ec9-9dd5-44dab65a1442] 7968 --- [nio-8080-exec-8] o.e.x.security.RateLimitingFilter        : Rate limit exceeded for IP: 0:0:0:0:0:0:0:1 on path: /api/user/me
+2025-05-27 01:46:09.027 DEBUG [c60e5c49-e2ee-49df-ad0f-c2bccf74f11b] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:09.110 DEBUG [c60e5c49-e2ee-49df-ad0f-c2bccf74f11b] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:09.110  WARN [c60e5c49-e2ee-49df-ad0f-c2bccf74f11b] 7968 --- [nio-8080-exec-1] o.e.x.security.RateLimitingFilter        : Rate limit exceeded for IP: 0:0:0:0:0:0:0:1 on path: /api/user/me
+2025-05-27 01:46:13.087 DEBUG [f4710d65-00d3-4a38-8b3e-528d7eac4b0b] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:13.088 DEBUG [f4710d65-00d3-4a38-8b3e-528d7eac4b0b] 7968 --- [io-8080-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:46:13.088 DEBUG [f4710d65-00d3-4a38-8b3e-528d7eac4b0b] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:13.089  INFO [f4710d65-00d3-4a38-8b3e-528d7eac4b0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:46:13.089  INFO [f4710d65-00d3-4a38-8b3e-528d7eac4b0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:46:13.089  INFO [f4710d65-00d3-4a38-8b3e-528d7eac4b0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:46:13.090  INFO [f4710d65-00d3-4a38-8b3e-528d7eac4b0b] 7968 --- [io-8080-exec-10] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:46:14.392 DEBUG [c4732a1f-a869-43bf-8553-a77f161a0a90] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:14.467 DEBUG [c4732a1f-a869-43bf-8553-a77f161a0a90] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:14.467  WARN [c4732a1f-a869-43bf-8553-a77f161a0a90] 7968 --- [nio-8080-exec-2] o.e.x.security.RateLimitingFilter        : Rate limit exceeded for IP: 0:0:0:0:0:0:0:1 on path: /api/user/me
+2025-05-27 01:46:14.654 DEBUG [4c422ed7-1a41-4e71-b059-705bd5def718] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:14.725 DEBUG [4c422ed7-1a41-4e71-b059-705bd5def718] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:14.725  WARN [4c422ed7-1a41-4e71-b059-705bd5def718] 7968 --- [nio-8080-exec-4] o.e.x.security.RateLimitingFilter        : Rate limit exceeded for IP: 0:0:0:0:0:0:0:1 on path: /api/user/me
+2025-05-27 01:46:15.300 DEBUG [58f8bb4f-9285-4c25-a412-5182bcd71b63] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:15.300 DEBUG [58f8bb4f-9285-4c25-a412-5182bcd71b63] 7968 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:46:15.301 DEBUG [58f8bb4f-9285-4c25-a412-5182bcd71b63] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:15.301  INFO [58f8bb4f-9285-4c25-a412-5182bcd71b63] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:46:15.301  INFO [58f8bb4f-9285-4c25-a412-5182bcd71b63] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:46:15.301  INFO [58f8bb4f-9285-4c25-a412-5182bcd71b63] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:46:15.302  INFO [58f8bb4f-9285-4c25-a412-5182bcd71b63] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:46:21.245 DEBUG [4fbb9e1c-7f1f-4d41-afce-ca347fbb9168] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-05-27 01:46:21.245 DEBUG [4fbb9e1c-7f1f-4d41-afce-ca347fbb9168] 7968 --- [nio-8080-exec-7] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-05-27 01:46:23.652 DEBUG [7d1dcd6c-950c-4f29-8e35-e7df593c2127] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /oauth2/authorization/google
+2025-05-27 01:46:23.676 DEBUG [7d1dcd6c-950c-4f29-8e35-e7df593c2127] 7968 --- [nio-8080-exec-5] o.s.s.web.DefaultRedirectStrategy        : Redirecting to https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=280181287068-i92p696f0ja6qv5lecrhi4dmn2hsrvie.apps.googleusercontent.com&scope=email%20profile&state=TuOBVDZtjTl2Gw4eYJPfh7kQA_9e4V5wP0KrBOQ5vgI%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+2025-05-27 01:46:25.444 DEBUG [d61ac6ff-7ce0-49fe-a1e0-c82d50960bd3] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /login/oauth2/code/google?state=TuOBVDZtjTl2Gw4eYJPfh7kQA_9e4V5wP0KrBOQ5vgI%3D&code=4%2F0AUJR-x7TJMxFOdvAHP72CeYnY8CW92V7In8kipmS32YKCg1jyy8LAKqH5gbIKXZjaEFTuA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=1&prompt=none
+2025-05-27 01:46:25.741  INFO [d61ac6ff-7ce0-49fe-a1e0-c82d50960bd3] 7968 --- [nio-8080-exec-9] o.e.x.security.CustomOAuth2UserService   : Creating new user from OAuth2 login: ****@****.***
+2025-05-27 01:46:25.820  INFO [d61ac6ff-7ce0-49fe-a1e0-c82d50960bd3] 7968 --- [nio-8080-exec-9] o.e.x.security.CustomOAuth2UserService   : Successfully created new user from OAuth2 login: ****@****.***
+2025-05-27 01:46:25.821 DEBUG [d61ac6ff-7ce0-49fe-a1e0-c82d50960bd3] 7968 --- [nio-8080-exec-9] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 1EF448336451A20D081C65B5411DB45D
+2025-05-27 01:46:25.822 DEBUG [d61ac6ff-7ce0-49fe-a1e0-c82d50960bd3] 7968 --- [nio-8080-exec-9] .s.o.c.w.OAuth2LoginAuthenticationFilter : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [104658082982173093135], Granted Authorities: [[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]], User Attributes: [{sub=104658082982173093135, name=Razvan Uleia, given_name=Razvan, family_name=Uleia, picture=https://lh3.googleusercontent.com/a/ACg8ocJi61HPFJ4MxC53TnL4U_AL4Tuu_gASX5yvf0NxGSQWc6-YeA=s96-c, email=****@****.***, email_verified=true}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=1EF448336451A20D081C65B5411DB45D], Granted Authorities=[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]]
+2025-05-27 01:46:25.823 DEBUG [d61ac6ff-7ce0-49fe-a1e0-c82d50960bd3] 7968 --- [nio-8080-exec-9] o.s.s.web.DefaultRedirectStrategy        : Redirecting to http://localhost:3000/login?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYXp2YW4udWxlaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ4Mjk5NTg1LCJleHAiOjE3NDgzODU5ODV9.avznZN20awb9RJVnVLJPZoMGU_JI-amKrGi81bN7Fp3Fi1S1e-O1Prs-mr5CE4U5Yxa2Snw6vpeekJsyyCNL-A&refreshToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDQ2NTgwODI5ODIxNzMwOTMxMzUiLCJpYXQiOjE3NDgyOTk1ODUsImV4cCI6MTc0ODkwNDM4NX0.7bm1-1szKelDR-hqGjS2QLqRiSXcPRJn9_UriI9t8If4Hz_bvS90fqMAZ_w-cWTjJ9_YVfEDIAEhukoeaWu-4A
+2025-05-27 01:46:26.560 DEBUG [ba03b7a8-6b5c-4c79-9305-ee1e45d6d81c] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:46:26.570 DEBUG [ba03b7a8-6b5c-4c79-9305-ee1e45d6d81c] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:46:26.571  WARN [ba03b7a8-6b5c-4c79-9305-ee1e45d6d81c] 7968 --- [nio-8080-exec-6] o.e.x.security.RateLimitingFilter        : Rate limit exceeded for IP: 0:0:0:0:0:0:0:1 on path: /api/user/me
+2025-05-27 01:46:31.160 DEBUG [0b45d9f6-5bb1-42d5-b581-20074b481d3a] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:31.160 DEBUG [0b45d9f6-5bb1-42d5-b581-20074b481d3a] 7968 --- [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:46:31.161 DEBUG [0b45d9f6-5bb1-42d5-b581-20074b481d3a] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:46:31.161  INFO [0b45d9f6-5bb1-42d5-b581-20074b481d3a] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:46:31.162  INFO [0b45d9f6-5bb1-42d5-b581-20074b481d3a] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:46:31.162  INFO [0b45d9f6-5bb1-42d5-b581-20074b481d3a] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:46:31.162  INFO [0b45d9f6-5bb1-42d5-b581-20074b481d3a] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:50:04.557 DEBUG [eb05d448-f4be-45b9-980e-a2bc6f0c299b] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:50:04.566 DEBUG [eb05d448-f4be-45b9-980e-a2bc6f0c299b] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:50:04.567  INFO [eb05d448-f4be-45b9-980e-a2bc6f0c299b] 7968 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-05-27 01:50:04.572  INFO [eb05d448-f4be-45b9-980e-a2bc6f0c299b] 7968 --- [nio-8080-exec-2] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-05-27 01:50:04.619 DEBUG [4298c674-eed8-4739-81ed-c5827eb64a8b] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:50:04.625 DEBUG [a85bca86-fa15-41e1-9112-8757da100561] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=OTP&destination=FCO&departureDate=2025-05-28&tripType=oneWay
+2025-05-27 01:50:04.626 DEBUG [0472722d-2bb6-4c61-910d-97fe81a39dee] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:50:04.626 DEBUG [a85bca86-fa15-41e1-9112-8757da100561] 7968 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:50:04.627 DEBUG [a85bca86-fa15-41e1-9112-8757da100561] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=OTP&destination=FCO&departureDate=2025-05-28&tripType=oneWay
+2025-05-27 01:50:04.631  INFO [a85bca86-fa15-41e1-9112-8757da100561] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=OTP, Dest=FCO, Depart=2025-05-28, Return=null, Pax=1/0/0
+2025-05-27 01:50:04.635  INFO [a85bca86-fa15-41e1-9112-8757da100561] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Performing one-way flight search from OTP to FCO on 2025-05-28
+2025-05-27 01:50:04.644 DEBUG [4298c674-eed8-4739-81ed-c5827eb64a8b] 7968 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from A074D5BA3B9DC3926BB7A2812EDAF291
+2025-05-27 01:50:04.646 DEBUG [4298c674-eed8-4739-81ed-c5827eb64a8b] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:50:04.649 DEBUG [0472722d-2bb6-4c61-910d-97fe81a39dee] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:50:04.650  INFO [0472722d-2bb6-4c61-910d-97fe81a39dee] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:50:04.659  WARN [4298c674-eed8-4739-81ed-c5827eb64a8b] 7968 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:50:04.661  WARN [4298c674-eed8-4739-81ed-c5827eb64a8b] 7968 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:50:04.665  INFO [0472722d-2bb6-4c61-910d-97fe81a39dee] 7968 --- [nio-8080-exec-7] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user ****@****.*** with ID 4, creating a new one.
+2025-05-27 01:50:04.671 DEBUG [76ed5535-0931-485a-a130-6950e13b0232] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:50:04.684 DEBUG [76ed5535-0931-485a-a130-6950e13b0232] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:50:04.688  INFO [0472722d-2bb6-4c61-910d-97fe81a39dee] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-05-27 01:50:04.695  WARN [76ed5535-0931-485a-a130-6950e13b0232] 7968 --- [nio-8080-exec-5] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:50:04.697  WARN [76ed5535-0931-485a-a130-6950e13b0232] 7968 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:50:04.715  INFO [a85bca86-fa15-41e1-9112-8757da100561] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-05-27 01:50:04.724 DEBUG [0e2cf5da-776b-4b67-8e5d-706cedf5304e] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=OTP&destination=FCO&departureDate=2025-05-28&tripType=oneWay
+2025-05-27 01:50:04.725 DEBUG [0e2cf5da-776b-4b67-8e5d-706cedf5304e] 7968 --- [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:50:04.725 DEBUG [0e2cf5da-776b-4b67-8e5d-706cedf5304e] 7968 --- [nio-8080-exec-9] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id A074D5BA3B9DC3926BB7A2812EDAF291
+2025-05-27 01:50:04.726 DEBUG [0e2cf5da-776b-4b67-8e5d-706cedf5304e] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=OTP&destination=FCO&departureDate=2025-05-28&tripType=oneWay
+2025-05-27 01:50:04.727  INFO [0e2cf5da-776b-4b67-8e5d-706cedf5304e] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=OTP, Dest=FCO, Depart=2025-05-28, Return=null, Pax=1/0/0
+2025-05-27 01:50:04.727  INFO [0e2cf5da-776b-4b67-8e5d-706cedf5304e] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Performing one-way flight search from OTP to FCO on 2025-05-28
+2025-05-27 01:50:04.784  INFO [0e2cf5da-776b-4b67-8e5d-706cedf5304e] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-05-27 01:50:26.548 DEBUG [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:50:26.548 DEBUG [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:50:26.550 DEBUG [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:50:26.550  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:50:26.550  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:50:26.550  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:50:26.551  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : No valid cache found. Searching nearby flights from origin: OTP, after date: 2025-05-27
+2025-05-27 01:50:26.551  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Calling flightService.findByOriginAndDepartureDateAfter for origin: OTP, date: 2025-05-27
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Database query completed, found 16 flights
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Converting 16 Flight entities to FlightDTOs
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Converted to 16 FlightDTOs
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Grouping flights by destination country
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Grouped flights into 7 countries
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Selecting diverse flights - one from each country first
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Greece (has 2 flights)
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Netherlands (has 2 flights)
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Italy (has 2 flights)
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from United Kingdom (has 2 flights)
+2025-05-27 01:50:26.592  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from France (has 2 flights)
+2025-05-27 01:50:26.593  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Adding first flight from Switzerland (has 2 flights)
+2025-05-27 01:50:26.593  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Reached 6 flights after first pass, stopping
+2025-05-27 01:50:26.593  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Caching 6 diverse flights with key: OTP-2025-05-27
+2025-05-27 01:50:26.593  INFO [75f759fb-92e4-4d64-9936-ade9bace2044] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Returning 6 diverse nearby flights from: OTP
+2025-05-27 01:51:25.082 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/flights/natural-language/search
+2025-05-27 01:51:25.085 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:51:25.085 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/flights/natural-language/search
+2025-05-27 01:51:25.090  INFO [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.c.NaturalLanguageSearchController  : Received natural language search request: Trip to france for a familly with 2 kids
+2025-05-27 01:51:25.092  INFO [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Determined closest airport from coordinates: OTP
+2025-05-27 01:51:25.092  INFO [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Processing natural language query with closest airport: OTP
+2025-05-27 01:51:25.094 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Generated prompt for Gemini API: You are a flight search assistant. Extract the following information from this query: origin city, destination city, departure date, return date (if applicable), trip type (one-way or round-trip), and number of passengers (adults, children, infants). If any information is missing, use reasonable defaults. The user's closest airport is OTP. IMPORTANT RULES: 1. When extracting dates, use the current year (2025) for any dates where the year is not explicitly specified. 2. If the query mentions a 'weekend trip' or similar weekend travel, and specific dates aren't provided,    set the departure and return dates to be within 1-2 weeks from today (2025-05-27).    For example, if today is 2025-05-27, a good departure date would be between 2025-06-03 and 2025-06-10, with the return date 2-3 days after departure. 3. IMPORTANT: If the user specifies an origin in the query (e.g., 'from Paris', 'departing London'),    you MUST use that origin. Only if no origin is provided in the query,    use 'OTP' as the origin.    This is the closest airport to the user's current location. 4. CRITICAL: You MUST use the correct IATA airport codes for cities. DO NOT use generic city codes.    For example, use 'FCO' for Rome (not 'ROM'), 'LHR' for London (not 'LON'), 'CDG' for Paris, etc.    Here are the correct airport codes for common cities:    - Rome: FCO (Leonardo da Vinci Fiumicino)    - London: LHR (Heathrow Airport)    - Paris: CDG (Charles de Gaulle)    - New York: JFK (John F. Kennedy)    - Los Angeles: LAX (Los Angeles Intl)    - Barcelona: BCN (El Prat Airport)    - Madrid: MAD (Adolfo Suárez Madrid–Barajas)    - Berlin: BER (Berlin Brandenburg)    - Munich: MUC (Franz Josef Strauss)    - Milan: MXP (Milano Malpensa)    - Amsterdam: AMS (Amsterdam Schiphol)    - Vienna: VIE (Vienna Intl)    - Zurich: ZRH (Zurich Airport)    - Athens: ATH (Athens International)    - Bucharest: OTP (Henri Coandă Intl)    - Cluj: CLJ (Avram Iancu)    - Brussels: CRL (Brussels South Charleroi)    - Baku: GYD (Heydar Aliyev Intl)    - Yerevan: EVN (Zvartnots Intl)    - Tirana: TIA (Rinas Mother Teresa) Format your response as a JSON object with the following fields: origin (airport code), destination (airport code), departureDate (YYYY-MM-DD), returnDate (YYYY-MM-DD or null for one-way), tripType (oneWay or roundTrip), adults (number), children (number), infants (number). Here's the user query: "Trip to france for a familly with 2 kids";
+2025-05-27 01:51:25.096  INFO [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Using Gemini API with project ID: xlr8travel
+2025-05-27 01:51:27.518 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Gemini API response: ```json
+{
+  "origin": "OTP",
+  "destination": "CDG",
+  "departureDate": "2025-06-03",
+  "returnDate": "2025-06-06",
+  "tripType": "roundTrip",
+  "adults": 2,
+  "children": 2,
+  "infants": 0
+}
+```
+2025-05-27 01:51:27.519 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Passing closest airport to parseGeminiResponse: 'OTP'
+2025-05-27 01:51:27.520 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Origin code from Gemini API: 'OTP', userClosestAirport: 'OTP'
+2025-05-27 01:51:27.521 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Trimmed origin code: 'OTP', isClosestAirportPlaceholder: false
+2025-05-27 01:51:27.521 DEBUG [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Final origin after processing: 'OTP'
+2025-05-27 01:51:27.521  INFO [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Final origin after processing: 'OTP'
+2025-05-27 01:51:27.521  INFO [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.services.GeminiServiceImpl         : Parsed response: origin=OTP, destination=CDG, departureDate=2025-06-03, returnDate=2025-06-06, tripType=roundTrip, adults=2, children=2, infants=0
+2025-05-27 01:51:27.521  INFO [0c1c45fc-715c-41cf-b7fb-7cbc62d2ed24] 7968 --- [nio-8080-exec-1] o.e.x.c.NaturalLanguageSearchController  : Successfully processed natural language query. Origin: OTP, Destination: CDG
+2025-05-27 01:51:29.174 DEBUG [3b30ba8e-7e8b-438d-aca1-fb630c723d7e] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-27 01:51:29.183 DEBUG [3b30ba8e-7e8b-438d-aca1-fb630c723d7e] 7968 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-27 01:51:29.184  INFO [3b30ba8e-7e8b-438d-aca1-fb630c723d7e] 7968 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-05-27 01:51:29.190  INFO [3b30ba8e-7e8b-438d-aca1-fb630c723d7e] 7968 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-05-27 01:51:29.271 DEBUG [36c2acec-3927-440a-98e2-7476b6942797] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=OTP&destination=CDG&departureDate=2025-06-03&tripType=oneWay
+2025-05-27 01:51:29.271 DEBUG [226094ff-9fb1-4497-b5b3-59c58123fcd2] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:51:29.271 DEBUG [14d73b79-2e24-4ee3-80a0-7e71e6dce190] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-27 01:51:29.271 DEBUG [36c2acec-3927-440a-98e2-7476b6942797] 7968 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:51:29.272 DEBUG [36c2acec-3927-440a-98e2-7476b6942797] 7968 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=OTP&destination=CDG&departureDate=2025-06-03&tripType=oneWay
+2025-05-27 01:51:29.274  INFO [36c2acec-3927-440a-98e2-7476b6942797] 7968 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=OTP, Dest=CDG, Depart=2025-06-03, Return=null, Pax=1/0/0
+2025-05-27 01:51:29.274  INFO [36c2acec-3927-440a-98e2-7476b6942797] 7968 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Performing one-way flight search from OTP to CDG on 2025-06-03
+2025-05-27 01:51:29.284 DEBUG [14d73b79-2e24-4ee3-80a0-7e71e6dce190] 7968 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 54E482C718A7E24C0754C8CD3D027FCD
+2025-05-27 01:51:29.284 DEBUG [226094ff-9fb1-4497-b5b3-59c58123fcd2] 7968 --- [nio-8080-exec-4] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from D17AC72DD3B5F90ED685A9CA942A9B7D
+2025-05-27 01:51:29.285 DEBUG [14d73b79-2e24-4ee3-80a0-7e71e6dce190] 7968 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-27 01:51:29.286 DEBUG [226094ff-9fb1-4497-b5b3-59c58123fcd2] 7968 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:51:29.286  INFO [14d73b79-2e24-4ee3-80a0-7e71e6dce190] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-27 01:51:29.294  WARN [226094ff-9fb1-4497-b5b3-59c58123fcd2] 7968 --- [nio-8080-exec-4] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:51:29.295  WARN [226094ff-9fb1-4497-b5b3-59c58123fcd2] 7968 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:51:29.301  INFO [14d73b79-2e24-4ee3-80a0-7e71e6dce190] 7968 --- [nio-8080-exec-7] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-05-27 01:51:29.304 DEBUG [c3eda43f-ee28-4d08-948d-cd3fa2c3286f] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-27 01:51:29.317 DEBUG [c3eda43f-ee28-4d08-948d-cd3fa2c3286f] 7968 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-27 01:51:29.324  WARN [c3eda43f-ee28-4d08-948d-cd3fa2c3286f] 7968 --- [nio-8080-exec-5] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-27 01:51:29.325  WARN [c3eda43f-ee28-4d08-948d-cd3fa2c3286f] 7968 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-27 01:51:29.337  INFO [36c2acec-3927-440a-98e2-7476b6942797] 7968 --- [nio-8080-exec-2] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-05-27 01:51:29.346 DEBUG [f4f11134-b365-42ac-9261-cefa2bfcc2c2] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=OTP&destination=CDG&departureDate=2025-06-03&tripType=oneWay
+2025-05-27 01:51:29.346 DEBUG [f4f11134-b365-42ac-9261-cefa2bfcc2c2] 7968 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:51:29.346 DEBUG [f4f11134-b365-42ac-9261-cefa2bfcc2c2] 7968 --- [nio-8080-exec-3] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 54E482C718A7E24C0754C8CD3D027FCD
+2025-05-27 01:51:29.347 DEBUG [f4f11134-b365-42ac-9261-cefa2bfcc2c2] 7968 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=OTP&destination=CDG&departureDate=2025-06-03&tripType=oneWay
+2025-05-27 01:51:29.348  INFO [f4f11134-b365-42ac-9261-cefa2bfcc2c2] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=OTP, Dest=CDG, Depart=2025-06-03, Return=null, Pax=1/0/0
+2025-05-27 01:51:29.348  INFO [f4f11134-b365-42ac-9261-cefa2bfcc2c2] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Performing one-way flight search from OTP to CDG on 2025-06-03
+2025-05-27 01:51:29.356 DEBUG [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=CDG&destination=OTP&departureDate=2025-06-06&tripType=oneWay
+2025-05-27 01:51:29.357 DEBUG [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:51:29.357 DEBUG [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id D17AC72DD3B5F90ED685A9CA942A9B7D
+2025-05-27 01:51:29.357 DEBUG [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=CDG&destination=OTP&departureDate=2025-06-06&tripType=oneWay
+2025-05-27 01:51:29.358  INFO [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=CDG, Dest=OTP, Depart=2025-06-06, Return=null, Pax=1/0/0
+2025-05-27 01:51:29.358  INFO [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Performing one-way flight search from CDG to OTP on 2025-06-06
+2025-05-27 01:51:29.363  WARN [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : No flights found for search: CDG to OTP on 2025-06-06
+2025-05-27 01:51:29.364  INFO [3f575006-3bb3-4fb7-ab6a-de3677b6801c] 7968 --- [nio-8080-exec-9] o.e.x.controllers.FlightController       : Found 0 available flights for search criteria.
+2025-05-27 01:51:29.390  INFO [f4f11134-b365-42ac-9261-cefa2bfcc2c2] 7968 --- [nio-8080-exec-3] o.e.x.controllers.FlightController       : Found 1 available flights for search criteria.
+2025-05-27 01:51:29.400 DEBUG [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/search?origin=CDG&destination=OTP&departureDate=2025-06-06&tripType=oneWay
+2025-05-27 01:51:29.400 DEBUG [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:51:29.401 DEBUG [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id D17AC72DD3B5F90ED685A9CA942A9B7D
+2025-05-27 01:51:29.402 DEBUG [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/search?origin=CDG&destination=OTP&departureDate=2025-06-06&tripType=oneWay
+2025-05-27 01:51:29.403  INFO [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Searching flights: Type=oneWay, Origin=CDG, Dest=OTP, Depart=2025-06-06, Return=null, Pax=1/0/0
+2025-05-27 01:51:29.403  INFO [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Performing one-way flight search from CDG to OTP on 2025-06-06
+2025-05-27 01:51:29.408  WARN [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : No flights found for search: CDG to OTP on 2025-06-06
+2025-05-27 01:51:29.409  INFO [7b3eaac9-974e-44dd-ae2e-2e96b6323a3c] 7968 --- [nio-8080-exec-6] o.e.x.controllers.FlightController       : Found 0 available flights for search criteria.
+2025-05-27 01:51:32.993 DEBUG [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/flights/nearby?origin=OTP
+2025-05-27 01:51:32.994 DEBUG [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-27 01:51:32.994 DEBUG [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id D17AC72DD3B5F90ED685A9CA942A9B7D
+2025-05-27 01:51:32.995 DEBUG [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/flights/nearby?origin=OTP
+2025-05-27 01:51:32.996  INFO [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Received request for nearby flights from origin: OTP, departureDate: null
+2025-05-27 01:51:32.996  INFO [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Using search date: 2025-05-27
+2025-05-27 01:51:32.996  INFO [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Cache key: OTP-2025-05-27
+2025-05-27 01:51:32.996  INFO [628954ff-416f-47ed-9d87-05fc8f6a46be] 7968 --- [nio-8080-exec-8] o.e.x.controllers.FlightController       : Returning cached nearby flights for origin: OTP, found 6 flights
+2025-05-27 01:53:28.085  INFO [NONE] 7968 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27 01:53:28.089  INFO [NONE] 7968 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-27 01:53:28.098  INFO [NONE] 7968 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-27 10:52:52.463  INFO [NONE] 27204 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Starting Xlr8travelApplication using Java 21.0.5 with PID 27204 (C:\Users\razvi\Desktop\Licenta\backend\target\classes started by razvi in C:\Users\razvi\Desktop\Licenta\backend)
+2025-05-27 10:52:52.471 DEBUG [NONE] 27204 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-05-27 10:52:52.471  INFO [NONE] 27204 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : The following 1 profile is active: "local"
+2025-05-27 10:52:52.508  INFO [NONE] 27204 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27 10:52:52.509  INFO [NONE] 27204 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27 10:52:53.486  INFO [NONE] 27204 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27 10:52:53.570  INFO [NONE] 27204 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 75 ms. Found 9 JPA repository interfaces.
+2025-05-27 10:52:54.596  INFO [NONE] 27204 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27 10:52:54.617  INFO [NONE] 27204 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27 10:52:54.618  INFO [NONE] 27204 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-27 10:52:54.703  INFO [NONE] 27204 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27 10:52:54.704  INFO [NONE] 27204 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2194 ms
+2025-05-27 10:52:54.998  INFO [NONE] 27204 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27 10:52:55.073  INFO [NONE] 27204 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-05-27 10:52:55.112  INFO [NONE] 27204 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27 10:52:55.358  INFO [NONE] 27204 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27 10:52:55.386  INFO [NONE] 27204 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27 10:52:56.484 ERROR [NONE] 27204 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
+
+com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:174)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:438)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:241)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:189)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:784)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:767)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:508)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1419)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4866)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at org.example.xlr8travel.Xlr8travelApplication.main(Xlr8travelApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:61)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:104)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:149)
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:165)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:88)
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:120)
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:935)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:805)
+	... 137 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:153)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:62)
+	... 140 common frames omitted
+
+2025-05-27 10:52:56.495  WARN [NONE] 27204 --- [  restartedMain] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+
+java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:784)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:767)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:508)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1419)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4866)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at org.example.xlr8travel.Xlr8travelApplication.main(Xlr8travelApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+
+2025-05-27 10:52:56.531  WARN [NONE] 27204 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27 10:52:57.881  INFO [NONE] 27204 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27 10:52:57.900  INFO [NONE] 27204 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27 10:52:58.915 ERROR [NONE] 27204 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
+
+com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:174)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:438)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:241)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:189)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:46)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.getIsolatedConnection(GenerationTargetToDatabase.java:60)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.jdbcStatement(GenerationTargetToDatabase.java:112)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:79)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:470)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropConstraintsTablesSequences(SchemaDropperImpl.java:242)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:215)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:185)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:155)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:115)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:244)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:784)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:767)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:508)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1419)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4866)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at org.example.xlr8travel.Xlr8travelApplication.main(Xlr8travelApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:61)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:104)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:149)
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:165)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:88)
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:120)
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:935)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:805)
+	... 144 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:153)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:62)
+	... 147 common frames omitted
+
+2025-05-27 10:52:58.922  WARN [NONE] 27204 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 08S01
+2025-05-27 10:52:58.923 ERROR [NONE] 27204 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-05-27 10:52:58.929 ERROR [NONE] 27204 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.] [n/a]
+2025-05-27 10:52:58.931 ERROR [NONE] 27204 --- [  restartedMain] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter': Unsatisfied dependency expressed through field 'userDetailsService': Error creating bean with name 'userRepoUserDetailsService' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\security\UserRepoUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in org.example.xlr8travel.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2025-05-27 10:52:58.984  INFO [NONE] 27204 --- [  restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-05-27 10:52:58.993  WARN [NONE] 27204 --- [  restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-05-27 10:52:59.004  INFO [NONE] 27204 --- [  restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-27 10:52:59.025 ERROR [NONE] 27204 --- [  restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:165)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at org.example.xlr8travel.Xlr8travelApplication.main(Xlr8travelApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:145)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	... 11 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter': Unsatisfied dependency expressed through field 'userDetailsService': Error creating bean with name 'userRepoUserDetailsService' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\security\UserRepoUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in org.example.xlr8travel.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:787)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:767)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:508)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1419)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4866)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	... 16 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userRepoUserDetailsService' defined in file [C:\Users\razvi\Desktop\Licenta\backend\target\classes\org\example\xlr8travel\security\UserRepoUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in org.example.xlr8travel.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:784)
+	... 58 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository' defined in org.example.xlr8travel.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 71 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 85 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.] [n/a]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 97 common frames omitted
+Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.] [n/a]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:421)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	... 104 common frames omitted
+Caused by: org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.] [n/a]
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:100)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:74)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.getIsolatedConnection(GenerationTargetToDatabase.java:60)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.jdbcStatement(GenerationTargetToDatabase.java:112)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:79)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:470)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropConstraintsTablesSequences(SchemaDropperImpl.java:242)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:215)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:185)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:155)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:115)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:244)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1429)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	... 108 common frames omitted
+Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:174)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:438)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:241)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:189)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:46)
+	... 131 common frames omitted
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:61)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:104)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:149)
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:165)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:88)
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:120)
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:935)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:805)
+	... 144 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:153)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:62)
+	... 147 common frames omitted
+

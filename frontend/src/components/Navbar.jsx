@@ -187,7 +187,7 @@ export default function NavBarComponent() {
           right: 0;
           top: calc(100% + 12px);
           width: 380px;
-          background: rgba(17, 25, 40, 0.95);
+          background: rgba(0, 0, 0, 0.95);
           backdrop-filter: blur(24px) saturate(200%);
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 20px;
@@ -214,7 +214,7 @@ export default function NavBarComponent() {
         .modern-login-header {
           background: linear-gradient(
             135deg,
-            rgba(255, 111, 0, 0.1) 0%,
+            rgba(24, 13, 6, 0.1) 0%,
             rgba(255, 143, 0, 0.05) 100%
           );
           padding: 24px 24px 20px;
@@ -340,7 +340,7 @@ export default function NavBarComponent() {
         }
 
         .modern-divider-text {
-          background: rgba(17, 25, 40, 0.95);
+          background: rgba(0, 0, 0, 0.95);
           color: rgba(255, 255, 255, 0.6);
           font-size: 13px;
           font-weight: 500;
