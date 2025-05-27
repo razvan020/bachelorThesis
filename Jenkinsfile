@@ -58,7 +58,7 @@ pipeline {
             SPRING_MAIL_PASSWORD=\$GMAILPASS
             NEXT_PUBLIC_RECAPTCHA_SITE_KEY=\$RECAPTCHA_SITE_KEY
             RECAPTCHA_SECRET_KEY=\$RECAPTCHA_SECRET_KEY
-            GEMINI_APPLICATION_CREDENTIALS=/app/google-credentials.json
+            GEMINI_APPLICATION_CREDENTIALS=/google-credentials.json
             GEMINI_API_KEY=\$GEMINI_API_KEY
             GEMINI_PROJECT_ID=\$GEMINI_PROJECT_ID
             EOF
