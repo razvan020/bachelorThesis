@@ -38,13 +38,35 @@ pipeline {
         ]) {
           sh """
 
- # Ensure any old google-credentials.json (file or directory) is removed
-            rm -rf google-credentials.json
-
-            printf '%s' "\$GOOGLE_CREDENTIALS_JSON_CONTENT" > google-credentials.json
-
-	    ls -ld google-credentials.json
-
+        echo "=== DEBUGGING CREDENTIALS FILE CREATION ==="
+        
+        # Remove any existing file/directory
+        rm -rf google-credentials.json
+        
+        # Create the file
+        printf '%s' "\$GOOGLE_CREDENTIALS_JSON_CONTENT" > google-credentials.json
+        
+        # Debug the created file
+        echo "File details:"
+        ls -la google-credentials.json
+        file google-credentials.json
+        echo "File size: \$(stat -c%s google-credentials.json)"
+        echo "File permissions: \$(stat -c%A google-credentials.json)"
+        echo "File content preview:"
+        head -c 200 google-credentials.json
+        echo ""
+        echo "Is it valid JSON?"
+        if command -v jq >/dev/null 2>&1; then
+          echo "Using jq to validate:"
+          jq empty google-credentials.json && echo "Valid JSON" || echo "Invalid JSON"
+        else
+          echo "jq not available, checking manually:"
+          if [[ \$(head -c 1 google-credentials.json) == "{" ]]; then
+            echo "Starts with { - likely valid JSON"
+          else
+            echo "Does not start with { - likely invalid"
+          fi
+        fi
 
             cat > .env <<EOF
             NEXT_PUBLIC_BACKEND_URL=http://backend:8080
