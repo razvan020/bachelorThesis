@@ -2023,3 +2023,4 @@ Caused by: java.net.ConnectException: Connection refused: getsockopt
 2025-05-27 16:36:21.498 ERROR [64d4eb2f-99ca-4312-ba64-be701ac000ee] 33352 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
 2025-05-27 16:36:21.563 ERROR [ae8f9db8-efb7-4326-81c9-d9ecf8292d18] 33352 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
 2025-05-27 16:36:21.727 ERROR [4d51ed1e-cdb8-4fae-b434-d5cdf4fc70a5] 33352 --- [nio-8080-exec-4] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User ****@****.*** not found
+2025-05-27 16:54:48.329 ERROR [b896e889-0b5c-4ff6-a82d-0f594ed8e17d] 33352 --- [io-8080-exec-10] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
