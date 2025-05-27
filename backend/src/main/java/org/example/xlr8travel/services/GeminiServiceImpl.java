@@ -11,6 +11,7 @@ import org.example.xlr8travel.dto.NaturalLanguageSearchRequestDTO;
 import org.example.xlr8travel.dto.NaturalLanguageSearchResponseDTO;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream; // Import for FileInputStream
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import com.google.cloud.vertexai.api.Content;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import com.google.cloud.vertexai.api.Part;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
+import com.google.auth.oauth2.GoogleCredentials; // Import for GoogleCredentials
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,14 +66,14 @@ public class GeminiServiceImpl implements GeminiService {
             String closestAirport = request.getClosestAirport();
 
             // If closest airport is not provided but coordinates are, find the closest airport
-            if ((closestAirport == null || closestAirport.isEmpty()) && 
-                request.getUserLatitude() != null && request.getUserLongitude() != null) {
+            if ((closestAirport == null || closestAirport.isEmpty()) &&
+                    request.getUserLatitude() != null && request.getUserLongitude() != null) {
 
-                AirportLocationService.Airport airport = 
-                    airportLocationService.findClosestAirport(
-                        request.getUserLatitude(), 
-                        request.getUserLongitude()
-                    );
+                AirportLocationService.Airport airport =
+                        airportLocationService.findClosestAirport(
+                                request.getUserLatitude(),
+                                request.getUserLongitude()
+                        );
 
                 closestAirport = airport.getCode();
                 log.info("Determined closest airport from coordinates: {}", closestAirport);
@@ -186,39 +188,44 @@ public class GeminiServiceImpl implements GeminiService {
                 "Here's the user query: \"" + userQuery + "\";";
     }
 
-private String callGeminiAPI(String prompt) throws IOException {
-    // Check if project ID is set
-    if (projectId == null || projectId.trim().isEmpty()) {
-        log.error("Gemini project ID is not set. Please set the GEMINI_PROJECT_ID environment variable.");
-        throw new IOException("Gemini project ID is not set. Please set the GEMINI_PROJECT_ID environment variable.");
-    }
+    private String callGeminiAPI(String prompt) throws IOException {
+        // Check if project ID is set
+        if (projectId == null || projectId.trim().isEmpty()) {
+            log.error("Gemini project ID is not set. Please set the GEMINI_PROJECT_ID environment variable.");
+            throw new IOException("Gemini project ID is not set. Please set the GEMINI_PROJECT_ID environment variable.");
+        }
 
-    // Check if credentials path is set
-    if (credentialsPath == null || credentialsPath.trim().isEmpty()) {
-        log.error("Google application credentials path is not set. Please set the google.application.credentials property.");
-        throw new IOException("Google application credentials path is not set. Please set the google.application.credentials property.");
-    }
+        // Check if credentials path is set
+        if (credentialsPath == null || credentialsPath.trim().isEmpty()) {
+            log.error("Google application credentials path is not set. Please set the google.application.credentials property.");
+            throw new IOException("Google application credentials path is not set. Please set the google.application.credentials property.");
+        }
 
-    // Remove quotes if present
-    credentialsPath = credentialsPath.replaceAll("^\"|\"$", "");
+        // Remove quotes if present (this is already handled but good to keep)
+        String cleanedCredentialsPath = credentialsPath.replaceAll("^\"|\"$", "");
 
-    // Set the credentials path as a system property
-    System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", credentialsPath);
+        log.info("Using Gemini API with project ID: {}", projectId);
+        log.info("Attempting to load Google credentials from: {}", cleanedCredentialsPath);
 
-    log.info("Using Gemini API with project ID: {}", projectId);
+        // Load credentials from the specified path
+        GoogleCredentials credentials;
+        try (FileInputStream serviceAccountStream = new FileInputStream(cleanedCredentialsPath)) {
+            credentials = GoogleCredentials.fromStream(serviceAccountStream);
+        } catch (IOException e) {
+            log.error("Failed to load Google credentials from {}: {}", cleanedCredentialsPath, e.getMessage());
+            throw new IOException("Failed to load Google credentials: " + e.getMessage(), e);
+        }
 
-    // Use the Gemini API directly
-
-    try (VertexAI vertexAI = new VertexAI(projectId, locationId)) {
-        GenerativeModel model = new GenerativeModel(this.model, vertexAI);
+        try (VertexAI vertexAI = new VertexAI(projectId, locationId, credentials)) { // Pass credentials directly
+            GenerativeModel model = new GenerativeModel(this.model, vertexAI);
 
             // Create content
-Content content = Content.newBuilder()
-    .addParts(Part.newBuilder()
-        .setText(prompt)
-        .build())
-    .setRole("user")  // Set the role at the Content level
-    .build();
+            Content content = Content.newBuilder()
+                    .addParts(Part.newBuilder()
+                            .setText(prompt)
+                            .build())
+                    .setRole("user")  // Set the role at the Content level
+                    .build();
 
             // Generate content
             GenerateContentResponse response = model.generateContent(content);
@@ -453,8 +460,8 @@ Content content = Content.newBuilder()
 
             // Log the parsed response
             log.info("Parsed response: origin={}, destination={}, departureDate={}, returnDate={}, tripType={}, adults={}, children={}, infants={}",
-                    response.getOrigin(), response.getDestination(), response.getDepartureDate(), 
-                    response.getReturnDate(), response.getTripType(), response.getAdults(), 
+                    response.getOrigin(), response.getDestination(), response.getDepartureDate(),
+                    response.getReturnDate(), response.getTripType(), response.getAdults(),
                     response.getChildren(), response.getInfants());
 
             return response;
