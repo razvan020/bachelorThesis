@@ -29,7 +29,7 @@ pipeline {
           string(credentialsId: 'gmail-pass', variable: 'GMAILPASS'),
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY'),
-          string(credentialsId: 'gemini-xlr8', variable: 'GEMINI_APPLICATION_CREDENTIALS'),
+          string(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDENTIALS_BASE64'),
           string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
           string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID')
 
@@ -37,6 +37,8 @@ pipeline {
 
         ]) {
           sh """
+	    echo \$GOOGLE_CREDENTIALS_BASE64 | base64 -d > /tmp/google-credentials.json
+
             cat > .env <<EOF
             NEXT_PUBLIC_BACKEND_URL=http://backend:8080
             NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\$PK
@@ -49,11 +51,12 @@ pipeline {
             SPRING_MAIL_PASSWORD=\$GMAILPASS
             NEXT_PUBLIC_RECAPTCHA_SITE_KEY=\$RECAPTCHA_SITE_KEY
             RECAPTCHA_SECRET_KEY=\$RECAPTCHA_SECRET_KEY
-            GEMINI_APPLICATION_CREDENTIALS=\$GEMINI_APPLICATION_CREDENTIALS
+            GEMINI_APPLICATION_CREDENTIALS=/tmp/google-credentials.json
             GEMINI_API_KEY=\$GEMINI_API_KEY
             GEMINI_PROJECT_ID=\$GEMINI_PROJECT_ID
             EOF
           """
+
         }
       }
     }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.protobuf.Value;
 import com.google.protobuf.util.JsonFormat;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.example.xlr8travel.dto.GeminiRequestDTO;
 import org.example.xlr8travel.dto.NaturalLanguageSearchRequestDTO;
@@ -11,6 +12,7 @@ import org.example.xlr8travel.dto.NaturalLanguageSearchResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -20,6 +22,11 @@ import com.google.cloud.vertexai.api.Content;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import com.google.cloud.vertexai.api.Part;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 
 @Service
 @Slf4j
@@ -52,6 +59,31 @@ public class GeminiServiceImpl implements GeminiService {
     private String credentialsPath;
 
     private static final Gson gson = new Gson();
+
+    @PostConstruct
+    public void initializeCredentials() {
+        if (credentialsPath != null && !credentialsPath.trim().isEmpty()) {
+            String cleanPath = credentialsPath.replaceAll("^\"|\"$", "").trim();
+            Path path = Paths.get(cleanPath);
+
+            if (!Files.exists(path)) {
+                String base64Creds = System.getenv("GOOGLE_CREDENTIALS_BASE64");
+                if (base64Creds != null && !base64Creds.trim().isEmpty()) {
+                    try {
+                        if (path.getParent() != null) {
+                            Files.createDirectories(path.getParent());
+                        }
+                        byte[] decodedBytes = Base64.getDecoder().decode(base64Creds);
+                        Files.write(path, decodedBytes);
+                        log.info("Google credentials file created at: {}", cleanPath);
+                    } catch (IOException e) {
+                        log.error("Failed to create Google credentials file", e);
+                        throw new RuntimeException("Failed to create Google credentials file", e);
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     public NaturalLanguageSearchResponseDTO processNaturalLanguageQuery(NaturalLanguageSearchRequestDTO request) {
