@@ -37,6 +37,10 @@ pipeline {
 
         ]) {
           sh """
+
+ # Ensure any old google-credentials.json (file or directory) is removed
+            rm -rf google-credentials.json
+
        cat > google-credentials.json << 'EOF'
 \$GOOGLE_CREDENTIALS_JSON
 EOF
