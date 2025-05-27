@@ -1202,24 +1202,6 @@ function FlightAvailabilityContent() {
           pointer-events: none;
         }
 
-        .bg-gradient {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(
-              circle at 30% 20%,
-              rgba(255, 111, 0, 0.1) 0%,
-              transparent 50%
-            ),
-            radial-gradient(
-              circle at 70% 80%,
-              rgba(59, 130, 246, 0.1) 0%,
-              transparent 50%
-            );
-        }
-
         .bg-particles .particle {
           position: absolute;
           width: 300px;

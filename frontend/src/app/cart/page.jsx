@@ -419,7 +419,7 @@ function CartPageContent() {
           height: 100%;
           background: radial-gradient(
               circle at 20% 30%,
-              rgba(255, 111, 0, 0.08) 0%,
+              rgba(255, 111, 0, 0.14) 5%,
               transparent 50%
             ),
             radial-gradient(
