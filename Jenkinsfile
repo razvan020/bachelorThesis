@@ -29,7 +29,7 @@ pipeline {
           string(credentialsId: 'gmail-pass', variable: 'GMAILPASS'),
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY'),
-          string(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDENTIALS_JSON_CONTENT'),
+          file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDENTIALS_FILE'),
           string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
           string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID')
 
@@ -38,35 +38,19 @@ pipeline {
         ]) {
           sh """
 
-        echo "=== DEBUGGING CREDENTIALS FILE CREATION ==="
-        
-        # Remove any existing file/directory
-        rm -rf google-credentials.json
-        
-        # Create the file
-        printf '%s' "\$GOOGLE_CREDENTIALS_JSON_CONTENT" > google-credentials.json
-        
-        # Debug the created file
-        echo "File details:"
-        ls -la google-credentials.json
-        file google-credentials.json
-        echo "File size: \$(stat -c%s google-credentials.json)"
-        echo "File permissions: \$(stat -c%A google-credentials.json)"
-        echo "File content preview:"
-        head -c 200 google-credentials.json
-        echo ""
-        echo "Is it valid JSON?"
-        if command -v jq >/dev/null 2>&1; then
-          echo "Using jq to validate:"
-          jq empty google-credentials.json && echo "Valid JSON" || echo "Invalid JSON"
-        else
-          echo "jq not available, checking manually:"
-          if [[ \$(head -c 1 google-credentials.json) == "{" ]]; then
-            echo "Starts with { - likely valid JSON"
-          else
-            echo "Does not start with { - likely invalid"
-          fi
-        fi
+            echo "=== COPYING CREDENTIALS FILE ==="
+            
+            # Copy the credentials file from Jenkins secure location to workspace
+            cp "\$GOOGLE_CREDENTIALS_FILE" google-credentials.json
+            
+            # Verify the file
+            echo "File details:"
+            ls -la google-credentials.json
+            echo "File size: \$(wc -c < google-credentials.json)"
+            echo "File content preview (first 100 chars):"
+            head -c 100 google-credentials.json
+            echo ""
+
 
             cat > .env <<EOF
             NEXT_PUBLIC_BACKEND_URL=http://backend:8080
