@@ -196,7 +196,11 @@ export default function BoardingPassesPage() {
         <style jsx global>{`
           .boarding-empty-page {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(
+              135deg,
+              rgb(0, 0, 0) 0%,
+              rgb(0, 0, 0) 100%
+            );
             display: flex;
             align-items: center;
             justify-content: center;
@@ -204,8 +208,8 @@ export default function BoardingPassesPage() {
           }
 
           .boarding-empty-alert {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(83, 84, 85, 0.3);
             border-radius: 20px;
             color: rgba(255, 255, 255, 0.9);
             padding: 3rem;
@@ -214,7 +218,7 @@ export default function BoardingPassesPage() {
           }
 
           .boarding-empty-alert h4 {
-            color: #60a5fa;
+            color: rgb(255, 255, 255);
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -224,7 +228,7 @@ export default function BoardingPassesPage() {
 
           .empty-icon {
             font-size: 4rem;
-            color: #60a5fa;
+            color: rgb(255, 255, 255);
             margin-bottom: 1.5rem;
           }
         `}</style>
@@ -232,7 +236,7 @@ export default function BoardingPassesPage() {
           <Alert variant="info" className="boarding-empty-alert">
             <FaBan className="empty-icon" />
             <Alert.Heading>
-              <FaTicketAlt />
+              <FaTicketAlt style={{ marginRight: "1rem" }} />
               No Boarding Passes
             </Alert.Heading>
             <p>You don't have any checked-in flights at this time.</p>

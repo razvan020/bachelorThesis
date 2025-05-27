@@ -765,8 +765,8 @@ export default function CheckInPage() {
           }
 
           .checkin-empty-alert {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(100, 100, 100, 0.3);
             border-radius: 20px;
             color: rgba(255, 255, 255, 0.9);
             padding: 3rem;
@@ -793,7 +793,7 @@ export default function CheckInPage() {
           <Alert variant="info" className="checkin-empty-alert">
             <FaBan className="empty-icon" />
             <Alert.Heading>
-              <FaTicketAlt />
+              <FaTicketAlt style={{ marginRight: "1rem" }} />
               No Eligible Tickets
             </Alert.Heading>
             <p>
