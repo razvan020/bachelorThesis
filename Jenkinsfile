@@ -37,9 +37,16 @@ pipeline {
 
         ]) {
           sh """
-	    echo \$GOOGLE_CREDENTIALS_BASE64 | base64 -d > google-credentials.json
-            ls -la google-credentials.json
+	    echo "\$GOOGLE_CREDENTIALS_BASE64" | tr -d '\\n\\r\\s' | base64 -d > google-credentials.json
+
+
+ 	    ls -la google-credentials.json
             echo "Credentials file size: \$(wc -c < google-credentials.json)"
+            echo "First 200 chars of decoded file:"
+            head -c 200 google-credentials.json
+            echo ""
+            echo "Checking if it's valid JSON:"
+            python3 -m json.tool google-credentials.json > /dev/null && echo "✅ Valid JSON" || echo "❌ Invalid JSON"
 
             cat > .env <<EOF
             NEXT_PUBLIC_BACKEND_URL=http://backend:8080
