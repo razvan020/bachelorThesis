@@ -39,6 +39,8 @@ pipeline {
           sh """
 
             echo "=== COPYING CREDENTIALS FILE ==="
+
+	    docker exec xlr8travel2_testbranch-backend-1 rm -rf /google-credentials.json 2>/dev/null || true
             
             # Copy the credentials file from Jenkins secure location to workspace
             cp "\$GOOGLE_CREDENTIALS_FILE" google-credentials.json
