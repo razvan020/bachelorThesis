@@ -41,7 +41,10 @@ pipeline {
  # Ensure any old google-credentials.json (file or directory) is removed
             rm -rf google-credentials.json
 
-            echo "\$GOOGLE_CREDENTIALS_JSON_CONTENT" > google-credentials.json
+            printf '%s' "\$GOOGLE_CREDENTIALS_JSON_CONTENT" > google-credentials.json
+
+	    ls -ld google-credentials.json
+
 
             cat > .env <<EOF
             NEXT_PUBLIC_BACKEND_URL=http://backend:8080
