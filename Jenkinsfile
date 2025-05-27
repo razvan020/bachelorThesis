@@ -37,7 +37,9 @@ pipeline {
 
         ]) {
           sh """
-	    echo \$GOOGLE_CREDENTIALS_BASE64 | base64 -d > /tmp/google-credentials.json
+	    echo \$GOOGLE_CREDENTIALS_BASE64 | base64 -d > google-credentials.json
+            ls -la google-credentials.json
+            echo "Credentials file size: \$(wc -c < google-credentials.json)"
 
             cat > .env <<EOF
             NEXT_PUBLIC_BACKEND_URL=http://backend:8080

@@ -57,31 +57,6 @@ public class GeminiServiceImpl implements GeminiService {
 
     private static final Gson gson = new Gson();
 
-    @PostConstruct
-    public void initializeCredentials() {
-        if (credentialsPath != null && !credentialsPath.trim().isEmpty()) {
-            String cleanPath = credentialsPath.replaceAll("^\"|\"$", "").trim();
-            Path path = Paths.get(cleanPath);
-
-            if (!Files.exists(path)) {
-                String base64Creds = System.getenv("GOOGLE_CREDENTIALS_BASE64");
-                if (base64Creds != null && !base64Creds.trim().isEmpty()) {
-                    try {
-                        if (path.getParent() != null) {
-                            Files.createDirectories(path.getParent());
-                        }
-                        byte[] decodedBytes = Base64.getDecoder().decode(base64Creds);
-                        Files.write(path, decodedBytes);
-                        log.info("Google credentials file created at: {}", cleanPath);
-                    } catch (IOException e) {
-                        log.error("Failed to create Google credentials file", e);
-                        throw new RuntimeException("Failed to create Google credentials file", e);
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public NaturalLanguageSearchResponseDTO processNaturalLanguageQuery(NaturalLanguageSearchRequestDTO request) {
         try {
