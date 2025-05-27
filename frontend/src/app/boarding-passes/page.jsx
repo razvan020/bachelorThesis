@@ -57,7 +57,11 @@ const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
 };
 
 export default function BoardingPassesPage() {
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const {
+    isAuthenticated,
+    loading: authLoading,
+    showLoginWithMessage,
+  } = useAuth();
   const router = useRouter();
 
   const [boardingPasses, setBoardingPasses] = useState([]);
@@ -69,7 +73,9 @@ export default function BoardingPassesPage() {
     if (authLoading) return;
 
     if (!isAuthenticated) {
-      router.push("/login");
+      showLoginWithMessage(
+        "You need to be logged in to access boarding passes"
+      );
       return;
     }
 
@@ -111,7 +117,7 @@ export default function BoardingPassesPage() {
         <style jsx global>{`
           .boarding-loading-state {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #000000 0%, #000000 100%);
             display: flex;
             flex-direction: column;
             align-items: center;

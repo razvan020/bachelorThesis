@@ -63,7 +63,11 @@ const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
 };
 
 export default function CheckInPage() {
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const {
+    isAuthenticated,
+    loading: authLoading,
+    showLoginWithMessage,
+  } = useAuth();
   const router = useRouter();
 
   const [tickets, setTickets] = useState([]);
@@ -87,7 +91,7 @@ export default function CheckInPage() {
     if (authLoading) return;
 
     if (!isAuthenticated) {
-      router.push("/login");
+      showLoginWithMessage("You need to be logged in to access check-in");
       return;
     }
 
@@ -234,10 +238,7 @@ export default function CheckInPage() {
         <style jsx global>{`
           .checkin-loading-state {
             min-height: 100vh;
-            background: linear-gradient(
-              135deg,
-              rgb(0, 0, 0) rgb(0, 0, 0) 293b 100%
-            );
+            background: black;
             display: flex;
             flex-direction: column;
             align-items: center;

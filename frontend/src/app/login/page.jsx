@@ -18,40 +18,62 @@ export default function LoginPage() {
   const router = useRouter();
   const auth = useAuth();
 
-  // Check for OAuth tokens in URL on component mount
+  // Check for OAuth completion parameter in URL on component mount
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-    const refreshToken = urlParams.get("refreshToken");
+    const oauthParam = urlParams.get("oauth");
 
-    if (token && refreshToken) {
-      // Store tokens in localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("refreshToken", refreshToken);
+    // After OAuth redirect, check if we need to fetch tokens from session
+    const checkOAuthLogin = async () => {
+      try {
+        console.log('OAuth success detected, retrieving tokens from session...');
 
-      // Remove tokens from URL
+        // Make request to get tokens from session
+        const response = await fetch('/api/oauth/complete', {
+          method: 'POST',
+          credentials: 'include', // Important: include session cookies
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to retrieve OAuth tokens from session');
+        }
+
+        const data = await response.json();
+
+        // Store tokens in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("username", data.username);
+
+        // Update auth context
+        await auth.handleOAuthLogin(data.token, data.refreshToken);
+
+        // Redirect to home page after successful login
+        router.push("/");
+
+        console.log('OAuth login successful, session tokens processed');
+      } catch (err) {
+        console.error("Error checking OAuth login:", err);
+        setError("Failed to complete login. Please try again.");
+      }
+    };
+
+    if (oauthParam === "success") {
+      // Clean up the URL
       window.history.replaceState({}, document.title, window.location.pathname);
-
-      // Redirect to home page or fetch user data
-      auth.handleOAuthLogin(token, refreshToken).then(() => router.push("/"));
-    }
-  }, []);
-
-  const handleOAuthSuccess = async (token, refreshToken) => {
-    try {
-      // Store tokens and update auth state
-      await auth.handleOAuthLogin(token, refreshToken);
-
-      // Remove tokens from URL
+      checkOAuthLogin();
+    } else if (oauthParam === "complete") {
+      // For backward compatibility
       window.history.replaceState({}, document.title, window.location.pathname);
-
-      // Redirect to home page
-      router.push("/");
-    } catch (err) {
-      console.error("OAuth login error:", err);
-      setError("Failed to complete OAuth login");
+      auth.handleOAuthLogin().then(() => router.push("/")).catch(err => {
+        console.error("Error with legacy OAuth login:", err);
+        setError("Failed to complete login. Please try again.");
+      });
     }
-  };
+  }, [auth, router]);
 
   const handleToggleTheme = () => setDarkMode((m) => !m);
 

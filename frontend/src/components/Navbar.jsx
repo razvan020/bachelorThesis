@@ -29,12 +29,24 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 export default function NavBarComponent() {
   const pathname = usePathname();
-  const { user, isAuthenticated, logout, cartItemCount, login } = useAuth();
+  const { 
+    user, 
+    isAuthenticated, 
+    logout, 
+    cartItemCount, 
+    login, 
+    showLoginDropdown: contextShowLoginDropdown,
+    loginDropdownMessage,
+    hideLogin
+  } = useAuth();
   const isAdmin = isAuthenticated && user?.username === "user2";
   const [avatarUrl, setAvatarUrl] = useState("/avatarSrc.png");
 
   // Login dropdown state
-  const [showLoginDropdown, setShowLoginDropdown] = useState(false);
+  const [localShowLoginDropdown, setLocalShowLoginDropdown] = useState(false);
+
+  // Combined state for dropdown visibility
+  const showLoginDropdown = contextShowLoginDropdown || localShowLoginDropdown;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -88,7 +100,10 @@ export default function NavBarComponent() {
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
       }
-      setShowLoginDropdown(false);
+      setLocalShowLoginDropdown(false);
+      if (contextShowLoginDropdown) {
+        hideLogin();
+      }
     } catch (err) {
       console.error("Login error:", err);
       setLoginError(err.message || "Login failed. Try the full login page.");
@@ -114,7 +129,11 @@ export default function NavBarComponent() {
         loginDropdownRef.current &&
         !loginDropdownRef.current.contains(event.target)
       ) {
-        setShowLoginDropdown(false);
+        if (contextShowLoginDropdown) {
+          hideLogin();
+        } else {
+          setLocalShowLoginDropdown(false);
+        }
       }
     };
 
@@ -122,7 +141,7 @@ export default function NavBarComponent() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [hideLogin, contextShowLoginDropdown]);
 
   // Base links
   const baseLinks = [
@@ -713,7 +732,11 @@ export default function NavBarComponent() {
                       }`}
                       onClick={(e) => {
                         e.preventDefault();
-                        setShowLoginDropdown(!showLoginDropdown);
+                        if (contextShowLoginDropdown) {
+                          hideLogin();
+                        } else {
+                          setLocalShowLoginDropdown(!localShowLoginDropdown);
+                        }
                       }}
                       style={{ background: "none", border: "none" }}
                     >
@@ -726,7 +749,7 @@ export default function NavBarComponent() {
                         <div className="modern-login-header">
                           <h3 className="modern-login-title">Welcome back</h3>
                           <p className="modern-login-subtitle">
-                            Sign in to your account
+                            {loginDropdownMessage || "Sign in to your account"}
                           </p>
                         </div>
 
@@ -851,7 +874,12 @@ export default function NavBarComponent() {
                                 <Link
                                   href="/signup"
                                   className="modern-signup-link"
-                                  onClick={() => setShowLoginDropdown(false)}
+                                  onClick={() => {
+                                    setLocalShowLoginDropdown(false);
+                                    if (contextShowLoginDropdown) {
+                                      hideLogin();
+                                    }
+                                  }}
                                 >
                                   Sign up
                                 </Link>
