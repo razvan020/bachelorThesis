@@ -49,9 +49,6 @@ public class GeminiServiceImpl implements GeminiService {
     @org.springframework.beans.factory.annotation.Value("${gemini.location.id}")
     private String locationId;
 
-    @org.springframework.beans.factory.annotation.Value("${gemini.publisher}")
-    private String publisher;
-
     @org.springframework.beans.factory.annotation.Value("${gemini.model}")
     private String model;
 
@@ -236,7 +233,6 @@ private String callGeminiAPI(String prompt) throws IOException {
     log.info("Using Gemini API with project ID: {}", projectId);
 
     // Use the Gemini API directly
-    String endpoint = String.format("%s-aiplatform.googleapis.com:443", locationId);
 
     try (VertexAI vertexAI = new VertexAI(projectId, locationId)) {
         GenerativeModel model = new GenerativeModel(this.model, vertexAI);
