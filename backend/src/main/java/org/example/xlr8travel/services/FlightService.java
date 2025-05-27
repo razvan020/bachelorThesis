@@ -24,6 +24,9 @@ public interface FlightService {
     // --- NEW: Method for one-way search (or flexible search) ---
     List<Flight> findByOriginAndDestinationAndDepartureDate(String origin, String destination, LocalDate departureDate);
 
+    // Method for finding flights by origin for nearby flights feature
+    List<Flight> findByOriginAndDepartureDateAfter(String origin, LocalDate departureDate);
+
     // Optional: Add existsById if used in implementation
     // boolean existsById(Long id);
 }

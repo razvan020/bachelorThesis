@@ -14,13 +14,14 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "users") // Use "users" instead of "user" to avoid H2 reserved keyword issues
 @ToString(exclude = {})
 @Getter
 @Setter
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
     private String lastname;

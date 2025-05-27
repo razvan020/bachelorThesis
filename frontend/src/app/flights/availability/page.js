@@ -1,32 +1,35 @@
-"use client"; // Required for hooks
+"use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; // Hook to read URL parameters
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
-import Tab from "react-bootstrap/Tab";
-import Nav from "react-bootstrap/Nav";
 import {
   FaPlaneDeparture,
   FaPlaneArrival,
   FaUser,
   FaSuitcase,
   FaChair,
-} from "react-icons/fa"; // Icons
-import { useAuth } from "@/contexts/AuthContext"; // Import useAuth to update cart count
+  FaMapMarkerAlt,
+  FaCheckCircle,
+  FaShieldAlt,
+  FaPlane,
+} from "react-icons/fa";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  getCurrencyForCountry,
+  convertFromEUR,
+  formatPrice,
+} from "@/utils/currencyUtils";
 
-// Helper function to format date/time (customize as needed)
+// Helper function to format date/time
 const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
-  // Combine or use directly based on backend format
-  // This example assumes separate date and time strings might be needed
-  // If your DTO returns combined LocalDateTime/Timestamp as ISO string, adjust accordingly
   const datePart = isoDateStr
     ? new Date(isoDateStr + "T00:00:00").toLocaleDateString("en-GB", {
         year: "numeric",
@@ -34,52 +37,172 @@ const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
         day: "2-digit",
       })
     : "";
-  const timePart = isoTimeStr || ""; // Assuming time is already HH:mm
+  const timePart = isoTimeStr || "";
   if (datePart && timePart) return `${datePart} ${timePart}`;
   if (datePart) return datePart;
   return "N/A";
 };
 
-// --- Main Component Content ---
+// Main Component Content
 function FlightAvailabilityContent() {
-  const searchParams = useSearchParams(); // Get URL query parameters
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const { fetchCartCount } = useAuth(); // Get function to update navbar cart count
+  const { fetchCartCount } = useAuth();
 
-  // Flight search and selection states
+  // All state variables
   const [outboundFlights, setOutboundFlights] = useState([]);
   const [returnFlights, setReturnFlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Selected flights
   const [selectedOutboundFlight, setSelectedOutboundFlight] = useState(null);
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(null);
-
-  // Booking flow states
-  const [currentStep, setCurrentStep] = useState("flights"); // 'flights', 'passengers', 'seats', 'payment'
-
-  // Passenger details
+  const [currentStep, setCurrentStep] = useState("flights");
   const [passengerDetails, setPassengerDetails] = useState({
     firstName: "",
     lastName: "",
     gender: "",
-    baggageType: "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0", // Default to free carry-on
+    baggageType: "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0",
   });
-
-  // Available seats
   const [availableSeats, setAvailableSeats] = useState([]);
   const [selectedSeat, setSelectedSeat] = useState(null);
-
-  // Pricing
   const [totalPrice, setTotalPrice] = useState(0);
+  const [userCountry, setUserCountry] = useState("Romania");
+  const [userCurrency, setUserCurrency] = useState("RON");
 
   // Get search criteria from URL
   const origin = searchParams.get("origin");
   const destination = searchParams.get("destination");
   const departureDate = searchParams.get("departureDate");
-  const arrivalDate = searchParams.get("arrivalDate"); // Might be null for one-way
+  const arrivalDate = searchParams.get("arrivalDate");
   const tripType = searchParams.get("tripType");
+
+  // Sample airport data
+  const airports = [
+    {
+      code: "OTP",
+      name: "Henri Coandă Intl.",
+      city: "Bucharest",
+      country: "Romania",
+      lat: 44.5711,
+      lng: 26.0858,
+    },
+    {
+      code: "BCN",
+      name: "El Prat Airport",
+      city: "Barcelona",
+      country: "Spain",
+      lat: 41.2974,
+      lng: 2.0833,
+    },
+    {
+      code: "LHR",
+      name: "Heathrow Airport",
+      city: "London",
+      country: "United Kingdom",
+      lat: 51.47,
+      lng: -0.4543,
+    },
+    {
+      code: "JFK",
+      name: "John F. Kennedy Intl.",
+      city: "New York",
+      country: "USA",
+      lat: 40.6413,
+      lng: -73.7781,
+    },
+    {
+      code: "LAX",
+      name: "Los Angeles Intl.",
+      city: "Los Angeles",
+      country: "USA",
+      lat: 33.9416,
+      lng: -118.4085,
+    },
+    {
+      code: "TIA",
+      name: "Rinas Mother Teresa",
+      city: "Tirana",
+      country: "Albania",
+      lat: 41.4147,
+      lng: 19.7206,
+    },
+    {
+      code: "EVN",
+      name: "Zvartnots Intl",
+      city: "Yerevan",
+      country: "Armenia",
+      lat: 40.1473,
+      lng: 44.3959,
+    },
+    {
+      code: "VIE",
+      name: "Vienna Intl",
+      city: "Vienna",
+      country: "Austria",
+      lat: 48.1102,
+      lng: 16.5697,
+    },
+    {
+      code: "GYD",
+      name: "Heydar Aliyev Intl",
+      city: "Baku",
+      country: "Azerbaijan",
+      lat: 40.4675,
+      lng: 50.0467,
+    },
+    {
+      code: "CRL",
+      name: "Brussels South Charleroi",
+      city: "Brussels Charleroi",
+      country: "Belgium",
+      lat: 50.4592,
+      lng: 4.4525,
+    },
+    {
+      code: "AMS",
+      name: "Amsterdam Schiphol",
+      city: "Amsterdam",
+      country: "Netherlands",
+      lat: 52.3105,
+      lng: 4.7683,
+    },
+  ];
+
+  // Function to calculate distance
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c;
+    return d;
+  };
+
+  // Function to find closest airport
+  const findClosestAirport = (userLat, userLng) => {
+    if (!userLat || !userLng) return null;
+    let closestAirport = null;
+    let minDistance = Infinity;
+    airports.forEach((airport) => {
+      const distance = calculateDistance(
+        userLat,
+        userLng,
+        airport.lat,
+        airport.lng
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestAirport = airport;
+      }
+    });
+    return closestAirport;
+  };
 
   // Baggage options
   const baggageOptions = [
@@ -110,9 +233,34 @@ function FlightAvailabilityContent() {
     },
   ];
 
+  // All useEffect hooks
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const closest = findClosestAirport(latitude, longitude);
+          if (closest) {
+            setUserCountry(closest.country);
+            setUserCurrency(getCurrencyForCountry(closest.country));
+            console.log(
+              `User location detected: ${
+                closest.country
+              }, using currency: ${getCurrencyForCountry(closest.country)}`
+            );
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
   useEffect(() => {
     const fetchAvailableFlights = async () => {
-      // Ensure required parameters are present
       if (!origin || !destination || !departureDate) {
         setError(
           "Missing search criteria (Origin, Destination, Departure Date)."
@@ -125,8 +273,6 @@ function FlightAvailabilityContent() {
       setError(null);
 
       try {
-        // Fetch outbound flights
-        // If tripType is roundTrip but no arrivalDate is provided, use oneWay instead
         const effectiveTripType =
           tripType === "roundTrip" && !arrivalDate
             ? "oneWay"
@@ -149,22 +295,19 @@ function FlightAvailabilityContent() {
           try {
             const errData = await outboundResponse.json();
             errorMsg = errData.message || errData.error || errorMsg;
-          } catch (e) {
-            /* Ignore parsing error */
-          }
+          } catch (e) {}
           throw new Error(errorMsg);
         }
 
         const outboundData = await outboundResponse.json();
         setOutboundFlights(outboundData || []);
 
-        // Fetch return flights if round trip
         if (tripType === "roundTrip" && arrivalDate) {
           const returnQuery = new URLSearchParams({
-            origin: destination, // Swap origin and destination for return
+            origin: destination,
             destination: origin,
-            departureDate: arrivalDate, // Use arrival date as departure for return
-            tripType: "oneWay", // Change from "roundTrip" to "oneWay"
+            departureDate: arrivalDate,
+            tripType: "oneWay",
           });
 
           const returnApiUrl = `/api/flights/search?${returnQuery.toString()}`;
@@ -177,9 +320,7 @@ function FlightAvailabilityContent() {
             try {
               const errData = await returnResponse.json();
               errorMsg = errData.message || errData.error || errorMsg;
-            } catch (e) {
-              /* Ignore parsing error */
-            }
+            } catch (e) {}
             throw new Error(errorMsg);
           }
 
@@ -202,29 +343,21 @@ function FlightAvailabilityContent() {
   // Update total price when selections change
   useEffect(() => {
     let price = 0;
-
-    // Add flight prices
     if (selectedOutboundFlight) {
       price += selectedOutboundFlight.price;
     }
-
     if (selectedReturnFlight) {
       price += selectedReturnFlight.price;
     }
-
-    // Add baggage price
     const selectedBaggage = baggageOptions.find(
       (option) => option.value === passengerDetails.baggageType
     );
     if (selectedBaggage) {
       price += selectedBaggage.price;
     }
-
-    // Add seat price if selected
     if (selectedSeat && selectedSeat.price) {
       price += selectedSeat.price;
     }
-
     setTotalPrice(price);
   }, [
     selectedOutboundFlight,
@@ -233,7 +366,7 @@ function FlightAvailabilityContent() {
     selectedSeat,
   ]);
 
-  // Handle flight selection
+  // All handler functions
   const handleFlightSelection = (flight, type) => {
     if (type === "outbound") {
       setSelectedOutboundFlight(flight);
@@ -242,7 +375,6 @@ function FlightAvailabilityContent() {
     }
   };
 
-  // Handle passenger details change
   const handlePassengerDetailsChange = (e) => {
     const { name, value } = e.target;
     setPassengerDetails((prev) => ({
@@ -251,15 +383,12 @@ function FlightAvailabilityContent() {
     }));
   };
 
-  // Handle seat selection
   const handleSeatSelection = (seat) => {
     setSelectedSeat(seat);
   };
 
-  // Handle navigation between steps
   const handleNextStep = async () => {
     if (currentStep === "flights") {
-      // Validate flight selection
       if (
         !selectedOutboundFlight ||
         (tripType === "roundTrip" && !selectedReturnFlight)
@@ -269,7 +398,6 @@ function FlightAvailabilityContent() {
       }
       setCurrentStep("passengers");
     } else if (currentStep === "passengers") {
-      // Validate passenger details
       if (
         !passengerDetails.firstName ||
         !passengerDetails.lastName ||
@@ -278,20 +406,19 @@ function FlightAvailabilityContent() {
         alert("Please fill in all passenger details");
         return;
       }
-      // Fetch available seats (mock for now)
       setAvailableSeats([
         {
           id: 1,
           number: "A1",
           type: "SEAT_TYPE_STANDARD",
-          price: 7,
+          price: 0,
           available: true,
         },
         {
           id: 2,
           number: "B1",
           type: "SEAT_TYPE_STANDARD",
-          price: 7,
+          price: 0,
           available: true,
         },
         {
@@ -308,23 +435,47 @@ function FlightAvailabilityContent() {
           price: 13,
           available: true,
         },
-        // Add more seats as needed
+        {
+          id: 5,
+          number: "E1",
+          type: "SEAT_TYPE_STANDARD",
+          price: 0,
+          available: true,
+        },
+        {
+          id: 6,
+          number: "F1",
+          type: "SEAT_TYPE_STANDARD",
+          price: 0,
+          available: true,
+        },
+        {
+          id: 7,
+          number: "A2",
+          type: "SEAT_TYPE_STANDARD",
+          price: 0,
+          available: true,
+        },
+        {
+          id: 8,
+          number: "B2",
+          type: "SEAT_TYPE_UPFRONT",
+          price: 10,
+          available: true,
+        },
       ]);
       setCurrentStep("seats");
     } else if (currentStep === "seats") {
       localStorage.setItem("selectedBaggageType", passengerDetails.baggageType);
       localStorage.setItem("selectedSeatType", selectedSeat.type);
-      // Validate seat selection
       if (!selectedSeat) {
         alert("Please select a seat");
         return;
       }
 
       try {
-        // Get the token from localStorage
         const token = localStorage.getItem("token");
 
-        // First, add the outbound flight to the cart
         if (selectedOutboundFlight) {
           const response = await fetch("/api/cart/add", {
             method: "POST",
@@ -335,7 +486,6 @@ function FlightAvailabilityContent() {
             credentials: "include",
             body: JSON.stringify({
               flightId: selectedOutboundFlight.id,
-              // You can add additional details if your API supports it
               baggageType: passengerDetails.baggageType,
               seatId: selectedSeat.id,
             }),
@@ -348,7 +498,6 @@ function FlightAvailabilityContent() {
           }
         }
 
-        // If it's a round trip, add the return flight too
         if (tripType === "roundTrip" && selectedReturnFlight) {
           const response = await fetch("/api/cart/add", {
             method: "POST",
@@ -359,7 +508,6 @@ function FlightAvailabilityContent() {
             credentials: "include",
             body: JSON.stringify({
               flightId: selectedReturnFlight.id,
-              // You can add additional details if your API supports it
               baggageType: passengerDetails.baggageType,
               seatId: selectedSeat.id,
             }),
@@ -372,12 +520,10 @@ function FlightAvailabilityContent() {
           }
         }
 
-        // Update the cart count in the navbar
         if (fetchCartCount) {
           fetchCartCount();
         }
 
-        // Redirect to the cart page
         router.push("/cart");
       } catch (error) {
         console.error("Failed to add flights to cart:", error);
@@ -394,173 +540,262 @@ function FlightAvailabilityContent() {
     }
   };
 
-  // Render flight selection step
+  // Modern Step Indicator Component
+  const StepIndicator = () => (
+    <div className="modern-step-indicator">
+      <div className="step-progress-bar">
+        {[
+          { key: "flights", label: "Select Flights", icon: FaPlaneDeparture },
+          { key: "passengers", label: "Passenger Details", icon: FaUser },
+          { key: "seats", label: "Seats & Extras", icon: FaChair },
+        ].map((step, index) => {
+          const isActive = currentStep === step.key;
+          const isCompleted =
+            (step.key === "flights" &&
+              (currentStep === "passengers" || currentStep === "seats")) ||
+            (step.key === "passengers" && currentStep === "seats");
+          const IconComponent = step.icon;
+
+          return (
+            <div
+              key={step.key}
+              className={`step-item ${isActive ? "active" : ""} ${
+                isCompleted ? "completed" : ""
+              }`}
+            >
+              <div className="step-circle">
+                <IconComponent className="step-icon" />
+                {isCompleted && <FaCheckCircle className="check-icon" />}
+              </div>
+              <div className="step-label">{step.label}</div>
+              {index < 3 && <div className="step-connector"></div>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  // Render flight selection step with modern design
   const renderFlightSelectionStep = () => {
     return (
-      <>
-        <h2 className="mb-4">Select Your Flights</h2>
-
+      <div className="modern-flight-selection">
         {/* Outbound Flights */}
-        <h3 className="h5 mb-3">
-          <FaPlaneDeparture className="me-2" />
-          Outbound Flight: {origin} to {destination}
-        </h3>
+        <div className="flight-section">
+          <div className="section-header">
+            <FaPlaneDeparture className="section-icon outbound" />
+            <div>
+              <h2 className="section-title">Outbound Flight</h2>
+              <div className="route-info">
+                {origin} → {destination}
+              </div>
+            </div>
+          </div>
 
-        {outboundFlights.length > 0 ? (
-          <Row className="g-4 mb-5">
-            {outboundFlights.map((flight) => (
-              <Col md={12} key={flight.id}>
-                <Card
-                  className={`shadow-sm ticket-card-react ${
-                    selectedOutboundFlight?.id === flight.id
-                      ? "border-primary"
-                      : ""
+          {outboundFlights.length > 0 ? (
+            <div className="flights-grid">
+              {outboundFlights.map((flight) => (
+                <div
+                  key={flight.id}
+                  className={`modern-flight-card ${
+                    selectedOutboundFlight?.id === flight.id ? "selected" : ""
                   }`}
                   onClick={() => handleFlightSelection(flight, "outbound")}
-                  style={{ cursor: "pointer" }}
                 >
-                  <Card.Body>
-                    <Row className="align-items-center">
-                      <Col xs="auto" className="d-none d-sm-block">
-                        <FaPlaneDeparture size="2em" className="text-info" />
-                      </Col>
-                      <Col>
-                        <h5 className="card-title mb-1 fw-bold">
-                          {flight.name}
-                        </h5>
-                        <p className="card-text mb-1 small">
-                          <strong>From:</strong> {flight.origin}{" "}
-                          <strong className="ms-3">To:</strong>{" "}
-                          {flight.destination}
-                        </p>
-                        <p className="card-text mb-1 small">
-                          <strong>Depart:</strong>{" "}
-                          {formatDisplayDateTime(
-                            flight.departureDate,
-                            flight.departureTime
+                  <div className="flight-card-body">
+                    <div className="flight-header">
+                      <div className="airline-info">
+                        <h3 className="airline-name">{flight.name}</h3>
+                        <div className="flight-details">
+                          <span className="origin-dest">
+                            {flight.origin} → {flight.destination}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="price-section">
+                        <div className="price-amount">
+                          {formatPrice(
+                            convertFromEUR(
+                              parseFloat(flight.price || 0),
+                              userCurrency
+                            ),
+                            userCurrency
                           )}
-                        </p>
-                        {flight.arrivalDate && flight.arrivalTime && (
-                          <p className="card-text mb-2 small">
-                            <strong>Arrive:</strong>{" "}
-                            {formatDisplayDateTime(
-                              flight.arrivalDate,
-                              flight.arrivalTime
-                            )}
-                          </p>
-                        )}
-                      </Col>
-                      <Col md={3} className="text-md-end mt-3 mt-md-0">
-                        <h4 className="mb-2 price-tag-react">
-                          ${flight.price?.toFixed(2) ?? "N/A"}
-                        </h4>
-                        <Form.Check
+                        </div>
+                        <div className="price-label">per person</div>
+                      </div>
+                    </div>
+
+                    <div className="flight-times">
+                      <div className="time-info">
+                        <div className="time">
+                          {flight.departureTime || "N/A"}
+                        </div>
+                        <div className="location">{flight.origin}</div>
+                      </div>
+                      <div className="flight-path">
+                        <div className="path-line"></div>
+                        <FaPlane className="plane-icon" />
+                      </div>
+                      <div className="time-info">
+                        <div className="time">
+                          {flight.arrivalTime || "N/A"}
+                        </div>
+                        <div className="location">{flight.destination}</div>
+                      </div>
+                    </div>
+
+                    <div className="flight-meta">
+                      <span>Direct Flight</span>
+                      <span>
+                        {formatDisplayDateTime(flight.departureDate, "")}
+                      </span>
+                    </div>
+
+                    <div className="selection-indicator">
+                      <div className="custom-radio">
+                        <input
                           type="radio"
                           id={`outbound-${flight.id}`}
-                          label="Select this flight"
                           name="outboundFlight"
                           checked={selectedOutboundFlight?.id === flight.id}
                           onChange={() =>
                             handleFlightSelection(flight, "outbound")
                           }
-                          className="mb-0"
                         />
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <Alert variant="info" className="mb-4">
-            No outbound flights available for the selected date.
-          </Alert>
-        )}
+                      </div>
+                      <span className="selection-text">
+                        {selectedOutboundFlight?.id === flight.id
+                          ? "Selected"
+                          : "Select this flight"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Alert variant="info" className="modern-alert">
+              <div className="alert-content">
+                <FaPlaneDeparture className="alert-icon" />
+                <span>
+                  No outbound flights available for the selected date.
+                </span>
+              </div>
+            </Alert>
+          )}
+        </div>
 
         {/* Return Flights (if round trip) */}
         {tripType === "roundTrip" && (
-          <>
-            <h3 className="h5 mb-3">
-              <FaPlaneArrival className="me-2" />
-              Return Flight: {destination} to {origin}
-            </h3>
+          <div className="flight-section">
+            <div className="section-header">
+              <FaPlaneArrival className="section-icon return" />
+              <div>
+                <h2 className="section-title">Return Flight</h2>
+                <div className="route-info">
+                  {destination} → {origin}
+                </div>
+              </div>
+            </div>
 
             {returnFlights.length > 0 ? (
-              <Row className="g-4 mb-4">
+              <div className="flights-grid">
                 {returnFlights.map((flight) => (
-                  <Col md={12} key={flight.id}>
-                    <Card
-                      className={`shadow-sm ticket-card-react ${
-                        selectedReturnFlight?.id === flight.id
-                          ? "border-primary"
-                          : ""
-                      }`}
-                      onClick={() => handleFlightSelection(flight, "return")}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <Card.Body>
-                        <Row className="align-items-center">
-                          <Col xs="auto" className="d-none d-sm-block">
-                            <FaPlaneArrival size="2em" className="text-info" />
-                          </Col>
-                          <Col>
-                            <h5 className="card-title mb-1 fw-bold">
-                              {flight.name}
-                            </h5>
-                            <p className="card-text mb-1 small">
-                              <strong>From:</strong> {flight.origin}{" "}
-                              <strong className="ms-3">To:</strong>{" "}
-                              {flight.destination}
-                            </p>
-                            <p className="card-text mb-1 small">
-                              <strong>Depart:</strong>{" "}
-                              {formatDisplayDateTime(
-                                flight.departureDate,
-                                flight.departureTime
-                              )}
-                            </p>
-                            {flight.arrivalDate && flight.arrivalTime && (
-                              <p className="card-text mb-2 small">
-                                <strong>Arrive:</strong>{" "}
-                                {formatDisplayDateTime(
-                                  flight.arrivalDate,
-                                  flight.arrivalTime
-                                )}
-                              </p>
+                  <div
+                    key={flight.id}
+                    className={`modern-flight-card ${
+                      selectedReturnFlight?.id === flight.id ? "selected" : ""
+                    }`}
+                    onClick={() => handleFlightSelection(flight, "return")}
+                  >
+                    <div className="flight-card-body">
+                      <div className="flight-header">
+                        <div className="airline-info">
+                          <h3 className="airline-name">{flight.name}</h3>
+                          <div className="flight-details">
+                            <span className="origin-dest">
+                              {flight.origin} → {flight.destination}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="price-section">
+                          <div className="price-amount">
+                            {formatPrice(
+                              convertFromEUR(
+                                parseFloat(flight.price || 0),
+                                userCurrency
+                              ),
+                              userCurrency
                             )}
-                          </Col>
-                          <Col md={3} className="text-md-end mt-3 mt-md-0">
-                            <h4 className="mb-2 price-tag-react">
-                              ${flight.price?.toFixed(2) ?? "N/A"}
-                            </h4>
-                            <Form.Check
-                              type="radio"
-                              id={`return-${flight.id}`}
-                              label="Select this flight"
-                              name="returnFlight"
-                              checked={selectedReturnFlight?.id === flight.id}
-                              onChange={() =>
-                                handleFlightSelection(flight, "return")
-                              }
-                              className="mb-0"
-                            />
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  </Col>
+                          </div>
+                          <div className="price-label">per person</div>
+                        </div>
+                      </div>
+
+                      <div className="flight-times">
+                        <div className="time-info">
+                          <div className="time">
+                            {flight.departureTime || "N/A"}
+                          </div>
+                          <div className="location">{flight.origin}</div>
+                        </div>
+                        <div className="flight-path">
+                          <div className="path-line"></div>
+                          <FaPlane className="plane-icon" />
+                        </div>
+                        <div className="time-info">
+                          <div className="time">
+                            {flight.arrivalTime || "N/A"}
+                          </div>
+                          <div className="location">{flight.destination}</div>
+                        </div>
+                      </div>
+
+                      <div className="flight-meta">
+                        <span>Direct Flight</span>
+                        <span>
+                          {formatDisplayDateTime(flight.departureDate, "")}
+                        </span>
+                      </div>
+
+                      <div className="selection-indicator">
+                        <div className="custom-radio">
+                          <input
+                            type="radio"
+                            id={`return-${flight.id}`}
+                            name="returnFlight"
+                            checked={selectedReturnFlight?.id === flight.id}
+                            onChange={() =>
+                              handleFlightSelection(flight, "return")
+                            }
+                          />
+                        </div>
+                        <span className="selection-text">
+                          {selectedReturnFlight?.id === flight.id
+                            ? "Selected"
+                            : "Select this flight"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-              </Row>
+              </div>
             ) : (
-              <Alert variant="info" className="mb-4">
-                No return flights available for the selected date.
+              <Alert variant="info" className="modern-alert">
+                <div className="alert-content">
+                  <FaPlaneArrival className="alert-icon" />
+                  <span>
+                    No return flights available for the selected date.
+                  </span>
+                </div>
               </Alert>
             )}
-          </>
+          </div>
         )}
 
-        <div className="d-flex justify-content-end mt-4">
+        <div className="step-navigation">
+          <div></div>
           <Button
             variant="primary"
             onClick={handleNextStep}
@@ -568,104 +803,146 @@ function FlightAvailabilityContent() {
               !selectedOutboundFlight ||
               (tripType === "roundTrip" && !selectedReturnFlight)
             }
+            className="continue-btn"
           >
-            Continue to Passengers & Baggage
+            Continue to Passengers
+            <FaUser className="btn-icon" />
           </Button>
         </div>
-      </>
+      </div>
     );
   };
 
-  // Render passenger details step
+  // Render passenger details step with modern design
   const renderPassengerDetailsStep = () => {
     return (
-      <>
-        <h2 className="mb-4">
-          <FaUser className="me-2" />
-          Passenger & Baggage Details
-        </h2>
+      <div className="modern-passenger-section">
+        <div className="passenger-form-container">
+          <div className="section-header mb-4">
+            <FaUser className="section-icon" />
+            <h2 className="section-subtitle">Passenger & Baggage Details</h2>
+          </div>
 
-        <Form className="mb-4">
-          <Row className="mb-3">
-            <Col md={6}>
-              <Form.Group controlId="passengerFirstName">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="firstName"
-                  value={passengerDetails.firstName}
-                  onChange={handlePassengerDetailsChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group controlId="passengerLastName">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="lastName"
-                  value={passengerDetails.lastName}
-                  onChange={handlePassengerDetailsChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+          <Form className="modern-form">
+            <Row className="form-row">
+              <Col md={6}>
+                <div className="modern-form-group">
+                  <label className="modern-label">First Name</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={passengerDetails.firstName}
+                    onChange={handlePassengerDetailsChange}
+                    className="modern-input"
+                    required
+                  />
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className="modern-form-group">
+                  <label className="modern-label">Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={passengerDetails.lastName}
+                    onChange={handlePassengerDetailsChange}
+                    className="modern-input"
+                    required
+                  />
+                </div>
+              </Col>
+            </Row>
 
-          <Form.Group className="mb-4" controlId="passengerGender">
-            <Form.Label>Gender</Form.Label>
-            <div>
-              <Form.Check
-                inline
-                type="radio"
-                id="gender-male"
-                label="Male"
-                name="gender"
-                value="male"
-                checked={passengerDetails.gender === "male"}
-                onChange={handlePassengerDetailsChange}
-                required
-              />
-              <Form.Check
-                inline
-                type="radio"
-                id="gender-female"
-                label="Female"
-                name="gender"
-                value="female"
-                checked={passengerDetails.gender === "female"}
-                onChange={handlePassengerDetailsChange}
-                required
-              />
+            <div className="gender-group">
+              <label className="modern-label">Gender</label>
+              <div className="gender-options">
+                <div className="modern-radio">
+                  <input
+                    type="radio"
+                    id="gender-male"
+                    name="gender"
+                    value="male"
+                    checked={passengerDetails.gender === "male"}
+                    onChange={handlePassengerDetailsChange}
+                  />
+                  <label htmlFor="gender-male">Male</label>
+                </div>
+                <div className="modern-radio">
+                  <input
+                    type="radio"
+                    id="gender-female"
+                    name="gender"
+                    value="female"
+                    checked={passengerDetails.gender === "female"}
+                    onChange={handlePassengerDetailsChange}
+                  />
+                  <label htmlFor="gender-female">Female</label>
+                </div>
+              </div>
             </div>
-          </Form.Group>
 
-          <h3 className="h5 mb-3">
-            <FaSuitcase className="me-2" />
-            Baggage Selection
-          </h3>
+            <div className="baggage-section">
+              <div className="section-header mb-3">
+                <FaSuitcase className="section-icon" />
+                <h3 className="section-subtitle">Baggage Selection</h3>
+              </div>
 
-          <Form.Group className="mb-4" controlId="baggageType">
-            <Form.Label>Choose your baggage option:</Form.Label>
-            {baggageOptions.map((option) => (
-              <Form.Check
-                key={option.value}
-                type="radio"
-                id={`baggage-${option.value}`}
-                label={`${option.label} (+$${option.price.toFixed(2)})`}
-                name="baggageType"
-                value={option.value}
-                checked={passengerDetails.baggageType === option.value}
-                onChange={handlePassengerDetailsChange}
-                className="mb-2"
-              />
-            ))}
-          </Form.Group>
-        </Form>
+              <div className="baggage-options">
+                {baggageOptions.map((option) => (
+                  <div
+                    key={option.value}
+                    className={`baggage-option ${
+                      passengerDetails.baggageType === option.value
+                        ? "selected"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      handlePassengerDetailsChange({
+                        target: { name: "baggageType", value: option.value },
+                      })
+                    }
+                  >
+                    <div className="baggage-radio">
+                      <input
+                        type="radio"
+                        id={`baggage-${option.value}`}
+                        name="baggageType"
+                        value={option.value}
+                        checked={passengerDetails.baggageType === option.value}
+                        onChange={handlePassengerDetailsChange}
+                      />
+                    </div>
+                    <div className="baggage-content">
+                      <div className="baggage-info">
+                        <h4 className="baggage-title">{option.label}</h4>
+                      </div>
+                      <div className="baggage-price">
+                        {option.price === 0 ? (
+                          <span className="free-badge">Free</span>
+                        ) : (
+                          <span className="price-badge">
+                            +
+                            {formatPrice(
+                              convertFromEUR(option.price, userCurrency),
+                              userCurrency
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Form>
+        </div>
 
-        <div className="d-flex justify-content-between mt-4">
-          <Button variant="outline-secondary" onClick={handlePreviousStep}>
+        <div className="step-navigation">
+          <Button
+            variant="outline-secondary"
+            onClick={handlePreviousStep}
+            className="back-btn"
+          >
             Back to Flight Selection
           </Button>
           <Button
@@ -676,228 +953,1492 @@ function FlightAvailabilityContent() {
               !passengerDetails.lastName ||
               !passengerDetails.gender
             }
+            className="continue-btn"
           >
             Continue to Seat Selection
+            <FaChair className="btn-icon" />
           </Button>
         </div>
-      </>
+      </div>
     );
   };
 
-  // Render seat selection step
+  // Render seat selection step with modern design
   const renderSeatSelectionStep = () => {
     return (
-      <>
-        <h2 className="mb-4">
-          <FaChair className="me-2" />
-          Seat Selection
-        </h2>
+      <div className="modern-seat-section">
+        <Row className="seat-layout">
+          <Col lg={8}>
+            <div className="seat-map-container">
+              <div className="section-header">
+                <FaChair className="section-icon" />
+                <h2 className="section-title">Choose Your Seat</h2>
+              </div>
 
-        <div className="mb-4">
-          <h3 className="h5 mb-3">Choose your seat:</h3>
+              <div className="aircraft-visualization">
+                <div className="aircraft-nose"></div>
+                <div className="seat-grid">
+                  {availableSeats.map((seat) => (
+                    <Button
+                      key={seat.id}
+                      variant={
+                        selectedSeat?.id === seat.id
+                          ? "primary"
+                          : seat.type === "SEAT_TYPE_STANDARD"
+                          ? "outline-secondary"
+                          : seat.type === "SEAT_TYPE_UPFRONT"
+                          ? "outline-info"
+                          : "outline-warning"
+                      }
+                      className={`seat-button ${
+                        selectedSeat?.id === seat.id ? "selected" : ""
+                      } ${seat.type.toLowerCase().replace("seat_type_", "")}`}
+                      onClick={() => handleSeatSelection(seat)}
+                      disabled={!seat.available}
+                    >
+                      <div className="seat-content">
+                        <div className="seat-number">{seat.number}</div>
+                        <div className="seat-price">
+                          {seat.price === 0
+                            ? "Free"
+                            : formatPrice(
+                                convertFromEUR(seat.price, userCurrency),
+                                userCurrency
+                              )}
+                        </div>
+                      </div>
+                    </Button>
+                  ))}
+                </div>
 
-          <div className="seat-map mb-4">
-            <div className="d-flex flex-wrap justify-content-center gap-2 mb-3">
-              {availableSeats.map((seat) => (
-                <Button
-                  key={seat.id}
-                  variant={
-                    selectedSeat?.id === seat.id
-                      ? "primary"
-                      : seat.type === "SEAT_TYPE_STANDARD"
-                      ? "outline-secondary"
-                      : seat.type === "SEAT_TYPE_UPFRONT"
-                      ? "outline-info"
-                      : "outline-warning"
-                  }
-                  className="seat-button"
-                  style={{ width: "60px", height: "60px" }}
-                  onClick={() => handleSeatSelection(seat)}
-                  disabled={!seat.available}
-                >
-                  <div className="d-flex flex-column align-items-center">
-                    <small>{seat.number}</small>
-                    <small>${seat.price}</small>
+                <div className="seat-legend">
+                  <div className="legend-item">
+                    <div className="legend-color standard"></div>
+                    <span>Standard (Free)</span>
                   </div>
-                </Button>
-              ))}
+                  <div className="legend-item">
+                    <div className="legend-color upfront"></div>
+                    <span>Up Front</span>
+                  </div>
+                  <div className="legend-item">
+                    <div className="legend-color extra-legroom"></div>
+                    <span>Extra Legroom</span>
+                  </div>
+                </div>
+              </div>
+
+              {selectedSeat && (
+                <Alert variant="success" className="seat-confirmation">
+                  <div className="confirmation-content">
+                    <FaCheckCircle className="confirmation-icon" />
+                    <div>
+                      <strong>Seat {selectedSeat.number} Selected</strong>
+                      <div className="confirmation-price">
+                        {selectedSeat.price > 0
+                          ? `+${formatPrice(
+                              convertFromEUR(selectedSeat.price, userCurrency),
+                              userCurrency
+                            )}`
+                          : "Included in your fare"}
+                      </div>
+                    </div>
+                  </div>
+                </Alert>
+              )}
             </div>
+          </Col>
 
-            <div className="seat-legend d-flex justify-content-center gap-4 small">
-              <div>
-                <span className="badge bg-secondary me-1"></span> Standard
+          <Col lg={4}>
+            <div className="booking-summary-sidebar">
+              <div className="price-summary-card">
+                <h3 className="summary-title">Booking Summary</h3>
+
+                <div className="summary-items">
+                  {selectedOutboundFlight && (
+                    <div className="summary-item">
+                      <span className="item-label">Outbound Flight</span>
+                      <span className="item-price">
+                        {formatPrice(
+                          convertFromEUR(
+                            selectedOutboundFlight.price,
+                            userCurrency
+                          ),
+                          userCurrency
+                        )}
+                      </span>
+                    </div>
+                  )}
+
+                  {selectedReturnFlight && (
+                    <div className="summary-item">
+                      <span className="item-label">Return Flight</span>
+                      <span className="item-price">
+                        {formatPrice(
+                          convertFromEUR(
+                            selectedReturnFlight.price,
+                            userCurrency
+                          ),
+                          userCurrency
+                        )}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="summary-item">
+                    <span className="item-label">Baggage</span>
+                    <span className="item-price">
+                      {formatPrice(
+                        convertFromEUR(
+                          baggageOptions.find(
+                            (option) =>
+                              option.value === passengerDetails.baggageType
+                          )?.price || 0,
+                          userCurrency
+                        ),
+                        userCurrency
+                      )}
+                    </span>
+                  </div>
+
+                  {selectedSeat && selectedSeat.price > 0 && (
+                    <div className="summary-item">
+                      <span className="item-label">Seat Selection</span>
+                      <span className="item-price">
+                        {formatPrice(
+                          convertFromEUR(selectedSeat.price, userCurrency),
+                          userCurrency
+                        )}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="summary-total">
+                  <span className="total-label">Total</span>
+                  <span className="total-price">
+                    {formatPrice(
+                      convertFromEUR(totalPrice, userCurrency),
+                      userCurrency
+                    )}
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="badge bg-info me-1"></span> Up Front
-              </div>
-              <div>
-                <span className="badge bg-warning me-1"></span> Extra Legroom
+
+              <div className="protection-card">
+                <div className="protection-header">
+                  <FaShieldAlt className="protection-icon" />
+                  <h4 className="protection-title">
+                    Your Booking is Protected
+                  </h4>
+                </div>
+                <div className="protection-features">
+                  <div className="feature-item">
+                    <FaCheckCircle className="feature-icon" />
+                    <span>Free cancellation within 24 hours</span>
+                  </div>
+                  <div className="feature-item">
+                    <FaCheckCircle className="feature-icon" />
+                    <span>Price match guarantee</span>
+                  </div>
+                  <div className="feature-item">
+                    <FaCheckCircle className="feature-icon" />
+                    <span>Secure payment processing</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </Col>
+        </Row>
 
-          {selectedSeat && (
-            <Alert variant="success">
-              You selected seat {selectedSeat.number} ($
-              {selectedSeat.price.toFixed(2)})
-            </Alert>
-          )}
-        </div>
-
-        <div className="price-summary mb-4 p-3 bg-light rounded">
-          <h3 className="h5 mb-3">Price Summary</h3>
-          <div className="d-flex justify-content-between mb-2">
-            <span>Flight(s):</span>
-            <span>
-              $
-              {(
-                selectedOutboundFlight?.price +
-                (selectedReturnFlight?.price || 0)
-              ).toFixed(2)}
-            </span>
-          </div>
-          <div className="d-flex justify-content-between mb-2">
-            <span>Baggage:</span>
-            <span>
-              $
-              {baggageOptions
-                .find((option) => option.value === passengerDetails.baggageType)
-                ?.price.toFixed(2) || "0.00"}
-            </span>
-          </div>
-          <div className="d-flex justify-content-between mb-2">
-            <span>Seat Selection:</span>
-            <span>${selectedSeat?.price.toFixed(2) || "0.00"}</span>
-          </div>
-          <hr />
-          <div className="d-flex justify-content-between fw-bold">
-            <span>Total:</span>
-            <span>${totalPrice.toFixed(2)}</span>
-          </div>
-        </div>
-
-        <div className="d-flex justify-content-between mt-4">
-          <Button variant="outline-secondary" onClick={handlePreviousStep}>
+        <div className="step-navigation">
+          <Button
+            variant="outline-secondary"
+            onClick={handlePreviousStep}
+            className="back-btn"
+          >
             Back to Passenger Details
           </Button>
           <Button
             variant="success"
             onClick={handleNextStep}
             disabled={!selectedSeat}
+            className="complete-btn"
           >
             Complete Booking
+            <FaCheckCircle className="btn-icon" />
           </Button>
         </div>
-      </>
+      </div>
     );
   };
 
   return (
-    <Container className="py-4 py-md-5">
-      <header className="text-center mb-5">
-        <h1 className="display-5 text-uppercase fw-bold">Book Your Flight</h1>
-        <p className="lead text-muted">
-          {origin} to {destination}{" "}
-          {tripType === "roundTrip" ? "(Round Trip)" : "(One Way)"}
-        </p>
-        <Link href="/" className="btn btn-sm btn-outline-secondary">
-          Modify Search
-        </Link>
-      </header>
+    <>
+      <style jsx global>{`
+        :root {
+          --primary-orange: #ff6f00;
+        }
 
-      {/* Loading State */}
-      {loading && (
-        <div className="text-center my-5">
-          <Spinner animation="border" variant="primary" role="status">
-            <span className="visually-hidden">Loading flights...</span>
-          </Spinner>
-          <p className="mt-2 text-muted">Finding flights...</p>
-        </div>
-      )}
+        /* Modern 2025 Flight Booking Styles */
+        .modern-booking-page {
+          min-height: 100vh;
+          position: relative;
+          background: linear-gradient(
+            135deg,
+            rgb(0, 0, 0) 0%,
+            rgb(0, 0, 0) 50%,
+            rgb(0, 0, 0) 100%
+          );
+          overflow-x: hidden;
+        }
 
-      {/* Error State */}
-      {error && !loading && (
-        <Alert variant="danger">
-          <strong>Error:</strong> {error} Please{" "}
-          <Alert.Link href="/">try your search again</Alert.Link>.
-        </Alert>
-      )}
+        .booking-background {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          pointer-events: none;
+        }
 
-      {/* Booking Steps */}
-      {!loading && !error && (
-        <div className="booking-steps">
-          {/* Progress Indicator */}
-          <div className="booking-progress mb-5">
-            <Nav variant="pills" className="booking-nav">
-              <Nav.Item>
-                <Nav.Link
-                  active={currentStep === "flights"}
-                  onClick={() =>
-                    currentStep !== "flights" && handlePreviousStep()
-                  }
-                  className={
-                    currentStep === "flights"
-                      ? "active"
-                      : currentStep === "passengers" || currentStep === "seats"
-                      ? "completed"
-                      : ""
-                  }
-                >
-                  1. Select Flights
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  active={currentStep === "passengers"}
-                  onClick={() =>
-                    currentStep === "seats" && handlePreviousStep()
-                  }
-                  className={
-                    currentStep === "passengers"
-                      ? "active"
-                      : currentStep === "seats"
-                      ? "completed"
-                      : ""
-                  }
-                  disabled={currentStep === "flights"}
-                >
-                  2. Passengers & Baggage
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  active={currentStep === "seats"}
-                  disabled={
-                    currentStep === "flights" || currentStep === "passengers"
-                  }
-                >
-                  3. Seat Selection
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
+        .bg-particles .particle {
+          position: absolute;
+          width: 300px;
+          height: 300px;
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: 50%;
+          animation: float 20s ease-in-out infinite;
+        }
+
+        .particle-1 {
+          top: 10%;
+          left: 10%;
+          animation-delay: 0s;
+        }
+
+        .particle-2 {
+          top: 60%;
+          right: 10%;
+          animation-delay: 7s;
+        }
+
+        .particle-3 {
+          bottom: 20%;
+          left: 50%;
+          animation-delay: 14s;
+        }
+
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px) scale(1);
+            opacity: 0.5;
+          }
+          50% {
+            transform: translateY(-20px) scale(1.1);
+            opacity: 0.8;
+          }
+        }
+
+        .booking-container {
+          position: relative;
+          z-index: 1;
+          padding: 2rem 0;
+        }
+
+        /* Header Styles */
+        .booking-header {
+          text-align: center;
+          margin-bottom: 3rem;
+        }
+
+        .route-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 50px;
+          padding: 0.5rem 1rem;
+          color: white;
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+        }
+
+        .route-icon {
+          color: var(--primary-orange);
+        }
+
+        .booking-title {
+          font-size: clamp(2.5rem, 5vw, 4rem);
+          font-weight: 800;
+          color: white;
+          margin-bottom: 1rem;
+          line-height: 1.1;
+        }
+
+        .title-highlight {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange) 0%,
+            #fbbf24 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .booking-subtitle {
+          font-size: 1.2rem;
+          color: rgba(255, 255, 255, 0.8);
+          margin-bottom: 1.5rem;
+        }
+
+        .modify-search-link {
+          display: inline-block;
+          color: var(--primary-orange);
+          text-decoration: none;
+          font-weight: 500;
+          padding: 0.5rem 1rem;
+          border: 1px solid var(--primary-orange);
+          border-radius: 50px;
+          transition: all 0.3s ease;
+        }
+
+        .modify-search-link:hover {
+          background: var(--primary-orange);
+          color: white;
+          transform: translateY(-2px);
+        }
+
+        /* Step Indicator Styles */
+        .modern-step-indicator {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 3rem;
+        }
+
+        .step-progress-bar {
+          display: flex;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 50px;
+          padding: 1.5rem 3rem;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .step-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+          gap: 1rem;
+          margin: 0 1.5rem;
+        }
+
+        .step-circle {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.1);
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          position: relative;
+          margin-bottom: 0.5rem;
+        }
+
+        .step-item.active .step-circle {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange) 0%,
+            #fbbf24 100%
+          );
+          border-color: var(--primary-orange);
+          transform: scale(1.1);
+          box-shadow: 0 0 20px rgba(255, 111, 0, 0.4);
+        }
+
+        .step-item.completed .step-circle {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          border-color: #10b981;
+        }
+
+        .step-icon {
+          color: white;
+          font-size: 1.2rem;
+        }
+
+        .check-icon {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          color: #10b981;
+          background: white;
+          border-radius: 50%;
+          font-size: 1rem;
+        }
+
+        .step-label {
+          color: white;
+          font-size: 0.85rem;
+          font-weight: 500;
+          text-align: center;
+          opacity: 0.8;
+        }
+
+        .step-item.active .step-label,
+        .step-item.completed .step-label {
+          opacity: 1;
+          font-weight: 600;
+        }
+
+        .step-connector {
+          width: 60px;
+          height: 2px;
+          background: rgba(255, 255, 255, 0.3);
+          margin: 0 1rem;
+          margin-top: 30px;
+          transition: all 0.3s ease;
+        }
+
+        .step-item.completed + .step-item .step-connector {
+          background: var(--primary-orange);
+        }
+
+        /* Flight Selection Styles */
+        .modern-flight-selection {
+          max-width: 1000px;
+          margin: 0 auto;
+        }
+
+        .flight-section {
+          margin-bottom: 3rem;
+        }
+
+        .section-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          padding: 1rem 1.5rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-icon {
+          font-size: 1.5rem;
+          color: var(--primary-orange);
+        }
+
+        .section-icon.outbound {
+          color: var(--primary-orange);
+        }
+
+        .section-icon.return {
+          color: #3b82f6;
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: white;
+          margin: 0;
+        }
+
+        .section-subtitle {
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: white;
+          margin: 0;
+        }
+
+        .route-info {
+          color: rgba(255, 255, 255, 0.77);
+          font-size: 1rem;
+        }
+
+        .flights-grid {
+          display: grid;
+          gap: 1rem;
+        }
+
+        .modern-flight-card {
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(20px);
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          border-radius: 20px;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          overflow: hidden;
+        }
+
+        .modern-flight-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+          border-color: rgba(255, 111, 0, 0.3);
+        }
+
+        .modern-flight-card.selected {
+          border-color: var(--primary-orange);
+          box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.2);
+          background: rgb(0, 0, 0);
+        }
+
+        .flight-card-body {
+          padding: 2rem;
+        }
+
+        .flight-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 1.5rem;
+        }
+
+        .airline-info {
+          flex: 1;
+        }
+
+        .airline-name {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: rgb(255, 255, 255);
+          margin-bottom: 0.5rem;
+        }
+
+        .flight-details {
+          color: rgb(255, 255, 255);
+          font-size: 0.9rem;
+        }
+
+        .origin-dest {
+          font-weight: 500;
+        }
+
+        .price-section {
+          text-align: right;
+        }
+
+        .price-amount {
+          font-size: 2rem;
+          font-weight: 800;
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange) 0%,
+            #fbbf24 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          line-height: 1;
+        }
+
+        .price-label {
+          font-size: 0.8rem;
+          color: rgb(255, 255, 255);
+          margin-top: 0.25rem;
+        }
+
+        .flight-times {
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+          align-items: center;
+          gap: 2rem;
+          margin-bottom: 1rem;
+          padding: 1.5rem;
+          background: rgba(12, 11, 11, 0.8);
+          border-radius: 12px;
+        }
+
+        .time-info {
+          text-align: center;
+        }
+
+        .time {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: rgb(255, 255, 255);
+          margin-bottom: 0.25rem;
+        }
+
+        .location {
+          font-size: 0.9rem;
+          color: rgb(255, 255, 255);
+          font-weight: 500;
+        }
+
+        .flight-path {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+
+        .path-line {
+          width: 60px;
+          height: 2px;
+          background: linear-gradient(90deg, var(--primary-orange), #fbbf24);
+          border-radius: 1px;
+        }
+
+        .plane-icon {
+          position: absolute;
+          color: var(--primary-orange);
+          font-size: 1.2rem;
+          background: white;
+          padding: 4px;
+          border-radius: 50%;
+        }
+
+        .flight-meta {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+          font-size: 0.85rem;
+          color: rgb(255, 255, 255);
+        }
+
+        .selection-indicator {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-top: 1rem;
+          border-top: 1px solid rgba(229, 231, 235, 0.8);
+        }
+
+        .custom-radio input[type="radio"] {
+          accent-color: var(--primary-orange);
+          transform: scale(1.2);
+        }
+
+        .selection-text {
+          font-weight: 600;
+          color: var(--primary-orange);
+        }
+
+        .modern-flight-card.selected .selection-text {
+          color: var(--primary-orange);
+        }
+
+        /* Modern Alert Styles */
+        .modern-alert {
+          background: rgba(59, 130, 246, 0.1);
+          border: 1px solid rgba(59, 130, 246, 0.3);
+          border-radius: 16px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+
+        .alert-content {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .alert-icon {
+          color: #3b82f6;
+          font-size: 1.2rem;
+        }
+
+        /* Passenger Details Styles */
+        .modern-passenger-section {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .passenger-form-container {
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 24px;
+          padding: 3rem;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modern-form {
+          margin-bottom: 2rem;
+        }
+
+        .form-row {
+          margin-bottom: 1.5rem;
+        }
+
+        .modern-form-group {
+          margin-bottom: 1.5rem;
+        }
+
+        .modern-label {
+          font-weight: 600;
+          color: rgb(255, 255, 255);
+          margin-bottom: 0.5rem;
+          display: block;
+        }
+
+        .modern-input {
+          width: 100%;
+          padding: 1rem 1.25rem;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+          background: white;
+        }
+
+        .modern-input:focus {
+          outline: none;
+          border-color: var(--primary-orange);
+          box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.1);
+        }
+
+        .gender-group {
+          margin-bottom: 2rem;
+        }
+
+        .gender-options {
+          display: flex;
+          gap: 2rem;
+        }
+
+        .modern-radio input[type="radio"] {
+          accent-color: var(--primary-orange);
+          transform: scale(1.2);
+          margin-right: 0.5rem;
+        }
+
+        .modern-radio label {
+          font-weight: 500;
+          color: rgb(255, 255, 255);
+        }
+
+        .baggage-section {
+          margin-top: 2rem;
+        }
+
+        .baggage-options {
+          display: grid;
+          gap: 1rem;
+        }
+
+        .baggage-option {
+          display: flex;
+          align-items: center;
+          padding: 1.5rem;
+          border: 2px solid #e5e7eb;
+          border-radius: 16px;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          background: black;
+        }
+
+        .baggage-option:hover {
+          border-color: rgba(255, 111, 0, 0.3);
+          background: rgba(0, 0, 0, 0.02);
+        }
+
+        .baggage-option.selected {
+          border-color: var(--primary-orange);
+          background: rgba(255, 111, 0, 0.05);
+        }
+
+        .baggage-radio {
+          margin-right: 1rem;
+        }
+
+        .baggage-radio input[type="radio"] {
+          accent-color: var(--primary-orange);
+          transform: scale(1.3);
+        }
+
+        .baggage-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+        }
+
+        .baggage-info {
+          flex: 1;
+        }
+
+        .baggage-title {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: rgb(255, 255, 255);
+          margin: 0;
+        }
+
+        .baggage-price {
+          text-align: right;
+        }
+
+        .free-badge {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 50px;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+
+        .price-badge {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange) 0%,
+            #fbbf24 100%
+          );
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 50px;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+
+        /* Seat Selection Styles */
+        .modern-seat-section {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .seat-layout {
+          margin-bottom: 2rem;
+        }
+
+        .seat-map-container {
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 24px;
+          padding: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          margin-bottom: 1rem;
+        }
+
+        .aircraft-visualization {
+          background: linear-gradient(
+            135deg,
+            rgb(0, 0, 0) 0%,
+            rgb(0, 0, 0) 100%
+          );
+          border-radius: 20px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+        }
+
+        .aircraft-nose {
+          width: 40px;
+          height: 60px;
+          background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+          border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+          margin: 0 auto 2rem;
+        }
+
+        .seat-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+          gap: 1rem;
+          justify-items: center;
+          margin-bottom: 2rem;
+        }
+
+        .seat-button {
+          width: 70px;
+          height: 70px;
+          border-radius: 12px;
+          border: 2px solid #e5e7eb;
+          background: white;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+
+        .seat-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .seat-button.selected {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange) 0%,
+            #fbbf24 100%
+          );
+          border-color: var(--primary-orange);
+          color: white;
+          transform: scale(1.1);
+          box-shadow: 0 0 0 4px rgba(255, 111, 0, 0.2);
+        }
+
+        .seat-button.standard {
+          border-color: #d1d5db;
+        }
+
+        .seat-button.upfront {
+          border-color: #3b82f6;
+          background: rgba(59, 130, 246, 0.05);
+        }
+
+        .seat-button.extra-legroom {
+          border-color: #10b981;
+          background: rgba(16, 185, 129, 0.05);
+        }
+
+        .seat-content {
+          text-align: center;
+        }
+
+        .seat-number {
+          font-weight: 700;
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+        }
+
+        .seat-price {
+          font-size: 0.7rem;
+          opacity: 0.8;
+          font-weight: 500;
+        }
+
+        .seat-legend {
+          display: flex;
+          justify-content: center;
+          gap: 2rem;
+          flex-wrap: wrap;
+        }
+
+        .legend-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.9rem;
+          color: #6b7280;
+        }
+
+        .legend-color {
+          width: 20px;
+          height: 20px;
+          border-radius: 6px;
+          border: 2px solid;
+        }
+
+        .legend-color.standard {
+          background: white;
+          border-color: #d1d5db;
+        }
+
+        .legend-color.upfront {
+          background: rgba(59, 130, 246, 0.1);
+          border-color: #3b82f6;
+        }
+
+        .legend-color.extra-legroom {
+          background: rgba(16, 185, 129, 0.1);
+          border-color: #10b981;
+        }
+
+        .seat-confirmation {
+          background: rgba(16, 185, 129, 0.1);
+          border: 1px solid rgba(16, 185, 129, 0.3);
+          border-radius: 16px;
+          color: #065f46;
+        }
+
+        .confirmation-content {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .confirmation-icon {
+          color: #10b981;
+          font-size: 1.5rem;
+        }
+
+        .confirmation-price {
+          font-size: 0.9rem;
+          color: #6b7280;
+          margin-top: 0.25rem;
+        }
+
+        /* Booking Summary Sidebar */
+        .booking-summary-sidebar {
+          display: grid;
+          gap: 1.5rem;
+        }
+
+        .price-summary-card {
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          padding: 2rem;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .summary-title {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: rgb(255, 255, 255);
+          margin-bottom: 1.5rem;
+        }
+
+        .summary-items {
+          margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid rgb(255, 255, 255);
+        }
+
+        .summary-item:last-child {
+          border-bottom: none;
+        }
+
+        .item-label {
+          color: rgb(255, 255, 255);
+          font-weight: 500;
+        }
+
+        .item-price {
+          font-weight: 600;
+          color: rgb(255, 255, 255);
+        }
+
+        .summary-total {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 1rem;
+          border-top: 2px solid rgb(255, 255, 255);
+        }
+
+        .total-label {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: rgb(255, 255, 255);
+        }
+
+        .total-price {
+          font-size: 1.5rem;
+          font-weight: 800;
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange) 0%,
+            #fbbf24 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .protection-card {
+          background: rgba(16, 185, 129, 0.05);
+          border: 1px solid rgba(16, 185, 129, 0.2);
+          border-radius: 20px;
+          padding: 1.5rem;
+        }
+
+        .protection-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 1rem;
+        }
+
+        .protection-icon {
+          color: #10b981;
+          font-size: 1.2rem;
+        }
+
+        .protection-title {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #065f46;
+          margin: 0;
+        }
+
+        .protection-features {
+          display: grid;
+          gap: 0.75rem;
+        }
+
+        .feature-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .feature-icon {
+          color: #10b981;
+          font-size: 1rem;
+        }
+
+        .feature-item span {
+          color: #065f46;
+          font-size: 0.9rem;
+          font-weight: 500;
+        }
+
+        /* Navigation Buttons */
+        .step-navigation {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 3rem;
+          gap: 1rem;
+        }
+
+        .back-btn {
+          background: rgba(255, 255, 255, 0.1);
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          color: white;
+          padding: 1rem 2rem;
+          border-radius: 50px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.5);
+          color: white;
+          transform: translateY(-2px);
+        }
+
+        .continue-btn,
+        .complete-btn {
+          background: linear-gradient(
+            135deg,
+            var(--primary-orange) 0%,
+            #fbbf24 100%
+          );
+          border: none;
+          color: white;
+          padding: 1rem 2rem;
+          border-radius: 50px;
+          font-weight: 600;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          box-shadow: 0 8px 24px rgba(255, 111, 0, 0.3);
+        }
+
+        .continue-btn:hover,
+        .complete-btn:hover {
+          background: linear-gradient(
+            135deg,
+            #e65100 0%,
+            var(--primary-orange) 100%
+          );
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 32px rgba(255, 111, 0, 0.4);
+        }
+
+        .complete-btn {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .complete-btn:hover {
+          background: linear-gradient(135deg, #059669 0%, #047857 100%);
+          box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-icon {
+          font-size: 1rem;
+        }
+
+        /* Loading and Error States */
+        .loading-state {
+          text-align: center;
+          padding: 4rem 2rem;
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border-radius: 24px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .loading-spinner {
+          margin-bottom: 2rem;
+        }
+
+        .loading-spinner .spinner-border {
+          width: 3rem;
+          height: 3rem;
+          border-width: 3px;
+          color: var(--primary-orange);
+        }
+
+        .loading-text {
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 1.1rem;
+          font-weight: 500;
+        }
+
+        .error-alert {
+          background: rgba(239, 68, 68, 0.1);
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          border-radius: 20px;
+          color: rgba(255, 255, 255, 0.9);
+          padding: 2rem;
+        }
+
+        .error-content {
+          text-align: center;
+        }
+
+        .error-content strong {
+          color: #fca5a5;
+          font-size: 1.2rem;
+          display: block;
+          margin-bottom: 0.5rem;
+        }
+
+        .error-content p {
+          color: rgba(255, 255, 255, 0.8);
+          margin-bottom: 1rem;
+        }
+
+        .suspense-fallback {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          color: white;
+          gap: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+          .booking-container {
+            padding: 1rem;
+          }
+
+          .booking-title {
+            font-size: 2rem;
+          }
+
+          .step-progress-bar {
+            padding: 0.75rem 1rem;
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+
+          .step-connector {
+            width: 2px;
+            height: 30px;
+            margin: 0.5rem 0;
+          }
+
+          .flight-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+          }
+
+          .flight-times {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            text-align: center;
+          }
+
+          .flight-path {
+            order: -1;
+            transform: rotate(90deg);
+          }
+
+          .passenger-form-container {
+            padding: 2rem 1.5rem;
+          }
+
+          .form-row {
+            flex-direction: column;
+          }
+
+          .gender-options {
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .seat-layout {
+            flex-direction: column;
+          }
+
+          .seat-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+          }
+
+          .seat-button {
+            width: 60px;
+            height: 60px;
+          }
+
+          .step-navigation {
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .back-btn,
+          .continue-btn,
+          .complete-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .route-badge {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+          }
+
+          .booking-subtitle {
+            font-size: 1rem;
+          }
+
+          .section-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+          }
+
+          .step-circle {
+            width: 50px;
+            height: 50px;
+          }
+
+          .step-label {
+            font-size: 0.75rem;
+          }
+
+          .seat-button {
+            width: 50px;
+            height: 50px;
+          }
+
+          .seat-number {
+            font-size: 0.8rem;
+          }
+
+          .seat-price {
+            font-size: 0.6rem;
+          }
+
+          .price-amount {
+            font-size: 1.5rem;
+          }
+
+          .airline-name {
+            font-size: 1.1rem;
+          }
+
+          .time {
+            font-size: 1.2rem;
+          }
+        }
+      `}</style>
+
+      <div className="modern-booking-page">
+        {/* Animated background */}
+        <div className="booking-background">
+          <div className="bg-gradient"></div>
+          <div className="bg-particles">
+            <div className="particle particle-1"></div>
+            <div className="particle particle-2"></div>
+            <div className="particle particle-3"></div>
           </div>
-
-          {/* Step Content */}
-          <div className="step-content">
-            {currentStep === "flights" && renderFlightSelectionStep()}
-            {currentStep === "passengers" && renderPassengerDetailsStep()}
-            {currentStep === "seats" && renderSeatSelectionStep()}
-          </div>
         </div>
-      )}
-    </Container>
+
+        <Container className="booking-container">
+          {/* Header */}
+          <header className="booking-header">
+            <div className="route-badge">
+              <FaMapMarkerAlt className="route-icon" />
+              <span>
+                {origin} → {destination}
+              </span>
+            </div>
+            <h1 className="booking-title">
+              Complete Your
+              <span className="title-highlight"> Booking</span>
+            </h1>
+            <p className="booking-subtitle">
+              {tripType === "roundTrip" ? "Round Trip" : "One Way"} • Just a few
+              steps away
+            </p>
+            <Link href="/" className="modify-search-link">
+              Modify Search
+            </Link>
+          </header>
+
+          {/* Loading State */}
+          {loading && (
+            <div className="loading-state">
+              <div className="loading-spinner">
+                <Spinner animation="border" variant="primary" />
+              </div>
+              <p className="loading-text">
+                Finding the best flights for you...
+              </p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !loading && (
+            <Alert variant="danger" className="error-alert">
+              <div className="error-content">
+                <strong>Oops! Something went wrong</strong>
+                <p>{error}</p>
+                <Link href="/">Try your search again</Link>
+              </div>
+            </Alert>
+          )}
+
+          {/* Booking Steps */}
+          {!loading && !error && (
+            <div className="booking-content">
+              <StepIndicator />
+
+              <div className="step-content">
+                {currentStep === "flights" && renderFlightSelectionStep()}
+                {currentStep === "passengers" && renderPassengerDetailsStep()}
+                {currentStep === "seats" && renderSeatSelectionStep()}
+              </div>
+            </div>
+          )}
+        </Container>
+      </div>
+    </>
   );
 }
 
-// --- Main Page Wrapper (Handles Suspense for useSearchParams) ---
-// This is needed because useSearchParams requires a Suspense boundary
+// Main Page Wrapper with Suspense
 export default function FlightAvailabilityPage() {
   return (
-    // Suspense is required for useSearchParams in Next.js App Router
     <Suspense
       fallback={
-        <div className="text-center p-5">
-          <Spinner animation="border" /> Loading Search...
+        <div className="suspense-fallback">
+          <Spinner animation="border" />
+          <span>Loading Search...</span>
         </div>
       }
     >

@@ -89,10 +89,10 @@ public class EmailServiceTest {
         // Mock MimeMessage
         MimeMessage mimeMessage = new MimeMessage(Session.getInstance(new Properties()));
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
-        
+
         // Test sending purchase confirmation email
-        boolean result = emailService.sendPurchaseConfirmationEmail(order, user);
-        
+        boolean result = emailService.sendPurchaseConfirmationEmail(order, user, "€");
+
         // Verify that the email was sent
         verify(mailSender, times(1)).send(any(MimeMessage.class));
         assertTrue(result);
@@ -102,7 +102,7 @@ public class EmailServiceTest {
     void testSendSimpleEmail() {
         // Test sending simple email
         boolean result = emailService.sendSimpleEmail("test@example.com", "Test Subject", "Test Content");
-        
+
         // Verify that the email was sent
         verify(mailSender, times(1)).send(any(org.springframework.mail.SimpleMailMessage.class));
         assertTrue(result);

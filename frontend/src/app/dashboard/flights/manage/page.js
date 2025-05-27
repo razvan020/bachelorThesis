@@ -194,7 +194,7 @@ export default function ManageFlightsPage() {
                       <td>{flight.destination}</td>
                       <td>{formatDateOnly(flight.departureDate)}</td>
                       <td>{formatDateOnly(flight.arrivalDate)}</td>
-                      <td>${flight.price?.toFixed(2) ?? "N/A"}</td>
+                      <td>€{flight.price?.toFixed(2) ?? "N/A"}</td>
                       <td className="text-end">
                         <Button
                           as={Link}

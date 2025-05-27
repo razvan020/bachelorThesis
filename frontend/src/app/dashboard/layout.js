@@ -1,7 +1,6 @@
-// app/dashboard/layout.js
 "use client";
 
-import React, { useState } from "react";
+import React, { useState } from "react"; // ← Add this import!
 import DashboardLayout from "@/components/DashboardLayout";
 
 // import your three tab‐components:

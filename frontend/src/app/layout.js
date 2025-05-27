@@ -1,4 +1,4 @@
-// app/layout.js (or whichever layout file you’re using)
+// app/layout.js
 "use client";
 
 import "./globals.css";
@@ -13,6 +13,9 @@ import ThemeRegistry from "@/components/ThemeRegistry";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { useOAuthTokenHandler } from "@/hooks/useOAuthTokenHandler";
 
 // load your public key from env
 const stripePromise = loadStripe(
@@ -28,6 +31,12 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
+
+// OAuth Handler Component
+function OAuthHandler({ children }) {
+  useOAuthTokenHandler();
+  return children;
+}
 
 export default function RootLayout({ children }) {
   return (
@@ -58,16 +67,21 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <ThemeRegistry>
             <AuthProvider>
-              {/* Wrap your entire app in Stripe Elements */}
-              <Elements stripe={stripePromise}>
-                <div className="pageWrapper">
-                  <BootstrapClient />
-                  <NavBar />
-                  <main className="flex-grow-1">{children}</main>
-                  <Footer />
-                </div>
-              </Elements>
+              <OAuthHandler>
+                {/* Wrap your entire app in Stripe Elements */}
+                <Elements stripe={stripePromise}>
+                  <div className="pageWrapper">
+                    <BootstrapClient />
+                    <NavBar />
+                    <main className="flex-grow-1">{children}</main>
+                    <Footer />
+                  </div>
+                </Elements>
+              </OAuthHandler>
             </AuthProvider>
+
+            <Analytics />
+            <SpeedInsights />
 
             {/* Bootstrap JS */}
             <Script

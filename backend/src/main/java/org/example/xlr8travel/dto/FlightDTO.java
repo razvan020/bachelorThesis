@@ -20,7 +20,7 @@ public class FlightDTO {
     private LocalTime departureTime;
     private LocalDate arrivalDate;
     private LocalTime arrivalTime;
-    private BigDecimal price;
+    private BigDecimal price; // Price in EUR
     private String terminal;
     private String gate;
     private LocalDateTime lastUpdated;

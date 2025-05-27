@@ -60,8 +60,8 @@ export default function PackagesSection({ packages = [] }) { // Default to empty
         <div className="col-12 text-center">
             <button
               type="button"
-              className="btn rounded-pill px-4 py-2 text-white fw-medium"
-              style={{ backgroundColor: "#5DB4D0", fontSize: '1.1rem' }}
+              className="btn btn-primary rounded-pill px-4 py-2 fw-medium"
+              style={{ fontSize: '1.1rem' }}
               // Optional: Handle click via prop if needed: onClick={onViewAllClick}
             >
               View All Packages

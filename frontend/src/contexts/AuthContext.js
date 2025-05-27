@@ -1,4 +1,4 @@
-// contexts/AuthContext.js
+// contexts/AuthContext.js - FIXED VERSION
 "use client";
 
 import React, {
@@ -15,10 +15,14 @@ const AuthContext = createContext({
   isAuthenticated: false,
   loading: true,
   cartItemCount: 0,
+  showLoginDropdown: false,
+  loginDropdownMessage: "",
   login: async (username, password, recaptchaToken) => {},
-  handleOAuthLogin: async (token, refreshToken) => {}, // New method
+  handleOAuthLogin: async (token, refreshToken) => {},
   logout: async () => {},
   fetchCartCount: async () => {},
+  showLoginWithMessage: (message) => {},
+  hideLogin: () => {},
 });
 
 export const AuthProvider = ({ children }) => {
@@ -29,6 +33,8 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [showLoginDropdown, setShowLoginDropdown] = useState(false);
+  const [loginDropdownMessage, setLoginDropdownMessage] = useState("");
 
   // Always fetch relative to the Next.js server on :3000
   const api = (path) => path;
@@ -67,49 +73,78 @@ export const AuthProvider = ({ children }) => {
 
   // ——— HANDLE OAUTH LOGIN ———
   const handleOAuthLogin = useCallback(async (token, refreshToken) => {
-    // Store tokens in localStorage
-    localStorage.setItem("token", token);
-    localStorage.setItem("refreshToken", refreshToken);
+    try {
+      console.log("Processing OAuth tokens...", {
+        tokenLength: token?.length,
+        refreshTokenLength: refreshToken?.length,
+      });
 
-    // Fetch user data with the token
-    const res = await fetch(api("/api/user/me"), {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+      // Validate tokens before storing
+      if (!token || !refreshToken || token.split(".").length !== 3) {
+        throw new Error("Invalid OAuth tokens received");
+      }
 
-    if (!res.ok) {
-      throw new Error("Failed to get user data after OAuth login");
+      // Store tokens in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // Fetch user data with the token
+      const res = await fetch(api("/api/user/me"), {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Failed to get user data:", errorText);
+        throw new Error(
+          "Failed to get user data after OAuth login: " + errorText
+        );
+      }
+
+      const userData = await res.json();
+      console.log("OAuth user data received:", userData);
+
+      localStorage.setItem("username", userData.username);
+
+      setUser(userData);
+      setIsAuthenticated(true);
+
+      // fetch cart now that we're authenticated
+      await fetchCartCount();
+      return userData;
+    } catch (error) {
+      console.error("OAuth login error:", error);
+      // Clean up any stored tokens on error
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("username");
+      throw error;
     }
-
-    const userData = await res.json();
-    localStorage.setItem("username", userData.username);
-
-    setUser(userData);
-    setIsAuthenticated(true);
-
-    // fetch cart now that we're authenticated
-    await fetchCartCount();
-    return userData;
   }, []);
 
   // ——— LOGOUT ———
   const logout = useCallback(async () => {
-    await fetch(api("/api/logout"), {
-      method: "POST",
-      credentials: "include",
-    });
-
-    // clear client state
-    setUser(null);
-    setIsAuthenticated(false);
-    setCartItemCount(0);
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("username");
-    router.push("/login");
+    try {
+      await fetch(api("/api/logout"), {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Always clear client state, even if server call fails
+      setUser(null);
+      setIsAuthenticated(false);
+      setCartItemCount(0);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("username");
+      router.push("/");
+    }
   }, [router]);
 
   // ——— FETCH CART COUNT ———
@@ -120,41 +155,66 @@ export const AuthProvider = ({ children }) => {
     }
 
     const token = localStorage.getItem("token");
-
-    const res = await fetch(api("/api/cart"), {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!res.ok) {
-      if (res.status === 401 || res.status === 403) {
-        // Try to refresh the token
-        const refreshed = await refreshToken();
-        if (!refreshed) {
-          await logout();
-        }
-      }
+    if (!token) {
       setCartItemCount(0);
       return;
     }
 
-    const data = await res.json();
-    setCartItemCount(data.totalQuantity || 0);
-  }, [isAuthenticated, logout]);
+    try {
+      const res = await fetch(api("/api/cart"), {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          // Try to refresh the token
+          const refreshed = await refreshToken();
+          if (!refreshed) {
+            await logout();
+            return;
+          }
+          // Retry with new token
+          const newToken = localStorage.getItem("token");
+          const retryRes = await fetch(api("/api/cart"), {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (retryRes.ok) {
+            const data = await retryRes.json();
+            setCartItemCount(data.totalQuantity || 0);
+            return;
+          }
+        }
+        setCartItemCount(0);
+        return;
+      }
+
+      const data = await res.json();
+      setCartItemCount(data.totalQuantity || 0);
+    } catch (error) {
+      console.error("Error fetching cart count:", error);
+      setCartItemCount(0);
+    }
+  }, [isAuthenticated]);
 
   // ——— REFRESH TOKEN ———
   const refreshToken = useCallback(async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (!refreshToken) return false;
+    const refreshTokenValue = localStorage.getItem("refreshToken");
+    if (!refreshTokenValue) return false;
 
     try {
       const res = await fetch(api("/api/token/refresh"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
+        body: JSON.stringify({ refreshToken: refreshTokenValue }),
       });
 
       if (!res.ok) return false;
@@ -183,6 +243,19 @@ export const AuthProvider = ({ children }) => {
           return;
         }
 
+        // Validate token format
+        if (token.split(".").length !== 3) {
+          console.error("Invalid token format, clearing localStorage");
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("username");
+          setUser(null);
+          setIsAuthenticated(false);
+          setCartItemCount(0);
+          setLoading(false);
+          return;
+        }
+
         const res = await fetch(api("/api/user/me"), {
           method: "GET",
           headers: {
@@ -199,7 +272,33 @@ export const AuthProvider = ({ children }) => {
         } else if (res.status === 401) {
           // Try to refresh the token
           const refreshed = await refreshToken();
-          if (!refreshed) {
+          if (refreshed) {
+            // Retry with new token
+            const newToken = localStorage.getItem("token");
+            const retryRes = await fetch(api("/api/user/me"), {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${newToken}`,
+                "Content-Type": "application/json",
+              },
+            });
+
+            if (retryRes.ok) {
+              const userData = await retryRes.json();
+              setUser(userData);
+              setIsAuthenticated(true);
+              localStorage.setItem("username", userData.username);
+            } else {
+              // Clear everything if retry fails
+              setUser(null);
+              setIsAuthenticated(false);
+              setCartItemCount(0);
+              localStorage.removeItem("token");
+              localStorage.removeItem("refreshToken");
+              localStorage.removeItem("username");
+            }
+          } else {
+            // Clear everything if refresh fails
             setUser(null);
             setIsAuthenticated(false);
             setCartItemCount(0);
@@ -208,6 +307,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem("username");
           }
         } else {
+          // Clear everything for other errors
           setUser(null);
           setIsAuthenticated(false);
           setCartItemCount(0);
@@ -215,7 +315,8 @@ export const AuthProvider = ({ children }) => {
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("username");
         }
-      } catch {
+      } catch (error) {
+        console.error("Auth verification error:", error);
         setUser(null);
         setIsAuthenticated(false);
         setCartItemCount(0);
@@ -237,6 +338,20 @@ export const AuthProvider = ({ children }) => {
     }
   }, [isAuthenticated, fetchCartCount]);
 
+  // ——— SHOW LOGIN DROPDOWN WITH MESSAGE ———
+  const showLoginWithMessage = useCallback((message) => {
+    setLoginDropdownMessage(
+      message || "You need to be logged in to access that"
+    );
+    setShowLoginDropdown(true);
+  }, []);
+
+  // ——— HIDE LOGIN DROPDOWN ———
+  const hideLogin = useCallback(() => {
+    setShowLoginDropdown(false);
+    setLoginDropdownMessage("");
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -244,10 +359,14 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         loading,
         cartItemCount,
+        showLoginDropdown,
+        loginDropdownMessage,
         login,
-        handleOAuthLogin, // New method
+        handleOAuthLogin,
         logout,
         fetchCartCount,
+        showLoginWithMessage,
+        hideLogin,
       }}
     >
       {!loading && children}

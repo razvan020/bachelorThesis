@@ -1,0 +1,402 @@
+2025-05-14 12:28:05.466  INFO [NONE] 19916 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Starting Xlr8travelApplication using Java 21.0.5 with PID 19916 (C:\Users\razvi\Desktop\Licenta\backend\target\classes started by razvi in C:\Users\razvi\Desktop\Licenta\backend)
+2025-05-14 12:28:05.480 DEBUG [NONE] 19916 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-05-14 12:28:05.481  INFO [NONE] 19916 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : The following 1 profile is active: "local"
+2025-05-14 12:28:05.519  INFO [NONE] 19916 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-14 12:28:05.520  INFO [NONE] 19916 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-14 12:28:06.591  INFO [NONE] 19916 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-14 12:28:06.714  INFO [NONE] 19916 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 115 ms. Found 9 JPA repository interfaces.
+2025-05-14 12:28:07.571  INFO [NONE] 19916 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-14 12:28:07.580  INFO [NONE] 19916 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-14 12:28:07.580  INFO [NONE] 19916 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-14 12:28:07.634  INFO [NONE] 19916 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-14 12:28:07.635  INFO [NONE] 19916 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2114 ms
+2025-05-14 12:28:07.896  INFO [NONE] 19916 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-14 12:28:07.961  INFO [NONE] 19916 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-05-14 12:28:07.995  INFO [NONE] 19916 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-14 12:28:08.290  INFO [NONE] 19916 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-14 12:28:08.335  INFO [NONE] 19916 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-14 12:28:08.673  INFO [NONE] 19916 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5615d96c
+2025-05-14 12:28:08.677  INFO [NONE] 19916 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-14 12:28:08.763  WARN [NONE] 19916 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-14 12:28:10.334  INFO [NONE] 19916 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-14 12:28:18.271  INFO [NONE] 19916 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-14 12:28:18.574  INFO [NONE] 19916 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-14 12:28:18.977 DEBUG [NONE] 19916 --- [  restartedMain] o.e.x.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2025-05-14 12:28:18.979 DEBUG [NONE] 19916 --- [  restartedMain] o.e.x.security.RateLimitingFilter        : Filter 'rateLimitingFilter' configured for use
+2025-05-14 12:28:19.162  INFO [NONE] 19916 --- [  restartedMain] o.e.x.config.LocalPropertiesConfig       : Loaded application-local.properties
+2025-05-14 12:28:19.376  INFO [NONE] 19916 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Validating sensitive data configuration for profile: local
+2025-05-14 12:28:19.377  WARN [NONE] 19916 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_URL is not set
+2025-05-14 12:28:19.377  WARN [NONE] 19916 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_USERNAME is not set
+2025-05-14 12:28:19.377  WARN [NONE] 19916 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_PASSWORD is not set
+2025-05-14 12:28:19.377  WARN [NONE] 19916 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable STRIPE_SECRET_KEY is not set
+2025-05-14 12:28:19.422  WARN [NONE] 19916 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-14 12:28:19.528  INFO [NONE] 19916 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-05-14 12:28:19.800  INFO [NONE] 19916 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoint(s) beneath base path '/actuator'
+2025-05-14 12:28:19.912  INFO [NONE] 19916 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5d939b6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@21a88129, org.springframework.security.web.context.SecurityContextHolderFilter@6e85a082, org.springframework.security.web.header.HeaderWriterFilter@5a585894, org.springframework.web.filter.CorsFilter@63279d06, org.springframework.security.web.authentication.logout.LogoutFilter@18ee5f69, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@6592347e, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@4b3fea5b, org.example.xlr8travel.security.JwtAuthenticationFilter@b1e67b9, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@797ba5c9, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@bdd16e7, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@546159a7, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@64d8d5bc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3777a7d7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1ee5fff8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@18b9ce14, org.springframework.security.web.session.SessionManagementFilter@55a5da8d, org.springframework.security.web.access.ExceptionTranslationFilter@74cd6a0a, org.springframework.security.web.access.intercept.AuthorizationFilter@75268b1b]
+2025-05-14 12:28:20.689  INFO [NONE] 19916 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-14 12:28:20.767  INFO [NONE] 19916 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2025-05-14 12:28:20.784  INFO [NONE] 19916 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Started Xlr8travelApplication in 15.76 seconds (process running for 16.247)
+2025-05-14 12:28:39.081  INFO [NONE] 19916 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-14 12:28:39.082  INFO [NONE] 19916 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-14 12:28:39.086  INFO [NONE] 19916 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-05-14 12:28:39.126 DEBUG [5610733a-8400-4d0c-b673-48cfdf23d673] 19916 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:28:39.231 ERROR [5610733a-8400-4d0c-b673-48cfdf23d673] 19916 --- [nio-8080-exec-1] o.example.xlr8travel.security.JwtUtils   : JWT token is expired: JWT expired at 2025-05-12T16:02:18Z. Current time: 2025-05-14T09:28:39Z, a difference of 149181230 milliseconds.  Allowed clock skew: 0 milliseconds.
+2025-05-14 12:28:39.238 DEBUG [5610733a-8400-4d0c-b673-48cfdf23d673] 19916 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:28:39.244  WARN [5610733a-8400-4d0c-b673-48cfdf23d673] 19916 --- [nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/api/user/me' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2025-05-14 12:28:39.264 DEBUG [5610733a-8400-4d0c-b673-48cfdf23d673] 19916 --- [nio-8080-exec-1] s.w.a.DelegatingAuthenticationEntryPoint : Trying to match using Ant [pattern='/api/**']
+2025-05-14 12:28:39.265 DEBUG [5610733a-8400-4d0c-b673-48cfdf23d673] 19916 --- [nio-8080-exec-1] s.w.a.DelegatingAuthenticationEntryPoint : Match found! Executing org.springframework.security.web.authentication.HttpStatusEntryPoint@48008964
+2025-05-14 12:28:39.354 DEBUG [385a67b7-e728-4a8b-a431-a96f3aa50339] 19916 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/token/refresh
+2025-05-14 12:28:39.367 DEBUG [385a67b7-e728-4a8b-a431-a96f3aa50339] 19916 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:28:39.371 DEBUG [385a67b7-e728-4a8b-a431-a96f3aa50339] 19916 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /api/token/refresh
+2025-05-14 12:28:39.458  INFO [385a67b7-e728-4a8b-a431-a96f3aa50339] 19916 --- [nio-8080-exec-2] o.e.x.controllers.TokenController        : Generated new access token for user: 104658082982173093135
+2025-05-14 12:28:58.391 DEBUG [939a73b8-bd0b-4cf1-a58d-a0445d33c94d] 19916 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:28:58.392 DEBUG [939a73b8-bd0b-4cf1-a58d-a0445d33c94d] 19916 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:28:58.393 DEBUG [939a73b8-bd0b-4cf1-a58d-a0445d33c94d] 19916 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:28:58.396  INFO [939a73b8-bd0b-4cf1-a58d-a0445d33c94d] 19916 --- [nio-8080-exec-3] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:28:58.396  WARN [939a73b8-bd0b-4cf1-a58d-a0445d33c94d] 19916 --- [nio-8080-exec-3] o.e.x.controllers.LoginController        : reCAPTCHA token is missing for user: ****@****.***
+2025-05-14 12:29:11.942 DEBUG [6ee790ed-5d2b-48f7-b24e-357fc1ac2228] 19916 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:29:11.943 DEBUG [6ee790ed-5d2b-48f7-b24e-357fc1ac2228] 19916 --- [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:29:11.944 DEBUG [6ee790ed-5d2b-48f7-b24e-357fc1ac2228] 19916 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:29:11.945  INFO [6ee790ed-5d2b-48f7-b24e-357fc1ac2228] 19916 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:29:11.945  WARN [6ee790ed-5d2b-48f7-b24e-357fc1ac2228] 19916 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : reCAPTCHA token is missing for user: ****@****.***
+2025-05-14 12:29:15.622 DEBUG [705dbf0d-2f21-4576-9b7c-c103652a19e2] 19916 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:29:15.667 ERROR [705dbf0d-2f21-4576-9b7c-c103652a19e2] 19916 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
+2025-05-14 12:29:15.668 DEBUG [705dbf0d-2f21-4576-9b7c-c103652a19e2] 19916 --- [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:29:15.671 DEBUG [705dbf0d-2f21-4576-9b7c-c103652a19e2] 19916 --- [nio-8080-exec-5] s.w.a.DelegatingAuthenticationEntryPoint : Trying to match using Ant [pattern='/api/**']
+2025-05-14 12:29:15.671 DEBUG [705dbf0d-2f21-4576-9b7c-c103652a19e2] 19916 --- [nio-8080-exec-5] s.w.a.DelegatingAuthenticationEntryPoint : Match found! Executing org.springframework.security.web.authentication.HttpStatusEntryPoint@48008964
+2025-05-14 12:29:15.803 DEBUG [73504b17-1b51-4298-88d0-6c87c61ce4dd] 19916 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/token/refresh
+2025-05-14 12:29:15.805 DEBUG [73504b17-1b51-4298-88d0-6c87c61ce4dd] 19916 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:29:15.806 DEBUG [73504b17-1b51-4298-88d0-6c87c61ce4dd] 19916 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/token/refresh
+2025-05-14 12:29:15.810  INFO [73504b17-1b51-4298-88d0-6c87c61ce4dd] 19916 --- [nio-8080-exec-6] o.e.x.controllers.TokenController        : Generated new access token for user: 104658082982173093135
+2025-05-14 12:29:31.202 DEBUG [b5c8d5f5-7cfc-4f21-ab00-4ab66bd9537c] 19916 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /api/signup
+2025-05-14 12:29:31.203 DEBUG [b5c8d5f5-7cfc-4f21-ab00-4ab66bd9537c] 19916 --- [nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:29:31.204 DEBUG [b5c8d5f5-7cfc-4f21-ab00-4ab66bd9537c] 19916 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /api/signup
+2025-05-14 12:29:31.241  INFO [b5c8d5f5-7cfc-4f21-ab00-4ab66bd9537c] 19916 --- [nio-8080-exec-7] o.e.x.controllers.SignupController       : Received registration request for email: ****@****.***
+2025-05-14 12:29:31.304 DEBUG [b5c8d5f5-7cfc-4f21-ab00-4ab66bd9537c] 19916 --- [nio-8080-exec-7] o.e.x.controllers.SignupController       : Attempting to save new user: ****@****.***
+2025-05-14 12:29:31.319  INFO [b5c8d5f5-7cfc-4f21-ab00-4ab66bd9537c] 19916 --- [nio-8080-exec-7] o.e.x.controllers.SignupController       : User registered successfully: ****@****.***
+2025-05-14 12:29:31.443 DEBUG [b5c8d5f5-7cfc-4f21-ab00-4ab66bd9537c] 19916 --- [nio-8080-exec-7] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-14 12:29:38.332 DEBUG [77288ab6-d91b-4c31-8a1f-9e6e63809c47] 19916 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:29:38.333 DEBUG [77288ab6-d91b-4c31-8a1f-9e6e63809c47] 19916 --- [nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:29:38.333 DEBUG [77288ab6-d91b-4c31-8a1f-9e6e63809c47] 19916 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:29:38.334  INFO [77288ab6-d91b-4c31-8a1f-9e6e63809c47] 19916 --- [nio-8080-exec-8] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:29:38.334  WARN [77288ab6-d91b-4c31-8a1f-9e6e63809c47] 19916 --- [nio-8080-exec-8] o.e.x.controllers.LoginController        : reCAPTCHA token is missing for user: ****@****.***
+2025-05-14 12:29:48.667 DEBUG [76d8c081-c952-4f61-a825-7bf6bb2e7709] 19916 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:29:48.668 DEBUG [76d8c081-c952-4f61-a825-7bf6bb2e7709] 19916 --- [nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:29:48.668 DEBUG [76d8c081-c952-4f61-a825-7bf6bb2e7709] 19916 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:29:48.669  INFO [76d8c081-c952-4f61-a825-7bf6bb2e7709] 19916 --- [nio-8080-exec-9] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:29:48.669  WARN [76d8c081-c952-4f61-a825-7bf6bb2e7709] 19916 --- [nio-8080-exec-9] o.e.x.controllers.LoginController        : reCAPTCHA token is missing for user: ****@****.***
+2025-05-14 12:33:02.512 DEBUG [75e2ae8f-7455-4c42-b4a8-8cdaf50a5357] 19916 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:33:02.527 ERROR [75e2ae8f-7455-4c42-b4a8-8cdaf50a5357] 19916 --- [io-8080-exec-10] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
+2025-05-14 12:33:02.528 DEBUG [75e2ae8f-7455-4c42-b4a8-8cdaf50a5357] 19916 --- [io-8080-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:33:02.531 DEBUG [75e2ae8f-7455-4c42-b4a8-8cdaf50a5357] 19916 --- [io-8080-exec-10] s.w.a.DelegatingAuthenticationEntryPoint : Trying to match using Ant [pattern='/api/**']
+2025-05-14 12:33:02.532 DEBUG [75e2ae8f-7455-4c42-b4a8-8cdaf50a5357] 19916 --- [io-8080-exec-10] s.w.a.DelegatingAuthenticationEntryPoint : Match found! Executing org.springframework.security.web.authentication.HttpStatusEntryPoint@48008964
+2025-05-14 12:33:02.672 DEBUG [626ef746-e589-4704-b40f-d9998fc21e1a] 19916 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/token/refresh
+2025-05-14 12:33:02.673 DEBUG [626ef746-e589-4704-b40f-d9998fc21e1a] 19916 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:33:02.676 DEBUG [626ef746-e589-4704-b40f-d9998fc21e1a] 19916 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/token/refresh
+2025-05-14 12:33:02.682  INFO [626ef746-e589-4704-b40f-d9998fc21e1a] 19916 --- [nio-8080-exec-1] o.e.x.controllers.TokenController        : Generated new access token for user: 104658082982173093135
+2025-05-14 12:33:16.486 DEBUG [583202e9-970e-4a00-8b70-95191d8bb418] 19916 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:33:16.495 ERROR [583202e9-970e-4a00-8b70-95191d8bb418] 19916 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
+2025-05-14 12:33:16.496 DEBUG [583202e9-970e-4a00-8b70-95191d8bb418] 19916 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:33:16.498 DEBUG [583202e9-970e-4a00-8b70-95191d8bb418] 19916 --- [nio-8080-exec-2] s.w.a.DelegatingAuthenticationEntryPoint : Trying to match using Ant [pattern='/api/**']
+2025-05-14 12:33:16.498 DEBUG [583202e9-970e-4a00-8b70-95191d8bb418] 19916 --- [nio-8080-exec-2] s.w.a.DelegatingAuthenticationEntryPoint : Match found! Executing org.springframework.security.web.authentication.HttpStatusEntryPoint@48008964
+2025-05-14 12:33:16.593 DEBUG [75995eaa-43b3-4888-bd33-c1602dd665b7] 19916 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/token/refresh
+2025-05-14 12:33:16.594 DEBUG [75995eaa-43b3-4888-bd33-c1602dd665b7] 19916 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:33:16.594 DEBUG [75995eaa-43b3-4888-bd33-c1602dd665b7] 19916 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/token/refresh
+2025-05-14 12:33:16.599  INFO [75995eaa-43b3-4888-bd33-c1602dd665b7] 19916 --- [nio-8080-exec-3] o.e.x.controllers.TokenController        : Generated new access token for user: 104658082982173093135
+2025-05-14 12:35:20.461  INFO [NONE] 19916 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-14 12:35:20.466  INFO [NONE] 19916 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-14 12:35:20.471  INFO [NONE] 19916 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-14 12:35:33.687  INFO [NONE] 27816 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Starting Xlr8travelApplication using Java 21.0.5 with PID 27816 (C:\Users\razvi\Desktop\Licenta\backend\target\classes started by razvi in C:\Users\razvi\Desktop\Licenta\backend)
+2025-05-14 12:35:33.692 DEBUG [NONE] 27816 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-05-14 12:35:33.693  INFO [NONE] 27816 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : The following 1 profile is active: "local"
+2025-05-14 12:35:33.726  INFO [NONE] 27816 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-14 12:35:33.726  INFO [NONE] 27816 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-14 12:35:34.541  INFO [NONE] 27816 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-14 12:35:34.613  INFO [NONE] 27816 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 65 ms. Found 9 JPA repository interfaces.
+2025-05-14 12:35:35.342  INFO [NONE] 27816 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-14 12:35:35.352  INFO [NONE] 27816 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-14 12:35:35.352  INFO [NONE] 27816 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-14 12:35:35.408  INFO [NONE] 27816 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-14 12:35:35.409  INFO [NONE] 27816 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1681 ms
+2025-05-14 12:35:35.639  INFO [NONE] 27816 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-14 12:35:35.695  INFO [NONE] 27816 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-05-14 12:35:35.724  INFO [NONE] 27816 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-14 12:35:35.897  INFO [NONE] 27816 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-14 12:35:35.917  INFO [NONE] 27816 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-14 12:35:36.039  INFO [NONE] 27816 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2fc98d9d
+2025-05-14 12:35:36.041  INFO [NONE] 27816 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-14 12:35:36.082  WARN [NONE] 27816 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-14 12:35:37.064  INFO [NONE] 27816 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-14 12:35:44.145  INFO [NONE] 27816 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-14 12:35:44.404  INFO [NONE] 27816 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-14 12:35:44.728 DEBUG [NONE] 27816 --- [  restartedMain] o.e.x.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2025-05-14 12:35:44.729 DEBUG [NONE] 27816 --- [  restartedMain] o.e.x.security.RateLimitingFilter        : Filter 'rateLimitingFilter' configured for use
+2025-05-14 12:35:44.876  INFO [NONE] 27816 --- [  restartedMain] o.e.x.config.LocalPropertiesConfig       : Loaded application-local.properties
+2025-05-14 12:35:45.075  INFO [NONE] 27816 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Validating sensitive data configuration for profile: local
+2025-05-14 12:35:45.075  WARN [NONE] 27816 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_URL is not set
+2025-05-14 12:35:45.076  WARN [NONE] 27816 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_USERNAME is not set
+2025-05-14 12:35:45.076  WARN [NONE] 27816 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_PASSWORD is not set
+2025-05-14 12:35:45.076  WARN [NONE] 27816 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable STRIPE_SECRET_KEY is not set
+2025-05-14 12:35:45.116  WARN [NONE] 27816 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-14 12:35:45.215  INFO [NONE] 27816 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-05-14 12:35:45.431  INFO [NONE] 27816 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoint(s) beneath base path '/actuator'
+2025-05-14 12:35:45.501  INFO [NONE] 27816 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@8d764f6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1276e600, org.springframework.security.web.context.SecurityContextHolderFilter@2e43d3c3, org.springframework.security.web.header.HeaderWriterFilter@8391a5e, org.springframework.web.filter.CorsFilter@31672ddf, org.springframework.security.web.authentication.logout.LogoutFilter@53103119, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@b113d31, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@4ed9de25, org.example.xlr8travel.security.JwtAuthenticationFilter@16b89852, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@72fd08c4, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@2ba6102a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@50219e88, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@58f845d6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@25fc7472, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2e0cdc11, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@63e2a0ae, org.springframework.security.web.session.SessionManagementFilter@5a6bce4f, org.springframework.security.web.access.ExceptionTranslationFilter@6e36f40d, org.springframework.security.web.access.intercept.AuthorizationFilter@285c6d85]
+2025-05-14 12:35:45.923  INFO [NONE] 27816 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-14 12:35:45.974  INFO [NONE] 27816 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2025-05-14 12:35:45.983  INFO [NONE] 27816 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Started Xlr8travelApplication in 12.692 seconds (process running for 13.098)
+2025-05-14 12:36:12.833  INFO [NONE] 27816 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-14 12:36:12.833  INFO [NONE] 27816 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-14 12:36:12.835  INFO [NONE] 27816 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-05-14 12:36:12.855 DEBUG [22f4974f-76fd-47d1-98cc-b0ec41ad0a51] 27816 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:36:12.992 ERROR [22f4974f-76fd-47d1-98cc-b0ec41ad0a51] 27816 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
+2025-05-14 12:36:12.996 DEBUG [22f4974f-76fd-47d1-98cc-b0ec41ad0a51] 27816 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:36:13.001  WARN [22f4974f-76fd-47d1-98cc-b0ec41ad0a51] 27816 --- [nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/api/user/me' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2025-05-14 12:36:13.017 DEBUG [22f4974f-76fd-47d1-98cc-b0ec41ad0a51] 27816 --- [nio-8080-exec-1] s.w.a.DelegatingAuthenticationEntryPoint : Trying to match using Ant [pattern='/api/**']
+2025-05-14 12:36:13.017 DEBUG [22f4974f-76fd-47d1-98cc-b0ec41ad0a51] 27816 --- [nio-8080-exec-1] s.w.a.DelegatingAuthenticationEntryPoint : Match found! Executing org.springframework.security.web.authentication.HttpStatusEntryPoint@197126e1
+2025-05-14 12:36:13.175 DEBUG [9b1c01f5-7213-404c-95ed-2d56ba2a1e5e] 27816 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/token/refresh
+2025-05-14 12:36:13.191 DEBUG [9b1c01f5-7213-404c-95ed-2d56ba2a1e5e] 27816 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:36:13.196 DEBUG [9b1c01f5-7213-404c-95ed-2d56ba2a1e5e] 27816 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/token/refresh
+2025-05-14 12:36:13.279  INFO [9b1c01f5-7213-404c-95ed-2d56ba2a1e5e] 27816 --- [nio-8080-exec-3] o.e.x.controllers.TokenController        : Generated new access token for user: 104658082982173093135
+2025-05-14 12:36:20.610 DEBUG [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:36:20.612 DEBUG [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:36:20.613 DEBUG [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:36:20.615  INFO [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:36:20.967  INFO [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-14 12:36:20.968  INFO [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : reCAPTCHA verification successful for user: ****@****.***
+2025-05-14 12:36:21.099 DEBUG [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-14 12:36:21.099  INFO [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Authentication successful for user: user2
+2025-05-14 12:36:21.117  INFO [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Updated last login time for user: user2
+2025-05-14 12:36:21.117  INFO [baf11c4e-6367-4c50-b857-347f5a15dc2b] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Returning successful response with JWT token for user: user2
+2025-05-14 12:36:21.275 DEBUG [acdc78ef-3d4e-4201-a8d7-b5398d15ac24] 27816 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-14 12:36:21.275 DEBUG [37c49598-f1de-49b1-84b7-c65c380241dd] 27816 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-14 12:36:21.297 DEBUG [acdc78ef-3d4e-4201-a8d7-b5398d15ac24] 27816 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-14 12:36:21.299 DEBUG [37c49598-f1de-49b1-84b7-c65c380241dd] 27816 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-14 12:36:21.302  INFO [acdc78ef-3d4e-4201-a8d7-b5398d15ac24] 27816 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-14 12:36:21.314  WARN [37c49598-f1de-49b1-84b7-c65c380241dd] 27816 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-14 12:36:21.317  INFO [acdc78ef-3d4e-4201-a8d7-b5398d15ac24] 27816 --- [nio-8080-exec-5] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user user2 with ID 2, creating a new one.
+2025-05-14 12:36:21.334  WARN [37c49598-f1de-49b1-84b7-c65c380241dd] 27816 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:36:21.349  INFO [acdc78ef-3d4e-4201-a8d7-b5398d15ac24] 27816 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Returning persistent cart for user user2 with 0 items, 0 total quantity.
+2025-05-14 12:36:30.532 DEBUG [6df4582e-7ceb-4f4c-a89c-8a51dc91447e] 27816 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-05-14 12:36:30.552 DEBUG [6df4582e-7ceb-4f4c-a89c-8a51dc91447e] 27816 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-05-14 12:36:30.560  INFO [6df4582e-7ceb-4f4c-a89c-8a51dc91447e] 27816 --- [nio-8080-exec-6] o.e.x.controllers.CheckinController      : Getting boarding passes for user: user2
+2025-05-14 12:36:30.560  INFO [6df4582e-7ceb-4f4c-a89c-8a51dc91447e] 27816 --- [nio-8080-exec-6] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 2
+2025-05-14 12:36:30.649 DEBUG [f47b788e-457d-4128-9031-c945d1b192de] 27816 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-05-14 12:36:30.667 DEBUG [f47b788e-457d-4128-9031-c945d1b192de] 27816 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-05-14 12:36:30.675  INFO [f47b788e-457d-4128-9031-c945d1b192de] 27816 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting boarding passes for user: user2
+2025-05-14 12:36:30.675  INFO [f47b788e-457d-4128-9031-c945d1b192de] 27816 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 2
+2025-05-14 12:36:35.121 DEBUG [266a16b0-6200-4ffb-addf-5e4efeb1ce21] 27816 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/metrics
+2025-05-14 12:36:35.151 DEBUG [266a16b0-6200-4ffb-addf-5e4efeb1ce21] 27816 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/metrics
+2025-05-14 12:36:35.152  INFO [266a16b0-6200-4ffb-addf-5e4efeb1ce21] 27816 --- [nio-8080-exec-8] o.e.x.controllers.MetricsController      : Request received for all metrics
+2025-05-14 12:36:35.310  INFO [266a16b0-6200-4ffb-addf-5e4efeb1ce21] 27816 --- [nio-8080-exec-8] o.e.x.controllers.MetricsController      : Returning 4 metrics categories
+2025-05-14 12:36:35.430 DEBUG [0a73a86a-04ed-42f3-be79-e7387faf0240] 27816 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/metrics
+2025-05-14 12:36:35.447 DEBUG [0a73a86a-04ed-42f3-be79-e7387faf0240] 27816 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/metrics
+2025-05-14 12:36:35.448  INFO [0a73a86a-04ed-42f3-be79-e7387faf0240] 27816 --- [nio-8080-exec-9] o.e.x.controllers.MetricsController      : Request received for all metrics
+2025-05-14 12:36:35.530  INFO [0a73a86a-04ed-42f3-be79-e7387faf0240] 27816 --- [nio-8080-exec-9] o.e.x.controllers.MetricsController      : Returning 4 metrics categories
+2025-05-14 12:36:38.756 DEBUG [3f235752-02ec-42a5-a5c3-ad3bba081880] 27816 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/users
+2025-05-14 12:36:38.771 DEBUG [3f235752-02ec-42a5-a5c3-ad3bba081880] 27816 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/users
+2025-05-14 12:36:38.771  INFO [3f235752-02ec-42a5-a5c3-ad3bba081880] 27816 --- [io-8080-exec-10] o.e.x.controllers.UsersController        : Request received for all users
+2025-05-14 12:36:38.817  INFO [3f235752-02ec-42a5-a5c3-ad3bba081880] 27816 --- [io-8080-exec-10] o.e.x.controllers.UsersController        : Returning 3 users.
+2025-05-14 12:36:38.910 DEBUG [7f23e941-a827-4a14-820f-114dff551f49] 27816 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/users
+2025-05-14 12:36:38.923 DEBUG [7f23e941-a827-4a14-820f-114dff551f49] 27816 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/users
+2025-05-14 12:36:38.924  INFO [7f23e941-a827-4a14-820f-114dff551f49] 27816 --- [nio-8080-exec-1] o.e.x.controllers.UsersController        : Request received for all users
+2025-05-14 12:36:38.964  INFO [7f23e941-a827-4a14-820f-114dff551f49] 27816 --- [nio-8080-exec-1] o.e.x.controllers.UsersController        : Returning 3 users.
+2025-05-14 12:36:40.238 DEBUG [a3d9b06f-ec45-43cf-9857-bd65064c45af] 27816 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/metrics
+2025-05-14 12:36:40.251 DEBUG [a3d9b06f-ec45-43cf-9857-bd65064c45af] 27816 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/metrics
+2025-05-14 12:36:40.251  INFO [a3d9b06f-ec45-43cf-9857-bd65064c45af] 27816 --- [nio-8080-exec-3] o.e.x.controllers.MetricsController      : Request received for all metrics
+2025-05-14 12:36:40.323  INFO [a3d9b06f-ec45-43cf-9857-bd65064c45af] 27816 --- [nio-8080-exec-3] o.e.x.controllers.MetricsController      : Returning 4 metrics categories
+2025-05-14 12:36:40.414 DEBUG [9ecedf0a-41ad-42bf-b936-96cf489267b0] 27816 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/metrics
+2025-05-14 12:36:40.427 DEBUG [9ecedf0a-41ad-42bf-b936-96cf489267b0] 27816 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/metrics
+2025-05-14 12:36:40.428  INFO [9ecedf0a-41ad-42bf-b936-96cf489267b0] 27816 --- [nio-8080-exec-4] o.e.x.controllers.MetricsController      : Request received for all metrics
+2025-05-14 12:36:40.501  INFO [9ecedf0a-41ad-42bf-b936-96cf489267b0] 27816 --- [nio-8080-exec-4] o.e.x.controllers.MetricsController      : Returning 4 metrics categories
+2025-05-14 12:36:41.734 DEBUG [d3207d0b-d423-4540-a484-126a2bd12a10] 27816 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-05-14 12:36:41.735 DEBUG [d3207d0b-d423-4540-a484-126a2bd12a10] 27816 --- [nio-8080-exec-2] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-05-14 12:36:42.745 DEBUG [5f070eb2-e083-497e-9b40-e526fafa1395] 27816 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /oauth2/authorization/google
+2025-05-14 12:36:42.771 DEBUG [5f070eb2-e083-497e-9b40-e526fafa1395] 27816 --- [nio-8080-exec-5] o.s.s.web.DefaultRedirectStrategy        : Redirecting to https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=280181287068-i92p696f0ja6qv5lecrhi4dmn2hsrvie.apps.googleusercontent.com&scope=email%20profile&state=WgpHb01tn-JALufR2R12DDQTJzIktNHpv8cBrJm-RnE%3D&redirect_uri=http://localhost:8080/login/oauth2/code/google
+2025-05-14 12:36:44.892 DEBUG [80f83e14-3cf7-4183-a080-91bb9bcfb7e3] 27816 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /login/oauth2/code/google?state=WgpHb01tn-JALufR2R12DDQTJzIktNHpv8cBrJm-RnE%3D&code=4%2F0AUJR-x4CFIz07cBFg_Nv0g_BcuLc4hp2gxEnGbGOl0MOs5scDH1C-HMhym6Mft-FtScbtw&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=1&prompt=none
+2025-05-14 12:36:45.251  INFO [80f83e14-3cf7-4183-a080-91bb9bcfb7e3] 27816 --- [nio-8080-exec-6] o.e.x.security.CustomOAuth2UserService   : Creating new user from OAuth2 login: ****@****.***
+2025-05-14 12:36:45.333  INFO [80f83e14-3cf7-4183-a080-91bb9bcfb7e3] 27816 --- [nio-8080-exec-6] o.e.x.security.CustomOAuth2UserService   : Successfully created new user from OAuth2 login: ****@****.***
+2025-05-14 12:36:45.334 DEBUG [80f83e14-3cf7-4183-a080-91bb9bcfb7e3] 27816 --- [nio-8080-exec-6] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from D8433D22EA4070B8621924FAC866E732
+2025-05-14 12:36:45.335 DEBUG [80f83e14-3cf7-4183-a080-91bb9bcfb7e3] 27816 --- [nio-8080-exec-6] .s.o.c.w.OAuth2LoginAuthenticationFilter : Set SecurityContextHolder to OAuth2AuthenticationToken [Principal=Name: [104658082982173093135], Granted Authorities: [[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]], User Attributes: [{sub=104658082982173093135, name=Razvan Uleia, given_name=Razvan, family_name=Uleia, picture=https://lh3.googleusercontent.com/a/ACg8ocJi61HPFJ4MxC53TnL4U_AL4Tuu_gASX5yvf0NxGSQWc6-YeA=s96-c, email=****@****.***, email_verified=true}], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=D8433D22EA4070B8621924FAC866E732], Granted Authorities=[OAUTH2_USER, SCOPE_https://www.googleapis.com/auth/userinfo.email, SCOPE_https://www.googleapis.com/auth/userinfo.profile, SCOPE_openid]]
+2025-05-14 12:36:45.337 DEBUG [80f83e14-3cf7-4183-a080-91bb9bcfb7e3] 27816 --- [nio-8080-exec-6] o.s.s.web.DefaultRedirectStrategy        : Redirecting to http://localhost:3000/login?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYXp2YW4udWxlaWFAZ21haWwuY29tIiwiaWF0IjoxNzQ3MjE1NDA1LCJleHAiOjE3NDczMDE4MDV9.IoadG18d3AW313gWIhAUSEW7CSTwOTPiUcjFl-UlMHmgPETvfhISN_Zb_CZprn0DE8yfJk4bPBPNOFYjBA7HjQ&refreshToken=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDQ2NTgwODI5ODIxNzMwOTMxMzUiLCJpYXQiOjE3NDcyMTU0MDUsImV4cCI6MTc0NzgyMDIwNX0.A-8DGCJMjg2vipl1P25jYumL4MHK9iH8MWemetMaWGUJ6mw0CzK8NPPlvHKofIrQcXSc97urmaNJYRyxKcWlEw
+2025-05-14 12:36:45.984 DEBUG [16376f13-4f5c-47ff-8285-990c050f65a1] 27816 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:36:45.999 DEBUG [16376f13-4f5c-47ff-8285-990c050f65a1] 27816 --- [nio-8080-exec-7] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from 5AF8DCFFE88C466DEF8B7B80ABA256FA
+2025-05-14 12:36:46.001 DEBUG [16376f13-4f5c-47ff-8285-990c050f65a1] 27816 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-14 12:36:46.002  INFO [16376f13-4f5c-47ff-8285-990c050f65a1] 27816 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Request received for current user details: ****@****.***
+2025-05-14 12:36:46.010  INFO [16376f13-4f5c-47ff-8285-990c050f65a1] 27816 --- [nio-8080-exec-7] o.e.x.controllers.UserController         : Returning details for user: ****@****.***
+2025-05-14 12:36:46.271 DEBUG [aa45ae7b-2ea2-48a6-9f3a-1c122530779f] 27816 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-14 12:36:46.272 DEBUG [9aed78ec-a4d0-4039-a70b-a236a27a926e] 27816 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-14 12:36:46.284 DEBUG [aa45ae7b-2ea2-48a6-9f3a-1c122530779f] 27816 --- [nio-8080-exec-8] .s.ChangeSessionIdAuthenticationStrategy : Changed session id from D34C13CE69C3EC960E9E2552E01F86F9
+2025-05-14 12:36:46.286 DEBUG [9aed78ec-a4d0-4039-a70b-a236a27a926e] 27816 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-14 12:36:46.287  INFO [9aed78ec-a4d0-4039-a70b-a236a27a926e] 27816 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-14 12:36:46.288 DEBUG [aa45ae7b-2ea2-48a6-9f3a-1c122530779f] 27816 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-14 12:36:46.300  WARN [aa45ae7b-2ea2-48a6-9f3a-1c122530779f] 27816 --- [nio-8080-exec-8] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-14 12:36:46.302  WARN [aa45ae7b-2ea2-48a6-9f3a-1c122530779f] 27816 --- [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:36:46.308  INFO [9aed78ec-a4d0-4039-a70b-a236a27a926e] 27816 --- [nio-8080-exec-9] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user ****@****.*** with ID 4, creating a new one.
+2025-05-14 12:36:46.332  INFO [9aed78ec-a4d0-4039-a70b-a236a27a926e] 27816 --- [nio-8080-exec-9] o.e.x.controllers.CartController         : Returning persistent cart for user ****@****.*** with 0 items, 0 total quantity.
+2025-05-14 12:36:52.431 DEBUG [3eafed7c-a428-430e-8ac2-99c660acf8af] 27816 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-05-14 12:36:52.432 DEBUG [3eafed7c-a428-430e-8ac2-99c660acf8af] 27816 --- [io-8080-exec-10] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-05-14 12:36:52.433 DEBUG [3eafed7c-a428-430e-8ac2-99c660acf8af] 27816 --- [io-8080-exec-10] o.s.s.w.a.l.SecurityContextLogoutHandler : Invalidated session 8CE3D92100867BD9A1405747B5B6E4C8
+2025-05-14 12:37:07.726 DEBUG [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/signup
+2025-05-14 12:37:07.727 DEBUG [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:37:07.727 DEBUG [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 8CE3D92100867BD9A1405747B5B6E4C8
+2025-05-14 12:37:07.728 DEBUG [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/signup
+2025-05-14 12:37:07.760  INFO [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.e.x.controllers.SignupController       : Received registration request for email: ****@****.***
+2025-05-14 12:37:07.898  INFO [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-14 12:37:07.899  INFO [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.e.x.controllers.SignupController       : reCAPTCHA verification successful for user: ****@****.***
+2025-05-14 12:37:07.905  WARN [073c21a3-6168-49a3-b6a1-fcf79777e4a1] 27816 --- [nio-8080-exec-1] o.e.x.controllers.SignupController       : Registration attempt with existing email: ****@****.***
+2025-05-14 12:37:15.413 DEBUG [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/signup
+2025-05-14 12:37:15.413 DEBUG [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:37:15.414 DEBUG [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 8CE3D92100867BD9A1405747B5B6E4C8
+2025-05-14 12:37:15.414 DEBUG [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /api/signup
+2025-05-14 12:37:15.416  INFO [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.e.x.controllers.SignupController       : Received registration request for email: ****@****.***
+2025-05-14 12:37:15.538  INFO [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-14 12:37:15.539  INFO [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.e.x.controllers.SignupController       : reCAPTCHA verification successful for user: ****@****.***
+2025-05-14 12:37:15.604 DEBUG [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.e.x.controllers.SignupController       : Attempting to save new user: ****@****.***
+2025-05-14 12:37:15.618  INFO [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.e.x.controllers.SignupController       : User registered successfully: ****@****.***
+2025-05-14 12:37:15.682 DEBUG [548b84bf-2a61-4c50-8cda-271d1519f524] 27816 --- [nio-8080-exec-3] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-14 12:37:22.706 DEBUG [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:37:22.707 DEBUG [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:37:22.708 DEBUG [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 8CE3D92100867BD9A1405747B5B6E4C8
+2025-05-14 12:37:22.709 DEBUG [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:37:22.710  INFO [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:37:22.838  INFO [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-14 12:37:22.838  INFO [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : reCAPTCHA verification successful for user: ****@****.***
+2025-05-14 12:37:22.909 DEBUG [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-14 12:37:22.910  INFO [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Authentication successful for user: null
+2025-05-14 12:37:22.927  INFO [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Updated last login time for user: null
+2025-05-14 12:37:22.927  INFO [eec23c19-ed7c-457a-8b93-95e70b49e2ab] 27816 --- [nio-8080-exec-4] o.e.x.controllers.LoginController        : Returning successful response with JWT token for user: null
+2025-05-14 12:37:23.100 DEBUG [88d7f4ef-fbff-431c-8b6d-b1e332740649] 27816 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-14 12:37:23.100 DEBUG [63193d35-ae07-4c22-9563-d0f67e0a0a11] 27816 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-14 12:37:23.113 DEBUG [63193d35-ae07-4c22-9563-d0f67e0a0a11] 27816 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-14 12:37:23.114 DEBUG [88d7f4ef-fbff-431c-8b6d-b1e332740649] 27816 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-14 12:37:23.114  INFO [63193d35-ae07-4c22-9563-d0f67e0a0a11] 27816 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-14 12:37:23.121  WARN [88d7f4ef-fbff-431c-8b6d-b1e332740649] 27816 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-14 12:37:23.122  WARN [88d7f4ef-fbff-431c-8b6d-b1e332740649] 27816 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:37:23.124  INFO [63193d35-ae07-4c22-9563-d0f67e0a0a11] 27816 --- [nio-8080-exec-5] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user null with ID 5, creating a new one.
+2025-05-14 12:37:23.138  INFO [63193d35-ae07-4c22-9563-d0f67e0a0a11] 27816 --- [nio-8080-exec-5] o.e.x.controllers.CartController         : Returning persistent cart for user null with 0 items, 0 total quantity.
+2025-05-14 12:38:23.673 DEBUG [094c8c6a-f525-4282-8c04-238dbcdf7c82] 27816 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-05-14 12:38:23.687 DEBUG [094c8c6a-f525-4282-8c04-238dbcdf7c82] 27816 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-05-14 12:38:23.693  INFO [094c8c6a-f525-4282-8c04-238dbcdf7c82] 27816 --- [nio-8080-exec-7] o.e.x.controllers.CheckinController      : Getting boarding passes for user: null
+2025-05-14 12:38:23.693  INFO [094c8c6a-f525-4282-8c04-238dbcdf7c82] 27816 --- [nio-8080-exec-7] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 5
+2025-05-14 12:38:23.792 DEBUG [5a76fa19-8757-45ad-9d83-2e99c5025c8f] 27816 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/check-in/boarding-passes
+2025-05-14 12:38:23.805 DEBUG [5a76fa19-8757-45ad-9d83-2e99c5025c8f] 27816 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/check-in/boarding-passes
+2025-05-14 12:38:23.811  INFO [5a76fa19-8757-45ad-9d83-2e99c5025c8f] 27816 --- [nio-8080-exec-8] o.e.x.controllers.CheckinController      : Getting boarding passes for user: null
+2025-05-14 12:38:23.811  INFO [5a76fa19-8757-45ad-9d83-2e99c5025c8f] 27816 --- [nio-8080-exec-8] o.e.x.services.TicketServiceImpl         : Finding checked-in tickets for user 5
+2025-05-14 12:46:07.086  INFO [NONE] 27816 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-14 12:46:07.086  INFO [NONE] 27816 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-14 12:46:07.097  INFO [NONE] 27816 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-14 12:46:20.257  INFO [NONE] 29952 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Starting Xlr8travelApplication using Java 21.0.5 with PID 29952 (C:\Users\razvi\Desktop\Licenta\backend\target\classes started by razvi in C:\Users\razvi\Desktop\Licenta\backend)
+2025-05-14 12:46:20.262 DEBUG [NONE] 29952 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Running with Spring Boot v3.2.4, Spring v6.1.5
+2025-05-14 12:46:20.263  INFO [NONE] 29952 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : The following 1 profile is active: "local"
+2025-05-14 12:46:20.298  INFO [NONE] 29952 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-14 12:46:20.299  INFO [NONE] 29952 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-14 12:46:21.231  INFO [NONE] 29952 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-14 12:46:21.313  INFO [NONE] 29952 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 75 ms. Found 9 JPA repository interfaces.
+2025-05-14 12:46:21.958  INFO [NONE] 29952 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-14 12:46:21.971  INFO [NONE] 29952 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-14 12:46:21.972  INFO [NONE] 29952 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-05-14 12:46:22.031  INFO [NONE] 29952 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-14 12:46:22.032  INFO [NONE] 29952 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1732 ms
+2025-05-14 12:46:22.267  INFO [NONE] 29952 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-14 12:46:22.314  INFO [NONE] 29952 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2025-05-14 12:46:22.342  INFO [NONE] 29952 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-14 12:46:22.537  INFO [NONE] 29952 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-14 12:46:22.568  INFO [NONE] 29952 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-14 12:46:22.720  INFO [NONE] 29952 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@45afb85a
+2025-05-14 12:46:22.723  INFO [NONE] 29952 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-14 12:46:22.762  WARN [NONE] 29952 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-14 12:46:23.874  INFO [NONE] 29952 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-14 12:46:32.474  INFO [NONE] 29952 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-14 12:46:32.924  INFO [NONE] 29952 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-14 12:46:33.441 DEBUG [NONE] 29952 --- [  restartedMain] o.e.x.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2025-05-14 12:46:33.442 DEBUG [NONE] 29952 --- [  restartedMain] o.e.x.security.RateLimitingFilter        : Filter 'rateLimitingFilter' configured for use
+2025-05-14 12:46:33.671  INFO [NONE] 29952 --- [  restartedMain] o.e.x.config.LocalPropertiesConfig       : Loaded application-local.properties
+2025-05-14 12:46:33.951  INFO [NONE] 29952 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Validating sensitive data configuration for profile: local
+2025-05-14 12:46:33.951  WARN [NONE] 29952 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_URL is not set
+2025-05-14 12:46:33.952  WARN [NONE] 29952 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_USERNAME is not set
+2025-05-14 12:46:33.952  WARN [NONE] 29952 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable SPRING_DATASOURCE_PASSWORD is not set
+2025-05-14 12:46:33.953  WARN [NONE] 29952 --- [  restartedMain] o.e.x.config.SensitiveDataConfig         : Environment variable STRIPE_SECRET_KEY is not set
+2025-05-14 12:46:33.997  WARN [NONE] 29952 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-14 12:46:34.137  INFO [NONE] 29952 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-05-14 12:46:34.482  INFO [NONE] 29952 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoint(s) beneath base path '/actuator'
+2025-05-14 12:46:34.602  INFO [NONE] 29952 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@225d26af, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@72fd08c4, org.springframework.security.web.context.SecurityContextHolderFilter@2e6b9fe4, org.springframework.security.web.header.HeaderWriterFilter@5f1b9d32, org.springframework.web.filter.CorsFilter@4e6dbbfa, org.springframework.security.web.authentication.logout.LogoutFilter@46c1bb39, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@556ff0ef, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@21d3496c, org.example.xlr8travel.security.JwtAuthenticationFilter@3f86326b, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4c238a7a, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@247f5dd6, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@43745a69, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@16d698f1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e43d3c3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@51682e60, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@8d764f6, org.springframework.security.web.session.SessionManagementFilter@ba22300, org.springframework.security.web.access.ExceptionTranslationFilter@1b244286, org.springframework.security.web.access.intercept.AuthorizationFilter@72d7ac72]
+2025-05-14 12:46:35.140  INFO [NONE] 29952 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-14 12:46:35.201  INFO [NONE] 29952 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2025-05-14 12:46:35.212  INFO [NONE] 29952 --- [  restartedMain] o.e.xlr8travel.Xlr8travelApplication     : Started Xlr8travelApplication in 15.338 seconds (process running for 15.76)
+2025-05-14 12:46:41.018  INFO [NONE] 29952 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-14 12:46:41.018  INFO [NONE] 29952 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-14 12:46:41.020  INFO [NONE] 29952 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-05-14 12:46:41.032 DEBUG [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:46:41.055 DEBUG [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:46:41.055 DEBUG [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 8CE3D92100867BD9A1405747B5B6E4C8
+2025-05-14 12:46:41.060  WARN [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/api/login' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2025-05-14 12:46:41.066 DEBUG [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:46:41.130  INFO [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:46:41.508  INFO [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-14 12:46:41.508  INFO [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : reCAPTCHA verification successful for user: ****@****.***
+2025-05-14 12:46:41.642 DEBUG [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-14 12:46:41.643  INFO [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Authentication successful for user: user2
+2025-05-14 12:46:41.689  INFO [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Updated last login time for user: user2
+2025-05-14 12:46:41.689  INFO [76ed041e-4bdf-4549-9733-5f213a2f9029] 29952 --- [nio-8080-exec-1] o.e.x.controllers.LoginController        : Returning successful response with JWT token for user: user2
+2025-05-14 12:46:41.851 DEBUG [f406544e-37c4-4f29-a25a-149cac63f689] 29952 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-14 12:46:41.851 DEBUG [28b13252-6f43-49c2-9683-0ed80b992800] 29952 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-14 12:46:41.922 DEBUG [28b13252-6f43-49c2-9683-0ed80b992800] 29952 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-14 12:46:41.925 DEBUG [f406544e-37c4-4f29-a25a-149cac63f689] 29952 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-14 12:46:41.925  INFO [28b13252-6f43-49c2-9683-0ed80b992800] 29952 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-14 12:46:41.935  WARN [f406544e-37c4-4f29-a25a-149cac63f689] 29952 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-14 12:46:41.937  INFO [28b13252-6f43-49c2-9683-0ed80b992800] 29952 --- [nio-8080-exec-3] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user user2 with ID 2, creating a new one.
+2025-05-14 12:46:41.944  WARN [f406544e-37c4-4f29-a25a-149cac63f689] 29952 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:46:41.956  INFO [28b13252-6f43-49c2-9683-0ed80b992800] 29952 --- [nio-8080-exec-3] o.e.x.controllers.CartController         : Returning persistent cart for user user2 with 0 items, 0 total quantity.
+2025-05-14 12:46:46.074 DEBUG [3b0c3048-d94d-4683-9a95-e98fe299a2ac] 29952 --- [nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-05-14 12:46:46.075 DEBUG [3b0c3048-d94d-4683-9a95-e98fe299a2ac] 29952 --- [nio-8080-exec-4] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-05-14 12:47:01.229 DEBUG [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /api/signup
+2025-05-14 12:47:01.231 DEBUG [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:47:01.231 DEBUG [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 8CE3D92100867BD9A1405747B5B6E4C8
+2025-05-14 12:47:01.232 DEBUG [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured POST /api/signup
+2025-05-14 12:47:01.265  INFO [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.e.x.controllers.SignupController       : Received registration request for email: ****@****.***
+2025-05-14 12:47:01.415  INFO [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-14 12:47:01.416  INFO [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.e.x.controllers.SignupController       : reCAPTCHA verification successful for user: ****@****.***
+2025-05-14 12:47:01.483 DEBUG [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.e.x.controllers.SignupController       : Attempting to save new user: ****@****.***
+2025-05-14 12:47:01.497  INFO [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.e.x.controllers.SignupController       : User registered successfully: ****@****.***
+2025-05-14 12:47:01.561 DEBUG [347af1f3-845b-481c-b06c-4854ba93e7d1] 29952 --- [nio-8080-exec-5] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-14 12:47:09.888 DEBUG [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/login
+2025-05-14 12:47:09.890 DEBUG [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-05-14 12:47:09.890 DEBUG [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.s.s.w.session.SessionManagementFilter  : Request requested invalid session id 8CE3D92100867BD9A1405747B5B6E4C8
+2025-05-14 12:47:09.891 DEBUG [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/login
+2025-05-14 12:47:09.892  INFO [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.e.x.controllers.LoginController        : Attempting authentication for user: ****@****.***
+2025-05-14 12:47:10.048  INFO [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.e.x.services.RecaptchaService          : reCAPTCHA validation successful
+2025-05-14 12:47:10.048  INFO [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.e.x.controllers.LoginController        : reCAPTCHA verification successful for user: ****@****.***
+2025-05-14 12:47:10.119 DEBUG [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-05-14 12:47:10.119  INFO [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.e.x.controllers.LoginController        : Authentication successful for user: null
+2025-05-14 12:47:10.139  INFO [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.e.x.controllers.LoginController        : Updated last login time for user: null
+2025-05-14 12:47:10.140  INFO [34203ade-fbb2-4797-a7ca-c253395999bb] 29952 --- [nio-8080-exec-6] o.e.x.controllers.LoginController        : Returning successful response with JWT token for user: null
+2025-05-14 12:47:10.366 DEBUG [84babb9c-4f6d-4360-8428-ee2c78a5c3cb] 29952 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-05-14 12:47:10.366 DEBUG [357adb34-4ae0-40be-901c-d11590d47c29] 29952 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-14 12:47:10.381 DEBUG [84babb9c-4f6d-4360-8428-ee2c78a5c3cb] 29952 --- [nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-05-14 12:47:10.382  INFO [84babb9c-4f6d-4360-8428-ee2c78a5c3cb] 29952 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Request received to view persistent cart
+2025-05-14 12:47:10.383 DEBUG [357adb34-4ae0-40be-901c-d11590d47c29] 29952 --- [nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-14 12:47:10.390  WARN [357adb34-4ae0-40be-901c-d11590d47c29] 29952 --- [nio-8080-exec-7] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-14 12:47:10.392  WARN [357adb34-4ae0-40be-901c-d11590d47c29] 29952 --- [nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:47:10.394  INFO [84babb9c-4f6d-4360-8428-ee2c78a5c3cb] 29952 --- [nio-8080-exec-8] o.e.xlr8travel.services.CartServiceImpl  : No existing cart found for user null with ID 4, creating a new one.
+2025-05-14 12:47:10.417  INFO [84babb9c-4f6d-4360-8428-ee2c78a5c3cb] 29952 --- [nio-8080-exec-8] o.e.x.controllers.CartController         : Returning persistent cart for user null with 0 items, 0 total quantity.
+2025-05-14 12:47:16.888 DEBUG [56fc25d4-509d-464f-9d0d-adfade037489] 29952 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:47:16.905 DEBUG [56fc25d4-509d-464f-9d0d-adfade037489] 29952 --- [nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-14 12:47:16.906  INFO [56fc25d4-509d-464f-9d0d-adfade037489] 29952 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Request received for current user details: null
+2025-05-14 12:47:16.913  INFO [56fc25d4-509d-464f-9d0d-adfade037489] 29952 --- [nio-8080-exec-9] o.e.x.controllers.UserController         : Returning details for user: null
+2025-05-14 12:47:17.055 DEBUG [1ebc82fe-afa2-48fd-aad6-2b3b24d04e82] 29952 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me
+2025-05-14 12:47:17.068 DEBUG [1ebc82fe-afa2-48fd-aad6-2b3b24d04e82] 29952 --- [io-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me
+2025-05-14 12:47:17.069  INFO [1ebc82fe-afa2-48fd-aad6-2b3b24d04e82] 29952 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Request received for current user details: null
+2025-05-14 12:47:17.075  INFO [1ebc82fe-afa2-48fd-aad6-2b3b24d04e82] 29952 --- [io-8080-exec-10] o.e.x.controllers.UserController         : Returning details for user: null
+2025-05-14 12:47:17.182 DEBUG [a3171f38-dcd5-40dc-8727-ff128650df46] 29952 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-14 12:47:17.199 DEBUG [a3171f38-dcd5-40dc-8727-ff128650df46] 29952 --- [nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-14 12:47:17.207  WARN [a3171f38-dcd5-40dc-8727-ff128650df46] 29952 --- [nio-8080-exec-1] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-14 12:47:17.208  WARN [a3171f38-dcd5-40dc-8727-ff128650df46] 29952 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:47:17.343 DEBUG [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/user/me/avatar
+2025-05-14 12:47:17.359 DEBUG [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/user/me/avatar
+2025-05-14 12:47:17.365  WARN [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] o.e.x.config.GlobalExceptionHandler      : Response status exception: 404 NOT_FOUND "No avatar"
+2025-05-14 12:47:17.366  WARN [3b8fe0f3-840d-4a41-8fb0-1b04d2ecd92e] 29952 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND "No avatar"]
+2025-05-14 12:48:03.867 DEBUG [8950e688-1c1b-4469-9e77-84f1219d8ac9] 29952 --- [nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /api/logout
+2025-05-14 12:48:03.868 DEBUG [8950e688-1c1b-4469-9e77-84f1219d8ac9] 29952 --- [nio-8080-exec-3] o.s.s.w.a.logout.LogoutFilter            : Logging out [null]
+2025-05-14 13:01:48.375  INFO [NONE] 29952 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-14 13:01:48.379  INFO [NONE] 29952 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-14 13:01:48.386  INFO [NONE] 29952 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

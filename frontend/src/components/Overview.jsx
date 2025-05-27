@@ -543,7 +543,15 @@ function DashboardContent() {
   // Keeping the COLORS array for use in the charts
 
   // Colors for pie charts
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#A4DE6C'];
+  const COLORS = [
+    "#0088FE",
+    "#00C49F",
+    "#FFBB28",
+    "#FF8042",
+    "#8884D8",
+    "#82CA9D",
+    "#A4DE6C",
+  ];
 
   // Custom tooltip for charts
   const CustomTooltip = ({ active, payload, label }) => {
@@ -796,7 +804,9 @@ function DashboardContent() {
       <Box sx={styles.sectionContainer}>
         <Box sx={styles.sectionHeader}>
           <Box sx={styles.iconContainer}>
-            <ConfirmationNumberIcon sx={{ color: muiTheme.palette.warning.main }} />
+            <ConfirmationNumberIcon
+              sx={{ color: muiTheme.palette.warning.main }}
+            />
           </Box>
           <Typography variant="h6" fontWeight="bold">
             Ticket Metrics
@@ -895,11 +905,20 @@ function DashboardContent() {
                   )}
 
                   {trend !== undefined && trend !== 0 && (
-                    <Stack direction="row" alignItems="center" spacing={0.5} justifyContent="center" mt={1}>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={0.5}
+                      justifyContent="center"
+                      mt={1}
+                    >
                       {trend > 0 ? (
                         <TrendingUpIcon sx={styles.trendUp} fontSize="small" />
                       ) : (
-                        <TrendingDownIcon sx={styles.trendDown} fontSize="small" />
+                        <TrendingDownIcon
+                          sx={styles.trendDown}
+                          fontSize="small"
+                        />
                       )}
                       <Typography
                         variant="caption"
@@ -917,54 +936,65 @@ function DashboardContent() {
         </Grid>
 
         {/* Ticket Status */}
-        <Typography variant="h6" sx={{ mb: 2 }}>Ticket Status Distribution</Typography>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Ticket Status Distribution
+        </Typography>
         <Grid container spacing={3}>
-          {Object.entries(ticketMetrics.ticketsByStatus || {}).map(([status, count], index) => {
-            const statusName = status.replace('TICKET_STATUS_', '');
-            const percentage = ticketMetrics.ticketStatusPercentages?.[status] || 0;
-            const colorKeys = ["primary", "success", "info", "warning", "error"];
-            const colorKey = colorKeys[index % colorKeys.length];
+          {Object.entries(ticketMetrics.ticketsByStatus || {}).map(
+            ([status, count], index) => {
+              const statusName = status.replace("TICKET_STATUS_", "");
+              const percentage =
+                ticketMetrics.ticketStatusPercentages?.[status] || 0;
+              const colorKeys = [
+                "primary",
+                "success",
+                "info",
+                "warning",
+                "error",
+              ];
+              const colorKey = colorKeys[index % colorKeys.length];
 
-            return (
-              <Grid item xs={12} sm={6} md={3} key={status}>
-                <Card sx={styles.inventoryCard}>
-                  <CardContent>
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
-                      align="center"
-                      sx={{ color: muiTheme.palette[colorKey].main }}
-                    >
-                      {count}
-                    </Typography>
-                    <Typography
-                      variant="subtitle2"
-                      sx={styles.textSecondary}
-                      align="center"
-                    >
-                      {statusName}
-                    </Typography>
-                    <Box sx={styles.progressContainer}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={percentage}
-                        sx={styles.progress(muiTheme.palette[colorKey].main)}
-                      />
-                    </Box>
-                    <Typography
-                      variant="caption"
-                      sx={styles.textSecondary}
-                      align="right"
-                      display="block"
-                      mt={0.5}
-                    >
-                      {percentage.toFixed(1)}%
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            );
-          })}
+              return (
+                <Grid item xs={12} sm={6} md={3} key={status}>
+                  <Card sx={styles.inventoryCard}>
+                    <CardContent>
+                      <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        align="center"
+                        sx={{ color: muiTheme.palette[colorKey].main }}
+                      >
+                        {count}
+                      </Typography>
+                      <Typography
+                        variant="subtitle2"
+                        sx={styles.textSecondary}
+                        align="center"
+                      >
+                        {statusName}
+                      </Typography>
+                      <Box sx={styles.progressContainer}>
+                        <LinearProgress
+                          variant="determinate"
+                          value={percentage}
+                          sx={styles.progress(muiTheme.palette[colorKey].main)}
+                        />
+                      </Box>
+                      <Typography
+                        variant="caption"
+                        sx={styles.textSecondary}
+                        align="right"
+                        display="block"
+                        mt={0.5}
+                      >
+                        {percentage.toFixed(1)}%
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            }
+          )}
         </Grid>
       </Box>
 
@@ -1128,9 +1158,11 @@ function DashboardContent() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={Object.entries(ticketMetrics.ticketsByStatus || {}).map(([status, count]) => ({
-                      name: status.replace('TICKET_STATUS_', ''),
-                      value: count
+                    data={Object.entries(
+                      ticketMetrics.ticketsByStatus || {}
+                    ).map(([status, count]) => ({
+                      name: status.replace("TICKET_STATUS_", ""),
+                      value: count,
                     }))}
                     cx="50%"
                     cy="50%"
@@ -1138,11 +1170,18 @@ function DashboardContent() {
                     outerRadius={150}
                     fill="#8884d8"
                     dataKey="value"
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) =>
+                      `${name}: ${(percent * 100).toFixed(0)}%`
+                    }
                   >
-                    {Object.keys(ticketMetrics.ticketsByStatus || {}).map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
+                    {Object.keys(ticketMetrics.ticketsByStatus || {}).map(
+                      (_, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      )
+                    )}
                   </Pie>
                   <Legend />
                   <RechartsTooltip
@@ -1162,7 +1201,16 @@ function DashboardContent() {
             <Typography variant="body2" sx={styles.textSecondary} paragraph>
               Tickets created in the last 30 days
             </Typography>
-            <Box sx={{ height: 400, mt: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Box
+              sx={{
+                height: 400,
+                mt: 2,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Typography variant="h3" fontWeight="bold" color="primary.main">
                 {ticketMetrics.ticketsCreatedLast30Days}
               </Typography>
@@ -1170,29 +1218,52 @@ function DashboardContent() {
                 Total tickets created in the last 30 days
               </Typography>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', mt: 4, gap: 2 }}>
-                <Card sx={{ p: 3, borderRadius: 2, width: '45%' }}>
+              <Box
+                sx={{ display: "flex", alignItems: "center", mt: 4, gap: 2 }}
+              >
+                <Card sx={{ p: 3, borderRadius: 2, width: "45%" }}>
                   <Typography variant="h6" align="center" gutterBottom>
                     7-Day Growth
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <TrendingUpIcon sx={{ color: 'success.main', mr: 1 }} />
-                    <Typography variant="h4" color="success.main" fontWeight="bold">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TrendingUpIcon sx={{ color: "success.main", mr: 1 }} />
+                    <Typography
+                      variant="h4"
+                      color="success.main"
+                      fontWeight="bold"
+                    >
                       {ticketMetrics.ticketsCreated7DaysGrowthRate}%
                     </Typography>
                   </Box>
                   <Typography variant="body2" align="center" sx={{ mt: 1 }}>
-                    {ticketMetrics.ticketsCreatedLast7Days} tickets in last 7 days
+                    {ticketMetrics.ticketsCreatedLast7Days} tickets in last 7
+                    days
                   </Typography>
                 </Card>
 
-                <Card sx={{ p: 3, borderRadius: 2, width: '45%' }}>
+                <Card sx={{ p: 3, borderRadius: 2, width: "45%" }}>
                   <Typography variant="h6" align="center" gutterBottom>
                     30-Day Growth
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <TrendingUpIcon sx={{ color: 'success.main', mr: 1 }} />
-                    <Typography variant="h4" color="success.main" fontWeight="bold">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TrendingUpIcon sx={{ color: "success.main", mr: 1 }} />
+                    <Typography
+                      variant="h4"
+                      color="success.main"
+                      fontWeight="bold"
+                    >
                       {ticketMetrics.ticketsCreated30DaysGrowthRate}%
                     </Typography>
                   </Box>

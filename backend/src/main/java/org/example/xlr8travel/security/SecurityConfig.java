@@ -75,6 +75,7 @@ public class SecurityConfig {
                         // Public API endpoints
                         .requestMatchers("/api/login", "/api/signup", "/api/register", "/api/token/refresh").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/flights/natural-language/**").permitAll()
 
                         // OAuth2 endpoints
                         .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
@@ -143,8 +144,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(frontendUrl)); // Frontend origin
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control", "Content-Language", "Accept", "X-Requested-With"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
