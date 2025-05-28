@@ -46,7 +46,7 @@ pipeline {
             gcloud auth list
 
   echo "Copying credentials file..."
-  cp "$GOOGLE_CREDS_FILE" backend/tmp/google-credentials.json
+  cp "$GOOGLE_CREDS_FILE" backend/tmp/credentials.json
             
             echo "✅ Google Cloud setup complete"
           '''
@@ -126,7 +126,7 @@ EOF
       docker exec xlr8travel2_testbranch-backend-1 ls -l /app/credentials || echo "❌ Credentials not found in container"
           
           # Wait for application startup
-          sleep 45
+          sleep 20
           
           # Check for authentication issues
           echo "Checking for authentication logs:"
