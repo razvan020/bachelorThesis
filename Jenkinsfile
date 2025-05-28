@@ -32,30 +32,28 @@ pipeline {
           string(credentialsId: 'gmail-pass', variable: 'GMAILPASS'),
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY'),
-          file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDENTIALS_FILE'),
           string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
           string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID')
 
 
 
         ]) {
-	  sh 'cp "$GOOGLE_CREDENTIALS_FILE" google-credentials.json'
           sh """
 
-            echo "=== COPYING CREDENTIALS FILE ==="
-
-	    docker exec xlr8travel2_testbranch-backend-1 rm -rf /google-credentials.json 2>/dev/null || true
+            # The GOOGLE_APPLICATION_CREDENTIALS is already set by Jenkins
+            echo "GOOGLE_APPLICATION_CREDENTIALS path: $GOOGLE_APPLICATION_CREDENTIALS"
             
-            # Copy the credentials file from Jenkins secure location to workspace
-            cp "$GOOGLE_CREDENTIALS_FILE" google-credentials.json
-            
-            # Verify the file
-            echo "File details:"
-            ls -la google-credentials.json
-            echo "File size: \$(wc -c < google-credentials.json)"
-            echo "File content preview (first 100 chars):"
-            head -c 100 google-credentials.json
-            echo ""
+            # Verify the credentials file
+            if [ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+                echo "✅ Credentials file exists"
+                echo "File size: $(wc -c < "$GOOGLE_APPLICATION_CREDENTIALS") bytes"
+                echo "File preview:"
+                head -c 200 "$GOOGLE_APPLICATION_CREDENTIALS"
+                echo ""
+                
+                           
+            # Copy the credentials to workspace for Docker mounting
+            cp "$GOOGLE_APPLICATION_CREDENTIALS" google-credentials.json
 
 
             cat > .env <<EOF
