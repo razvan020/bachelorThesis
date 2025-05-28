@@ -37,15 +37,7 @@ services:
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
     volumes:
       # Mount the credentials file directly
-      - ./google-credentials.json:/google-credentials.json:ro
-    command: >
-      sh -c "
-        echo 'Setting GOOGLE_APPLICATION_CREDENTIALS environment variable...' &&
-        export GOOGLE_APPLICATION_CREDENTIALS=/google-credentials.json &&
-        echo 'GOOGLE_APPLICATION_CREDENTIALS is set to:' $$GOOGLE_APPLICATION_CREDENTIALS &&
-        ls -la /google-credentials.json &&
-        exec java -jar /app.jar
-      "
+      - ./google-credentials.json:/app/credentials/google-credentials.json:ro
 
 
 
