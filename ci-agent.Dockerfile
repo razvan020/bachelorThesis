@@ -2,18 +2,20 @@ FROM docker:24
 RUN apk add --no-cache git
 
 
-RUN apt-get update && apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    gnupg \
-    lsb-release
-
-# Add Google Cloud SDK repository
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    curl \
+    bash \
+    gnupg
 
 # Install Google Cloud SDK
-RUN apt-get update && apt-get install -y google-cloud-sdk
+RUN curl https://sdk.cloud.google.com | bash -s -- --disable-prompts
+RUN echo 'source /root/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
+RUN echo 'source /root/google-cloud-sdk/completion.bash.inc' >> ~/.bashrc
+
+# Add gcloud to PATH
+ENV PATH="/root/google-cloud-sdk/bin:${PATH}"
 
 # Verify installation
 RUN gcloud version
