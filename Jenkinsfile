@@ -107,6 +107,9 @@ EOF
         sh 'docker compose up --build --remove-orphans -d'
         
         sh '''
+         echo "WORKSPACE: $WORKSPACE"
+         export WORKSPACE=$(pwd)
+
           echo "Waiting for containers..."
           timeout 60 sh -c 'until docker ps | grep xlr8travel2_testbranch-backend-1 | grep -q "Up"; do sleep 2; done'
           echo "✅ Backend is running"
@@ -118,6 +121,9 @@ EOF
       steps {
         sh '''
           echo "=== TESTING GEMINI INTEGRATION ==="
+
+      echo "📁 Verifying credentials inside container..."
+      docker exec xlr8travel2_testbranch-backend-1 ls -l /app/credentials || echo "❌ Credentials not found in container"
           
           # Wait for application startup
           sleep 45
