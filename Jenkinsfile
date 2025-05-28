@@ -47,7 +47,7 @@ pipeline {
 	    docker exec xlr8travel2_testbranch-backend-1 rm -rf /google-credentials.json 2>/dev/null || true
             
             # Copy the credentials file from Jenkins secure location to workspace
-            cp "\$GOOGLE_CREDENTIALS_FILE" google-credentials.json
+            cp "$GOOGLE_CREDENTIALS_FILE" google-credentials.json
             
             # Verify the file
             echo "File details:"
@@ -70,9 +70,10 @@ pipeline {
             SPRING_MAIL_PASSWORD=\$GMAILPASS
             NEXT_PUBLIC_RECAPTCHA_SITE_KEY=\$RECAPTCHA_SITE_KEY
             RECAPTCHA_SECRET_KEY=\$RECAPTCHA_SECRET_KEY
-            GEMINI_APPLICATION_CREDENTIALS=/google-credentials.json
+            GOOGLE_APPLICATION_CREDENTIALS=/google-credentials.json
             GEMINI_API_KEY=\$GEMINI_API_KEY
             GEMINI_PROJECT_ID=\$GEMINI_PROJECT_ID
+	    GEMINI_APPLICATION_CREDENTIALS=/google-credentials.json
             EOF
           """
 
