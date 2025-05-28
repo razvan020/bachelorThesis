@@ -44,6 +44,9 @@ pipeline {
             # Verify authentication
             echo "✅ Authentication status:"
             gcloud auth list
+
+  echo "Copying credentials file..."
+  cp "$GOOGLE_CREDS_FILE" backend/tmp/google-credentials.json
             
             echo "✅ Google Cloud setup complete"
           '''
@@ -82,8 +85,8 @@ SPRING_MAIL_USERNAME=$GMAIL
 SPRING_MAIL_PASSWORD=$GMAILPASS
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
-GEMINI_APPLICATION_CREDENTIALS=/google-credentials.json
-GOOGLE_APPLICATION_CREDENTIALS=/google-credentials.json
+GEMINI_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
+GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
 GEMINI_API_KEY=$GEMINI_API_KEY
 GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
 EOF
