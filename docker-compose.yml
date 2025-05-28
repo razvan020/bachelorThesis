@@ -34,8 +34,7 @@ services:
       GEMINI_APPLICATION_CREDENTIALS: /google-credentials.json
       GEMINI_API_KEY: "${GEMINI_API_KEY}"
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
-    volumes:
-      - ./google-credentials.json:/google-credentials.json:ro
+
 
 
   frontend:
