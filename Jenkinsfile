@@ -16,91 +16,37 @@ pipeline {
       }
     }
 
-    stage('Setup Google Cloud SDK') {
+    stage('Setup Google Cloud') {
       steps {
-        script {
-          withCredentials([
-            [$class: 'ServiceAccountCredentialsBinding', 
-             credentialsId: 'gemini-xlr8',
-             variable: 'GOOGLE_APPLICATION_CREDENTIALS']
-          ]) {
-            sh '''
-              echo "=== SETTING UP GOOGLE CLOUD SDK ==="
-              
-              # Install Google Cloud SDK (works on Alpine)
-              if ! command -v gcloud &> /dev/null; then
-                echo "Installing Google Cloud SDK..."
-                
-                # Install required packages
-                apk add --no-cache python3 py3-pip curl bash
-                
-                # Install Google Cloud SDK
-                curl https://sdk.cloud.google.com | bash -s -- --disable-prompts
-                
-                # Add to PATH for current session
-                export PATH="/root/google-cloud-sdk/bin:$PATH"
-                source /root/google-cloud-sdk/path.bash.inc
-                
-                echo "✅ Google Cloud SDK installed"
-              else
-                echo "✅ gcloud CLI already available"
-              fi
-              
-              # Ensure gcloud is in PATH
-              export PATH="/root/google-cloud-sdk/bin:$PATH"
-              
-              # Authenticate with service account
-              echo "Authenticating with service account..."
-              gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-              
-              # Set the project
-              gcloud config set project xlr8travel
-              
-              # Verify authentication
-              echo "Current authentication:"
-              gcloud auth list
-              gcloud config list
-              
-              # Copy credentials for application use
-              cp "$GOOGLE_APPLICATION_CREDENTIALS" google-credentials.json
-              
-              echo "✅ Google Cloud SDK setup complete"
-            '''
-          }
-        }
-      }
-    }
-
-    stage('Enable APIs & Verify') {
-      steps {
-        script {
-          withCredentials([
-            [$class: 'ServiceAccountCredentialsBinding', 
-             credentialsId: 'gemini-xlr8',
-             variable: 'GOOGLE_APPLICATION_CREDENTIALS']
-          ]) {
-            sh '''
-              echo "=== ENABLING APIS AND VERIFICATION ==="
-              
-              # Ensure gcloud is available
-              export PATH="/root/google-cloud-sdk/bin:$PATH"
-              gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS" --quiet
-              gcloud config set project xlr8travel --quiet
-              
-              # Enable required APIs
-              echo "Enabling Vertex AI API..."
-              gcloud services enable aiplatform.googleapis.com --quiet || echo "API enablement failed - continuing anyway"
-              
-              echo "Enabling Cloud Resource Manager API..."
-              gcloud services enable cloudresourcemanager.googleapis.com --quiet || echo "API enablement failed - continuing anyway"
-              
-              # Check API status
-              echo "Checking enabled APIs..."
-              gcloud services list --enabled --filter="name:aiplatform.googleapis.com" --format="value(name)" || echo "Could not check API status"
-              
-              echo "✅ API verification complete"
-            '''
-          }
+        withCredentials([
+          file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDS_FILE')
+        ]) {
+          sh '''
+            echo "=== SETTING UP GOOGLE CLOUD AUTHENTICATION ==="
+            
+            # Copy credentials to workspace
+            cp "$GOOGLE_CREDS_FILE" google-credentials.json
+            
+            # Verify gcloud is available (should be built into the image now)
+            gcloud version || echo "gcloud not found"
+            
+            # Authenticate with service account
+            echo "Authenticating with Google Cloud..."
+            gcloud auth activate-service-account --key-file=google-credentials.json
+            
+            # Set project
+            gcloud config set project xlr8travel
+            
+            # Enable APIs
+            echo "Enabling Vertex AI API..."
+            gcloud services enable aiplatform.googleapis.com || echo "API enablement failed"
+            
+            # Verify authentication
+            echo "✅ Authentication status:"
+            gcloud auth list
+            
+            echo "✅ Google Cloud setup complete"
+          '''
         }
       }
     }
@@ -165,21 +111,23 @@ EOF
     stage('Test Application') {
       steps {
         sh '''
-          echo "=== TESTING APPLICATION ==="
+          echo "=== TESTING GEMINI INTEGRATION ==="
           
           # Wait for application startup
           sleep 45
           
-          # Check for Gemini/Google logs
-          echo "Application logs (Gemini related):"
-          docker logs xlr8travel2_testbranch-backend-1 | grep -E "(Gemini|Google|Vertex|UNAUTHENTICATED)" | tail -15 || echo "No specific logs found"
+          # Check for authentication issues
+          echo "Checking for authentication logs:"
+          docker logs xlr8travel2_testbranch-backend-1 | grep -E "(Gemini|Google|UNAUTHENTICATED|authentication)" | tail -10 || echo "No auth issues found"
           
           # Health check
           if curl -f http://localhost:8080/actuator/health >/dev/null 2>&1; then
-              echo "✅ Health check passed"
+              echo "✅ Application health check passed"
           else
-              echo "⚠️ Health check failed"
+              echo "⚠️ Application health check failed"
           fi
+          
+          echo "✅ Testing complete"
         '''
       }
     }
@@ -190,7 +138,7 @@ EOF
       echo 'Pipeline completed'
     }
     success {
-      echo '✅ Success! Your app should now have proper Google Cloud authentication'
+      echo '✅ Success! Google Cloud authentication should now work'
     }
     failure {
       echo '❌ Pipeline failed'
