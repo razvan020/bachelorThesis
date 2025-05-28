@@ -11,9 +11,10 @@ import org.example.xlr8travel.dto.NaturalLanguageSearchRequestDTO;
 import org.example.xlr8travel.dto.NaturalLanguageSearchResponseDTO;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream; // Import for FileInputStream
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -23,11 +24,9 @@ import com.google.cloud.vertexai.api.Content;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import com.google.cloud.vertexai.api.Part;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
-import com.google.auth.oauth2.GoogleCredentials; // Import for GoogleCredentials
+import com.google.auth.oauth2.GoogleCredentials;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Base64;
 
 @Service
@@ -58,6 +57,50 @@ public class GeminiServiceImpl implements GeminiService {
     private String credentialsPath;
 
     private static final Gson gson = new Gson();
+
+    @PostConstruct
+    public void validateConfiguration() {
+        log.info("=== GEMINI SERVICE CONFIGURATION ===");
+        log.info("Project ID: {}", projectId);
+        log.info("Location ID: {}", locationId);
+        log.info("Model: {}", model);
+        log.info("Credentials Path: {}", credentialsPath);
+        log.info("API Key: {}", apiKey != null ? "***SET***" : "***NOT SET***");
+
+        // Validate credentials file exists and is readable
+        if (credentialsPath != null && !credentialsPath.trim().isEmpty()) {
+            String cleanPath = credentialsPath.replaceAll("^\"|\"$", "").trim();
+            Path path = Paths.get(cleanPath);
+
+            if (Files.exists(path)) {
+                log.info("✅ Credentials file exists: {}", cleanPath);
+                try {
+                    long fileSize = Files.size(path);
+                    log.info("✅ Credentials file size: {} bytes", fileSize);
+
+                    if (fileSize == 0) {
+                        log.error("❌ Credentials file is empty!");
+                    }
+                } catch (IOException e) {
+                    log.error("❌ Cannot read credentials file: {}", e.getMessage());
+                }
+            } else {
+                log.error("❌ Credentials file does not exist: {}", cleanPath);
+            }
+        } else {
+            log.error("❌ Credentials path is not set!");
+        }
+
+        // Check GOOGLE_APPLICATION_CREDENTIALS environment variable
+        String envCredentials = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+        if (envCredentials != null) {
+            log.info("✅ GOOGLE_APPLICATION_CREDENTIALS env var is set: {}", envCredentials);
+        } else {
+            log.warn("⚠️ GOOGLE_APPLICATION_CREDENTIALS env var is not set");
+        }
+
+        log.info("=====================================");
+    }
 
     @Override
     public NaturalLanguageSearchResponseDTO processNaturalLanguageQuery(NaturalLanguageSearchRequestDTO request) {
@@ -104,7 +147,6 @@ public class GeminiServiceImpl implements GeminiService {
             log.debug("Gemini API response: {}", geminiResponse);
 
             // Parse the response
-            // Log the closest airport being passed to parseGeminiResponse
             log.debug("Passing closest airport to parseGeminiResponse: '{}'", request.getClosestAirport());
             return parseGeminiResponse(geminiResponse, request.getClosestAirport());
         } catch (Exception e) {
@@ -125,10 +167,9 @@ public class GeminiServiceImpl implements GeminiService {
     }
 
     private String buildFlightSearchPrompt(String userQuery, String userClosestAirport) {
-        int currentYear = LocalDate.now().getYear(); // Get the current year dynamically
-        LocalDate today = LocalDate.now(); // Get today's date
+        int currentYear = LocalDate.now().getYear();
+        LocalDate today = LocalDate.now();
 
-        // Add information about the user's closest airport if available
         String locationInfo = "";
         String originRule = "3. IMPORTANT: If the user specifies an origin in the query (e.g., 'from Paris', 'departing London'), " +
                 "   you MUST use that origin. Only if no origin is provided in the query, " +
@@ -143,7 +184,6 @@ public class GeminiServiceImpl implements GeminiService {
                     "   This is the closest airport to the user's current location. ";
         }
 
-        // Add a rule about using specific IATA airport codes
         String airportCodeRule = "4. CRITICAL: You MUST use the correct IATA airport codes for cities. DO NOT use generic city codes. " +
                 "   For example, use 'FCO' for Rome (not 'ROM'), 'LHR' for London (not 'LON'), 'CDG' for Paris, etc. " +
                 "   Here are the correct airport codes for common cities: " +
@@ -189,46 +229,65 @@ public class GeminiServiceImpl implements GeminiService {
     }
 
     private String callGeminiAPI(String prompt) throws IOException {
-        // Check if project ID is set
+        log.info("=== CALLING GEMINI API ===");
+
+        // Validate configuration
         if (projectId == null || projectId.trim().isEmpty()) {
-            log.error("Gemini project ID is not set. Please set the GEMINI_PROJECT_ID environment variable.");
             throw new IOException("Gemini project ID is not set. Please set the GEMINI_PROJECT_ID environment variable.");
         }
 
-        // Check if credentials path is set
         if (credentialsPath == null || credentialsPath.trim().isEmpty()) {
-            log.error("Google application credentials path is not set. Please set the google.application.credentials property.");
             throw new IOException("Google application credentials path is not set. Please set the google.application.credentials property.");
         }
 
-        // Remove quotes if present (this is already handled but good to keep)
-        String cleanedCredentialsPath = credentialsPath.replaceAll("^\"|\"$", "");
+        String cleanedCredentialsPath = credentialsPath.replaceAll("^\"|\"$", "").trim();
+        log.info("Using project ID: {}", projectId);
+        log.info("Using location ID: {}", locationId);
+        log.info("Using credentials path: {}", cleanedCredentialsPath);
 
-        log.info("Using Gemini API with project ID: {}", projectId);
-        log.info("Attempting to load Google credentials from: {}", cleanedCredentialsPath);
+        // Check if file exists
+        Path credentialsFile = Paths.get(cleanedCredentialsPath);
+        if (!Files.exists(credentialsFile)) {
+            throw new IOException("Credentials file does not exist: " + cleanedCredentialsPath);
+        }
 
-        // Load credentials from the specified path
+        long fileSize = Files.size(credentialsFile);
+        if (fileSize == 0) {
+            throw new IOException("Credentials file is empty: " + cleanedCredentialsPath);
+        }
+
+        log.info("Credentials file size: {} bytes", fileSize);
+
+        // Load and validate credentials
         GoogleCredentials credentials;
         try (FileInputStream serviceAccountStream = new FileInputStream(cleanedCredentialsPath)) {
             credentials = GoogleCredentials.fromStream(serviceAccountStream);
-        } catch (IOException e) {
-            log.error("Failed to load Google credentials from {}: {}", cleanedCredentialsPath, e.getMessage());
+            log.info("✅ Successfully loaded Google credentials");
+        } catch (Exception e) {
+            log.error("❌ Failed to load Google credentials from {}: {}", cleanedCredentialsPath, e.getMessage());
             throw new IOException("Failed to load Google credentials: " + e.getMessage(), e);
         }
 
-        try (VertexAI vertexAI = new VertexAI(projectId, locationId, credentials)) { // Pass credentials directly
-            GenerativeModel model = new GenerativeModel(this.model, vertexAI);
+        // Initialize Vertex AI client
+        try (VertexAI vertexAI = new VertexAI(projectId, locationId, credentials)) {
+            log.info("✅ Successfully initialized Vertex AI client");
+
+            GenerativeModel generativeModel = new GenerativeModel(this.model, vertexAI);
+            log.info("✅ Successfully created generative model: {}", this.model);
 
             // Create content
             Content content = Content.newBuilder()
                     .addParts(Part.newBuilder()
                             .setText(prompt)
                             .build())
-                    .setRole("user")  // Set the role at the Content level
+                    .setRole("user")
                     .build();
+
+            log.info("Making API call to Gemini...");
 
             // Generate content
             GenerateContentResponse response = model.generateContent(content);
+            log.info("✅ Successfully received response from Gemini API");
 
             // Extract response text
             StringBuilder responseText = new StringBuilder();
@@ -241,12 +300,33 @@ public class GeminiServiceImpl implements GeminiService {
                 }
             }
 
-            return responseText.toString();
+            String result = responseText.toString();
+            log.info("Response length: {} characters", result.length());
+
+            return result;
+
         } catch (Exception e) {
-            log.error("Error calling Gemini API", e);
+            log.error("❌ Error calling Gemini API: {}", e.getMessage(), e);
+
+            // Check for common authentication errors
+            if (e.getMessage().contains("UNAUTHENTICATED")) {
+                log.error("❌ Authentication failed. This usually means:");
+                log.error("   1. The credentials file is invalid or corrupted");
+                log.error("   2. The service account doesn't have proper permissions");
+                log.error("   3. The GOOGLE_APPLICATION_CREDENTIALS environment variable is not set");
+                log.error("   4. The project ID is incorrect");
+
+                // Log environment variable status
+                String envCreds = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+                log.error("   GOOGLE_APPLICATION_CREDENTIALS env var: {}", envCreds != null ? envCreds : "NOT SET");
+            }
+
             throw new IOException("Failed to call Gemini API: " + e.getMessage(), e);
         }
     }
+
+    // ... rest of the methods remain the same as in your original code ...
+    // (parseGeminiResponse, parseDate, extractJsonFromResponse methods)
 
     private NaturalLanguageSearchResponseDTO parseGeminiResponse(String geminiResponse, String userClosestAirport) {
         try {
@@ -318,20 +398,17 @@ public class GeminiServiceImpl implements GeminiService {
                     log.debug("Origin code from Gemini API: '{}', userClosestAirport: '{}'", originCode, userClosestAirport);
 
                     // Handle the special CLOSEST_AIRPORT placeholder
-                    // Use case-insensitive comparison and trim whitespace
                     String trimmedOriginCode = originCode.trim();
                     boolean isClosestAirportPlaceholder = "CLOSEST_AIRPORT".equalsIgnoreCase(trimmedOriginCode);
                     log.debug("Trimmed origin code: '{}', isClosestAirportPlaceholder: {}", trimmedOriginCode, isClosestAirportPlaceholder);
 
                     if (isClosestAirportPlaceholder) {
                         if (userClosestAirport != null && !userClosestAirport.trim().isEmpty()) {
-                            // Use the closest airport provided by the frontend
                             log.info("Using user's closest airport as origin: {}", userClosestAirport);
                             response.setOrigin(userClosestAirport);
                         } else {
-                            // Fallback to a default airport if no closest airport is provided
                             log.info("No closest airport provided, defaulting to OTP");
-                            response.setOrigin("OTP"); // Default to Bucharest Otopeni
+                            response.setOrigin("OTP");
                         }
                     } else {
                         response.setOrigin(originCode);
@@ -353,7 +430,6 @@ public class GeminiServiceImpl implements GeminiService {
                 if (json.has("departureDate") && !json.get("departureDate").isJsonNull()) {
                     try {
                         String dateStr = json.get("departureDate").getAsString();
-                        // Try different date formats
                         response.setDepartureDate(parseDate(dateStr));
                     } catch (DateTimeParseException e) {
                         log.warn("Invalid departure date format: {}", e.getMessage());
@@ -367,7 +443,6 @@ public class GeminiServiceImpl implements GeminiService {
                 if (json.has("returnDate") && !json.get("returnDate").isJsonNull()) {
                     try {
                         String dateStr = json.get("returnDate").getAsString();
-                        // Try different date formats
                         response.setReturnDate(parseDate(dateStr));
                     } catch (DateTimeParseException e) {
                         log.warn("Invalid return date format: {}", e.getMessage());
@@ -380,85 +455,78 @@ public class GeminiServiceImpl implements GeminiService {
             try {
                 if (json.has("tripType") && !json.get("tripType").isJsonNull()) {
                     String tripType = json.get("tripType").getAsString();
-                    // Normalize trip type values
                     if ("oneWay".equalsIgnoreCase(tripType) || "one-way".equalsIgnoreCase(tripType) || "oneway".equalsIgnoreCase(tripType)) {
                         response.setTripType("oneWay");
                     } else {
-                        response.setTripType("roundTrip"); // Default to roundTrip for any other value
+                        response.setTripType("roundTrip");
                     }
                 } else {
-                    response.setTripType("roundTrip"); // Default
+                    response.setTripType("roundTrip");
                 }
             } catch (Exception e) {
                 log.warn("Error parsing tripType field: {}", e.getMessage());
-                response.setTripType("roundTrip"); // Default
+                response.setTripType("roundTrip");
             }
 
             try {
                 if (json.has("adults") && !json.get("adults").isJsonNull()) {
                     try {
                         int adults = json.get("adults").getAsInt();
-                        // Ensure adults is at least 1
                         response.setAdults(Math.max(1, adults));
                     } catch (NumberFormatException e) {
                         log.warn("Invalid adults value: {}", e.getMessage());
-                        response.setAdults(1); // Default
+                        response.setAdults(1);
                     }
                 } else {
-                    response.setAdults(1); // Default
+                    response.setAdults(1);
                 }
             } catch (Exception e) {
                 log.warn("Error parsing adults field: {}", e.getMessage());
-                response.setAdults(1); // Default
+                response.setAdults(1);
             }
 
             try {
                 if (json.has("children") && !json.get("children").isJsonNull()) {
                     try {
                         int children = json.get("children").getAsInt();
-                        // Ensure children is non-negative
                         response.setChildren(Math.max(0, children));
                     } catch (NumberFormatException e) {
                         log.warn("Invalid children value: {}", e.getMessage());
-                        response.setChildren(0); // Default
+                        response.setChildren(0);
                     }
                 } else {
-                    response.setChildren(0); // Default
+                    response.setChildren(0);
                 }
             } catch (Exception e) {
                 log.warn("Error parsing children field: {}", e.getMessage());
-                response.setChildren(0); // Default
+                response.setChildren(0);
             }
 
             try {
                 if (json.has("infants") && !json.get("infants").isJsonNull()) {
                     try {
                         int infants = json.get("infants").getAsInt();
-                        // Ensure infants is non-negative
                         response.setInfants(Math.max(0, infants));
                     } catch (NumberFormatException e) {
                         log.warn("Invalid infants value: {}", e.getMessage());
-                        response.setInfants(0); // Default
+                        response.setInfants(0);
                     }
                 } else {
-                    response.setInfants(0); // Default
+                    response.setInfants(0);
                 }
             } catch (Exception e) {
                 log.warn("Error parsing infants field: {}", e.getMessage());
-                response.setInfants(0); // Default
+                response.setInfants(0);
             }
 
             response.setSuccess(true);
 
-            // Log the final origin after potential CLOSEST_AIRPORT replacement
             log.debug("Final origin after processing: '{}'", response.getOrigin());
 
-            // Add an info log to make it more visible in the logs
             if (response.getOrigin() != null) {
                 log.info("Final origin after processing: '{}'", response.getOrigin());
             }
 
-            // Log the parsed response
             log.info("Parsed response: origin={}, destination={}, departureDate={}, returnDate={}, tripType={}, adults={}, children={}, infants={}",
                     response.getOrigin(), response.getDestination(), response.getDepartureDate(),
                     response.getReturnDate(), response.getTripType(), response.getAdults(),
@@ -483,28 +551,19 @@ public class GeminiServiceImpl implements GeminiService {
         }
     }
 
-    /**
-     * Helper method to parse dates in various formats
-     */
     private LocalDate parseDate(String dateStr) {
-        // Try ISO format first (YYYY-MM-DD)
         try {
             return LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE);
         } catch (DateTimeParseException e) {
-            // Try other common formats
             try {
-                // Try MM/DD/YYYY
                 return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
             } catch (DateTimeParseException e2) {
                 try {
-                    // Try DD/MM/YYYY
                     return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 } catch (DateTimeParseException e3) {
                     try {
-                        // Try YYYY/MM/DD
                         return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
                     } catch (DateTimeParseException e4) {
-                        // If all else fails, rethrow the original exception
                         throw e;
                     }
                 }
@@ -517,24 +576,20 @@ public class GeminiServiceImpl implements GeminiService {
             return null;
         }
 
-        // Look for JSON object in the response
         int startIdx = response.indexOf('{');
         int endIdx = response.lastIndexOf('}');
 
         if (startIdx >= 0 && endIdx >= 0 && endIdx > startIdx) {
             String jsonCandidate = response.substring(startIdx, endIdx + 1);
 
-            // Validate that this is actually valid JSON
             try {
                 gson.fromJson(jsonCandidate, JsonObject.class);
                 return jsonCandidate;
             } catch (Exception e) {
                 log.warn("Found JSON-like structure but it's not valid JSON: {}", jsonCandidate);
-                // Continue with more sophisticated extraction
             }
         }
 
-        // Try to find JSON with code block markers
         int codeBlockStart = response.indexOf("```json");
         if (codeBlockStart >= 0) {
             int contentStart = response.indexOf('{', codeBlockStart);
@@ -551,7 +606,6 @@ public class GeminiServiceImpl implements GeminiService {
             }
         }
 
-        // Try to find any valid JSON object in the response
         StringBuilder currentJson = new StringBuilder();
         boolean inJson = false;
         int bracketCount = 0;
@@ -573,13 +627,11 @@ public class GeminiServiceImpl implements GeminiService {
                     bracketCount--;
 
                     if (bracketCount == 0) {
-                        // We've found a complete JSON object
                         String jsonCandidate = currentJson.toString();
                         try {
                             gson.fromJson(jsonCandidate, JsonObject.class);
                             return jsonCandidate;
                         } catch (Exception e) {
-                            // Not valid JSON, continue searching
                             inJson = false;
                         }
                     }
@@ -587,7 +639,6 @@ public class GeminiServiceImpl implements GeminiService {
             }
         }
 
-        // If we couldn't find any valid JSON, return null
         log.warn("Could not extract valid JSON from response: {}", response);
         return null;
     }
