@@ -21,6 +21,7 @@ pipeline {
 
     stage('Prepare .env') {
       steps {
+	script {
         // Assume you've stored your keys in Jenkins as "stripe-pk" and "stripe-sk"
         withGoogleCredentials(credentialsId: 'gemini-xlr8', projectId: 'xlr8travel') {
         withCredentials([
@@ -68,6 +69,7 @@ pipeline {
         }
       }
     }
+ }
 }
 
     stage('Build & Deploy') {
