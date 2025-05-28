@@ -33,7 +33,7 @@ pipeline {
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY'),
           string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
-  	  file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDENTIALS_JSON'),
+  	  file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_APPLICATION_CREDENTIALS'),
           string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID')
 
 
