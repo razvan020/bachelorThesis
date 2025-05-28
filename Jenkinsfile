@@ -92,6 +92,9 @@ GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
 EOF
             
             echo "✅ Environment prepared"
+  	echo "Ensuring credentials file is in backend/tmp..."
+  	cp google-credentials.json backend/tmp/google-credentials.json
+  	ls -l backend/tmp
           '''
         }
       }
