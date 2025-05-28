@@ -68,6 +68,7 @@ pipeline {
         }
       }
     }
+}
 
     stage('Build & Deploy') {
       steps {
