@@ -42,14 +42,6 @@ pipeline {
 
             # The GOOGLE_APPLICATION_CREDENTIALS is already set by Jenkins
             echo "GOOGLE_APPLICATION_CREDENTIALS path: $GOOGLE_APPLICATION_CREDENTIALS"
-            
-            # Verify the credentials file
-            if [ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
-                echo "✅ Credentials file exists"
-                echo "File size: $(wc -c < "$GOOGLE_APPLICATION_CREDENTIALS") bytes"
-                echo "File preview:"
-                head -c 200 "$GOOGLE_APPLICATION_CREDENTIALS"
-                echo ""
                 
                            
             # Copy the credentials to workspace for Docker mounting
@@ -68,10 +60,10 @@ pipeline {
             SPRING_MAIL_PASSWORD=\$GMAILPASS
             NEXT_PUBLIC_RECAPTCHA_SITE_KEY=\$RECAPTCHA_SITE_KEY
             RECAPTCHA_SECRET_KEY=\$RECAPTCHA_SECRET_KEY
-            GOOGLE_APPLICATION_CREDENTIALS=/google-credentials.json
+            GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
             GEMINI_API_KEY=\$GEMINI_API_KEY
             GEMINI_PROJECT_ID=\$GEMINI_PROJECT_ID
-	    GEMINI_APPLICATION_CREDENTIALS=/google-credentials.json
+	    GEMINI_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
             EOF
           """
 
