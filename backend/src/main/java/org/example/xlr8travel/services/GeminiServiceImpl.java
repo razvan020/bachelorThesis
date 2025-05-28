@@ -33,8 +33,6 @@ import java.util.Base64;
 @Slf4j
 public class GeminiServiceImpl implements GeminiService {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GeminiServiceImpl.class);
-
     private final AirportLocationService airportLocationService;
 
     public GeminiServiceImpl(AirportLocationService airportLocationService) {
@@ -286,7 +284,7 @@ public class GeminiServiceImpl implements GeminiService {
             log.info("Making API call to Gemini...");
 
             // Generate content
-            GenerateContentResponse response = model.generateContent(content);
+            GenerateContentResponse response = generativeModel.generateContent(content);
             log.info("✅ Successfully received response from Gemini API");
 
             // Extract response text
