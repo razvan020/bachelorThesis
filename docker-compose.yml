@@ -35,7 +35,7 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: "/google-credentials.json"
       GEMINI_API_KEY: "${GEMINI_API_KEY}"
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
-    volumes:
+
       # Mount the credentials file directly
 
 
