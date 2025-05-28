@@ -13,6 +13,9 @@ pipeline {
         checkout scm
 
         sh 'pwd; ls -R .'
+	sh 'rm -rf google-credentials.json'
+
+
       }
     }
 
@@ -36,6 +39,7 @@ pipeline {
 
 
         ]) {
+	  sh 'cp "$GOOGLE_CREDENTIALS_FILE" google-credentials.json'
           sh """
 
             echo "=== COPYING CREDENTIALS FILE ==="
