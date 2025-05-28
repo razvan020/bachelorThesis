@@ -37,7 +37,7 @@ services:
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
     volumes:
       # Mount the credentials file directly
-      - "./backend/tmp:/app/credentials/google-credentials.json:ro"
+      - "./backend/tmp/google-credentials.json:/app/credentials/google-credentials.json:ro"
 
 
 
