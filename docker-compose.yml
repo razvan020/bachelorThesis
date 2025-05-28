@@ -37,7 +37,7 @@ services:
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
     volumes:
       # Mount the credentials file directly
-      - "${WORKSPACE}/backend/tmp:/app/credentials:ro"
+      - "./backend/tmp:/app/credentials:ro"
 
 
 
