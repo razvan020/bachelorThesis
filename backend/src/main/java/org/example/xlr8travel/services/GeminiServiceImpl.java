@@ -259,7 +259,8 @@ public class GeminiServiceImpl implements GeminiService {
         // Load and validate credentials
         GoogleCredentials credentials;
         try (FileInputStream serviceAccountStream = new FileInputStream(cleanedCredentialsPath)) {
-            credentials = GoogleCredentials.fromStream(serviceAccountStream);
+            credentials = GoogleCredentials.fromStream(serviceAccountStream)
+                    .createScoped("https://www.googleapis.com/auth/cloud-platform");
             log.info("✅ Successfully loaded Google credentials");
         } catch (Exception e) {
             log.error("❌ Failed to load Google credentials from {}: {}", cleanedCredentialsPath, e.getMessage());
