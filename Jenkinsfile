@@ -86,6 +86,8 @@ pipeline {
 
         sh 'docker compose pull || true'
         sh 'docker compose up --build --remove-orphans -d'
+
+	sh 'docker cp google-credentials.json xlr8travel2_testbranch-backend-1:/google-credentials.json'
       }
     }
   }
