@@ -22,6 +22,7 @@ pipeline {
     stage('Prepare .env') {
       steps {
         // Assume you've stored your keys in Jenkins as "stripe-pk" and "stripe-sk"
+        withGoogleCredentials(credentialsId: 'gemini-xlr8', projectId: 'xlr8travel') {
         withCredentials([
           string(credentialsId: 'stripe-pk', variable: 'PK'),
           string(credentialsId: 'stripe-sk', variable: 'SK'),
@@ -33,20 +34,16 @@ pipeline {
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY'),
           string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
-  	  file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_APPLICATION_CREDENTIALS'),
           string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID')
 
 
 
         ]) {
           sh """
+          echo "Using OAuth credentials"
 
-            # The GOOGLE_APPLICATION_CREDENTIALS is already set by Jenkins
-            echo "GOOGLE_APPLICATION_CREDENTIALS path: $GOOGLE_APPLICATION_CREDENTIALS"
-                
-                           
-            # Copy the credentials to workspace for Docker mounting
-            cp "$GOOGLE_APPLICATION_CREDENTIALS" google-credentials.json
+          # The plugin sets GOOGLE_APPLICATION_CREDENTIALS and access token behind the scenes
+          echo $GOOGLE_APPLICATION_CREDENTIALS
 
 
             cat > .env <<EOF
@@ -61,10 +58,10 @@ pipeline {
             SPRING_MAIL_PASSWORD=\$GMAILPASS
             NEXT_PUBLIC_RECAPTCHA_SITE_KEY=\$RECAPTCHA_SITE_KEY
             RECAPTCHA_SECRET_KEY=\$RECAPTCHA_SECRET_KEY
-            GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
+            GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
             GEMINI_API_KEY=\$GEMINI_API_KEY
             GEMINI_PROJECT_ID=\$GEMINI_PROJECT_ID
-	    GEMINI_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
+	    GEMINI_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
             EOF
           """
 
