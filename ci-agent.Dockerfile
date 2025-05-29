@@ -7,7 +7,8 @@ RUN apk add --no-cache \
     py3-pip \
     curl \
     bash \
-    gnupg
+    gnupg \
+    file
 
 # Install Google Cloud SDK
 RUN curl https://sdk.cloud.google.com | bash -s -- --disable-prompts
