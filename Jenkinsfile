@@ -140,8 +140,8 @@ sh '''
   echo "WORKSPACE: $WORKSPACE"
   export WORKSPACE=$(pwd)
   
-  # Get the job name and replace slashes with underscores
-  CONTAINER_NAME="${JOB_NAME//\//_}-backend-1"
+  # Get the job name and replace slashes with underscores using tr
+  CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | tr '/' '_')
   echo "Looking for container: $CONTAINER_NAME"
 
   echo "Waiting for containers..."
@@ -230,10 +230,10 @@ docker exec xlr8travel2_testbranch-backend-1 wc -c /app/credentials/google-crede
     success {
       echo '✅ Success! Google Cloud authentication should now work'
     }
-    failure {
+   failure {
   echo '❌ Pipeline failed'
   sh '''
-    CONTAINER_NAME="${JOB_NAME//\\//_}-backend-1"
+    CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | tr '/' '_')
     docker logs $CONTAINER_NAME --tail 50 || echo "Could not get logs"
   '''
 }
