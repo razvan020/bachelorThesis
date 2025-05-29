@@ -13,6 +13,7 @@ pipeline {
         checkout scm
         sh 'pwd; ls -R .'
         sh 'rm -rf google-credentials.json'
+        sh 'rm -rf backend/tmp/*'
       }
     }
 
@@ -27,7 +28,7 @@ pipeline {
             # Copy credentials to workspace
             cp "$GOOGLE_CREDS_FILE" google-credentials.json
             
-            # Verify gcloud is available (should be built into the image now)
+            # Verify gcloud is available
             gcloud version || echo "gcloud not found"
             
             # Authenticate with service account
@@ -45,8 +46,19 @@ pipeline {
             echo "✅ Authentication status:"
             gcloud auth list
 
-  echo "Copying credentials file..."
-  cp "$GOOGLE_CREDS_FILE" backend/tmp/credentials.json
+            # Create backend/tmp directory if it doesn't exist
+            mkdir -p backend/tmp
+            
+            # Copy credentials file with the correct name
+            echo "Copying credentials file..."
+            cp "$GOOGLE_CREDS_FILE" backend/tmp/google-credentials.json
+            
+            # Verify the file was copied correctly
+            echo "Verifying credentials file:"
+            ls -la backend/tmp/
+            echo "File size: $(wc -c < backend/tmp/google-credentials.json) bytes"
+            echo "First line of credentials file:"
+            head -1 backend/tmp/google-credentials.json
             
             echo "✅ Google Cloud setup complete"
           '''
@@ -92,9 +104,12 @@ GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
 EOF
             
             echo "✅ Environment prepared"
-  	echo "Ensuring credentials file is in backend/tmp..."
-  	cp google-credentials.json backend/tmp/google-credentials.json
-  	ls -l backend/tmp
+            
+            # Final verification of credentials file
+            echo "Final verification of credentials file:"
+            ls -la backend/tmp/
+            echo "Credentials file exists: $(test -f backend/tmp/google-credentials.json && echo 'YES' || echo 'NO')"
+            echo "Credentials file size: $(wc -c < backend/tmp/google-credentials.json) bytes"
           '''
         }
       }
@@ -107,8 +122,8 @@ EOF
         sh 'docker compose up --build --remove-orphans -d'
         
         sh '''
-         echo "WORKSPACE: $WORKSPACE"
-         export WORKSPACE=$(pwd)
+          echo "WORKSPACE: $WORKSPACE"
+          export WORKSPACE=$(pwd)
 
           echo "Waiting for containers..."
           timeout 60 sh -c 'until docker ps | grep xlr8travel2_testbranch-backend-1 | grep -q "Up"; do sleep 2; done'
@@ -117,20 +132,48 @@ EOF
       }
     }
 
+    stage('Debug Container Mounts') {
+      steps {
+        sh '''
+          echo "=== DEBUGGING CONTAINER MOUNTS ==="
+          
+          # Check what's in the host directory
+          echo "📁 Host backend/tmp directory:"
+          ls -la backend/tmp/ || echo "backend/tmp directory not found"
+          pwd
+          
+          # Check what's mounted in the container
+          echo "📁 Container /app/credentials directory:"
+          docker exec xlr8travel2_testbranch-backend-1 ls -la /app/credentials/ || echo "❌ /app/credentials directory not found in container"
+          
+          # Check if the specific file exists
+          echo "📁 Checking for specific file:"
+          docker exec xlr8travel2_testbranch-backend-1 test -f /app/credentials/google-credentials.json && echo "✅ google-credentials.json EXISTS" || echo "❌ google-credentials.json NOT FOUND"
+          
+          # Check container environment variables
+          echo "📁 Container environment variables:"
+          docker exec xlr8travel2_testbranch-backend-1 env | grep -E "(GEMINI|GOOGLE)" || echo "No Gemini/Google env vars found"
+          
+          # Check Docker mount details
+          echo "📁 Docker inspect volumes:"
+          docker inspect xlr8travel2_testbranch-backend-1 | grep -A 10 -B 10 "Mounts" || echo "Could not inspect mounts"
+          
+          echo "✅ Debug complete"
+        '''
+      }
+    }
+
     stage('Test Application') {
       steps {
         sh '''
           echo "=== TESTING GEMINI INTEGRATION ==="
-
-      echo "📁 Verifying credentials inside container..."
-      docker exec xlr8travel2_testbranch-backend-1 ls -l /app/credentials || echo "❌ Credentials not found in container"
           
           # Wait for application startup
           sleep 20
           
           # Check for authentication issues
           echo "Checking for authentication logs:"
-          docker logs xlr8travel2_testbranch-backend-1 | grep -E "(Gemini|Google|UNAUTHENTICATED|authentication)" | tail -10 || echo "No auth issues found"
+          docker logs xlr8travel2_testbranch-backend-1 | grep -E "(Gemini|Google|UNAUTHENTICATED|authentication|credentials)" | tail -10 || echo "No auth issues found"
           
           # Health check
           if curl -f http://localhost:8080/actuator/health >/dev/null 2>&1; then
@@ -154,7 +197,7 @@ EOF
     }
     failure {
       echo '❌ Pipeline failed'
-      sh 'docker logs xlr8travel2_testbranch-backend-1 --tail 30 || echo "Could not get logs"'
+      sh 'docker logs xlr8travel2_testbranch-backend-1 --tail 50 || echo "Could not get logs"'
     }
   }
 }
