@@ -56,7 +56,7 @@ export default function SignupPage() {
 
         // Make request to get tokens from session
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/oauth/complete`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/api/oauth/complete`,
           {
             method: "POST",
             credentials: "include", // Important: include session cookies
