@@ -141,7 +141,7 @@ sh '''
   export WORKSPACE=$(pwd)
   
   # Get the job name which includes the branch
-  CONTAINER_NAME="${JOB_NAME}-backend-1"
+  CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | sed 's/\//_/g')
   echo "Looking for container: $CONTAINER_NAME"
 
   echo "Waiting for containers..."
@@ -232,7 +232,8 @@ docker exec xlr8travel2_testbranch-backend-1 wc -c /app/credentials/google-crede
     }
     failure {
       echo '❌ Pipeline failed'
-      sh 'docker logs xlr8travel2_testbranch-backend-1 --tail 50 || echo "Could not get logs"'
+      CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | sed 's/\//_/g')
+      docker logs $CONTAINER_NAME --tail 50 || echo "Could not get logs"
     }
   }
 }
