@@ -85,6 +85,7 @@ pipeline {
             echo "=== PREPARING APPLICATION ENVIRONMENT ==="
             
             # Create .env file
+
 cat > .env <<EOF
 NEXT_PUBLIC_BACKEND_URL=http://backend:8080
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$PK
@@ -97,9 +98,9 @@ SPRING_MAIL_USERNAME=$GMAIL
 SPRING_MAIL_PASSWORD=$GMAILPASS
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
-# UPDATED PATHS - mount directly to /app/
-GEMINI_APPLICATION_CREDENTIALS=/app/google-credentials.json
-GOOGLE_APPLICATION_CREDENTIALS=/app/google-credentials.json
+# UPDATED: Use /tmp path to avoid conflicts
+GEMINI_APPLICATION_CREDENTIALS=/tmp/google-credentials.json
+GOOGLE_APPLICATION_CREDENTIALS=/tmp/google-credentials.json
 GEMINI_API_KEY=$GEMINI_API_KEY
 GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
 EOF
@@ -144,12 +145,14 @@ EOF
           pwd
           
           # Check what's mounted in the container
-          echo "📁 Container /app/credentials directory:"
-          docker exec xlr8travel2_testbranch-backend-1 ls -la /app/credentials/ || echo "❌ /app/credentials directory not found in container"
-          
-          # Check if the specific file exists
-          echo "📁 Checking for specific file:"
-          docker exec xlr8travel2_testbranch-backend-1 test -f /app/credentials/google-credentials.json && echo "✅ google-credentials.json EXISTS" || echo "❌ google-credentials.json NOT FOUND"
+echo "📁 Container /tmp directory:"
+docker exec xlr8travel2_testbranch-backend-1 ls -la /tmp/ || echo "❌ /tmp directory not found in container"
+
+echo "📁 Checking for specific file:"
+docker exec xlr8travel2_testbranch-backend-1 test -f /tmp/google-credentials.json && echo "✅ google-credentials.json EXISTS" || echo "❌ google-credentials.json NOT FOUND"
+
+echo "📁 File details:"
+docker exec xlr8travel2_testbranch-backend-1 ls -la /tmp/google-credentials.json || echo "❌ Cannot get file details"
           
           # Check container environment variables
           echo "📁 Container environment variables:"

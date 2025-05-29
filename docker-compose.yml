@@ -31,14 +31,14 @@ services:
       SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
       SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
       RECAPTCHA_SECRET_KEY: "${RECAPTCHA_SECRET_KEY}"
-      # FIX: Mount the file directly with a different target path
-      GEMINI_APPLICATION_CREDENTIALS: "/app/google-credentials.json"
-      GOOGLE_APPLICATION_CREDENTIALS: "/app/google-credentials.json"
+      # SOLUTION: Use a path that won't conflict with existing directories
+      GEMINI_APPLICATION_CREDENTIALS: "/tmp/google-credentials.json"
+      GOOGLE_APPLICATION_CREDENTIALS: "/tmp/google-credentials.json"
       GEMINI_API_KEY: "${GEMINI_API_KEY}"
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
     volumes:
-      # FIX: Mount the specific file directly to avoid directory conflicts
-      - ./backend/tmp/google-credentials.json:/app/google-credentials.json:ro
+      # SOLUTION: Mount to /tmp to avoid conflicts with /app structure
+      - ./backend/tmp/google-credentials.json:/tmp/google-credentials.json:ro
 
   frontend:
     build:
