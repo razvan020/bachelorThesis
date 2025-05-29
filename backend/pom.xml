@@ -191,7 +191,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<environmentVariables>
-						<GOOGLE_APPLICATION_CREDENTIALS>E:\Downloads\xlr8travel-6109563237b1.json</GOOGLE_APPLICATION_CREDENTIALS>
+						<GOOGLE_APPLICATION_CREDENTIALS>E:\\Downloads\\xlr8travel-9c86a78a37ca.json</GOOGLE_APPLICATION_CREDENTIALS>
 					</environmentVariables>
 				</configuration>
 			</plugin>

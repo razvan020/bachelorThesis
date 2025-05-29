@@ -31,24 +31,21 @@ services:
       SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
       SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
       RECAPTCHA_SECRET_KEY: "${RECAPTCHA_SECRET_KEY}"
-      GOOGLE_APPLICATION_CREDENTIALS: "/tmp/google-credentials.json"
       GEMINI_API_KEY: "${GEMINI_API_KEY}"
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
-    volumes:
-      - /tmp/google-credentials.json:/tmp/google-credentials.json:ro
-
+      # SIMPLE SOLUTION: Pass credentials as base64 environment variable
+      GOOGLE_CREDENTIALS_BASE64: "${GOOGLE_CREDENTIALS_BASE64}"
+    # NO MORE VOLUME MOUNTING!
 
   frontend:
     build:
       context: ./frontend
       args:
-        # build‑time variable used by next.config.mjs
         NEXT_PUBLIC_BACKEND_URL: "http://backend:8080"
         NEXT_PUBLIC_BACKEND_URL_GOOGLE: "http://localhost:8080"
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}"
         NEXT_PUBLIC_RECAPTCHA_SITE_KEY: "${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}"
     environment:
-      # run‑time variables for both client and middleware.ts
       NEXT_PUBLIC_BACKEND_URL: "${NEXT_PUBLIC_BACKEND_URL}"
       NEXT_PUBLIC_BACKEND_URL_GOOGLE: "http://localhost:8080"
       BACKEND_URL: "http://backend:8080"
@@ -80,12 +77,11 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
-    
 
   grafana:
     image: grafana/grafana:latest
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=root   # change me
+      - GF_SECURITY_ADMIN_PASSWORD=root
     ports:
       - '3001:3000'
     volumes:
