@@ -31,13 +31,13 @@ services:
       SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
       SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
       RECAPTCHA_SECRET_KEY: "${RECAPTCHA_SECRET_KEY}"
-      # SOLUTION: Use a path that won't conflict with existing directories
-      GEMINI_APPLICATION_CREDENTIALS: "/tmp/google-credentials.json"
-      GOOGLE_APPLICATION_CREDENTIALS: "/tmp/google-credentials.json"
+      # FINAL SOLUTION: Use /app/credentials path (copied from mount by entrypoint script)
+      GEMINI_APPLICATION_CREDENTIALS: "/app/credentials/google-credentials.json"
+      GOOGLE_APPLICATION_CREDENTIALS: "/app/credentials/google-credentials.json"
       GEMINI_API_KEY: "${GEMINI_API_KEY}"
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
     volumes:
-      # SOLUTION: Mount to /tmp to avoid conflicts with /app structure
+      # Mount to /tmp/google-credentials.json (entrypoint script will copy it to the right place)
       - ./backend/tmp/google-credentials.json:/tmp/google-credentials.json:ro
 
   frontend:
