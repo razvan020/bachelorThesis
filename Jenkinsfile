@@ -136,14 +136,18 @@ stage('Build & Deploy') {
       '''
     }
     
-    sh '''
-      echo "WORKSPACE: $WORKSPACE"
-      export WORKSPACE=$(pwd)
+sh '''
+  echo "WORKSPACE: $WORKSPACE"
+  export WORKSPACE=$(pwd)
+  
+  # Get the job name which includes the branch
+  CONTAINER_NAME="${JOB_NAME}-backend-1"
+  echo "Looking for container: $CONTAINER_NAME"
 
-      echo "Waiting for containers..."
-      timeout 60 sh -c 'until docker ps | grep xlr8travel2_testbranch-backend-1 | grep -q "Up"; do sleep 2; done'
-      echo "✅ Backend is running"
-    '''
+  echo "Waiting for containers..."
+  timeout 60 sh -c "until docker ps | grep $CONTAINER_NAME | grep -q 'Up'; do sleep 2; done"
+  echo "✅ Backend is running"
+'''
   }
 }
     stage('Debug Container Mounts') {
