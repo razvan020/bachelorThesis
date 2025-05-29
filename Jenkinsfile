@@ -140,8 +140,8 @@ sh '''
   echo "WORKSPACE: $WORKSPACE"
   export WORKSPACE=$(pwd)
   
-  # Get the job name which includes the branch
-  CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | sed 's/\//_/g')
+  # Get the job name and replace slashes with underscores
+  CONTAINER_NAME="${JOB_NAME//\//_}-backend-1"
   echo "Looking for container: $CONTAINER_NAME"
 
   echo "Waiting for containers..."
@@ -231,9 +231,11 @@ docker exec xlr8travel2_testbranch-backend-1 wc -c /app/credentials/google-crede
       echo '✅ Success! Google Cloud authentication should now work'
     }
     failure {
-      echo '❌ Pipeline failed'
-      CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | sed 's/\//_/g')
-      docker logs $CONTAINER_NAME --tail 50 || echo "Could not get logs"
-    }
+  echo '❌ Pipeline failed'
+  sh '''
+    CONTAINER_NAME="${JOB_NAME//\\//_}-backend-1"
+    docker logs $CONTAINER_NAME --tail 50 || echo "Could not get logs"
+  '''
+}
   }
 }
