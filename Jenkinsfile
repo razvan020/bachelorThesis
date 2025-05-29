@@ -98,11 +98,9 @@ SPRING_MAIL_USERNAME=$GMAIL
 SPRING_MAIL_PASSWORD=$GMAILPASS
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
-# Vertex AI file-based credentials
-GEMINI_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
-GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
 GEMINI_API_KEY=$GEMINI_API_KEY
 GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
+# No file paths needed - credentials created from environment variable
 EOF
             
             echo "✅ Environment prepared"
@@ -117,23 +115,37 @@ EOF
       }
     }
 
-    stage('Build & Deploy') {
-      steps {
-        sh 'docker compose down --remove-orphans || true'
-        sh 'docker compose pull || true'
-        sh 'docker compose up --build --remove-orphans -d'
+stage('Build & Deploy') {
+  steps {
+    sh 'docker compose down --remove-orphans || true'
+    sh 'docker compose pull || true'
+    
+    // SIMPLE SOLUTION: Pass credentials as environment variable
+    withCredentials([
+      file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDS_FILE')
+    ]) {
+      sh '''
+        # Read the credentials file content and encode it
+        GOOGLE_CREDS_CONTENT=$(cat "$GOOGLE_CREDS_FILE" | base64 -w 0)
         
-        sh '''
-          echo "WORKSPACE: $WORKSPACE"
-          export WORKSPACE=$(pwd)
-
-          echo "Waiting for containers..."
-          timeout 60 sh -c 'until docker ps | grep xlr8travel2_testbranch-backend-1 | grep -q "Up"; do sleep 2; done'
-          echo "✅ Backend is running"
-        '''
-      }
+        # Export it as environment variable for docker compose
+        export GOOGLE_CREDENTIALS_BASE64="$GOOGLE_CREDS_CONTENT"
+        
+        # Start containers with the credentials
+        docker compose up --build --remove-orphans -d
+      '''
     }
+    
+    sh '''
+      echo "WORKSPACE: $WORKSPACE"
+      export WORKSPACE=$(pwd)
 
+      echo "Waiting for containers..."
+      timeout 60 sh -c 'until docker ps | grep xlr8travel2_testbranch-backend-1 | grep -q "Up"; do sleep 2; done'
+      echo "✅ Backend is running"
+    '''
+  }
+}
     stage('Debug Container Mounts') {
       steps {
         sh '''

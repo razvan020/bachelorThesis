@@ -25,41 +25,23 @@ RUN mkdir -p /app/credentials
 # copy in the fat JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Create a robust startup script that handles credential copying
-RUN echo '#!/bin/bash' > /app/startup.sh && \
-    echo 'set -e' >> /app/startup.sh && \
-    echo 'echo "=== Application Startup ==="' >> /app/startup.sh && \
-    echo '' >> /app/startup.sh && \
-    echo '# Function to copy credentials if available' >> /app/startup.sh && \
-    echo 'copy_credentials() {' >> /app/startup.sh && \
-    echo '  echo "Checking for credentials file..."' >> /app/startup.sh && \
-    echo '  if [ -f "/tmp/google-credentials.json" ]; then' >> /app/startup.sh && \
-    echo '    echo "Found credentials file at /tmp/google-credentials.json"' >> /app/startup.sh && \
-    echo '    echo "File size: $(stat -c%s /tmp/google-credentials.json) bytes"' >> /app/startup.sh && \
-    echo '    if [ -s "/tmp/google-credentials.json" ]; then' >> /app/startup.sh && \
-    echo '      echo "Copying credentials to /app/credentials/"' >> /app/startup.sh && \
-    echo '      cp /tmp/google-credentials.json /app/credentials/google-credentials.json' >> /app/startup.sh && \
-    echo '      chmod 600 /app/credentials/google-credentials.json' >> /app/startup.sh && \
-    echo '      echo "✅ Credentials copied successfully"' >> /app/startup.sh && \
-    echo '      echo "Final file size: $(stat -c%s /app/credentials/google-credentials.json) bytes"' >> /app/startup.sh && \
-    echo '      ls -la /app/credentials/' >> /app/startup.sh && \
-    echo '    else' >> /app/startup.sh && \
-    echo '      echo "❌ Credentials file is empty"' >> /app/startup.sh && \
-    echo '    fi' >> /app/startup.sh && \
-    echo '  else' >> /app/startup.sh && \
-    echo '    echo "❌ No credentials file found at /tmp/google-credentials.json"' >> /app/startup.sh && \
-    echo '    echo "Directory contents:"' >> /app/startup.sh && \
-    echo '    ls -la /tmp/ || echo "Cannot list /tmp"' >> /app/startup.sh && \
-    echo '  fi' >> /app/startup.sh && \
-    echo '}' >> /app/startup.sh && \
-    echo '' >> /app/startup.sh && \
-    echo '# Copy credentials' >> /app/startup.sh && \
-    echo 'copy_credentials' >> /app/startup.sh && \
-    echo '' >> /app/startup.sh && \
-    echo '# Start the application' >> /app/startup.sh && \
-    echo 'echo "Starting application..."' >> /app/startup.sh && \
-    echo 'exec java -jar app.jar' >> /app/startup.sh && \
-    chmod +x /app/startup.sh
+# SIMPLE SOLUTION: Create a startup script that creates credentials from env variable
+RUN echo '#!/bin/bash' > /app/start.sh && \
+    echo 'set -e' >> /app/start.sh && \
+    echo 'echo "=== Creating Google Credentials ==="' >> /app/start.sh && \
+    echo 'if [ -n "$GOOGLE_CREDENTIALS_BASE64" ]; then' >> /app/start.sh && \
+    echo '  echo "Found base64 credentials, decoding..."' >> /app/start.sh && \
+    echo '  echo "$GOOGLE_CREDENTIALS_BASE64" | base64 -d > /app/credentials/google-credentials.json' >> /app/start.sh && \
+    echo '  chmod 600 /app/credentials/google-credentials.json' >> /app/start.sh && \
+    echo '  echo "✅ Credentials file created: $(wc -c < /app/credentials/google-credentials.json) bytes"' >> /app/start.sh && \
+    echo '  export GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json' >> /app/start.sh && \
+    echo '  export GEMINI_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json' >> /app/start.sh && \
+    echo 'else' >> /app/start.sh && \
+    echo '  echo "❌ No GOOGLE_CREDENTIALS_BASE64 found"' >> /app/start.sh && \
+    echo 'fi' >> /app/start.sh && \
+    echo 'echo "Starting application..."' >> /app/start.sh && \
+    echo 'exec java -jar app.jar' >> /app/start.sh && \
+    chmod +x /app/start.sh
 
 EXPOSE 8080
-ENTRYPOINT ["/app/startup.sh"]
+ENTRYPOINT ["/app/start.sh"]

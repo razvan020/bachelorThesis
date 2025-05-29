@@ -31,14 +31,11 @@ services:
       SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
       SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
       RECAPTCHA_SECRET_KEY: "${RECAPTCHA_SECRET_KEY}"
-      # Vertex AI requires file-based credentials
-      GEMINI_APPLICATION_CREDENTIALS: "/app/credentials/google-credentials.json"
-      GOOGLE_APPLICATION_CREDENTIALS: "/app/credentials/google-credentials.json"
       GEMINI_API_KEY: "${GEMINI_API_KEY}"
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
-    volumes:
-      # Mount the credentials file - startup script will handle copying
-      - ./backend/tmp/google-credentials.json:/tmp/google-credentials.json:ro
+      # SIMPLE SOLUTION: Pass credentials as base64 environment variable
+      GOOGLE_CREDENTIALS_BASE64: "${GOOGLE_CREDENTIALS_BASE64}"
+    # NO MORE VOLUME MOUNTING!
 
   frontend:
     build:
