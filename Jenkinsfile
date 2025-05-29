@@ -98,7 +98,7 @@ SPRING_MAIL_USERNAME=$GMAIL
 SPRING_MAIL_PASSWORD=$GMAILPASS
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
-# BACK TO /app/credentials (script will copy it there)
+# Vertex AI file-based credentials
 GEMINI_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
 GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/google-credentials.json
 GEMINI_API_KEY=$GEMINI_API_KEY
@@ -145,6 +145,22 @@ EOF
           pwd
           
           # Check what's mounted in the container
+
+echo "📁 Checking if entrypoint script exists:"
+docker exec xlr8travel2_testbranch-backend-1 ls -la /app/copy-credentials.sh || echo "❌ Entrypoint script not found"
+
+echo "📁 Checking entrypoint script content:"
+docker exec xlr8travel2_testbranch-backend-1 cat /app/copy-credentials.sh || echo "❌ Cannot read entrypoint script"
+
+echo "📁 Checking what's actually mounted at /tmp:"
+docker exec xlr8travel2_testbranch-backend-1 ls -la /tmp/google-credentials.json || echo "❌ No file at /tmp/google-credentials.json"
+
+echo "📁 Checking if /tmp mount is a file or directory:"
+docker exec xlr8travel2_testbranch-backend-1 file /tmp/google-credentials.json || echo "❌ Cannot determine file type"
+
+echo "📁 Running the entrypoint script manually:"
+docker exec xlr8travel2_testbranch-backend-1 /app/copy-credentials.sh echo "test" || echo "❌ Entrypoint script failed"
+
 echo "📁 Container /app/credentials directory:"
 docker exec xlr8travel2_testbranch-backend-1 ls -la /app/credentials/ || echo "❌ /app/credentials directory not found"
 

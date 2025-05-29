@@ -31,13 +31,13 @@ services:
       SPRING_MAIL_USERNAME: "${SPRING_MAIL_USERNAME}"
       SPRING_MAIL_PASSWORD: "${SPRING_MAIL_PASSWORD}"
       RECAPTCHA_SECRET_KEY: "${RECAPTCHA_SECRET_KEY}"
-      # FINAL SOLUTION: Use /app/credentials path (copied from mount by entrypoint script)
+      # Vertex AI requires file-based credentials
       GEMINI_APPLICATION_CREDENTIALS: "/app/credentials/google-credentials.json"
       GOOGLE_APPLICATION_CREDENTIALS: "/app/credentials/google-credentials.json"
       GEMINI_API_KEY: "${GEMINI_API_KEY}"
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
     volumes:
-      # Mount to /tmp/google-credentials.json (entrypoint script will copy it to the right place)
+      # Mount the credentials file - startup script will handle copying
       - ./backend/tmp/google-credentials.json:/tmp/google-credentials.json:ro
 
   frontend:
