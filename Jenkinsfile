@@ -136,14 +136,18 @@ stage('Build & Deploy') {
       '''
     }
     
-    sh '''
-      echo "WORKSPACE: $WORKSPACE"
-      export WORKSPACE=$(pwd)
+sh '''
+  echo "WORKSPACE: $WORKSPACE"  
+  export WORKSPACE=$(pwd)
+  
+  # Get the job name, replace slashes with underscores, and convert to lowercase
+  CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | tr '/' '_' | tr '[:upper:]' '[:lower:]')
+  echo "Looking for container: $CONTAINER_NAME"
 
-      echo "Waiting for containers..."
-      timeout 60 sh -c 'until docker ps | grep xlr8travel2_testbranch-backend-1 | grep -q "Up"; do sleep 2; done'
-      echo "✅ Backend is running"
-    '''
+  echo "Waiting for containers..."
+  timeout 60 sh -c "until docker ps | grep $CONTAINER_NAME | grep -q 'Up'; do sleep 2; done"
+  echo "✅ Backend is running"
+'''
   }
 }
     stage('Debug Container Mounts') {
@@ -226,9 +230,12 @@ docker exec xlr8travel2_testbranch-backend-1 wc -c /app/credentials/google-crede
     success {
       echo '✅ Success! Google Cloud authentication should now work'
     }
-    failure {
-      echo '❌ Pipeline failed'
-      sh 'docker logs xlr8travel2_testbranch-backend-1 --tail 50 || echo "Could not get logs"'
-    }
+failure {
+  echo '❌ Pipeline failed'
+  sh '''
+    CONTAINER_NAME=$(echo "${JOB_NAME}-backend-1" | tr '/' '_' | tr '[:upper:]' '[:lower:]')
+    docker logs $CONTAINER_NAME --tail 50 || echo "Could not get logs"
+  '''
+}
   }
 }
