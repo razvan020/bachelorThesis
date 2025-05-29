@@ -30,6 +30,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 // Import CORS classes
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -42,7 +43,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService; // Your DB-backed UserDetailsService
+    private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -51,9 +52,9 @@ public class SecurityConfig {
     private String frontendUrl;
 
     public SecurityConfig(@Qualifier("userRepoUserDetailsService") UserDetailsService userDetailsService,
-                         JwtAuthenticationFilter jwtAuthenticationFilter,
-                         OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
-                         @Lazy CustomOAuth2UserService customOAuth2UserService) {
+                          JwtAuthenticationFilter jwtAuthenticationFilter,
+                          OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
+                          @Lazy CustomOAuth2UserService customOAuth2UserService) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
@@ -62,11 +63,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // Define which requests should use sessions (OAuth2 related)
+        RequestMatcher sessionRequiredMatcher = request ->
+                request.getRequestURI().startsWith("/oauth2/") ||
+                        request.getRequestURI().startsWith("/login/oauth2/") ||
+                        request.getRequestURI().startsWith("/api/oauth/");
+
         http
                 .httpBasic(Customizer.withDefaults())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // CRITICAL: Use conditional session management
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        // Ensure sessions work for OAuth2 endpoints
+                        .maximumSessions(1000) // Allow many concurrent sessions
+                        .maxSessionsPreventsLogin(false)
+                )
                 .authorizeHttpRequests(auth -> auth
                         // Actuator
                         .requestMatchers(EndpointRequest.to("prometheus"))
@@ -77,8 +90,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/flights/natural-language/**").permitAll()
 
-                        // OAuth2 endpoints
+                        // OAuth2 endpoints - MUST BE ACCESSIBLE AND ALLOW SESSIONS
                         .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+                        .requestMatchers("/api/oauth/**").permitAll()
 
                         // STRIPE: allow unauthenticated access to payment‐intent + webhook
                         .requestMatchers(HttpMethod.POST, "/api/checkout/create-payment-intent").permitAll()
@@ -114,8 +128,19 @@ public class SecurityConfig {
                         )
                         .successHandler(oauth2AuthenticationSuccessHandler)
                         .failureHandler((request, response, exception) -> {
-                            // Redirect to frontend with error
-                            String redirectUrl = frontendUrl + "/login?error=true";
+                            // Enhanced error logging
+                            System.err.println("=== OAuth2 Authentication Failed ===");
+                            System.err.println("Request URI: " + request.getRequestURI());
+                            System.err.println("Session ID: " + (request.getSession(false) != null ? request.getSession(false).getId() : "No session"));
+                            System.err.println("Exception: " + exception.getMessage());
+                            exception.printStackTrace();
+
+                            // Redirect to frontend with detailed error
+                            String errorMessage = exception.getMessage() != null ?
+                                    exception.getMessage() : "Unknown OAuth2 error";
+                            String redirectUrl = frontendUrl + "/login?error=true&message=" +
+                                    java.net.URLEncoder.encode(errorMessage, java.nio.charset.StandardCharsets.UTF_8);
+
                             response.sendRedirect(redirectUrl);
                         })
                 )
@@ -133,6 +158,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                 )
+                // IMPORTANT: Don't add JWT filter for OAuth2 endpoints
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
