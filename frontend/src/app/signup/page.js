@@ -55,13 +55,16 @@ export default function SignupPage() {
         );
 
         // Make request to get tokens from session
-        const response = await fetch("/api/oauth/complete", {
-          method: "POST",
-          credentials: "include", // Important: include session cookies
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/oauth/complete`,
+          {
+            method: "POST",
+            credentials: "include", // Important: include session cookies
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to retrieve OAuth tokens from session");
