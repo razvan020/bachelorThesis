@@ -19,6 +19,8 @@ RUN mvn clean package -DskipTests -B
 FROM openjdk:21-jdk-slim
 WORKDIR /app
 
+RUN mkdir -p /app/credentials
+
 # copy in the fat JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
 

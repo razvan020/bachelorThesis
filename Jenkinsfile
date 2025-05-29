@@ -13,6 +13,7 @@ pipeline {
         checkout scm
         sh 'pwd; ls -R .'
         sh 'rm -rf google-credentials.json'
+        sh 'rm -rf backend/tmp/*'
       }
     }
 
@@ -27,7 +28,7 @@ pipeline {
             # Copy credentials to workspace
             cp "$GOOGLE_CREDS_FILE" google-credentials.json
             
-            # Verify gcloud is available (should be built into the image now)
+            # Verify gcloud is available
             gcloud version || echo "gcloud not found"
             
             # Authenticate with service account
@@ -45,8 +46,18 @@ pipeline {
             echo "✅ Authentication status:"
             gcloud auth list
 
-  echo "Copying credentials file..."
-  cp "$GOOGLE_CREDS_FILE" backend/tmp/credentials.json
+            # Create backend/tmp directory if it doesn't exist
+            mkdir -p backend/tmp
+            
+            # Copy credentials file with the correct name
+            echo "Copying credentials file..."
+            cp "$GOOGLE_CREDS_FILE" backend/tmp/google-credentials.json
+            
+            # Verify the file was copied correctly
+            echo "Verifying credentials file:"
+            ls -la backend/tmp/
+            file backend/tmp/google-credentials.json
+            head -5 backend/tmp/google-credentials.json
             
             echo "✅ Google Cloud setup complete"
           '''
@@ -92,9 +103,11 @@ GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
 EOF
             
             echo "✅ Environment prepared"
-  	echo "Ensuring credentials file is in backend/tmp..."
-  	cp google-credentials.json backend/tmp/google-credentials.json
-  	ls -l backend/tmp
+            
+            # Final verification of credentials file
+            echo "Final verification of credentials file:"
+            ls -la backend/tmp/
+            wc -l backend/tmp/google-credentials.json
           '''
         }
       }
@@ -107,8 +120,8 @@ EOF
         sh 'docker compose up --build --remove-orphans -d'
         
         sh '''
-         echo "WORKSPACE: $WORKSPACE"
-         export WORKSPACE=$(pwd)
+          echo "WORKSPACE: $WORKSPACE"
+          export WORKSPACE=$(pwd)
 
           echo "Waiting for containers..."
           timeout 60 sh -c 'until docker ps | grep xlr8travel2_testbranch-backend-1 | grep -q "Up"; do sleep 2; done'
@@ -122,8 +135,10 @@ EOF
         sh '''
           echo "=== TESTING GEMINI INTEGRATION ==="
 
-      echo "📁 Verifying credentials inside container..."
-      docker exec xlr8travel2_testbranch-backend-1 ls -l /app/credentials || echo "❌ Credentials not found in container"
+          echo "📁 Verifying credentials inside container..."
+          docker exec xlr8travel2_testbranch-backend-1 ls -la /app/credentials/ || echo "❌ Credentials directory not found"
+          docker exec xlr8travel2_testbranch-backend-1 file /app/credentials/google-credentials.json || echo "❌ Credentials file not found"
+          docker exec xlr8travel2_testbranch-backend-1 head -5 /app/credentials/google-credentials.json || echo "❌ Cannot read credentials file"
           
           # Wait for application startup
           sleep 20
