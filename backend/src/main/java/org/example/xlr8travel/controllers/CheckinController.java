@@ -171,28 +171,6 @@ public class CheckinController {
         }
     }
 
-    /**
-     * Get all checked-in tickets for the authenticated user.
-     *
-     * @param userDetails The authenticated user details
-     * @return A list of checked-in tickets
-     */
-    @GetMapping("/boarding-passes")
-    public ResponseEntity<List<Ticket>> getBoardingPasses(@AuthenticationPrincipal UserDetails userDetails) {
-        try {
-            User user = getCurrentUser(userDetails);
-            log.info("Getting boarding passes for user: {}", user.getUsername());
-
-            List<Ticket> checkedInTickets = ticketService.findCheckedInTickets(user.getId());
-            return ResponseEntity.ok(checkedInTickets);
-        } catch (ResponseStatusException rse) {
-            log.warn("Failed to get boarding passes: {}", rse.getReason());
-            throw rse;
-        } catch (Exception e) {
-            log.error("Error getting boarding passes", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error getting boarding passes");
-        }
-    }
 
     /**
      * Helper method to get the current authenticated user.

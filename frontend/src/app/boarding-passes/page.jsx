@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
+import QRCodeGenerator from "@/components/QRCodeGenerator"; // Add this import
 import {
   FaTicketAlt,
   FaUser,
@@ -18,7 +18,6 @@ import {
   FaClock,
   FaBuilding,
   FaDoorOpen,
-  FaChair,
   FaQrcode,
   FaDownload,
   FaMobile,
@@ -67,6 +66,8 @@ export default function BoardingPassesPage() {
   const [boardingPasses, setBoardingPasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [downloadingTicketId, setDownloadingTicketId] = useState(null);
+  const [downloadSuccess, setDownloadSuccess] = useState(null);
 
   // Fetch boarding passes
   useEffect(() => {
@@ -85,12 +86,15 @@ export default function BoardingPassesPage() {
 
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("/api/check-in/boarding-passes", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/check-in/boarding-passes`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -108,9 +112,57 @@ export default function BoardingPassesPage() {
     };
 
     fetchBoardingPasses();
-  }, [isAuthenticated, authLoading, router]);
+  }, [isAuthenticated, authLoading, router, showLoginWithMessage]);
 
-  // Render loading state
+  // Download boarding pass as PDF
+  const downloadBoardingPass = async (ticketId) => {
+    setDownloadingTicketId(ticketId);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/check-in/boarding-passes/${ticketId}/download`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to download boarding pass");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+
+      const contentDisposition = response.headers.get("content-disposition");
+      let filename = `boarding-pass-${ticketId}.pdf`;
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+        if (filenameMatch) {
+          filename = filenameMatch[1];
+        }
+      }
+
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      setDownloadSuccess(ticketId);
+      setTimeout(() => setDownloadSuccess(null), 3000);
+    } catch (error) {
+      console.error("Error downloading boarding pass:", error);
+      setError("Failed to download boarding pass: " + error.message);
+    } finally {
+      setDownloadingTicketId(null);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -125,14 +177,12 @@ export default function BoardingPassesPage() {
             color: white;
             gap: 1.5rem;
           }
-
           .boarding-loading-spinner .spinner-border {
             width: 3rem;
             height: 3rem;
             border-width: 3px;
             color: var(--primary-orange);
           }
-
           .boarding-loading-text {
             font-size: 1.2rem;
             font-weight: 500;
@@ -149,7 +199,6 @@ export default function BoardingPassesPage() {
     );
   }
 
-  // Render error state
   if (error) {
     return (
       <>
@@ -162,7 +211,6 @@ export default function BoardingPassesPage() {
             justify-content: center;
             padding: 2rem;
           }
-
           .boarding-error-alert {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
@@ -172,7 +220,6 @@ export default function BoardingPassesPage() {
             text-align: center;
             max-width: 500px;
           }
-
           .boarding-error-alert h4 {
             color: #fca5a5;
             margin-bottom: 1rem;
@@ -189,13 +236,19 @@ export default function BoardingPassesPage() {
               Error
             </Alert.Heading>
             <p>{error}</p>
+            <button
+              className="action-btn-boarding"
+              onClick={() => setError(null)}
+              style={{ marginTop: "1rem" }}
+            >
+              Try Again
+            </button>
           </Alert>
         </div>
       </>
     );
   }
 
-  // Render empty state
   if (boardingPasses.length === 0) {
     return (
       <>
@@ -212,7 +265,6 @@ export default function BoardingPassesPage() {
             justify-content: center;
             padding: 2rem;
           }
-
           .boarding-empty-alert {
             background: rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(83, 84, 85, 0.3);
@@ -222,7 +274,6 @@ export default function BoardingPassesPage() {
             text-align: center;
             max-width: 500px;
           }
-
           .boarding-empty-alert h4 {
             color: rgb(255, 255, 255);
             margin-bottom: 1rem;
@@ -231,7 +282,6 @@ export default function BoardingPassesPage() {
             justify-content: center;
             gap: 0.75rem;
           }
-
           .empty-icon {
             font-size: 4rem;
             color: rgb(255, 255, 255);
@@ -252,11 +302,9 @@ export default function BoardingPassesPage() {
     );
   }
 
-  // Render boarding passes
   return (
     <>
       <style jsx global>{`
-        /* Modern 2025 Boarding Passes Styles */
         .modern-boarding-page {
           min-height: 100vh;
           background: linear-gradient(
@@ -268,7 +316,6 @@ export default function BoardingPassesPage() {
           position: relative;
           overflow-x: hidden;
         }
-
         .boarding-background {
           position: fixed;
           top: 0;
@@ -278,7 +325,6 @@ export default function BoardingPassesPage() {
           z-index: 0;
           pointer-events: none;
         }
-
         .boarding-bg-gradient {
           position: absolute;
           top: 0;
@@ -296,7 +342,6 @@ export default function BoardingPassesPage() {
               transparent 50%
             );
         }
-
         .boarding-bg-particles .boarding-particle {
           position: absolute;
           width: 180px;
@@ -305,25 +350,21 @@ export default function BoardingPassesPage() {
           border-radius: 50%;
           animation: boardingFloat 20s ease-in-out infinite;
         }
-
         .boarding-particle-1 {
           top: 10%;
           left: 15%;
           animation-delay: 0s;
         }
-
         .boarding-particle-2 {
           top: 60%;
           right: 10%;
           animation-delay: 10s;
         }
-
         .boarding-particle-3 {
           bottom: 20%;
           left: 50%;
           animation-delay: 5s;
         }
-
         @keyframes boardingFloat {
           0%,
           100% {
@@ -335,19 +376,15 @@ export default function BoardingPassesPage() {
             opacity: 0.7;
           }
         }
-
         .boarding-container {
           position: relative;
           z-index: 1;
           padding: 2rem 0;
         }
-
-        /* Header Styles */
         .boarding-header {
           text-align: center;
           margin-bottom: 3rem;
         }
-
         .boarding-badge {
           display: inline-flex;
           align-items: center;
@@ -361,11 +398,9 @@ export default function BoardingPassesPage() {
           font-size: 0.9rem;
           margin-bottom: 1rem;
         }
-
         .boarding-icon {
           color: var(--primary-orange);
         }
-
         .boarding-title {
           font-size: clamp(2.5rem, 5vw, 3.5rem);
           font-weight: 800;
@@ -373,7 +408,6 @@ export default function BoardingPassesPage() {
           margin-bottom: 1rem;
           line-height: 1.1;
         }
-
         .boarding-title-highlight {
           background: linear-gradient(
             135deg,
@@ -384,14 +418,11 @@ export default function BoardingPassesPage() {
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
-
         .boarding-subtitle {
           font-size: 1.2rem;
           color: rgba(255, 255, 255, 0.8);
           margin-bottom: 1.5rem;
         }
-
-        /* Boarding Pass Cards */
         .boarding-pass-modern {
           background: linear-gradient(
             135deg,
@@ -408,7 +439,6 @@ export default function BoardingPassesPage() {
           position: relative;
           height: 100%;
         }
-
         .boarding-pass-modern::before {
           content: "";
           position: absolute;
@@ -422,13 +452,11 @@ export default function BoardingPassesPage() {
             #fbbf24 100%
           );
         }
-
         .boarding-pass-modern:hover {
           transform: translateY(-8px);
           box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
           border-color: rgba(255, 111, 0, 0.3);
         }
-
         .boarding-pass-header-modern {
           background: rgba(0, 0, 0, 0.8);
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -436,7 +464,6 @@ export default function BoardingPassesPage() {
           text-align: center;
           position: relative;
         }
-
         .boarding-pass-title-modern {
           font-size: 1.4rem;
           font-weight: 700;
@@ -447,23 +474,19 @@ export default function BoardingPassesPage() {
           justify-content: center;
           gap: 1rem;
         }
-
         .boarding-pass-icon-modern {
           color: var(--primary-orange);
           font-size: 1.6rem;
         }
-
         .boarding-pass-body-modern {
           padding: 2rem;
         }
-
         .flight-details-grid-modern {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 2rem;
           margin-bottom: 2rem;
         }
-
         .detail-item-modern {
           display: flex;
           align-items: center;
@@ -475,31 +498,26 @@ export default function BoardingPassesPage() {
           border: 1px solid rgba(255, 255, 255, 0.1);
           transition: all 0.3s ease;
         }
-
         .detail-item-modern:hover {
           background: rgba(15, 16, 17, 0.8);
           border-color: rgba(255, 111, 0, 0.2);
         }
-
         .detail-icon-modern {
           color: var(--primary-orange);
           font-size: 1.1rem;
           width: 20px;
           flex-shrink: 0;
         }
-
         .detail-label-modern {
           color: rgba(255, 255, 255, 0.7);
           font-weight: 500;
           min-width: 80px;
         }
-
         .detail-value-modern {
           color: white;
           font-weight: 600;
           flex: 1;
         }
-
         .seat-highlight-modern {
           background: linear-gradient(
             135deg,
@@ -514,7 +532,6 @@ export default function BoardingPassesPage() {
           position: relative;
           overflow: hidden;
         }
-
         .seat-highlight-modern::before {
           content: "";
           position: absolute;
@@ -529,7 +546,6 @@ export default function BoardingPassesPage() {
           );
           pointer-events: none;
         }
-
         .seat-number-modern {
           font-size: 2.5rem;
           font-weight: 800;
@@ -545,7 +561,6 @@ export default function BoardingPassesPage() {
           position: relative;
           z-index: 1;
         }
-
         .seat-type-modern {
           color: rgba(255, 255, 255, 0.8);
           font-size: 1rem;
@@ -554,7 +569,6 @@ export default function BoardingPassesPage() {
           position: relative;
           z-index: 1;
         }
-
         .boarding-pass-footer-modern {
           background: rgba(0, 0, 0, 0.6);
           border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -562,7 +576,6 @@ export default function BoardingPassesPage() {
           text-align: center;
           position: relative;
         }
-
         .boarding-pass-footer-modern::before {
           content: "";
           position: absolute;
@@ -578,7 +591,6 @@ export default function BoardingPassesPage() {
             transparent 16px
           );
         }
-
         .footer-text-modern {
           color: rgba(255, 255, 255, 0.7);
           margin: 0;
@@ -588,12 +600,9 @@ export default function BoardingPassesPage() {
           gap: 0.5rem;
           font-size: 0.9rem;
         }
-
         .footer-icon {
           color: var(--primary-orange);
         }
-
-        /* Action Buttons */
         .boarding-actions {
           display: flex;
           justify-content: center;
@@ -601,7 +610,6 @@ export default function BoardingPassesPage() {
           margin-top: 1rem;
           flex-wrap: wrap;
         }
-
         .action-btn-boarding {
           background: rgba(255, 255, 255, 0.1);
           border: 2px solid rgba(255, 255, 255, 0.3);
@@ -615,8 +623,8 @@ export default function BoardingPassesPage() {
           display: flex;
           align-items: center;
           gap: 0.5rem;
+          cursor: pointer;
         }
-
         .action-btn-boarding:hover {
           background: rgba(255, 255, 255, 0.2);
           border-color: rgba(255, 255, 255, 0.5);
@@ -624,7 +632,11 @@ export default function BoardingPassesPage() {
           transform: translateY(-1px);
           text-decoration: none;
         }
-
+        .action-btn-boarding:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
         .action-btn-primary {
           background: linear-gradient(
             135deg,
@@ -633,8 +645,7 @@ export default function BoardingPassesPage() {
           );
           border: 2px solid var(--primary-orange);
         }
-
-        .action-btn-primary:hover {
+        .action-btn-primary:hover:not(:disabled) {
           background: linear-gradient(
             135deg,
             #e65100 0%,
@@ -642,17 +653,22 @@ export default function BoardingPassesPage() {
           );
           border-color: #e65100;
         }
-
-        /* QR Code Section */
+        .action-btn-success {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          border: 2px solid #10b981;
+        }
+        .action-btn-success:hover:not(:disabled) {
+          background: linear-gradient(135deg, #059669 0%, #047857 100%);
+          border-color: #059669;
+        }
         .qr-section {
           text-align: center;
           margin-top: 1.5rem;
-          padding: 1rem;
+          padding: 2rem;
           background: rgba(255, 255, 255, 0.05);
           border-radius: 12px;
           border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .qr-placeholder {
           width: 80px;
           height: 80px;
@@ -664,83 +680,70 @@ export default function BoardingPassesPage() {
           justify-content: center;
           border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .qr-text {
           color: rgba(255, 255, 255, 0.7);
           font-size: 0.8rem;
         }
-
-        /* Responsive Design */
+        .btn-loading .spinner-border {
+          width: 1rem;
+          height: 1rem;
+          border-width: 2px;
+        }
         @media (max-width: 768px) {
           .boarding-container {
             padding: 1rem;
           }
-
           .boarding-title {
             font-size: 2rem;
           }
-
           .flight-details-grid-modern {
             grid-template-columns: 1fr;
             gap: 1rem;
           }
-
           .boarding-pass-header-modern,
           .boarding-pass-body-modern {
             padding: 1.5rem;
           }
-
           .boarding-pass-footer-modern {
             padding: 1rem 1.5rem;
           }
-
           .seat-number-modern {
             font-size: 2rem;
           }
-
           .detail-item-modern {
             padding: 0.5rem;
           }
-
           .boarding-actions {
             flex-direction: column;
             align-items: center;
           }
-
           .action-btn-boarding {
             width: 100%;
             max-width: 200px;
             justify-content: center;
           }
         }
-
         @media (max-width: 576px) {
           .boarding-badge {
             font-size: 0.8rem;
             padding: 0.4rem 0.8rem;
           }
-
           .boarding-subtitle {
             font-size: 1rem;
           }
-
           .boarding-pass-title-modern {
             font-size: 1.2rem;
           }
-
           .detail-label-modern {
             min-width: 70px;
             font-size: 0.9rem;
           }
-
           .detail-value-modern {
             font-size: 0.9rem;
           }
-
           .seat-highlight-modern {
             padding: 1.5rem;
           }
-
           .seat-number-modern {
             font-size: 1.8rem;
           }
@@ -748,7 +751,6 @@ export default function BoardingPassesPage() {
       `}</style>
 
       <div className="modern-boarding-page">
-        {/* Animated background */}
         <div className="boarding-background">
           <div className="boarding-bg-gradient"></div>
           <div className="boarding-bg-particles">
@@ -759,7 +761,6 @@ export default function BoardingPassesPage() {
         </div>
 
         <Container className="boarding-container">
-          {/* Header */}
           <header className="boarding-header">
             <div className="boarding-badge">
               <FaTicketAlt className="boarding-icon" />
@@ -868,21 +869,37 @@ export default function BoardingPassesPage() {
                     )}
 
                     <div className="qr-section">
-                      <div className="qr-placeholder">
-                        <FaQrcode
-                          style={{
-                            fontSize: "2rem",
-                            color: "rgba(255, 255, 255, 0.5)",
-                          }}
-                        />
-                      </div>
-                      <div className="qr-text">Scan at gate</div>
+                      <QRCodeGenerator ticket={ticket} size={180} />
                     </div>
 
                     <div className="boarding-actions">
-                      <button className="action-btn-boarding action-btn-primary">
-                        <FaDownload />
-                        Download
+                      <button
+                        className={`action-btn-boarding ${
+                          downloadSuccess === ticket.id
+                            ? "action-btn-success"
+                            : "action-btn-primary"
+                        } ${
+                          downloadingTicketId === ticket.id ? "btn-loading" : ""
+                        }`}
+                        onClick={() => downloadBoardingPass(ticket.id)}
+                        disabled={downloadingTicketId === ticket.id}
+                      >
+                        {downloadingTicketId === ticket.id ? (
+                          <>
+                            <Spinner animation="border" size="sm" />
+                            Downloading...
+                          </>
+                        ) : downloadSuccess === ticket.id ? (
+                          <>
+                            <FaDownload />
+                            Downloaded!
+                          </>
+                        ) : (
+                          <>
+                            <FaDownload />
+                            Download PDF
+                          </>
+                        )}
                       </button>
                       <button className="action-btn-boarding">
                         <FaMobile />
