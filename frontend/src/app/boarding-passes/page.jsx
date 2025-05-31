@@ -87,7 +87,7 @@ export default function BoardingPassesPage() {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/check-in/boarding-passes`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/api/check-in/boarding-passes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ export default function BoardingPassesPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/check-in/boarding-passes/${ticketId}/download`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_GOOGLE}/api/check-in/boarding-passes/${ticketId}/download`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
