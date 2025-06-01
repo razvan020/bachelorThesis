@@ -89,6 +89,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/login", "/api/signup", "/api/register", "/api/token/refresh").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/flights/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/flights/natural-language/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/weather/**").permitAll() // Allow public access to weather endpoints
 
                         // OAuth2 endpoints - MUST BE ACCESSIBLE AND ALLOW SESSIONS
                         .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()

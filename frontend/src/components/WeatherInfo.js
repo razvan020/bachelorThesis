@@ -431,7 +431,9 @@ const WeatherInfo = ({
               <div className="sun-info">
                 <span className="sun-label">Sunrise</span>
                 <span className="sun-value">
-                  {weather.sunrise.toLocaleTimeString("en-US", {
+                  {(typeof weather.sunrise === 'number' 
+                    ? new Date(weather.sunrise) 
+                    : weather.sunrise).toLocaleTimeString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
@@ -443,7 +445,9 @@ const WeatherInfo = ({
               <div className="sun-info">
                 <span className="sun-label">Sunset</span>
                 <span className="sun-value">
-                  {weather.sunset.toLocaleTimeString("en-US", {
+                  {(typeof weather.sunset === 'number' 
+                    ? new Date(weather.sunset) 
+                    : weather.sunset).toLocaleTimeString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
@@ -464,7 +468,9 @@ const WeatherInfo = ({
               {forecast.map((day, index) => (
                 <div key={index} className="forecast-day">
                   <div className="forecast-date">
-                    {day.date.toLocaleDateString("en-US", {
+                    {(typeof day.date === 'number' 
+                      ? new Date(day.date) 
+                      : day.date).toLocaleDateString("en-US", {
                       weekday: "short",
                       month: "short",
                       day: "numeric",

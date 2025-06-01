@@ -101,7 +101,7 @@ NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
 GEMINI_API_KEY=$GEMINI_API_KEY
 GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
-NEXT_PUBLIC_OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY
+OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY
 # No file paths needed - credentials created from environment variable
 EOF
             
@@ -134,7 +134,7 @@ stage('Build & Deploy') {
         
         # Export it as environment variable for docker compose
         export GOOGLE_CREDENTIALS_BASE64="$GOOGLE_CREDS_CONTENT"
-        export NEXT_PUBLIC_OPENWEATHER_API_KEY="$OPENWEATHER_API_KEY"
+        export OPENWEATHER_API_KEY="$OPENWEATHER_API_KEY"
         
         # Start containers with the credentials
         docker compose up --build --remove-orphans -d

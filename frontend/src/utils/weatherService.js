@@ -1,4 +1,5 @@
 // utils/weatherService.js - Enhanced version with all airports
+const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || "";
 const WEATHER_API_BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 // Comprehensive airport to city mapping with coordinates for accuracy
@@ -189,16 +190,17 @@ export const getWeatherByCity = async (city, country) => {
     // Check if it's an airport code first
     let targetCity = city;
     let targetCountry = country;
-    let coordinates = null;
 
     if (city.length === 3 && airportDetails[city.toUpperCase()]) {
       const airportData = airportDetails[city.toUpperCase()];
       targetCity = airportData.city;
       targetCountry = airportData.country;
-      coordinates = { lat: airportData.lat, lon: airportData.lon };
-      console.log("Using airport coordinates for accuracy:", coordinates);
+      console.log("Using airport city and country:", {
+        targetCity,
+        targetCountry,
+      });
     } else {
-      // For city searches, try to find coordinates in our database
+      // For city searches, try to find in our database
       const foundAirport = Object.values(airportDetails).find(
         (airport) =>
           airport.city.toLowerCase() === city.toLowerCase() &&
@@ -206,21 +208,20 @@ export const getWeatherByCity = async (city, country) => {
       );
 
       if (foundAirport) {
-        coordinates = { lat: foundAirport.lat, lon: foundAirport.lon };
-        console.log("Found matching city coordinates:", coordinates);
+        targetCity = foundAirport.city;
+        targetCountry = foundAirport.country;
+        console.log("Found matching city in airport database:", {
+          targetCity,
+          targetCountry,
+        });
       }
     }
 
-    // Always prefer coordinates for accuracy when available
-    const url = coordinates
-      ? `${WEATHER_API_BASE_URL}/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`
-      : `${WEATHER_API_BASE_URL}/weather?q=${encodeURIComponent(
-          targetCity
-        )},${encodeURIComponent(targetCountry)}&appid=${
-          process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY
-        }&units=metric`;
-
-    console.log("Weather API URL:", url);
+    // Call our backend API instead of OpenWeatherMap directly
+    const url = `${BACKEND_API_URL}/api/weather?city=${encodeURIComponent(
+      targetCity
+    )}&country=${encodeURIComponent(targetCountry)}`;
+    console.log("Backend Weather API URL:", url);
 
     const response = await fetch(url);
 
@@ -233,41 +234,7 @@ export const getWeatherByCity = async (city, country) => {
     const data = await response.json();
     console.log("Weather data received:", data);
 
-    // Verify we got the right location
-    const receivedCountry = data.sys.country;
-    const receivedCity = data.name;
-
-    // Log for debugging
-    console.log(
-      `Expected: ${targetCity}, ${targetCountry} | Received: ${receivedCity}, ${receivedCountry}`
-    );
-
-    // Override the location name with our expected city name if we used coordinates
-    let displayCity = data.name;
-    let displayCountry = data.sys.country;
-
-    if (coordinates) {
-      // If we used coordinates from our airport database, use our city name instead
-      displayCity = targetCity;
-      displayCountry = targetCountry;
-      console.log(`Overriding location name: ${data.name} → ${targetCity}`);
-    }
-
-    return {
-      temperature: Math.round(data.main.temp),
-      description: data.weather[0].description,
-      icon: data.weather[0].icon,
-      humidity: data.main.humidity,
-      windSpeed: Math.round(data.wind.speed * 10) / 10, // Round to 1 decimal
-      pressure: data.main.pressure,
-      feelsLike: Math.round(data.main.feels_like),
-      visibility: data.visibility ? Math.round(data.visibility / 1000) : null,
-      location: displayCity, // Use our override
-      country: displayCountry, // Use our override
-      sunrise: new Date(data.sys.sunrise * 1000),
-      sunset: new Date(data.sys.sunset * 1000),
-      cloudiness: data.clouds.all,
-    };
+    return data; // Backend already formats the data to match our expected structure
   } catch (error) {
     console.error("Error fetching weather:", error);
     throw error;
@@ -275,142 +242,71 @@ export const getWeatherByCity = async (city, country) => {
 };
 
 // Get weather forecast (5-day)
-// Get weather forecast (5-day) - FIXED VERSION
+// Get weather forecast (5-day) - Using backend API
 export const getWeatherForecast = async (city, country) => {
   try {
     let targetCity = city;
     let targetCountry = country;
-    let coordinates = null;
 
     if (city.length === 3 && airportDetails[city.toUpperCase()]) {
       const airportData = airportDetails[city.toUpperCase()];
       targetCity = airportData.city;
       targetCountry = airportData.country;
-      coordinates = { lat: airportData.lat, lon: airportData.lon };
+      console.log("Using airport city and country for forecast:", {
+        targetCity,
+        targetCountry,
+      });
+    } else {
+      // For city searches, try to find in our database
+      const foundAirport = Object.values(airportDetails).find(
+        (airport) =>
+          airport.city.toLowerCase() === city.toLowerCase() &&
+          airport.country.toLowerCase().includes(country.toLowerCase())
+      );
+
+      if (foundAirport) {
+        targetCity = foundAirport.city;
+        targetCountry = foundAirport.country;
+        console.log("Found matching city in airport database for forecast:", {
+          targetCity,
+          targetCountry,
+        });
+      }
     }
 
-    const url = coordinates
-      ? `${WEATHER_API_BASE_URL}/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`
-      : `${WEATHER_API_BASE_URL}/forecast?q=${encodeURIComponent(
-          targetCity
-        )},${encodeURIComponent(targetCountry)}&appid=${
-          process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY
-        }&units=metric`;
+    // Call our backend API instead of OpenWeatherMap directly
+    const url = `${BACKEND_API_URL}/api/weather/forecast?city=${encodeURIComponent(
+      targetCity
+    )}&country=${encodeURIComponent(targetCountry)}`;
+    console.log("Backend Weather Forecast API URL:", url);
 
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(`Forecast API error: ${response.status}`);
+      throw new Error(
+        `Forecast API error: ${response.status} - ${response.statusText}`
+      );
     }
 
     const data = await response.json();
+    console.log("Forecast data received:", data);
 
-    // Group forecasts by date and calculate daily aggregates
-    const dailyData = {};
-
-    data.list.forEach((forecast) => {
-      const date = new Date(forecast.dt * 1000);
-      const dateKey = date.toDateString(); // Group by date
-
-      if (!dailyData[dateKey]) {
-        dailyData[dateKey] = {
-          date: date,
-          forecasts: [],
-          temps: [],
-          conditions: [],
-          humidity: [],
-          windSpeed: [],
-          cloudiness: [],
-        };
-      }
-
-      dailyData[dateKey].forecasts.push(forecast);
-      dailyData[dateKey].temps.push(forecast.main.temp);
-      dailyData[dateKey].conditions.push({
-        description: forecast.weather[0].description,
-        icon: forecast.weather[0].icon,
-        main: forecast.weather[0].main,
-      });
-      dailyData[dateKey].humidity.push(forecast.main.humidity);
-      dailyData[dateKey].windSpeed.push(forecast.wind.speed);
-      dailyData[dateKey].cloudiness.push(forecast.clouds.all);
-    });
-
-    // Convert to daily forecasts with proper aggregation
-    const dailyForecasts = Object.values(dailyData)
-      .slice(0, 5) // Get first 5 days
-      .map((day) => {
-        // Calculate min/max temperatures for the day
-        const tempMin = Math.min(...day.temps);
-        const tempMax = Math.max(...day.temps);
-        const avgTemp = day.temps.reduce((a, b) => a + b, 0) / day.temps.length;
-
-        // Get the most common weather condition for the day
-        const conditionCounts = {};
-        day.conditions.forEach((condition) => {
-          const key = condition.main;
-          conditionCounts[key] = (conditionCounts[key] || 0) + 1;
-        });
-
-        // Find the most frequent condition
-        const mostFrequentCondition = Object.keys(conditionCounts).reduce(
-          (a, b) => (conditionCounts[a] > conditionCounts[b] ? a : b)
-        );
-
-        // Get a representative icon (prefer daytime icons)
-        const dayConditions = day.conditions.filter((c) =>
-          c.icon.endsWith("d")
-        );
-        const representativeCondition =
-          dayConditions.length > 0
-            ? dayConditions.find((c) => c.main === mostFrequentCondition) ||
-              dayConditions[0]
-            : day.conditions.find((c) => c.main === mostFrequentCondition) ||
-              day.conditions[0];
-
-        // Calculate averages for other metrics
-        const avgHumidity = Math.round(
-          day.humidity.reduce((a, b) => a + b, 0) / day.humidity.length
-        );
-        const avgWindSpeed =
-          Math.round(
-            (day.windSpeed.reduce((a, b) => a + b, 0) / day.windSpeed.length) *
-              10
-          ) / 10;
-        const avgCloudiness = Math.round(
-          day.cloudiness.reduce((a, b) => a + b, 0) / day.cloudiness.length
-        );
-
-        return {
-          date: day.date,
-          temperature: Math.round(avgTemp),
-          tempMin: Math.round(tempMin),
-          tempMax: Math.round(tempMax),
-          description: representativeCondition.description,
-          icon: representativeCondition.icon,
-          humidity: avgHumidity,
-          windSpeed: avgWindSpeed,
-          cloudiness: avgCloudiness,
-          // Additional debug info
-          dataPoints: day.forecasts.length,
-        };
-      });
-
-    return dailyForecasts;
+    return data; // Backend already formats the data to match our expected structure
   } catch (error) {
     console.error("Error fetching forecast data:", error);
     throw error;
   }
 };
 
-// Enhanced weather with fallback
+// Enhanced weather with fallback - Using backend API
 export const getWeatherWithLocationFallback = async (city, country) => {
   try {
+    // Try the primary method first
     return await getWeatherByCity(city, country);
   } catch (error) {
-    console.warn("Primary weather fetch failed, trying alternatives:", error);
+    console.warn("Primary weather fetch failed:", error);
 
-    // Try with more specific country codes
+    // Try with country code if available
     const countryCodeMap = {
       italy: "IT",
       france: "FR",
@@ -442,35 +338,18 @@ export const getWeatherWithLocationFallback = async (city, country) => {
     if (countryCode) {
       try {
         console.log(`Trying with country code: ${city}, ${countryCode}`);
-        const response = await fetch(
-          `${WEATHER_API_BASE_URL}/weather?q=${encodeURIComponent(
-            city
-          )},${countryCode}&appid=${
-            process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY
-          }&units=metric`
-        );
+        // Use the backend API with country code
+        const url = `${BACKEND_API_URL}/api/weather?city=${encodeURIComponent(
+          city
+        )}&country=${countryCode}`;
+        console.log("Backend Weather API URL (fallback):", url);
+
+        const response = await fetch(url);
 
         if (response.ok) {
           const data = await response.json();
           console.log("Fallback weather data received:", data);
-
-          return {
-            temperature: Math.round(data.main.temp),
-            description: data.weather[0].description,
-            icon: data.weather[0].icon,
-            humidity: data.main.humidity,
-            windSpeed: Math.round(data.wind.speed * 10) / 10,
-            pressure: data.main.pressure,
-            feelsLike: Math.round(data.main.feels_like),
-            visibility: data.visibility
-              ? Math.round(data.visibility / 1000)
-              : null,
-            location: city, // Use our original city name
-            country: countryCode, // Use country code
-            sunrise: new Date(data.sys.sunrise * 1000),
-            sunset: new Date(data.sys.sunset * 1000),
-            cloudiness: data.clouds.all,
-          };
+          return data;
         }
       } catch (fallbackError) {
         console.warn("Country code fallback failed:", fallbackError);
@@ -480,33 +359,18 @@ export const getWeatherWithLocationFallback = async (city, country) => {
     // Final fallback - try with just city name
     try {
       console.log(`Final fallback: trying with just city name: ${city}`);
-      const response = await fetch(
-        `${WEATHER_API_BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${
-          process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY
-        }&units=metric`
-      );
+      // Use the backend API with just city name
+      const url = `${BACKEND_API_URL}/api/weather?city=${encodeURIComponent(
+        city
+      )}&country=`;
+      console.log("Backend Weather API URL (final fallback):", url);
+
+      const response = await fetch(url);
 
       if (response.ok) {
         const data = await response.json();
         console.log("Final fallback weather data received:", data);
-
-        return {
-          temperature: Math.round(data.main.temp),
-          description: data.weather[0].description,
-          icon: data.weather[0].icon,
-          humidity: data.main.humidity,
-          windSpeed: Math.round(data.wind.speed * 10) / 10,
-          pressure: data.main.pressure,
-          feelsLike: Math.round(data.main.feels_like),
-          visibility: data.visibility
-            ? Math.round(data.visibility / 1000)
-            : null,
-          location: city, // Use our original city name
-          country: data.sys.country,
-          sunrise: new Date(data.sys.sunrise * 1000),
-          sunset: new Date(data.sys.sunset * 1000),
-          cloudiness: data.clouds.all,
-        };
+        return data;
       }
     } catch (finalError) {
       console.error("All weather fetch methods failed:", finalError);
