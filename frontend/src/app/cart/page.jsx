@@ -305,15 +305,19 @@ function CartPageContent() {
     );
     const seat = seatTypes.find((option) => option.type === storedSeatType);
 
+    // Check if any cart item has random seat allocation
+    const hasRandomSeatAllocation = cartItems.some(item => item.allocateRandomSeat);
+
     const baggageCost = baggage ? baggage.price : 0;
-    const seatCost = seat ? seat.price : 7;
+    // Set seat cost to 0 if any cart item has random seat allocation
+    const seatCost = hasRandomSeatAllocation ? 0 : (seat ? seat.price : 7);
 
     setBaggagePrice(baggageCost);
     setSeatPrice(seatCost);
 
     const adjustedTotal = totalPrice + baggageCost + seatCost;
     setAdjustedTotalPrice(adjustedTotal);
-  }, [totalPrice]);
+  }, [totalPrice, cartItems]);
 
   // Update Cart Function
   const updateCartItem = useCallback(
@@ -1202,6 +1206,19 @@ function CartPageContent() {
                               <FaArrowRight className="route-arrow" />
                               <span>{item.destination}</span>
                             </div>
+                            {item.allocateRandomSeat && (
+                              <div className="random-seat-info" style={{ 
+                                color: 'var(--primary-orange)', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: '0.5rem',
+                                marginTop: '0.5rem',
+                                fontSize: '0.9rem'
+                              }}>
+                                <FaChair />
+                                <span>Random seat will be allocated (free)</span>
+                              </div>
+                            )}
                           </div>
                           <div className="price-display">
                             <div className="item-price">
@@ -1332,7 +1349,9 @@ function CartPageContent() {
                         <div className="summary-item">
                           <span className="summary-label">
                             <FaChair />
-                            Seat Selection
+                            {cartItems.some(item => item.allocateRandomSeat) 
+                              ? "Random Seat Allocation (Free)" 
+                              : "Seat Selection"}
                           </span>
                           <span className="summary-value">
                             {formatPrice(

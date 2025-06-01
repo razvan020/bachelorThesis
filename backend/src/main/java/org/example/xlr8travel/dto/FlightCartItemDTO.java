@@ -20,5 +20,9 @@ public class FlightCartItemDTO {
     private LocalTime arrivalTime;
     private BigDecimal price; // Ensure type consistency
     private int quantity;
-
+    private Long seatId;
+    private boolean deferSeatSelection;
+    private boolean allocateRandomSeat;
+    private String baggageType;
+    private String code; // Flight code
 }

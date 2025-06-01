@@ -43,7 +43,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartDTO addItemToCart(User user, Flight flight) {
+    public CartDTO addItemToCart(User user, Flight flight, Long seatId, boolean deferSeatSelection, boolean allocateRandomSeat, String baggageType) {
         Cart cart = findOrCreateCartByUser(user);
 
         // Check if item already exists in cart
@@ -52,21 +52,30 @@ public class CartServiceImpl implements CartService {
                 .filter(item -> item.getFlight() != null && item.getFlight().getId().equals(flight.getId()))
                 .findFirst();
 
+        CartItemModel cartItem;
         if (existingItemOpt.isPresent()) {
-            // Increment quantity
-            CartItemModel existingItem = existingItemOpt.get();
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-            cartItemRepository.save(existingItem); // Save updated item
-            log.info("Incremented quantity for flight ID {} in cart for user {}", flight.getId(), user.getUsername());
+            // Update existing item
+            cartItem = existingItemOpt.get();
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            // Update seat and baggage information
+            cartItem.setSeatId(seatId);
+            cartItem.setDeferSeatSelection(deferSeatSelection);
+            cartItem.setAllocateRandomSeat(allocateRandomSeat);
+            cartItem.setBaggageType(baggageType);
+            cartItemRepository.save(cartItem); // Save updated item
+            log.info("Updated flight ID {} in cart for user {}", flight.getId(), user.getUsername());
         } else {
             // Add new item
-            CartItemModel newItem = new CartItemModel();
-            newItem.setCart(cart);
-            newItem.setFlight(flight);
-            newItem.setQuantity(1);
-            cart.getCartItems().add(newItem); // Add to the collection in the Cart entity
-            // If Cart entity uses CascadeType.ALL or PERSIST on cartItems, saving cart below is enough.
-            // Otherwise, uncomment: cartItemRepository.save(newItem);
+            cartItem = new CartItemModel();
+            cartItem.setCart(cart);
+            cartItem.setFlight(flight);
+            cartItem.setQuantity(1);
+            // Set seat and baggage information
+            cartItem.setSeatId(seatId);
+            cartItem.setDeferSeatSelection(deferSeatSelection);
+            cartItem.setAllocateRandomSeat(allocateRandomSeat);
+            cartItem.setBaggageType(baggageType);
+            cart.getCartItems().add(cartItem); // Add to the collection in the Cart entity
             log.info("Added new flight ID {} to cart for user {}", flight.getId(), user.getUsername());
         }
 
@@ -234,6 +243,12 @@ public class CartServiceImpl implements CartService {
                         dto.setPrice(flight.getPrice()); // Ensure price type compatibility (e.g., Double)
                         // Or: dto.setPrice(flight.getPrice()); // If Flight price is BigDecimal and DTO price is BigDecimal
                         dto.setQuantity(cartItemModel.getQuantity()); // Get quantity from CartItemModel
+                        dto.setSeatId(cartItemModel.getSeatId());
+                        dto.setDeferSeatSelection(cartItemModel.isDeferSeatSelection());
+                        dto.setAllocateRandomSeat(cartItemModel.isAllocateRandomSeat());
+                        dto.setBaggageType(cartItemModel.getBaggageType());
+                        // Flight doesn't have a getCode() method, so we'll use the flight name as a fallback
+                        dto.setCode(flight.getName());
 
                         return dto;
                     })

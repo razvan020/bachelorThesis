@@ -21,11 +21,15 @@ public interface CartService {
      * Adds one unit of the specified flight to the user's cart.
      * If the item already exists, increments the quantity.
      *
-     * @param user   The user adding the item.
-     * @param flight The flight to add.
+     * @param user                The user adding the item.
+     * @param flight              The flight to add.
+     * @param seatId              The ID of the selected seat (can be null).
+     * @param deferSeatSelection  Whether seat selection is deferred to check-in.
+     * @param allocateRandomSeat  Whether a random seat should be allocated.
+     * @param baggageType         The type of baggage selected.
      * @return Updated CartDTO.
      */
-    CartDTO addItemToCart(User user, Flight flight);
+    CartDTO addItemToCart(User user, Flight flight, Long seatId, boolean deferSeatSelection, boolean allocateRandomSeat, String baggageType);
 
     /**
      * Decreases the quantity of a specific flight in the user's cart by one.

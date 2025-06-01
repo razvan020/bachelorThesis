@@ -24,6 +24,17 @@ public class CartItemModel {
     @Column(nullable = false)
     private int quantity;
 
+    // Seat and baggage information
+    private Long seatId;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean deferSeatSelection = false;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean allocateRandomSeat = false;
+
+    private String baggageType;
+
     // Getters and Setters
 
     public Long getId() {
@@ -56,6 +67,38 @@ public class CartItemModel {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Long getSeatId() {
+        return seatId;
+    }
+
+    public void setSeatId(Long seatId) {
+        this.seatId = seatId;
+    }
+
+    public boolean isDeferSeatSelection() {
+        return deferSeatSelection;
+    }
+
+    public void setDeferSeatSelection(boolean deferSeatSelection) {
+        this.deferSeatSelection = deferSeatSelection;
+    }
+
+    public boolean isAllocateRandomSeat() {
+        return allocateRandomSeat;
+    }
+
+    public void setAllocateRandomSeat(boolean allocateRandomSeat) {
+        this.allocateRandomSeat = allocateRandomSeat;
+    }
+
+    public String getBaggageType() {
+        return baggageType;
+    }
+
+    public void setBaggageType(String baggageType) {
+        this.baggageType = baggageType;
     }
 
     // --- equals() and hashCode() ---

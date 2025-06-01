@@ -83,6 +83,12 @@ function CheckoutPageContent() {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
 
+  // Seat selection state
+  const [deferSeatSelection, setDeferSeatSelection] = useState(false);
+  const [allocateRandomSeat, setAllocateRandomSeat] = useState(false);
+  const [selectedSeat, setSelectedSeat] = useState("");
+  const [selectedSeatType, setSelectedSeatType] = useState("SEAT_TYPE_STANDARD");
+
   // Payment state
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
@@ -238,6 +244,11 @@ function CheckoutPageContent() {
       if (!res.ok) throw new Error(body.error || res.statusText);
       setCartItems(body.items || []);
       setTotalPrice(body.totalPrice || 0);
+
+      // Check if any cart item has allocateRandomSeat set to true
+      const hasRandomSeatAllocation = (body.items || []).some(item => item.allocateRandomSeat);
+      setAllocateRandomSeat(hasRandomSeatAllocation);
+
       if (!body.items?.length) {
         setError("Your cart is empty. Add flights before checking out.");
       }
@@ -305,14 +316,15 @@ function CheckoutPageContent() {
     const seat = seatTypes.find((option) => option.type === storedSeatType);
 
     const baggageCost = baggage ? baggage.price : 0;
-    const seatCost = seat ? seat.price : 7;
+    // Only add seat cost if not using random allocation
+    const seatCost = allocateRandomSeat ? 0 : (seat ? seat.price : 7);
 
     setBaggagePrice(baggageCost);
     setSeatPrice(seatCost);
 
     const adjustedTotal = totalPrice + baggageCost + seatCost;
     setAdjustedTotalPrice(adjustedTotal);
-  }, [totalPrice]);
+  }, [totalPrice, allocateRandomSeat]);
 
   // Handle the Stripe payment flow
   const handleConfirmPurchase = async (e) => {
@@ -372,6 +384,10 @@ function CheckoutPageContent() {
             body: JSON.stringify({
               customerName: customerName,
               customerEmail: customerEmail,
+              allocateRandomSeat: allocateRandomSeat,
+              deferSeatSelection: deferSeatSelection,
+              seatNumber: selectedSeat,
+              seatType: selectedSeatType,
             }),
           });
 
@@ -1372,6 +1388,7 @@ function CheckoutPageContent() {
                           placeholder="Enter your email address"
                         />
                       </div>
+
 
                       <div className="card-section-title">
                         <FaCreditCard />

@@ -87,6 +87,7 @@ public class TicketServiceImpl implements TicketService {
 
         // Update ticket
         ticket.setSeat(seat);
+        ticket.setSeatSelectionDeferred(false); // Seat has been selected, so it's no longer deferred
         ticket.setTicketStatus(TicketStatus.TICKET_STATUS_CHECKED_IN);
         ticketRepository.save(ticket);
 
@@ -119,6 +120,15 @@ public class TicketServiceImpl implements TicketService {
             return createErrorResponse("Ticket already checked in");
         }
 
+        // If this is a random seat allocation ticket, allocate a random seat
+        if (ticket.isRandomSeatAllocation()) {
+            log.info("Allocating random seat for ticket {}", ticketId);
+            allocateRandomSeat(ticket);
+        }
+
+        // We no longer force seat selection for tickets with deferred seat selection
+        // This allows users to check in without selecting a seat, regardless of whether they chose to defer seat selection or have a random seat allocated
+
         // Update ticket status
         ticket.setTicketStatus(TicketStatus.TICKET_STATUS_CHECKED_IN);
         ticketRepository.save(ticket);
@@ -127,6 +137,67 @@ public class TicketServiceImpl implements TicketService {
 
         // Create response
         return createSuccessResponse(ticket);
+    }
+
+    /**
+     * Allocates a random seat for a ticket
+     * @param ticket The ticket to allocate a seat for
+     */
+    private void allocateRandomSeat(Ticket ticket) {
+        if (ticket.getFlight() == null) {
+            log.warn("Cannot allocate random seat for ticket {} - no flight associated", ticket.getId());
+            return;
+        }
+
+        // Get all booked seats for this flight
+        List<String> bookedSeats = getBookedSeats(ticket.getFlight().getId());
+
+        // Define possible seat rows and columns
+        int[] rows = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        char[] columns = {'A', 'B', 'C', 'D', 'E', 'F'};
+
+        // Try to find an available seat
+        String seatNumber = null;
+        SeatType seatType = SeatType.SEAT_TYPE_STANDARD;
+
+        // Shuffle the rows and columns to make the selection more random
+        java.util.Collections.shuffle(java.util.Arrays.asList(rows));
+
+        // Try to find an available seat
+        for (int row : rows) {
+            for (char column : columns) {
+                String candidateSeat = row + String.valueOf(column);
+                if (!bookedSeats.contains(candidateSeat)) {
+                    seatNumber = candidateSeat;
+
+                    // Determine seat type based on row
+                    if (row <= 5) {
+                        seatType = SeatType.SEAT_TYPE_UPFRONT;
+                    } else if (row == 14 || row == 15 || row == 30) {
+                        seatType = SeatType.SEAT_TYPE_EXTRA_LEGROOM;
+                    } else {
+                        seatType = SeatType.SEAT_TYPE_STANDARD;
+                    }
+
+                    break;
+                }
+            }
+            if (seatNumber != null) {
+                break;
+            }
+        }
+
+        if (seatNumber == null) {
+            log.warn("Could not find an available seat for random allocation for ticket {}", ticket.getId());
+            return;
+        }
+
+        // Create and set the seat
+        Seat seat = new Seat(seatNumber, true, seatType);
+        ticket.setSeat(seat);
+        ticket.setSeatSelectionDeferred(false);
+
+        log.info("Randomly allocated seat {} of type {} for ticket {}", seatNumber, seatType, ticket.getId());
     }
 
     @Override
@@ -157,6 +228,8 @@ public class TicketServiceImpl implements TicketService {
         CheckInDTO response = new CheckInDTO();
         response.setSuccessful(true);
         response.setTicketId(ticket.getId());
+        response.setSeatSelectionDeferred(ticket.isSeatSelectionDeferred()); // Set whether seat selection was deferred
+        response.setRandomSeatAllocation(ticket.isRandomSeatAllocation()); // Set whether random seat allocation was requested
 
         // Set seat info if available
         if (ticket.getSeat() != null) {

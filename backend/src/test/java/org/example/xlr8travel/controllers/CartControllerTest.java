@@ -29,6 +29,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CartControllerTest {
@@ -136,9 +137,13 @@ public class CartControllerTest {
         // Arrange
         AddToCartRequestDTO request = new AddToCartRequestDTO();
         request.setFlightId(TEST_FLIGHT_ID);
+        request.setSeatId(null);
+        request.setDeferSeatSelection(false);
+        request.setAllocateRandomSeat(false);
+        request.setBaggageType("BAGGAGE_TYPE_WEIGHT_CARRY_ON_0");
 
         when(flightService.findById(TEST_FLIGHT_ID)).thenReturn(testFlight);
-        when(cartService.addItemToCart(testUser, testFlight)).thenReturn(testCartDTO);
+        when(cartService.addItemToCart(testUser, testFlight, null, false, false, "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0")).thenReturn(testCartDTO);
 
         // Act
         ResponseEntity<?> response = cartController.addFlightToCart(request, userDetails);
@@ -152,7 +157,7 @@ public class CartControllerTest {
 
         // Verify services were called
         verify(flightService).findById(TEST_FLIGHT_ID);
-        verify(cartService).addItemToCart(testUser, testFlight);
+        verify(cartService).addItemToCart(testUser, testFlight, null, false, false, "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0");
     }
 
     @Test
@@ -160,6 +165,10 @@ public class CartControllerTest {
         // Arrange
         AddToCartRequestDTO request = new AddToCartRequestDTO();
         request.setFlightId(TEST_FLIGHT_ID);
+        request.setSeatId(null);
+        request.setDeferSeatSelection(false);
+        request.setAllocateRandomSeat(false);
+        request.setBaggageType("BAGGAGE_TYPE_WEIGHT_CARRY_ON_0");
 
         when(flightService.findById(TEST_FLIGHT_ID)).thenReturn(null);
 
@@ -174,7 +183,7 @@ public class CartControllerTest {
 
         // Verify service was called
         verify(flightService).findById(TEST_FLIGHT_ID);
-        verify(cartService, never()).addItemToCart(any(), any());
+        verify(cartService, never()).addItemToCart(any(), any(), any(), anyBoolean(), anyBoolean(), any());
     }
 
     @Test
