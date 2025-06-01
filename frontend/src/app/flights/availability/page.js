@@ -31,6 +31,8 @@ import {
 } from "@/utils/currencyUtils";
 import SeatMap from "@/components/SeatMap";
 import CabinTour from "@/components/CabinTour";
+import WeatherInfo from "@/components/WeatherInfo";
+import { getAirportData } from "@/utils/weatherService";
 
 // Helper function to format date/time
 const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
@@ -75,6 +77,15 @@ function FlightAvailabilityContent() {
   const [allocateRandomSeat, setAllocateRandomSeat] = useState(false);
   const [deferSeatSelection, setDeferSeatSelection] = useState(false);
   const [selectedSeatNumber, setSelectedSeatNumber] = useState("");
+  const [destinationDetails, setDestinationDetails] = useState({
+    city: "",
+    country: "",
+  });
+
+  const [originDetails, setOriginDetails] = useState({
+    city: "",
+    country: "",
+  });
 
   // Get search criteria from URL
   const origin = searchParams.get("origin");
@@ -346,6 +357,46 @@ function FlightAvailabilityContent() {
 
     fetchAvailableFlights();
   }, [origin, destination, departureDate, arrivalDate, tripType]);
+
+  useEffect(() => {
+    const getDestinationDetails = () => {
+      if (destination) {
+        const airportData = getAirportData(destination);
+        if (airportData) {
+          setDestinationDetails({
+            city: airportData.city,
+            country: airportData.country,
+          });
+        } else {
+          setDestinationDetails({
+            city: destination,
+            country: "Unknown",
+          });
+        }
+      }
+    };
+    getDestinationDetails();
+  }, [destination]);
+
+  useEffect(() => {
+    const getOriginDetails = () => {
+      if (origin) {
+        const airportData = getAirportData(origin);
+        if (airportData) {
+          setOriginDetails({
+            city: airportData.city,
+            country: airportData.country,
+          });
+        } else {
+          setOriginDetails({
+            city: origin,
+            country: "Unknown",
+          });
+        }
+      }
+    };
+    getOriginDetails();
+  }, [origin]);
 
   // Update total price when selections change
   useEffect(() => {
@@ -1463,6 +1514,237 @@ function FlightAvailabilityContent() {
           background: var(--primary-orange);
           color: white;
           transform: translateY(-2px);
+        }
+
+        /* Updated Weather Section Styles for Desktop */
+        .destination-weather {
+          max-width: 900px; /* Increased from 400px */
+          width: 100%;
+          margin: 2rem auto;
+          text-align: center;
+        }
+
+        .weather-section-title {
+          color: white;
+          margin-bottom: 1.5rem;
+          font-size: 1.8rem;
+          font-weight: 600;
+          text-align: center;
+        }
+
+        /* Override the WeatherInfo component styles for larger display */
+        .destination-weather .modern-weather-card {
+          background: linear-gradient(
+            145deg,
+            rgba(0, 0, 0, 0.95) 0%,
+            rgba(20, 20, 20, 0.9) 100%
+          );
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 24px;
+          padding: 2.5rem;
+          box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.05),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          margin: 1.5rem 0;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+          min-height: 400px; /* Ensure minimum height */
+        }
+
+        .destination-weather .modern-weather-card::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, #ff6f00, #ffa726, #ffb74d);
+          border-radius: 24px 24px 0 0;
+        }
+
+        /* Weather Hero Section - Make it more prominent */
+        .destination-weather .weather-hero {
+          margin-bottom: 2.5rem;
+          padding: 1rem 0;
+        }
+
+        .destination-weather .weather-main {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 3rem;
+          margin-bottom: 2rem;
+        }
+
+        .destination-weather .weather-icon-large {
+          flex-shrink: 0;
+          padding: 1.5rem;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .destination-weather .temp-main {
+          font-size: 5rem; /* Increased from 4rem */
+          font-weight: 800;
+          background: linear-gradient(135deg, #ff6f00 0%, #ffa726 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          line-height: 1;
+        }
+
+        /* Weather Details Grid - Expand for desktop */
+        .destination-weather .weather-details-grid {
+          display: grid;
+          grid-template-columns: repeat(
+            4,
+            1fr
+          ); /* Force 4 columns on desktop */
+          gap: 1.5rem;
+          margin-bottom: 2.5rem;
+        }
+
+        .destination-weather .detail-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1.5rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 16px;
+          transition: all 0.3s ease;
+          min-height: 100px;
+        }
+
+        /* Forecast Section - Make it more prominent */
+        .destination-weather .weather-forecast {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          padding-top: 2.5rem;
+        }
+
+        .destination-weather .forecast-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 1.5rem;
+        }
+
+        .destination-weather .forecast-day {
+          text-align: center;
+          padding: 1.5rem 1rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 16px;
+          transition: all 0.3s ease;
+          min-height: 180px;
+        }
+
+        /* Sun Times - Make it more spacious */
+        .destination-weather .sun-times {
+          display: flex;
+          justify-content: space-around;
+          gap: 2rem;
+          margin-bottom: 2.5rem;
+          padding: 2rem;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 193, 7, 0.1) 0%,
+            rgba(255, 152, 0, 0.1) 100%
+          );
+          border: 1px solid rgba(255, 193, 7, 0.2);
+          border-radius: 16px;
+        }
+
+        .destination-weather .sun-time {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.5rem;
+        }
+
+        .destination-weather .sun-icon {
+          font-size: 2rem; /* Increased icon size */
+        }
+
+        /* Responsive adjustments for weather */
+        @media (max-width: 1024px) {
+          .destination-weather {
+            max-width: 700px;
+          }
+
+          .destination-weather .weather-details-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .destination-weather .forecast-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          .destination-weather .forecast-grid .forecast-day:nth-child(n + 4) {
+            display: none;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .destination-weather {
+            max-width: 500px;
+            margin: 1.5rem auto;
+          }
+
+          .destination-weather .modern-weather-card {
+            padding: 2rem;
+            min-height: 350px;
+          }
+
+          .destination-weather .weather-main {
+            flex-direction: column;
+            gap: 2rem;
+            text-align: center;
+          }
+
+          .destination-weather .temp-main {
+            font-size: 3.5rem;
+          }
+
+          .destination-weather .weather-details-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+          }
+
+          .destination-weather .sun-times {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+          }
+
+          .destination-weather .forecast-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .destination-weather .forecast-grid .forecast-day:nth-child(n + 3) {
+            display: none;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .destination-weather {
+            max-width: 400px;
+          }
+
+          .destination-weather .modern-weather-card {
+            padding: 1.5rem;
+            min-height: 300px;
+          }
+
+          .destination-weather .temp-main {
+            font-size: 2.5rem;
+          }
+
+          .destination-weather .weather-details-grid {
+            grid-template-columns: 1fr;
+          }
         }
 
         /* Step Indicator Styles */
@@ -2723,7 +3005,7 @@ function FlightAvailabilityContent() {
             </Alert>
           )}
 
-          {/* Booking Steps */}
+          {/* Booking Steps - Now appears first */}
           {!loading && !error && (
             <div className="booking-content">
               <StepIndicator />
@@ -2735,6 +3017,20 @@ function FlightAvailabilityContent() {
               </div>
             </div>
           )}
+
+          {/* Weather Information - Now appears after booking steps */}
+          {!loading &&
+            !error &&
+            destinationDetails.city &&
+            destinationDetails.country && (
+              <div className="destination-weather">
+                <h3 className="weather-section-title">Destination Weather</h3>
+                <WeatherInfo
+                  city={destinationDetails.city}
+                  country={destinationDetails.country}
+                />
+              </div>
+            )}
         </Container>
       </div>
     </>

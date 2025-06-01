@@ -79,7 +79,8 @@ pipeline {
           string(credentialsId: 'recaptcha-site-key', variable: 'RECAPTCHA_SITE_KEY'),
           string(credentialsId: 'recaptcha-secret-key', variable: 'RECAPTCHA_SECRET_KEY'),
           string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
-          string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID')
+          string(credentialsId: 'gemini-project-id', variable: 'GEMINI_PROJECT_ID'),
+          string(credentialsId: 'weather-id', variable: 'OPENWEATHER_API_KEY')
         ]) {
           sh '''
             echo "=== PREPARING APPLICATION ENVIRONMENT ==="
@@ -100,6 +101,7 @@ NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY
 RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
 GEMINI_API_KEY=$GEMINI_API_KEY
 GEMINI_PROJECT_ID=$GEMINI_PROJECT_ID
+NEXT_PUBLIC_OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY
 # No file paths needed - credentials created from environment variable
 EOF
             
