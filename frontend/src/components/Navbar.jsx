@@ -29,15 +29,15 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 export default function NavBarComponent() {
   const pathname = usePathname();
-  const { 
-    user, 
-    isAuthenticated, 
-    logout, 
-    cartItemCount, 
-    login, 
+  const {
+    user,
+    isAuthenticated,
+    logout,
+    cartItemCount,
+    login,
     showLoginDropdown: contextShowLoginDropdown,
     loginDropdownMessage,
-    hideLogin
+    hideLogin,
   } = useAuth();
   const isAdmin = isAuthenticated && user?.username === "user2";
   const [avatarUrl, setAvatarUrl] = useState("/avatarSrc.png");

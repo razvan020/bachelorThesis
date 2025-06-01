@@ -7,6 +7,10 @@ public class CheckoutRequestDTO {
 
     private String customerName;
     private String customerEmail;
+    private boolean deferSeatSelection; // Flag to indicate if seat selection should be deferred to check-in
+    private boolean allocateRandomSeat; // Flag to indicate if a random seat should be allocated
+    private String seatNumber; // Seat number if seat selection is not deferred
+    private String seatType; // Seat type if seat selection is not deferred
     // Add any other billing fields (address, etc.) needed by your OrderService
 
     // *** IMPORTANT ***
@@ -29,6 +33,38 @@ public class CheckoutRequestDTO {
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
+    }
+
+    public boolean isDeferSeatSelection() {
+        return deferSeatSelection;
+    }
+
+    public void setDeferSeatSelection(boolean deferSeatSelection) {
+        this.deferSeatSelection = deferSeatSelection;
+    }
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public String getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
+    }
+
+    public boolean isAllocateRandomSeat() {
+        return allocateRandomSeat;
+    }
+
+    public void setAllocateRandomSeat(boolean allocateRandomSeat) {
+        this.allocateRandomSeat = allocateRandomSeat;
     }
 
     // Getter/Setter for paymentMethodToken...

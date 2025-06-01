@@ -20,6 +20,8 @@ import {
   FaCheckCircle,
   FaShieldAlt,
   FaPlane,
+  FaRandom,
+  FaClock,
 } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -27,6 +29,8 @@ import {
   convertFromEUR,
   formatPrice,
 } from "@/utils/currencyUtils";
+import SeatMap from "@/components/SeatMap";
+import CabinTour from "@/components/CabinTour";
 
 // Helper function to format date/time
 const formatDisplayDateTime = (isoDateStr, isoTimeStr) => {
@@ -68,6 +72,9 @@ function FlightAvailabilityContent() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [userCountry, setUserCountry] = useState("Romania");
   const [userCurrency, setUserCurrency] = useState("RON");
+  const [allocateRandomSeat, setAllocateRandomSeat] = useState(false);
+  const [deferSeatSelection, setDeferSeatSelection] = useState(false);
+  const [selectedSeatNumber, setSelectedSeatNumber] = useState("");
 
   // Get search criteria from URL
   const origin = searchParams.get("origin");
@@ -355,7 +362,8 @@ function FlightAvailabilityContent() {
     if (selectedBaggage) {
       price += selectedBaggage.price;
     }
-    if (selectedSeat && selectedSeat.price) {
+    // Only add seat price if a specific seat is selected and not using random allocation
+    if (selectedSeat && selectedSeat.price && !allocateRandomSeat) {
       price += selectedSeat.price;
     }
     setTotalPrice(price);
@@ -364,6 +372,7 @@ function FlightAvailabilityContent() {
     selectedReturnFlight,
     passengerDetails.baggageType,
     selectedSeat,
+    allocateRandomSeat,
   ]);
 
   // All handler functions
@@ -384,7 +393,68 @@ function FlightAvailabilityContent() {
   };
 
   const handleSeatSelection = (seat) => {
+    // If selecting a seat, turn off the other options
+    setAllocateRandomSeat(false);
+    setDeferSeatSelection(false);
     setSelectedSeat(seat);
+  };
+
+  const handleSeatNumberSelection = (seatNumber) => {
+    // If selecting a seat number, turn off the other options
+    setAllocateRandomSeat(false);
+    setDeferSeatSelection(false);
+    setSelectedSeatNumber(seatNumber);
+
+    // Find the seat object that matches this seat number
+    const matchingSeat = availableSeats.find(
+      (seat) => seat.number === seatNumber
+    );
+    if (matchingSeat) {
+      setSelectedSeat(matchingSeat);
+    } else {
+      // If no matching seat is found, create a dummy seat object
+      // Determine seat type and price based on the seat number
+      let seatType = "SEAT_TYPE_STANDARD";
+      let price = 0;
+
+      // Extract row number from seat number (e.g., "12A" -> 12)
+      const row = parseInt(seatNumber.match(/\d+/)[0]);
+
+      if (row <= 5) {
+        seatType = "SEAT_TYPE_UPFRONT";
+        price = 10;
+      } else if (row === 14 || row === 15 || row === 30) {
+        seatType = "SEAT_TYPE_EXTRA_LEGROOM";
+        price = 13;
+      } else {
+        seatType = "SEAT_TYPE_STANDARD";
+        price = 7;
+      }
+
+      const dummySeat = {
+        id: Date.now(), // Generate a unique ID
+        number: seatNumber,
+        type: seatType,
+        price: price,
+        available: true,
+      };
+
+      setSelectedSeat(dummySeat);
+    }
+  };
+
+  const handleRandomSeatSelection = () => {
+    setAllocateRandomSeat(true);
+    setDeferSeatSelection(false);
+    setSelectedSeat(null);
+    setSelectedSeatNumber("");
+  };
+
+  const handleDeferSeatSelection = () => {
+    setDeferSeatSelection(true);
+    setAllocateRandomSeat(false);
+    setSelectedSeat(null);
+    setSelectedSeatNumber("");
   };
 
   const handleNextStep = async () => {
@@ -467,16 +537,41 @@ function FlightAvailabilityContent() {
       setCurrentStep("seats");
     } else if (currentStep === "seats") {
       localStorage.setItem("selectedBaggageType", passengerDetails.baggageType);
-      localStorage.setItem("selectedSeatType", selectedSeat.type);
-      if (!selectedSeat) {
-        alert("Please select a seat");
+
+      // Validate that one of the seat options is selected
+      if (!selectedSeat && !allocateRandomSeat && !deferSeatSelection) {
+        alert(
+          "Please select a seat option (specific seat, random seat, or defer selection)"
+        );
         return;
+      }
+
+      // Store the selected seat type if a specific seat is selected
+      if (selectedSeat) {
+        localStorage.setItem("selectedSeatType", selectedSeat.type);
       }
 
       try {
         const token = localStorage.getItem("token");
 
         if (selectedOutboundFlight) {
+          // Prepare the request body based on the selected option
+          const requestBody = {
+            flightId: selectedOutboundFlight.id,
+            baggageType: passengerDetails.baggageType,
+          };
+
+          // Add seat information based on the selected option
+          if (selectedSeat) {
+            requestBody.seatId = selectedSeat.id;
+            requestBody.deferSeatSelection = false;
+          } else if (allocateRandomSeat) {
+            requestBody.allocateRandomSeat = true;
+            requestBody.deferSeatSelection = false;
+          } else if (deferSeatSelection) {
+            requestBody.deferSeatSelection = true;
+          }
+
           const response = await fetch("/api/cart/add", {
             method: "POST",
             headers: {
@@ -484,11 +579,7 @@ function FlightAvailabilityContent() {
               "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify({
-              flightId: selectedOutboundFlight.id,
-              baggageType: passengerDetails.baggageType,
-              seatId: selectedSeat.id,
-            }),
+            body: JSON.stringify(requestBody),
           });
 
           if (!response.ok) {
@@ -499,6 +590,23 @@ function FlightAvailabilityContent() {
         }
 
         if (tripType === "roundTrip" && selectedReturnFlight) {
+          // Prepare the request body based on the selected option
+          const requestBody = {
+            flightId: selectedReturnFlight.id,
+            baggageType: passengerDetails.baggageType,
+          };
+
+          // Add seat information based on the selected option
+          if (selectedSeat) {
+            requestBody.seatId = selectedSeat.id;
+            requestBody.deferSeatSelection = false;
+          } else if (allocateRandomSeat) {
+            requestBody.allocateRandomSeat = true;
+            requestBody.deferSeatSelection = false;
+          } else if (deferSeatSelection) {
+            requestBody.deferSeatSelection = true;
+          }
+
           const response = await fetch("/api/cart/add", {
             method: "POST",
             headers: {
@@ -506,11 +614,7 @@ function FlightAvailabilityContent() {
               "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify({
-              flightId: selectedReturnFlight.id,
-              baggageType: passengerDetails.baggageType,
-              seatId: selectedSeat.id,
-            }),
+            body: JSON.stringify(requestBody),
           });
 
           if (!response.ok) {
@@ -975,75 +1079,98 @@ function FlightAvailabilityContent() {
                 <h2 className="section-title">Choose Your Seat</h2>
               </div>
 
-              <div className="aircraft-visualization">
-                <div className="aircraft-nose"></div>
-                <div className="seat-grid">
-                  {availableSeats.map((seat) => (
-                    <Button
-                      key={seat.id}
-                      variant={
-                        selectedSeat?.id === seat.id
-                          ? "primary"
-                          : seat.type === "SEAT_TYPE_STANDARD"
-                          ? "outline-secondary"
-                          : seat.type === "SEAT_TYPE_UPFRONT"
-                          ? "outline-info"
-                          : "outline-warning"
-                      }
-                      className={`seat-button ${
-                        selectedSeat?.id === seat.id ? "selected" : ""
-                      } ${seat.type.toLowerCase().replace("seat_type_", "")}`}
-                      onClick={() => handleSeatSelection(seat)}
-                      disabled={!seat.available}
-                    >
-                      <div className="seat-content">
-                        <div className="seat-number">{seat.number}</div>
-                        <div className="seat-price">
-                          {seat.price === 0
-                            ? "Free"
-                            : formatPrice(
-                                convertFromEUR(seat.price, userCurrency),
-                                userCurrency
-                              )}
-                        </div>
-                      </div>
-                    </Button>
-                  ))}
+              <div className="seat-options">
+                <div
+                  className={`seat-option-card ${
+                    !allocateRandomSeat && !deferSeatSelection ? "active" : ""
+                  }`}
+                  onClick={() =>
+                    setDeferSeatSelection(false) & setAllocateRandomSeat(false)
+                  }
+                >
+                  <div className="option-icon">
+                    <FaChair />
+                  </div>
+                  <div className="option-content">
+                    <h4>Select a Specific Seat</h4>
+                    <p>Choose your preferred seat from the seat map below</p>
+                  </div>
                 </div>
 
-                <div className="seat-legend">
-                  <div className="legend-item">
-                    <div className="legend-color standard"></div>
-                    <span>Standard (Free)</span>
+                <div
+                  className={`seat-option-card ${
+                    allocateRandomSeat ? "active" : ""
+                  }`}
+                  onClick={handleRandomSeatSelection}
+                >
+                  <div className="option-icon">
+                    <FaRandom />
                   </div>
-                  <div className="legend-item">
-                    <div className="legend-color upfront"></div>
-                    <span>Up Front</span>
+                  <div className="option-content">
+                    <h4>Allocate a Random Seat</h4>
+                    <p>We'll assign you a seat automatically at check-in</p>
                   </div>
-                  <div className="legend-item">
-                    <div className="legend-color extra-legroom"></div>
-                    <span>Extra Legroom</span>
+                </div>
+
+                <div
+                  className={`seat-option-card ${
+                    deferSeatSelection ? "active" : ""
+                  }`}
+                  onClick={handleDeferSeatSelection}
+                >
+                  <div className="option-icon">
+                    <FaClock />
+                  </div>
+                  <div className="option-content">
+                    <h4>Choose Seat During Check-in</h4>
+                    <p>Select your seat later during the check-in process</p>
                   </div>
                 </div>
               </div>
 
-              {selectedSeat && (
-                <Alert variant="success" className="seat-confirmation">
-                  <div className="confirmation-content">
-                    <FaCheckCircle className="confirmation-icon" />
-                    <div>
-                      <strong>Seat {selectedSeat.number} Selected</strong>
-                      <div className="confirmation-price">
-                        {selectedSeat.price > 0
-                          ? `+${formatPrice(
-                              convertFromEUR(selectedSeat.price, userCurrency),
-                              userCurrency
-                            )}`
-                          : "Included in your fare"}
-                      </div>
+              {!allocateRandomSeat && !deferSeatSelection && (
+                <>
+                  <CabinTour
+                    selectedSeat={selectedSeatNumber}
+                    onSelectSeat={handleSeatNumberSelection}
+                    flightId={selectedOutboundFlight?.id}
+                  />
+                  <div className="seat-map-wrapper">
+                    <SeatMap
+                      onSelectSeat={handleSeatNumberSelection}
+                      selectedSeat={selectedSeatNumber}
+                      flightId={selectedOutboundFlight?.id}
+                    />
+                  </div>
+                </>
+              )}
+
+              {allocateRandomSeat && (
+                <div className="seat-status-card random">
+                  <div className="status-content">
+                    <div className="status-icon">
+                      <FaRandom />
+                    </div>
+                    <div className="status-details">
+                      <h4>Random Seat Allocation</h4>
+                      <p>We'll assign you a seat automatically at check-in</p>
                     </div>
                   </div>
-                </Alert>
+                </div>
+              )}
+
+              {deferSeatSelection && (
+                <div className="seat-status-card deferred">
+                  <div className="status-content">
+                    <div className="status-icon">
+                      <FaClock />
+                    </div>
+                    <div className="status-details">
+                      <h4>Seat Selection Deferred</h4>
+                      <p>You'll select your seat during the check-in process</p>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           </Col>
@@ -1146,28 +1273,53 @@ function FlightAvailabilityContent() {
                   </div>
                 </div>
               </div>
+
+              {/* Add seat confirmation here */}
+              {selectedSeat && !allocateRandomSeat && !deferSeatSelection && (
+                <div className="seat-status-card">
+                  <div className="status-content">
+                    <div className="status-icon">
+                      <FaCheckCircle />
+                    </div>
+                    <div className="status-details">
+                      <h4>Seat {selectedSeat.number} Selected</h4>
+                      <p className="status-price">
+                        {selectedSeat.price > 0
+                          ? `+${formatPrice(
+                              convertFromEUR(selectedSeat.price, userCurrency),
+                              userCurrency
+                            )}`
+                          : "Included in your fare"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation buttons moved here */}
+              <div className="step-navigation">
+                <Button
+                  variant="outline-secondary"
+                  onClick={handlePreviousStep}
+                  className="back-btn"
+                >
+                  Back to Passenger Details
+                </Button>
+                <Button
+                  variant="success"
+                  onClick={handleNextStep}
+                  disabled={
+                    !selectedSeat && !allocateRandomSeat && !deferSeatSelection
+                  }
+                  className="complete-btn"
+                >
+                  Complete Booking
+                  <FaCheckCircle className="btn-icon" />
+                </Button>
+              </div>
             </div>
           </Col>
         </Row>
-
-        <div className="step-navigation">
-          <Button
-            variant="outline-secondary"
-            onClick={handlePreviousStep}
-            className="back-btn"
-          >
-            Back to Passenger Details
-          </Button>
-          <Button
-            variant="success"
-            onClick={handleNextStep}
-            disabled={!selectedSeat}
-            className="complete-btn"
-          >
-            Complete Booking
-            <FaCheckCircle className="btn-icon" />
-          </Button>
-        </div>
       </div>
     );
   };
@@ -1407,8 +1559,12 @@ function FlightAvailabilityContent() {
           transition: all 0.3s ease;
         }
 
-        .step-item.completed + .step-item .step-connector {
+        .step-item.active .step-connector {
           background: var(--primary-orange);
+        }
+
+        .step-item.completed .step-connector {
+          background: rgba(255, 255, 255, 0.3);
         }
 
         /* Flight Selection Styles */
@@ -1838,6 +1994,68 @@ function FlightAvailabilityContent() {
           margin: 0 auto 2rem;
         }
 
+        /* Seat Options */
+        .seat-options {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 30px;
+          flex-wrap: wrap;
+        }
+
+        .seat-option-card {
+          flex: 1;
+          min-width: 200px;
+          background: rgba(0, 0, 0, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          padding: 20px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        .seat-option-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+          border-color: rgba(255, 111, 0, 0.3);
+        }
+
+        .seat-option-card.active {
+          background: linear-gradient(
+            135deg,
+            rgba(255, 111, 0, 0.2) 0%,
+            rgba(255, 111, 0, 0.1) 100%
+          );
+          border-color: rgba(255, 111, 0, 0.5);
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .option-icon {
+          font-size: 2rem;
+          color: var(--primary-orange);
+          margin-bottom: 15px;
+        }
+
+        .option-content h4 {
+          color: white;
+          margin-bottom: 10px;
+          font-size: 1.1rem;
+        }
+
+        .option-content p {
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 0.9rem;
+        }
+
+        .seat-map-wrapper {
+          margin-top: 30px;
+          margin-bottom: 30px;
+        }
+
         .seat-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
@@ -2094,32 +2312,48 @@ function FlightAvailabilityContent() {
         /* Navigation Buttons */
         .step-navigation {
           display: flex;
-          justify-content: space-between;
+          flex-direction: row;
           align-items: center;
-          margin-top: 3rem;
           gap: 1rem;
+          margin-top: 1.5rem;
+          padding: 1.5rem;
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          justify-content: space-between;
+        }
+
+        .back-btn,
+        .continue-btn,
+        .complete-btn {
+          flex: 1;
+          max-width: 48%;
+          height: 56px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.75rem;
+          font-size: 1rem;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          white-space: nowrap;
+          padding: 0 1.5rem;
         }
 
         .back-btn {
           background: rgba(255, 255, 255, 0.1);
-          border: 2px solid rgba(255, 255, 255, 0.3);
+          border: 2px solid rgba(255, 255, 255, 0.2);
           color: white;
-          padding: 1rem 2rem;
-          border-radius: 50px;
-          font-weight: 600;
-          transition: all 0.3s ease;
-          backdrop-filter: blur(10px);
         }
 
         .back-btn:hover {
-          background: rgba(255, 255, 255, 0.2);
-          border-color: rgba(255, 255, 255, 0.5);
-          color: white;
+          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 255, 255, 0.3);
           transform: translateY(-2px);
         }
 
-        .continue-btn,
-        .complete-btn {
+        .continue-btn {
           background: linear-gradient(
             135deg,
             var(--primary-orange) 0%,
@@ -2127,41 +2361,48 @@ function FlightAvailabilityContent() {
           );
           border: none;
           color: white;
-          padding: 1rem 2rem;
-          border-radius: 50px;
-          font-weight: 600;
-          font-size: 1rem;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
           box-shadow: 0 8px 24px rgba(255, 111, 0, 0.3);
         }
 
-        .continue-btn:hover,
-        .complete-btn:hover {
-          background: linear-gradient(
-            135deg,
-            #e65100 0%,
-            var(--primary-orange) 100%
-          );
-          color: white;
+        .continue-btn:hover {
           transform: translateY(-2px);
           box-shadow: 0 12px 32px rgba(255, 111, 0, 0.4);
         }
 
         .complete-btn {
           background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          border: none;
+          color: white;
           box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
         }
 
         .complete-btn:hover {
-          background: linear-gradient(135deg, #059669 0%, #047857 100%);
+          transform: translateY(-2px);
           box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
         }
 
         .btn-icon {
-          font-size: 1rem;
+          font-size: 1.2rem;
+        }
+
+        @media (max-width: 576px) {
+          .step-navigation {
+            flex-direction: column;
+            padding: 1rem;
+          }
+
+          .back-btn,
+          .continue-btn,
+          .complete-btn {
+            max-width: 100%;
+            width: 100%;
+            height: 48px;
+            font-size: 0.95rem;
+          }
+
+          .btn-icon {
+            font-size: 1.1rem;
+          }
         }
 
         /* Loading and Error States */
@@ -2353,6 +2594,75 @@ function FlightAvailabilityContent() {
 
           .time {
             font-size: 1.2rem;
+          }
+        }
+
+        .seat-status-card {
+          background: rgba(16, 185, 129, 0.1);
+          border: 1px solid rgba(16, 185, 129, 0.2);
+          border-radius: 16px;
+          padding: 1.5rem;
+          margin-top: 1rem;
+        }
+
+        .seat-status-card.random {
+          background: rgba(59, 130, 246, 0.1);
+          border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .seat-status-card.deferred {
+          background: rgba(245, 158, 11, 0.1);
+          border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .status-content {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .status-icon {
+          font-size: 1.5rem;
+          color: #10b981;
+        }
+
+        .seat-status-card.random .status-icon {
+          color: #3b82f6;
+        }
+
+        .seat-status-card.deferred .status-icon {
+          color: #f59e0b;
+        }
+
+        .status-details h4 {
+          color: white;
+          margin: 0;
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
+
+        .status-details p {
+          color: rgba(255, 255, 255, 0.7);
+          margin: 0.25rem 0 0 0;
+          font-size: 0.9rem;
+        }
+
+        .status-price {
+          color: var(--primary-orange) !important;
+          font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+          .seat-status-card {
+            padding: 1.25rem;
+          }
+
+          .status-details h4 {
+            font-size: 1rem;
+          }
+
+          .status-details p {
+            font-size: 0.85rem;
           }
         }
       `}</style>

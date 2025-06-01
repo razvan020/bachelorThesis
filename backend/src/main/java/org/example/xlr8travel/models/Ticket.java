@@ -24,6 +24,8 @@ public class Ticket {
     private float price; // price of the ticket all in all
     private LocalDateTime purchaseTime;
     private TicketStatus ticketStatus;
+    private boolean seatSelectionDeferred; // Flag to indicate if seat selection is deferred to check-in
+    private boolean randomSeatAllocation; // Flag to indicate if a random seat should be allocated
 
 
     public Ticket(float price, LocalDateTime purchaseTime, TicketStatus ticketStatus, Seat seat) {
@@ -31,10 +33,21 @@ public class Ticket {
         this.purchaseTime = purchaseTime;
         this.ticketStatus = ticketStatus;
         this.seat = seat;
+        this.seatSelectionDeferred = false;
+        this.randomSeatAllocation = false;
+    }
+
+    public Ticket(float price, LocalDateTime purchaseTime, TicketStatus ticketStatus, boolean seatSelectionDeferred) {
+        this.price = price;
+        this.purchaseTime = purchaseTime;
+        this.ticketStatus = ticketStatus;
+        this.seatSelectionDeferred = seatSelectionDeferred;
+        this.randomSeatAllocation = false;
     }
 
     public Ticket(TicketStatus ticketStatus) {
         this.ticketStatus = ticketStatus;
+        this.randomSeatAllocation = false;
     }
 
     @Override
@@ -42,12 +55,17 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return Float.compare(price, ticket.price) == 0 && Objects.equals(purchaseTime, ticket.purchaseTime) && ticketStatus == ticket.ticketStatus && Objects.equals(seat, ticket.seat);
+        return Float.compare(price, ticket.price) == 0 && 
+               Objects.equals(purchaseTime, ticket.purchaseTime) && 
+               ticketStatus == ticket.ticketStatus && 
+               seatSelectionDeferred == ticket.seatSelectionDeferred && 
+               randomSeatAllocation == ticket.randomSeatAllocation && 
+               Objects.equals(seat, ticket.seat);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(price, purchaseTime, ticketStatus, seat);
+        return Objects.hash(price, purchaseTime, ticketStatus, seatSelectionDeferred, randomSeatAllocation, seat);
     }
 
     @JsonManagedReference

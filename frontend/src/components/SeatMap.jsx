@@ -12,6 +12,16 @@ const SeatMap = ({ onSelectSeat, selectedSeat, seatType, flightId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Get seat price based on row and seat
+  const getSeatPrice = (row) => {
+    if (row <= 5) {
+      return 10; // Upfront seats
+    } else if (row === 14 || row === 15 || row === 30) {
+      return 13; // Extra legroom
+    }
+    return 7; // Standard seats
+  };
+
   // Fetch occupied seats from API
   useEffect(() => {
     const fetchOccupiedSeats = async () => {
@@ -99,15 +109,15 @@ const SeatMap = ({ onSelectSeat, selectedSeat, seatType, flightId }) => {
       <div className={styles.legend}>
         <div className={styles.legendItem}>
           <div className={`${styles.seat} ${styles.standard}`}></div>
-          <span>Standard ($7)</span>
+          <span>Standard</span>
         </div>
         <div className={styles.legendItem}>
           <div className={`${styles.seat} ${styles.upfront}`}></div>
-          <span>Upfront ($10)</span>
+          <span>Upfront</span>
         </div>
         <div className={styles.legendItem}>
           <div className={`${styles.seat} ${styles.extraLegroom}`}></div>
-          <span>Extra Legroom ($13)</span>
+          <span>Extra Legroom</span>
         </div>
         <div className={styles.legendItem}>
           <div className={`${styles.seat} ${styles.occupied}`}></div>
@@ -131,18 +141,27 @@ const SeatMap = ({ onSelectSeat, selectedSeat, seatType, flightId }) => {
         <div className={styles.seats}>
           {Array.from({ length: rows }, (_, rowIndex) => (
             <div key={`row-${rowIndex + 1}`} className={styles.row}>
-              {Array.from({ length: seatsPerRow }, (_, seatIndex) => (
-                <div
-                  key={`seat-${rowIndex + 1}${seatLetters[seatIndex]}`}
-                  className={`${styles.seat} ${getSeatClass(
-                    rowIndex + 1,
-                    seatIndex
-                  )}`}
-                  onClick={() => handleSeatClick(rowIndex + 1, seatIndex)}
-                >
-                  {seatLetters[seatIndex]}
-                </div>
-              ))}
+              {Array.from({ length: seatsPerRow }, (_, seatIndex) => {
+                const row = rowIndex + 1;
+                const seatNumber = `${row}${seatLetters[seatIndex]}`;
+                const isOccupied = occupiedSeats.includes(seatNumber);
+                const price = getSeatPrice(row);
+
+                return (
+                  <div
+                    key={`seat-${seatNumber}`}
+                    className={`${styles.seat} ${getSeatClass(row, seatIndex)}`}
+                    onClick={() => handleSeatClick(row, seatIndex)}
+                  >
+                    <span className={styles.seatLabel}>
+                      {seatLetters[seatIndex]}
+                    </span>
+                    {!isOccupied && (
+                      <span className={styles.seatPrice}>${price}</span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           ))}
         </div>

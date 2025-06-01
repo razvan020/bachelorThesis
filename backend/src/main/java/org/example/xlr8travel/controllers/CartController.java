@@ -77,7 +77,16 @@ public class CartController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Flight not found"));
             }
 
-            CartDTO updatedCart = cartService.addItemToCart(user, flight); // Use service
+            // Pass all the request parameters to the service
+            CartDTO updatedCart = cartService.addItemToCart(
+                user, 
+                flight, 
+                request.getSeatId(),
+                request.isDeferSeatSelection(),
+                request.isAllocateRandomSeat(),
+                request.getBaggageType()
+            );
+
             log.info("Flight ID {} added/incremented in persistent cart for user {}.", flight.getId(), user.getUsername());
             return ResponseEntity.ok(updatedCart);
 
