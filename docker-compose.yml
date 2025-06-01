@@ -35,6 +35,7 @@ services:
       GEMINI_PROJECT_ID: "${GEMINI_PROJECT_ID}"
       # SIMPLE SOLUTION: Pass credentials as base64 environment variable
       GOOGLE_CREDENTIALS_BASE64: "${GOOGLE_CREDENTIALS_BASE64}"
+      OPENWEATHER_API_KEY: "${OPENWEATHER_API_KEY}"
     # NO MORE VOLUME MOUNTING!
 
   frontend:
