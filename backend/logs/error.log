@@ -3237,3 +3237,21 @@ Caused by: java.lang.NumberFormatException: For input string: "all"
 	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.convertIfNecessary(AbstractNamedValueMethodArgumentResolver.java:290)
 	... 174 common frames omitted
 
+2025-06-01 17:40:47.854 ERROR [19ea3078-dac6-40f7-babc-591a5ad6470f] 30524 --- [nio-8080-exec-2] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:40:47.878 ERROR [8c00dbb2-b592-4648-914e-bab93719d617] 30524 --- [nio-8080-exec-8] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:40:48.219 ERROR [aa5925c3-436a-48fe-abb3-98f77d620f8d] 30524 --- [nio-8080-exec-5] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:40:53.394 ERROR [d70f310f-6688-4f40-88bf-625d1126daf8] 30524 --- [io-8080-exec-10] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:40:53.408 ERROR [a5b7712b-7f81-4f2b-952a-6215483ea867] 30524 --- [nio-8080-exec-6] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:40:53.774 ERROR [823983ca-b776-4dca-8e32-dc2c745644f5] 30524 --- [nio-8080-exec-3] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:41:41.255 ERROR [d0c98d94-ee3a-462e-8dd7-7d24e894e4e2] 30524 --- [nio-8080-exec-4] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:41:41.277 ERROR [3e4b6b42-c0fc-44e4-9f08-0771ae87be78] 30524 --- [nio-8080-exec-2] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:41:41.591 ERROR [cb7e79c0-52f0-43b3-ab2f-ae36c7627c30] 30524 --- [nio-8080-exec-8] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:45:16.954 ERROR [cad85a66-9303-45a5-8f86-5a6412d0d892] 30524 --- [io-8080-exec-10] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:45:16.970 ERROR [ab26609a-71d7-4bf6-b1fb-2f64b1a01bfe] 30524 --- [nio-8080-exec-6] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:45:17.329 ERROR [8fb3d1fc-f572-4bb4-81d6-a7cc8dc70273] 30524 --- [nio-8080-exec-3] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:45:51.633 ERROR [6350b22c-0b19-4e0a-81c7-f9772485ec6a] 30524 --- [nio-8080-exec-1] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:45:51.649 ERROR [d8cda5bd-806a-4b35-bd8a-3f76989f9853] 30524 --- [nio-8080-exec-7] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:45:51.979 ERROR [5dbf59e6-9db0-4833-bd57-94ea3c14c8e4] 30524 --- [nio-8080-exec-9] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:53:12.517 ERROR [fde592b4-6ef6-4a2c-a918-31dd18432f4d] 30524 --- [nio-8080-exec-9] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:53:12.544 ERROR [3237682e-ff9f-4f10-9a3e-40fc99ff1784] 30524 --- [nio-8080-exec-4] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
+2025-06-01 17:53:12.821 ERROR [80bdd8f2-fc65-4cf8-bab3-b9fd9c1150d0] 30524 --- [nio-8080-exec-2] o.example.xlr8travel.security.JwtUtils   : Invalid JWT token: JWT strings must contain exactly 2 period characters. Found: 0
