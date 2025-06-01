@@ -113,8 +113,6 @@ EOF
             echo "Credentials file exists: $(test -f backend/tmp/google-credentials.json && echo 'YES' || echo 'NO')"
             echo "Credentials file size: $(wc -c < backend/tmp/google-credentials.json) bytes"
 
-            # In your Jenkins pipeline, add this line after creating the .env file:
-	    export NEXT_PUBLIC_OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY
           '''
         }
       }
@@ -127,7 +125,8 @@ stage('Build & Deploy') {
     
     // SIMPLE SOLUTION: Pass credentials as environment variable
     withCredentials([
-      file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDS_FILE')
+      file(credentialsId: 'gemini-xlr8', variable: 'GOOGLE_CREDS_FILE'),
+      string(credentialsId: 'weather-id', variable: 'OPENWEATHER_API_KEY')
     ]) {
       sh '''
         # Read the credentials file content and encode it
@@ -135,6 +134,7 @@ stage('Build & Deploy') {
         
         # Export it as environment variable for docker compose
         export GOOGLE_CREDENTIALS_BASE64="$GOOGLE_CREDS_CONTENT"
+        export NEXT_PUBLIC_OPENWEATHER_API_KEY="$OPENWEATHER_API_KEY"
         
         # Start containers with the credentials
         docker compose up --build --remove-orphans -d
