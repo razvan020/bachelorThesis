@@ -112,6 +112,9 @@ EOF
             ls -la backend/tmp/
             echo "Credentials file exists: $(test -f backend/tmp/google-credentials.json && echo 'YES' || echo 'NO')"
             echo "Credentials file size: $(wc -c < backend/tmp/google-credentials.json) bytes"
+
+            # In your Jenkins pipeline, add this line after creating the .env file:
+	    export NEXT_PUBLIC_OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY
           '''
         }
       }
