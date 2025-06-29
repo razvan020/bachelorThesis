@@ -75,7 +75,6 @@ const airportDetails = {
     lat: 59.8003,
     lon: 30.2625,
   },
-  CAI: { city: "Cairo", country: "Egypt", lat: 30.1127, lon: 31.4056 },
   TLV: { city: "Tel Aviv", country: "Israel", lat: 32.0114, lon: 34.8867 },
   BEY: { city: "Beirut", country: "Lebanon", lat: 33.8208, lon: 35.4881 },
   AMM: { city: "Amman", country: "Jordan", lat: 31.7226, lon: 35.9929 },

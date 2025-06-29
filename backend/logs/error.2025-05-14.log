@@ -1,5 +1,0 @@
-2025-05-14 12:28:39.231 ERROR [5610733a-8400-4d0c-b673-48cfdf23d673] 19916 --- [nio-8080-exec-1] o.example.xlr8travel.security.JwtUtils   : JWT token is expired: JWT expired at 2025-05-12T16:02:18Z. Current time: 2025-05-14T09:28:39Z, a difference of 149181230 milliseconds.  Allowed clock skew: 0 milliseconds.
-2025-05-14 12:29:15.667 ERROR [705dbf0d-2f21-4576-9b7c-c103652a19e2] 19916 --- [nio-8080-exec-5] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
-2025-05-14 12:33:02.527 ERROR [75e2ae8f-7455-4c42-b4a8-8cdaf50a5357] 19916 --- [io-8080-exec-10] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
-2025-05-14 12:33:16.495 ERROR [583202e9-970e-4a00-8b70-95191d8bb418] 19916 --- [nio-8080-exec-2] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found
-2025-05-14 12:36:12.992 ERROR [22f4974f-76fd-47d1-98cc-b0ec41ad0a51] 27816 --- [nio-8080-exec-1] o.e.x.security.JwtAuthenticationFilter   : Cannot set user authentication: User 104658082982173093135 not found

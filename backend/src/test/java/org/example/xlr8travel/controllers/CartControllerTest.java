@@ -143,7 +143,7 @@ public class CartControllerTest {
         request.setBaggageType("BAGGAGE_TYPE_WEIGHT_CARRY_ON_0");
 
         when(flightService.findById(TEST_FLIGHT_ID)).thenReturn(testFlight);
-        when(cartService.addItemToCart(testUser, testFlight, null, false, false, "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0")).thenReturn(testCartDTO);
+        when(cartService.addItemToCart(testUser, testFlight, null, "B","ca",false, false, "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0")).thenReturn(testCartDTO);
 
         // Act
         ResponseEntity<?> response = cartController.addFlightToCart(request, userDetails);
@@ -157,7 +157,7 @@ public class CartControllerTest {
 
         // Verify services were called
         verify(flightService).findById(TEST_FLIGHT_ID);
-        verify(cartService).addItemToCart(testUser, testFlight, null, false, false, "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0");
+        verify(cartService).addItemToCart(testUser, testFlight, null, "A","fdas",false, false, "BAGGAGE_TYPE_WEIGHT_CARRY_ON_0");
     }
 
     @Test
@@ -183,7 +183,7 @@ public class CartControllerTest {
 
         // Verify service was called
         verify(flightService).findById(TEST_FLIGHT_ID);
-        verify(cartService, never()).addItemToCart(any(), any(), any(), anyBoolean(), anyBoolean(), any());
+        verify(cartService, never()).addItemToCart(any(), any(), any(), any(), any(), anyBoolean(), anyBoolean(), any());
     }
 
     @Test

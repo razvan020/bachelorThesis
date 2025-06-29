@@ -600,6 +600,11 @@ function FlightAvailabilityContent() {
       // Store the selected seat type if a specific seat is selected
       if (selectedSeat) {
         localStorage.setItem("selectedSeatType", selectedSeat.type);
+        localStorage.setItem("selectedSeatNumber", selectedSeat.number);
+        localStorage.setItem("seatSelectionComplete", "true");
+      } else {
+        localStorage.removeItem("selectedSeatNumber");
+        localStorage.removeItem("seatSelectionComplete");
       }
 
       try {
@@ -613,15 +618,36 @@ function FlightAvailabilityContent() {
           };
 
           // Add seat information based on the selected option
-          if (selectedSeat) {
+          if (selectedSeat && !allocateRandomSeat && !deferSeatSelection) {
+            // User selected a specific seat - don't defer selection
             requestBody.seatId = selectedSeat.id;
+            requestBody.seatNumber = selectedSeat.number;
+            requestBody.seatType = selectedSeat.type;
             requestBody.deferSeatSelection = false;
+            requestBody.allocateRandomSeat = false;
+
+            console.log("Sending specific seat data:", {
+              seatId: selectedSeat.id,
+              seatNumber: selectedSeat.number,
+              seatType: selectedSeat.type,
+            });
           } else if (allocateRandomSeat) {
+            // User wants random seat allocation
             requestBody.allocateRandomSeat = true;
             requestBody.deferSeatSelection = false;
+            requestBody.seatId = null;
+            requestBody.seatNumber = null;
+            requestBody.seatType = null;
           } else if (deferSeatSelection) {
+            // User wants to select seat during check-in
             requestBody.deferSeatSelection = true;
+            requestBody.allocateRandomSeat = false;
+            requestBody.seatId = null;
+            requestBody.seatNumber = null;
+            requestBody.seatType = null;
           }
+
+          console.log("Final request body for outbound:", requestBody);
 
           const response = await fetch("/api/cart/add", {
             method: "POST",
@@ -648,14 +674,25 @@ function FlightAvailabilityContent() {
           };
 
           // Add seat information based on the selected option
-          if (selectedSeat) {
+          if (selectedSeat && !allocateRandomSeat && !deferSeatSelection) {
+            // User selected a specific seat - don't defer selection
             requestBody.seatId = selectedSeat.id;
+            requestBody.seatNumber = selectedSeat.number;
+            requestBody.seatType = selectedSeat.type;
             requestBody.deferSeatSelection = false;
+            requestBody.allocateRandomSeat = false;
           } else if (allocateRandomSeat) {
             requestBody.allocateRandomSeat = true;
             requestBody.deferSeatSelection = false;
+            requestBody.seatId = null;
+            requestBody.seatNumber = null;
+            requestBody.seatType = null;
           } else if (deferSeatSelection) {
             requestBody.deferSeatSelection = true;
+            requestBody.allocateRandomSeat = false;
+            requestBody.seatId = null;
+            requestBody.seatNumber = null;
+            requestBody.seatType = null;
           }
 
           const response = await fetch("/api/cart/add", {
@@ -1135,9 +1172,10 @@ function FlightAvailabilityContent() {
                   className={`seat-option-card ${
                     !allocateRandomSeat && !deferSeatSelection ? "active" : ""
                   }`}
-                  onClick={() =>
-                    setDeferSeatSelection(false) & setAllocateRandomSeat(false)
-                  }
+                  onClick={() => {
+                    setDeferSeatSelection(false);
+                    setAllocateRandomSeat(false);
+                  }}
                 >
                   <div className="option-icon">
                     <FaChair />

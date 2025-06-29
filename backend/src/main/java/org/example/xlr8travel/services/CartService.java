@@ -29,7 +29,7 @@ public interface CartService {
      * @param baggageType         The type of baggage selected.
      * @return Updated CartDTO.
      */
-    CartDTO addItemToCart(User user, Flight flight, Long seatId, boolean deferSeatSelection, boolean allocateRandomSeat, String baggageType);
+    CartDTO addItemToCart(User user, Flight flight, Long seatId, String seatNumber, String seatType, boolean deferSeatSelection, boolean allocateRandomSeat, String baggageType);
 
     /**
      * Decreases the quantity of a specific flight in the user's cart by one.

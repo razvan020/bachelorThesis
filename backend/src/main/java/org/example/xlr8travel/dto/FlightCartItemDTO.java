@@ -23,6 +23,8 @@ public class FlightCartItemDTO {
     private Long seatId;
     private boolean deferSeatSelection;
     private boolean allocateRandomSeat;
+    private String seatNumber;
+    private String seatType;
     private String baggageType;
     private String code; // Flight code
 }
