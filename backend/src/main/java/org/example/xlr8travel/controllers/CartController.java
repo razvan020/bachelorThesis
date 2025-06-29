@@ -77,12 +77,21 @@ public class CartController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Flight not found"));
             }
 
+            log.info("AddToCart request: flightId={}, seatNumber={}, seatType={}, deferSeat={}, randomSeat={}",
+                    request.getFlightId(),
+                    request.getSeatNumber(),  // Log seat number
+                    request.getSeatType(),    // Log seat type
+                    request.isDeferSeatSelection(),
+                    request.isAllocateRandomSeat());
+
             // Pass all the request parameters to the service
             CartDTO updatedCart = cartService.addItemToCart(
                 user, 
                 flight, 
                 request.getSeatId(),
-                request.isDeferSeatSelection(),
+                    request.getSeatNumber(),
+                    request.getSeatType(),
+                    request.isDeferSeatSelection(),
                 request.isAllocateRandomSeat(),
                 request.getBaggageType()
             );

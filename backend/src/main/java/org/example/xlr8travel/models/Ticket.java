@@ -24,9 +24,14 @@ public class Ticket {
     private float price; // price of the ticket all in all
     private LocalDateTime purchaseTime;
     private TicketStatus ticketStatus;
-    private boolean seatSelectionDeferred; // Flag to indicate if seat selection is deferred to check-in
+    private String seatNumber;
+    private String seatType;
+    private boolean seatSelectionDeferred;
     private boolean randomSeatAllocation; // Flag to indicate if a random seat should be allocated
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "seat_id")
+    private Seat seat;
 
     public Ticket(float price, LocalDateTime purchaseTime, TicketStatus ticketStatus, Seat seat) {
         this.price = price;
@@ -76,8 +81,6 @@ public class Ticket {
     @ManyToOne
     private Flight flight;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    private Seat seat;
 
 
     /*@OneToMany(mappedBy = "ticket", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

@@ -129,11 +129,62 @@ export default function CheckInPage() {
   }, [isAuthenticated, authLoading, router]);
 
   // Handle ticket selection
+
+  // Handle ticket selection
   const handleSelectTicket = (ticket) => {
     setSelectedTicket(ticket);
     setSeatSelectionDeferred(ticket.seatSelectionDeferred || false);
     setRandomSeatAllocation(ticket.randomSeatAllocation || false);
-    setShowSeatModal(true);
+
+    // Check if the ticket has a previously selected seat
+    // Check multiple possible locations for seat information
+    const seatNumber =
+      ticket.seatNumber ||
+      (ticket.seat && ticket.seat.seatNumber) ||
+      (ticket.seat && ticket.seat.number) ||
+      (ticket.selectedSeat && ticket.selectedSeat.number) ||
+      (ticket.selectedSeat && ticket.selectedSeat.seatNumber);
+
+    console.log("Ticket data:", ticket); // Debug log
+    console.log("Found seat number:", seatNumber); // Debug log
+    console.log("Seat selection deferred:", ticket.seatSelectionDeferred); // Debug log
+    console.log("Random seat allocation:", ticket.randomSeatAllocation);
+
+    if (
+      seatNumber &&
+      !ticket.seatSelectionDeferred &&
+      !ticket.randomSeatAllocation
+    ) {
+      setSelectedSeat(seatNumber);
+
+      // Determine seat type based on seat number
+      const row = parseInt(seatNumber.match(/\d+/)[0]);
+      if (row <= 5) {
+        setSelectedSeatType("SEAT_TYPE_UPFRONT");
+      } else if (row === 14 || row === 15 || row === 30) {
+        setSelectedSeatType("SEAT_TYPE_EXTRA_LEGROOM");
+      } else {
+        setSelectedSeatType("SEAT_TYPE_STANDARD");
+      }
+
+      // If a seat is already selected, proceed directly with check-in
+      // We need to use setTimeout to ensure state updates have completed
+      setTimeout(() => {
+        handleCheckInWithSeat();
+      }, 0);
+    } else if (ticket.randomSeatAllocation) {
+      // If random seat was selected during booking, proceed with check-in without seat selection
+      setTimeout(() => {
+        handleCheckInWithoutSeat();
+      }, 0);
+    } else {
+      // Reset seat selection if no seat was previously selected
+      setSelectedSeat("");
+      setSelectedSeatType("SEAT_TYPE_STANDARD");
+
+      // Show seat selection modal only if no seat is selected
+      setShowSeatModal(true);
+    }
   };
 
   // Handle seat selection from SeatMap
@@ -1446,18 +1497,33 @@ export default function CheckInPage() {
                           {ticket.flight?.gate || "TBA"}
                         </span>
                       </div>
-                      {ticket.seatSelectionDeferred && (
-                        <div className="info-item seat-selection-needed">
+                      {/* Check if the ticket has a seat assigned */}
+                      {ticket.seatNumber ||
+                      (ticket.seat && ticket.seat.seatNumber) ? (
+                        <div className="info-item">
                           <FaChair className="info-icon" />
                           <span className="info-label">Seat:</span>
                           <span className="info-value">
-                            Selection required during check-in
+                            {ticket.seatNumber || ticket.seat.seatNumber}
                           </span>
                         </div>
+                      ) : (
+                        ticket.seatSelectionDeferred && (
+                          <div className="info-item seat-selection-needed">
+                            <FaChair className="info-icon" />
+                            <span className="info-label">Seat:</span>
+                            <span className="info-value">
+                              Selection required during check-in
+                            </span>
+                          </div>
+                        )
                       )}
                       {ticket.randomSeatAllocation && (
                         <div className="info-item random-seat-allocation">
-                          <FaChair className="info-icon" style={{ color: 'var(--primary-orange)' }} />
+                          <FaChair
+                            className="info-icon"
+                            style={{ color: "var(--primary-orange)" }}
+                          />
                           <span className="info-label">Seat:</span>
                           <span className="info-value">
                             Random seat will be allocated (free)
@@ -1514,10 +1580,11 @@ export default function CheckInPage() {
                 </p>
                 {randomSeatAllocation && (
                   <div className="random-seat-info">
-                    <FaChair style={{ color: 'var(--primary-orange)' }} />
+                    <FaChair style={{ color: "var(--primary-orange)" }} />
                     <p>
-                      <strong>Random Seat Allocation:</strong> You selected a random seat during booking. 
-                      A seat will be automatically assigned to you at no additional cost.
+                      <strong>Random Seat Allocation:</strong> You selected a
+                      random seat during booking. A seat will be automatically
+                      assigned to you at no additional cost.
                     </p>
                   </div>
                 )}
@@ -1546,8 +1613,10 @@ export default function CheckInPage() {
                         {selectedSeatType
                           .replace("SEAT_TYPE_", "")
                           .replace("_", " ")}
-                        {selectedSeatType === "SEAT_TYPE_STANDARD" && " ($7.00)"}
-                        {selectedSeatType === "SEAT_TYPE_UPFRONT" && " ($10.00)"}
+                        {selectedSeatType === "SEAT_TYPE_STANDARD" &&
+                          " ($7.00)"}
+                        {selectedSeatType === "SEAT_TYPE_UPFRONT" &&
+                          " ($10.00)"}
                         {selectedSeatType === "SEAT_TYPE_EXTRA_LEGROOM" &&
                           " ($13.00)"}
                       </div>
@@ -1557,16 +1626,17 @@ export default function CheckInPage() {
               ) : (
                 <div className="random-seat-allocation-message">
                   <h5 className="seat-section-title">
-                    <FaChair style={{ color: 'var(--primary-orange)' }} />
+                    <FaChair style={{ color: "var(--primary-orange)" }} />
                     Random Seat Allocation
                   </h5>
                   <p>
-                    You selected a random seat during booking. A seat will be automatically 
-                    assigned to you at no additional cost when you check in.
+                    You selected a random seat during booking. A seat will be
+                    automatically assigned to you at no additional cost when you
+                    check in.
                   </p>
                   <p>
-                    Please click "Check In Without Seat Selection" to complete your check-in 
-                    and receive your randomly allocated seat.
+                    Please click "Check In Without Seat Selection" to complete
+                    your check-in and receive your randomly allocated seat.
                   </p>
                 </div>
               )}
@@ -1576,7 +1646,9 @@ export default function CheckInPage() {
                 className="no-seat-btn"
                 onClick={handleCheckInWithoutSeat}
               >
-                {randomSeatAllocation ? "Complete Check-In" : "Check In Without Seat Selection"}
+                {randomSeatAllocation
+                  ? "Complete Check-In"
+                  : "Check In Without Seat Selection"}
               </button>
               {!randomSeatAllocation && (
                 <button

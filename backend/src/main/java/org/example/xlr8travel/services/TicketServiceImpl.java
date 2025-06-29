@@ -86,6 +86,7 @@ public class TicketServiceImpl implements TicketService {
         }
 
         // Update ticket
+
         ticket.setSeat(seat);
         ticket.setSeatSelectionDeferred(false); // Seat has been selected, so it's no longer deferred
         ticket.setTicketStatus(TicketStatus.TICKET_STATUS_CHECKED_IN);

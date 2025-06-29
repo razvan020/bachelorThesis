@@ -170,72 +170,85 @@ public class OrderServiceImpl implements OrderService {
         // inventoryService.updateStock(savedOrder);
 
         // Create tickets for each order item
+// Create tickets for each order item
         for (OrderItem item : orderItems) {
+            // Find the corresponding cart item DTO to get seat information
+            FlightCartItemDTO cartItemDTO = cart.getItems().stream()
+                    .filter(cartItem -> cartItem.getId().equals(item.getFlight().getId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (cartItemDTO == null) {
+                log.warn("Could not find cart item DTO for flight {}", item.getFlight().getId());
+                continue;
+            }
+
             // Create a ticket for each quantity in the order item
             for (int i = 0; i < item.getQuantity(); i++) {
                 Ticket ticket;
 
-                if (checkoutRequest.isAllocateRandomSeat()) {
+                // Check the cart item's seat preferences
+                if (cartItemDTO.isAllocateRandomSeat()) {
                     // Create ticket with random seat allocation (price = 0)
                     ticket = new Ticket(
-                        0.0f, // Set price to 0 for random seat
-                        LocalDateTime.now(),
-                        TicketStatus.TICKET_STATUS_CONFIRMED,
-                        true // seatSelectionDeferred = true, will be allocated randomly later
-                    );
-                    // Add a flag to indicate this is a random seat allocation
-                    ticket.setRandomSeatAllocation(true);
-                    log.info("Created ticket with random seat allocation (free) for flight {} for user {}", 
-                        item.getFlight().getName(), user.getUsername());
-                } else if (checkoutRequest.isDeferSeatSelection()) {
-                    // Create ticket with deferred seat selection
-                    ticket = new Ticket(
-                        item.getPricePerItem().floatValue(),
-                        LocalDateTime.now(),
-                        TicketStatus.TICKET_STATUS_CONFIRMED,
-                        true // seatSelectionDeferred = true
-                    );
-                    log.info("Created ticket with deferred seat selection for flight {} for user {}", 
-                        item.getFlight().getName(), user.getUsername());
-                } else if (checkoutRequest.getSeatNumber() != null && !checkoutRequest.getSeatNumber().isEmpty() &&
-                           checkoutRequest.getSeatType() != null && !checkoutRequest.getSeatType().isEmpty()) {
-                    // Create ticket with selected seat
-                    try {
-                        SeatType seatType = SeatType.valueOf(checkoutRequest.getSeatType());
-                        Seat seat = new Seat(checkoutRequest.getSeatNumber(), true, seatType);
-                        ticket = new Ticket(
-                            item.getPricePerItem().floatValue(),
+                            0.0f, // Set price to 0 for random seat
                             LocalDateTime.now(),
                             TicketStatus.TICKET_STATUS_CONFIRMED,
-                            seat
-                        );
-                        log.info("Created ticket with seat {} of type {} for flight {} for user {}", 
-                            checkoutRequest.getSeatNumber(), checkoutRequest.getSeatType(), 
+                            false // seatSelectionDeferred = false
+                    );
+                    ticket.setRandomSeatAllocation(true);
+                    log.info("Created ticket with random seat allocation (free) for flight {} for user {}",
                             item.getFlight().getName(), user.getUsername());
-                    } catch (IllegalArgumentException e) {
-                        log.warn("Invalid seat type: {}. Creating ticket with deferred seat selection.", 
-                            checkoutRequest.getSeatType());
-                        ticket = new Ticket(
+
+                } else if (cartItemDTO.isDeferSeatSelection()) {
+                    // Create ticket with deferred seat selection
+                    ticket = new Ticket(
                             item.getPricePerItem().floatValue(),
                             LocalDateTime.now(),
                             TicketStatus.TICKET_STATUS_CONFIRMED,
                             true // seatSelectionDeferred = true
-                        );
-                    }
+                    );
+                    ticket.setSeatSelectionDeferred(true);
+                    log.info("Created ticket with deferred seat selection for flight {} for user {}",
+                            item.getFlight().getName(), user.getUsername());
+
+                }  else if (cartItemDTO.getSeatNumber() != null && !cartItemDTO.getSeatNumber().isEmpty()) {
+                    // Create ticket with selected seat
+                    ticket = new Ticket(
+                            item.getPricePerItem().floatValue(),
+                            LocalDateTime.now(),
+                            TicketStatus.TICKET_STATUS_CONFIRMED,
+                            false // seatSelectionDeferred = false
+                    );
+
+                    ticket.setSeatNumber(cartItemDTO.getSeatNumber());
+                    ticket.setSeatType(cartItemDTO.getSeatType());
+
+                    log.info("Created ticket with seat {} of type {} for flight {} for user {}",
+                            cartItemDTO.getSeatNumber(), cartItemDTO.getSeatType(),
+                            item.getFlight().getName(), user.getUsername());
+
                 } else {
                     // Create ticket with deferred seat selection as fallback
                     ticket = new Ticket(
-                        item.getPricePerItem().floatValue(),
-                        LocalDateTime.now(),
-                        TicketStatus.TICKET_STATUS_CONFIRMED,
-                        true // seatSelectionDeferred = true
+                            item.getPricePerItem().floatValue(),
+                            LocalDateTime.now(),
+                            TicketStatus.TICKET_STATUS_CONFIRMED,
+                            true // seatSelectionDeferred = true
                     );
-                    log.info("Created ticket with deferred seat selection (fallback) for flight {} for user {}", 
-                        item.getFlight().getName(), user.getUsername());
+                    ticket.setSeatSelectionDeferred(true);
+                    log.info("Created ticket with deferred seat selection (fallback) for flight {} for user {}",
+                            item.getFlight().getName(), user.getUsername());
                 }
 
                 ticket.setUser(user);
                 ticket.setFlight(item.getFlight());
+
+                // Handle baggage if needed
+                if (cartItemDTO.getBaggageType() != null) {
+                    log.info("Ticket has baggage type: {}", cartItemDTO.getBaggageType());
+                    // You can create baggage entities here if needed
+                }
 
                 // Save the ticket
                 ticketRepository.save(ticket);

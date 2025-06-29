@@ -27,6 +27,12 @@ public class CartItemModel {
     // Seat and baggage information
     private Long seatId;
 
+    @Column
+    private String seatNumber;
+
+    @Column
+    private String seatType;
+
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean deferSeatSelection = false;
 
@@ -43,6 +49,22 @@ public class CartItemModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
+    }
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public String getSeatType() {
+        return seatType;
     }
 
     public Cart getCart() {

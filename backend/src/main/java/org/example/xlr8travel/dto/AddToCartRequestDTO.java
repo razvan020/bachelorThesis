@@ -9,6 +9,8 @@ public class AddToCartRequestDTO {
     @NotNull(message = "Flight ID cannot be null")
     private Long flightId;
     private Long seatId;
+    private String seatNumber;
+    private String seatType;
     private boolean deferSeatSelection;
     private boolean allocateRandomSeat;
     private String baggageType;
